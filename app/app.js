@@ -6,7 +6,7 @@
   'ngResource',
   'ngSanitize',
   'ui.router',
-  'turnos.main',
+  'turnos.turnos',
   'turnos.navbar'
 ])
   .config(function ($stateProvider, $urlRouterProvider) {
@@ -15,14 +15,14 @@
     $stateProvider
       .state('index', {
         url: '/',
-        templateUrl: 'views/main.html',
-        controller:'MainCtrl',
         views: {
           'navbar':  {
             templateUrl: 'views/navbar/navbar.html',
           },
           'main':  {
-            templateUrl: 'views/main/main.html',
+            templateUrl: 'views/turnos/turnos.html',
+            controller:'TurnosCtrl',
+            controllerAs: 'TurnosCtrl'
           }
         }
       });
