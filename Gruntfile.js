@@ -294,6 +294,15 @@ module.exports = function (grunt) {
       }
     }
   });
+  grunt.registerTask('heroku:heroku', function (target) {
+    grunt.task.run([
+      'clean:server',
+      'concurrent:server',
+      'autoprefixer',
+      'connect:livereload',
+      'watch'
+    ]);
+  }
 
   grunt.registerTask('server', function (target) {
     if (target === 'dist') {
