@@ -1,0 +1,69 @@
+<div class="container container-turnos">
+	<div class="col-md-4" style="border-right: 1px solid;">
+		<table class="table table-hover"> 
+			<thead> 
+				<tr> 
+					<th>#</th> 
+					<th>Nombre</th> 
+					<th>Descripcion</th> 
+					<th>Duracion</th> 
+					<th hidden="hidden">Acciones</th> 
+				</tr> 
+			</thead> 
+			<tbody> 
+				<tr ng-repeat="(key, prestacion) in PrestacionesCtrl.prestaciones" ng-click="PrestacionesCtrl.detail(prestacion)"> 
+					<th scope="row">{{prestacion.id}}</th> 
+					<td>{{prestacion.name}}</td> 
+					<td>{{prestacion.description}}</td> 
+					<td>{{prestacion.duration}}</td> 
+					<td hidden="hidden">
+						<a ng-href="#prestacion/{{prestacion.id}}">
+				            <button class="btn btn-default">
+				            	<span class="glyphicon glyphicon-pencil">
+				            	</span>
+				            </button>
+				        </a>
+			            <button class="btn btn-default" ng-click="prestacion.delete(prestacion.id)">
+			            	<span class="glyphicon glyphicon-remove">
+			            	</span>
+			            </button>
+					</td> 
+				</tr> 
+			</tbody> 
+		</table>
+	</div>	
+		<div class="col-md-8" >
+   		<div ui-view="detail"></div>
+   		</div>
+	<div class="col-md-8" ng-show="PrestacionesCtrl.prestacion">
+   		<div ui-view="detail"></div>
+		<div class="row">
+			<div class="col-md-12">
+				<a ng-href="#prestacion/{{PrestacionesCtrl.prestacion.id}}">
+					<button ng-click="PrestacionesCtrl.toggleEdit()"   class="btn btn-warning">{{PrestacionesCtrl.editing?'Dejar de modificar':'Modificar'}}<span class="glyphicon glyphicon-pencil"></span></button>
+				</a>
+				<button ng-show="PrestacionesCtrl.editing" class="btn btn-default" >Eliminar<span class="glyphicon glyphicon-remove"></span></button>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-4"><label>Nombre</label></div>
+			<div class="col-md-8">{{PrestacionesCtrl.prestacion.name}}</div>
+		</div>
+		<div class="row">
+			<div class="col-md-4"><label>Descripcion</label></div>
+			<div class="col-md-8">{{PrestacionesCtrl.prestacion.description}}</div>
+		</div>		    
+		<div class="row">
+			<div class="col-md-4"><label>Duraction</label></div>
+			<div class="col-md-8">{{PrestacionesCtrl.prestacion.duration}}</div>
+		</div>	
+		<div class="row">
+			<div class="col-md-4"><label>Fecha de creacion</label></div>
+			<div class="col-md-8">{{PrestacionesCtrl.prestacion.createdAt}} por {{PrestacionesCtrl.prestacion.createdBy.name}}</div>
+		</div>
+		<div class="row" ng-show="PrestacionesCtrl.prestacion.lastModifiedAt">
+			<div class="col-md-4"><label>Fecha de modificacion</label></div>
+			<div class="col-md-8">{{PrestacionesCtrl.prestacion.lastModifiedAt}} por {{PrestacionesCtrl.prestacion.lastModifiedBy.name}}</div>
+		</div>			
+	</div>
+</div>
