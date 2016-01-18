@@ -302,7 +302,7 @@ module.exports = function (grunt) {
       'connect:livereload',
       'watch'
     ]);
-  }
+  });
 
   grunt.registerTask('server', function (target) {
     if (target === 'dist') {
