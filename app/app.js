@@ -10,7 +10,8 @@
   'turnos.navbar',
   'turnos.especialidades',
   'turnos.prestaciones',
-  'turnos.pacientes'
+  'turnos.pacientes',
+  'turnos.login'
 ])
   .config(function ($stateProvider, $urlRouterProvider) {
     //delete $httpProvider.defaults.headers.common['X-Requested-With'];
@@ -20,11 +21,13 @@
         url: '/login',
         views: {
           'main':  {
-            templateUrl: 'views/navbar/navbar.html',
+            templateUrl: 'views/login/login.html',
+            controller:'LoginCtrl',
+            controllerAs: 'LoginCtrl'
           }
         }
       })
-      .state('index', {
+      .state('home', {
         url: '/',
         views: {
           'navbar':  {
