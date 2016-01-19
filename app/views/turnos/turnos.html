@@ -1,10 +1,21 @@
 <div class="container">
 	<div class="col-md-2">
+
+		<div class="checkbox" style="color:#ee8505">
+		  	<label>
+		    	<input type="checkbox" ng-model="TurnosCtrl.fernandez" ng-change="TurnosCtrl.toggleSources()">
+		    	Doctor Fernandez
+		  	</label>
+		</div>
+		<div class="checkbox" style="color:#3a87ad">
+		  	<label>
+		    	<input type="checkbox" ng-model="TurnosCtrl.ramirez" ng-change="TurnosCtrl.toggleSources()" >
+		    	Doctor Ramirez
+		  	</label>
+		</div>
+
 	</div>
 	<div class="col-md-10">
-	<div ui-calendar="TurnosCtrl.calendarConfig" ng-model="TurnosCtrl.eventSources">
-	</div>
-	<div ng-repeat="event in TurnosCtrl.events">
-		{{event.start}}
+		<div ui-calendar="TurnosCtrl.calendarConfig" ng-model="TurnosCtrl.eventSources">
 	</div>
 </div>
