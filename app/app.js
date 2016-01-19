@@ -80,13 +80,13 @@
         }
       })
       .state('newpaciente', {
-        url: '/newPaciente',
+        url: '/newpaciente',
         views: {
           'navbar':  {
             templateUrl: 'views/navbar/navbar.html',
           },
           'main':  {
-            templateUrl: 'views/pacientes/newPaciente.html',
+            templateUrl: 'views/pacientes/newpaciente.html',
             controller:'NewPacienteCtrl',
             controllerAs: 'NewPacienteCtrl'
           },         
