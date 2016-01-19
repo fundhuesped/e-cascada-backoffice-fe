@@ -1,7 +1,7 @@
 <div class="container">
 	<div class="col-md-9 col-md-offset-3">
-		<button ng-click="EspecialidadCtrl.toggleEdit()" class="btn btn-default">{{EspecialidadCtrl.editing?'Dejar de modificar':'Modificar'}}<span class="glyphicon glyphicon-pencil"></span></button>
-		<button ng-show="EspecialidadCtrl.editing" class="btn btn-default" >Eliminar<span class="glyphicon glyphicon-remove"></span></button>
+		<button ng-click="EspecialidadCtrl.toggleEdit()" class="btn btn-default">{{EspecialidadCtrl.editing?'Dejar de modificar':'Modificar'}} <span class="glyphicon glyphicon-pencil"></span></button>
+		<button ng-show="EspecialidadCtrl.editing" class="btn btn-default" >Eliminar <span class="glyphicon glyphicon-remove"></span></button>
 	</div>
 	<div class="col-md-6 col-md-offset-3" ng-show="!EspecialidadCtrl.editing">
 		<div class="row">
@@ -16,9 +16,10 @@
 			<div class="col-md-4"><label>Fecha de creacion</label></div>
 			<div class="col-md-8">{{EspecialidadCtrl.especialidad.createdAt}} por {{EspecialidadCtrl.especialidad.createdBy.name}}</div>
 		</div>
-		<div class="row">
+		<div class="row" ng-show="EspecialidadCtrl.especialidad.lastModifiedAt">
 			<div class="col-md-4"><label>Fecha de modificacion</label></div>
 			<div class="col-md-8">{{EspecialidadCtrl.especialidad.lastModifiedAt}} por {{EspecialidadCtrl.especialidad.lastModifiedBy.name}}</div>		
+		</div>
 	</div>
 	<form>
 		<div class="col-md-6 col-md-offset-3" ng-show="EspecialidadCtrl.editing">

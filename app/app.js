@@ -79,6 +79,19 @@
           },         
         }
       })
+      .state('prestacion', {
+        url: '/prestacion/:prestaciondId',
+        views: {
+          'navbar':  {
+            templateUrl: 'views/navbar/navbar.html',
+          },
+          'main':  {
+            templateUrl: 'views/prestaciones/prestacion.html',
+            controller:'PrestacionCtrl',
+            controllerAs: 'PrestacionCtrl'
+          },         
+        }
+      })
       .state('newpaciente', {
         url: '/newpaciente',
         views: {
