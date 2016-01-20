@@ -24,29 +24,29 @@
 		this.eventSources.length = 0;
 		if(this.ramirez){
 			var ramirezCal = 	     [ 
-				{title: 'Hanna Blade', start: new Date(y, m, d + 3, 9, 0),end: new Date(y, m, d + 3, 16, 20),allDay: false},
-				{title: 'Kenneth Burts', start: new Date(y, m, d + 3, 9, 20),end: new Date(y, m, d + 3, 16, 40),allDay: false},
+				{title: 'Hanna Blade', start: new Date(y, m, d + 2, 9, 0),end: new Date(y, m, d + 3, 16, 20),allDay: false},
+				{title: 'Kenneth Burts', start: new Date(y, m, d + 2, 9, 20),end: new Date(y, m, d + 3, 16, 40),allDay: false},
 	      		{title: 'Vacaciones',start: new Date(y, m, d + 5),end: new Date(y, m, d + 20)}];
 			this.eventSources.push(ramirezCal);
 		}
 		if(this.fernandez){
 			var fernandezCal = 	     [ 
-				{title: 'Jessie Blake', start: new Date(y, m, d + 3, 9, 0),end: new Date(y, m, d + 3, 9, 20),allDay: false,color:"#ee8505"},
-				{title: 'Tom Umland', start: new Date(y, m, d + 3, 9, 20),end: new Date(y, m, d + 3, 9, 40),allDay: false,color:"#ee8505"},
-				{title: 'Molly Truluck', start: new Date(y, m, d + 3, 9, 40),end: new Date(y, m, d + 3, 10, 0),allDay: false,color:"#ee8505"},
-				{title: 'Merrilee Eoff', start: new Date(y, m, d + 3, 10, 0),end: new Date(y, m, d + 3, 10, 20),allDay: false,color:"#ee8505"}];
+				{title: 'Jessie Blake', start: new Date(y, m, d + 2, 9, 0),end: new Date(y, m, d + 3, 9, 20),allDay: false,color:'#ee8505'},
+				{title: 'Tom Umland', start: new Date(y, m, d + 2, 9, 20),end: new Date(y, m, d + 3, 9, 40),allDay: false,color:'#ee8505'},
+				{title: 'Molly Truluck', start: new Date(y, m, d + 2, 9, 40),end: new Date(y, m, d + 3, 10, 0),allDay: false,color:'#ee8505'},
+				{title: 'Merrilee Eoff', start: new Date(y, m, d + 2, 10, 0),end: new Date(y, m, d + 3, 10, 20),allDay: false,color:'#ee8505'}];
 			this.eventSources.push(fernandezCal);
 		}
 		if(this.infecto){
 			var infectocal = 	     [ 
-				{title: 'Hanna Blade', start: new Date(y, m, d + 3, 9, 0),end: new Date(y, m, d + 3, 16, 20),allDay: false,color:'#D8C358'},
-				{title: 'Kenneth Burts', start: new Date(y, m, d + 3, 9, 20),end: new Date(y, m, d + 3, 16, 40),allDay: false,color:'#D8C358'},
-				{title: 'Lola Burns', start: new Date(y, m, d + 3, 9, 20),end: new Date(y, m, d + 3, 16, 40),allDay: false,color:'#D8C358'}]
+				{title: 'Hanna Blade', start: new Date(y, m, d + 2, 9, 0),end: new Date(y, m, d + 3, 16, 20),allDay: false,color:'#D8C358'},
+				{title: 'Kenneth Burts', start: new Date(y, m, d + 2, 9, 20),end: new Date(y, m, d + 3, 16, 40),allDay: false,color:'#D8C358'},
+				{title: 'Lola Burns', start: new Date(y, m, d + 2, 9, 20),end: new Date(y, m, d + 3, 16, 40),allDay: false,color:'#D8C358'}];
 			this.eventSources.push(infectocal);
 		}
 		if(this.gineco){
 			var  ginecocal = 	     [ 
-				{title: 'Hanna Blade', start: new Date(y, m, d + 3, 9, 0),end: new Date(y, m, d + 3, 16, 20),allDay: false,color:'#6D0839'}]
+				{title: 'Hanna Blade', start: new Date(y, m, d + 3, 9, 0),end: new Date(y, m, d + 3, 16, 20),allDay: false,color:'#6D0839'}];
 			this.eventSources.push(ginecocal);			
 		}
 		console.log(this.eventSources);
