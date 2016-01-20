@@ -37,8 +37,60 @@
 				{title: 'Merrilee Eoff', start: new Date(y, m, d + 3, 10, 0),end: new Date(y, m, d + 3, 10, 20),allDay: false,color:"#ee8505"}];
 			this.eventSources.push(fernandezCal);
 		}
+		if(this.infecto){
+			var infectocal = 	     [ 
+				{title: 'Hanna Blade', start: new Date(y, m, d + 3, 9, 0),end: new Date(y, m, d + 3, 16, 20),allDay: false,color:'#D8C358'},
+				{title: 'Kenneth Burts', start: new Date(y, m, d + 3, 9, 20),end: new Date(y, m, d + 3, 16, 40),allDay: false,color:'#D8C358'},
+				{title: 'Lola Burns', start: new Date(y, m, d + 3, 9, 20),end: new Date(y, m, d + 3, 16, 40),allDay: false,color:'#D8C358'}]
+			this.eventSources.push(infectocal);
+		}
+		if(this.gineco){
+			var  ginecocal = 	     [ 
+				{title: 'Hanna Blade', start: new Date(y, m, d + 3, 9, 0),end: new Date(y, m, d + 3, 16, 20),allDay: false,color:'#6D0839'}]
+			this.eventSources.push(ginecocal);			
+		}
 		console.log(this.eventSources);
 	}
+
+
+
+	this.listMedicos = [
+		{
+			id: 'fernandez',
+			name: 'Fernandez',
+			color: '#ee8505',
+			selected: false
+
+		},
+		{
+			id: 'ramirez',
+			name: 'Ramirez',
+			color: '#3a87ad',
+			selected: false
+
+		},
+		{
+			id: 'perez',
+			name: 'Perez',
+			color: '#3a87ad',
+			selected: false
+		}
+	];
+
+	this.medicos = function medicos(){
+		var tmpMedicos = [];
+		console.log(this.medicosSearch);
+		if(this.medicosSearch){
+			for (var i = this.listMedicos.length - 1; i >= 0; i--) {
+				if(this.listMedicos[i].name.search(this.medicosSearch)!==-1){
+					tmpMedicos.push(this.listMedicos[i]);
+				}
+			}
+			return tmpMedicos;
+		}else{
+			return this.listMedicos;
+		}
+	};
 
     }
     angular.module('turnos.turnos').controller('TurnosCtrl',['TurnosSrv',turnosCtrl]);

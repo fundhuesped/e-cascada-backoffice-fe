@@ -1,99 +1,103 @@
 <div class="container">
-	<form name="newPaciente">
-		<div class="col-md-6 col-md-offset-3">
-			<div class="row">
-		        <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
-		            <div class="form-group">
-						<span><label>Primer nombre</label><span>
-						<input type="text" name="firstname" class="form-control" ng-model="NewPacienteCtrl.newPaciente.firstname"required></input >
-		            </div>
-		        </div>
-		        <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
-		            <div class="form-group">
-						<span><label>Otros nombres</label><span>
-						<input type="text" name="othernames" class="form-control" ng-model="NewPacienteCtrl.newPaciente.othernames"required></input >
-		            </div>
-		        </div>
-		    </div>
-            <div class="row">
-                <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
-                    <div class="form-group">
-                        <span><label>Apellido paterno</label><span>
-                        <input type="text" name="fathersurname" class="form-control" ng-model="NewPacienteCtrl.newPaciente.fathersurname"required></input >
+    <div class="panel panel-default">
+        <div class="panel-heading">    
+            <h3 class="panel-title">Nuevo paciente</h3>
+        </div>
+        <div class="panel-body">
+        	<form name="newPaciente">
+        		<div class="col-md-6 col-md-offset-3">
+        			<div class="row">
+        		        <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
+        		            <div class="form-group">
+        						<span><label>Primer nombre</label></span>
+        						<input type="text" name="firstname" class="form-control" ng-model="NewPacienteCtrl.newPaciente.firstname"required></input >
+        		            </div>
+        		        </div>
+        		        <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
+        		            <div class="form-group">
+        						<span><label>Otros nombres</label></span>
+        						<input type="text" name="othernames" class="form-control" ng-model="NewPacienteCtrl.newPaciente.othernames"required></input >
+        		            </div>
+        		        </div>
+        		    </div>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
+                            <div class="form-group">
+                                <span><label>Apellido paterno</label></span>
+                                <input type="text" name="fathersurname" class="form-control" ng-model="NewPacienteCtrl.newPaciente.fathersurname"required></input >
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
+                            <div class="form-group">
+                                <span><label>Apellido materno</label></span>
+                                <input type="text" name="mothersurname" class="form-control" ng-model="NewPacienteCtrl.newPaciente.mothersurname"required></input >
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
-                    <div class="form-group">
-                        <span><label>Apellido materno</label><span>
-                        <input type="text" name="mothersurname" class="form-control" ng-model="NewPacienteCtrl.newPaciente.mothersurname"required></input >
+        			<div class="row">
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <span><label>Tipo y número de documento</label></span>
+                                </div>
+                                <div class="form-group">
+                                    <!-- just add has-error in error case -->
+                                    <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+                                        <select class="form-control" id="idDocType" ng-model="NewPacienteCtrl.newPaciente.docType.id" required>
+                                            <option value="" disabled selected>Tipo</option>
+                                            <option value="1">DNI</option>
+                                            <option value="2">LE</option>
+                                            <option value="3">LC</option>
+                                            <option value="4">Pasaporte</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7 form-group">
+                                        <input class="form-control" maxlength="20" type="text" name="dni" id="docNumber" ng-model="NewPacienteCtrl.newPaciente.docNumber" required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <span><label>Sexo al nacer</label></span>
+                                </div>
+                                <div class="form-group">
+                                    <!-- just add has-error in error case -->
+                                    <div class="col-xs-6 col-sm-12 col-md-12 col-lg-12">
+                                        <select class="form-control" id="genderAtBirth" ng-model="NewPacienteCtrl.newPaciente.genderAtBirth" required>
+                                            <option value="" disabled selected>Sexo</option>
+                                            <option value="F">Femenino</option>
+                                            <option value="M">Masculino</option>
+                                        </select>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-			<div class="row">
-                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
+                            <div class="form-group">
+                                <span><label>Fecha de nacimiento</label></span>
+                                <input type="date" name="birthdate" class="form-control" ng-model="NewPacienteCtrl.newPaciente.birthdate"required></input >
+                            </div>
+                        </div>
+                    </div>
                     <div class="row">
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                            <span><label>Tipo y número de documento</label></span>
-                        </div>
-                        <div class="form-group">
-                            <!-- just add has-error in error case -->
-                            <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
-                                <select class="form-control" id="idDocType" ng-model="NewPacienteCtrl.newPaciente.docType.id" required>
-                                    <option value="" disabled selected>Tipo</option>
-                                    <option value="1">DNI</option>
-                                    <option value="2">LE</option>
-                                    <option value="3">LC</option>
-                                    <option value="4">Pasaporte</option>
-                                </select>
-                            </div>
-                            <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7 form-group">
-                                <input class="form-control" maxlength="20" type="text" name="dni" id="docNumber" ng-model="NewPacienteCtrl.newPaciente.docNumber" required>
+                            <div class="form-group">
+                                <div class="col-md-6">
+                                    <button id="btn-confirm" type="button" class="btn btn-success">Confirmar</button>
+                                </div>
+                                <div class="col-md-6">
+                                    <button id="btn-cancel" type="button" class="btn btn-danger">Cancelar</button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
-                    <div class="row">
-                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                            <span><label>Sexo al nacer</label></span>
-                        </div>
-                        <div class="form-group">
-                            <!-- just add has-error in error case -->
-                            <div class="col-xs-6 col-sm-12 col-md-12 col-lg-12">
-                                <select class="form-control" id="genderAtBirth" ng-model="NewPacienteCtrl.newPaciente.genderAtBirth" required>
-                                    <option value="" disabled selected>Sexo</option>
-                                    <option value="F">Femenino</option>
-                                    <option value="M">Masculino</option>
-                                </select>
-                            </div>
-                            <div class="clearfix"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
-                    <div class="form-group">
-                        <span><label>Fecha de nacimiento</label><span>
-                        <input type="date" name="birthdate" class="form-control" ng-model="NewPacienteCtrl.newPaciente.birthdate"required></input >
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                    <div class="form-group">
-                        <div class="col-md-6">
-                            <button id="btn-confirm" type="button" class="btn btn-success">Confirmar</button>
-                        </div>
-                        <div class="col-md-6">
-                            <button id="btn-cancel" type="button" class="btn btn-danger">Cancelar</button>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-
-            </div>
-		</div>
-	</form>
+        		</div>
+        	</form>
+        </div>
+    </div>
 </div>

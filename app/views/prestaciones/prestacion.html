@@ -1,40 +1,51 @@
 <div class="container">
-	<div class="col-md-9 col-md-offset-3">
-		<button ng-click="PrestacionCtrl.toggleEdit()" class="btn btn-default">{{PrestacionCtrl.editing?'Dejar de modificar':'Modificar'}} <span class="glyphicon glyphicon-pencil"></span></button>
-		<button ng-show="PrestacionCtrl.editing" class="btn btn-default" >Eliminar <span class="glyphicon glyphicon-remove"></span></button>
-	</div>
-	<div class="col-md-6 col-md-offset-3" ng-show="!PrestacionCtrl.editing">
-		<div class="row">
-			<div class="col-md-4"><label>Nombre</label></div>
-			<div class="col-md-8">{{PrestacionCtrl.prestacion.name}}</div>
-		</div>
-		<div class="row">
-			<div class="col-md-4"><label>Descripcion</label></div>
-			<div class="col-md-8">{{PrestacionCtrl.prestacion.description}}</div>
-		</div>		    
-		<div class="row">
-			<div class="col-md-4"><label>Duracion de la prestacion</label></div>
-			<div class="col-md-8">{{PrestacionCtrl.prestacion.duration}}</div>
-		</div>
-		<div class="row">
-			<div class="col-md-4"><label>Fecha de creacion</label></div>
-			<div class="col-md-8">{{PrestacionCtrl.prestacion.createdAt}} por {{PrestacionCtrl.prestacion.createdBy.name}}</div>
-		</div>
-		<div class="row">
-			<div class="col-md-4"><label>Fecha de modificacion</label></div>
-			<div class="col-md-8">{{PrestacionCtrl.prestacion.name}}  por {{PrestacionCtrl.prestacion.lastModifiedBy.name}}</div>
-		</div>
-	</div>
-	<form>
-		<div class="col-md-6 col-md-offset-3" ng-show="PrestacionCtrl.editing">
-	  		<div class="form-group">
-				<span><label>Nombre</label><span>
-				<input type="text" name="name" class="form-control" ng-model="PrestacionCtrl.prestacion.name"required></input >
+    <div class="panel panel-default">
+        <div class="panel-heading">    
+            <h3 class="panel-title">Prestacion</h3>
+        </div>
+        <div class="panel-body">
+			<div class="col-md-9 col-md-offset-3">
+				<button ng-click="PrestacionCtrl.toggleEdit()" class="btn btn-default">{{PrestacionCtrl.editing?'Dejar de modificar':'Modificar'}} <span class="glyphicon glyphicon-pencil"></span></button>
+				<button ng-show="PrestacionCtrl.editing" class="btn btn-default" >Eliminar <span class="glyphicon glyphicon-remove"></span></button>
 			</div>
-	  		<div class="form-group">
-				<span><label>Descripcion</label><span>
-				<input type="text" name="description" class="form-control" ng-model="PrestacionCtrl.prestacion.description"></input>
-			</div>		    			
+			<div class="col-md-6 col-md-offset-3" ng-show="!PrestacionCtrl.editing">
+				<div class="row">
+					<div class="col-md-4"><label>Nombre</label></div>
+					<div class="col-md-8">{{PrestacionCtrl.prestacion.name}}</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4"><label>Descripcion</label></div>
+					<div class="col-md-8">{{PrestacionCtrl.prestacion.description}}</div>
+				</div>		    
+				<div class="row">
+					<div class="col-md-4"><label>Duracion de la prestacion</label></div>
+					<div class="col-md-8">{{PrestacionCtrl.prestacion.duration}}</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4"><label>Fecha de creacion</label></div>
+					<div class="col-md-8">{{PrestacionCtrl.prestacion.createdAt}} por {{PrestacionCtrl.prestacion.createdBy.name}}</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4"><label>Fecha de modificacion</label></div>
+					<div class="col-md-8">{{PrestacionCtrl.prestacion.name}}  por {{PrestacionCtrl.prestacion.lastModifiedBy.name}}</div>
+				</div>
+			</div>
+			<form>
+				<div class="col-md-6 col-md-offset-3" ng-show="PrestacionCtrl.editing">
+			  		<div class="form-group">
+						<span><label>Nombre</label></span>
+						<input type="text" name="name" class="form-control" ng-model="PrestacionCtrl.prestacion.name"required></input>
+					</div>
+			  		<div class="form-group">
+						<span><label>Descripcion</label></span>
+						<input type="text" name="description" class="form-control" ng-model="PrestacionCtrl.prestacion.description"></input>
+					</div>		    			
+			  		<div class="form-group">
+						<span><label>Duracion</label></span>
+						<input type="text" name="duration" class="form-control" ng-model="PrestacionCtrl.prestacion.duration"></input>
+					</div>				
+				</div>
+			</form>
 		</div>
-	</form>
+	</div>
 </div>

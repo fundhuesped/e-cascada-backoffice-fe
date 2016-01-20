@@ -3,18 +3,19 @@
     
     function prestacionCtrl ($stateParams) {
     	this.prestacion =
-    		{
-	    		id: 1,
-	    		name: 'Pediatria',
+            {
+                id: 1,
+                name: 'Turno infecto primera vez',
                 createdAt: '2016-01-02',
                 lastModifiedAt: null,
-                description: 'Especialidad dedicada a menores de 15 años',
+                duration: '40m', 
+                description: 'Turno doble por primera vez infectologia',
                 createdBy: {
                     id:1,
                     name: 'Admin'
                 },
                 lastModifiedBy:null
-    		};
+            };
         this.toggleEdit = function toggleEdit(){
             this.editing = !this.editing;
         };
