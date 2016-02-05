@@ -1,0 +1,193 @@
+<div class="container" style="padding-bottom:70px;">
+    <div class="panel panel-default">
+        <div class="panel-heading">    
+            <h3 class="panel-title">Nuevo paciente</h3>
+        </div>
+        <div class="panel-body">
+        	<form name="newPaciente">
+                <div class="row">
+            		<div class="col-md-6">
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                                <div class="form-group">
+                                    <span><label>Codigo</label></span>
+                                    <input type="text" name="firstname" class="form-control" ng-model="NewTurnoCtrl.newPaciente.code"required>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <span><label>Tipo y número de documento</label></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <!-- just add has-error in error case -->
+                                        <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+                                            <select class="form-control" id="idDocType" ng-model="NewTurnoCtrl.newPaciente.docType.id" required>
+                                                <option value="1" selected>DNI</option>
+                                                <option value="2">LE</option>
+                                                <option value="3">LC</option>
+                                                <option value="4">Pasaporte</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7 form-group">
+                                            <input class="form-control" maxlength="20" type="text" name="dni" id="docNumber" ng-model="NewTurnoCtrl.newPaciente.docNumber" required>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+            			<div class="row">
+            		        <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
+            		            <div class="form-group">
+            						<span><label>Primer nombre</label></span>
+            						<input type="text" name="firstname" class="form-control" ng-model="NewTurnoCtrl.newPaciente.firstname" required>
+            		            </div>
+            		        </div>
+            		        <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
+            		            <div class="form-group">
+            						<span><label>Otros nombres</label></span>
+            						<input type="text" name="othernames" class="form-control" ng-model="NewTurnoCtrl.newPaciente.othernames"required>
+            		            </div>
+            		        </div>
+            		    </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
+                                <div class="form-group">
+                                    <span><label>Apellido paterno</label></span>
+                                    <input type="text" name="fathersurname" class="form-control" ng-model="NewTurnoCtrl.newPaciente.fathersurname"required>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
+                                <div class="form-group">
+                                    <span><label>Apellido materno</label></span>
+                                    <input type="text" name="mothersurname" class="form-control" ng-model="NewTurnoCtrl.newPaciente.mothersurname"required>
+                                </div>
+                            </div>
+                        </div>
+            			<div class="row">
+                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <div class="form-group">
+                                            <span><label>Fecha de nacimiento</label></span>
+                                            <input type="date" name="birthdate" class="form-control" ng-model="NewTurnoCtrl.newPaciente.birthdate"required>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <div class="form-group">
+                                            <span><label>Teléfono</label></span>
+                                            <input type="text" name="contactPhone" class="form-control" ng-model="NewTurnoCtrl.newPaciente.contactPhone"required>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <table class="table table-hover"> 
+                            <tbody> 
+                                <tr ng-repeat="(key, recomendation) in NewTurnoCtrl.recomendations | filter:NewTurnoCtrl.newPaciente"> 
+                                    <td class="col-md-8">
+                                        <div>{{recomendation.firstname}} {{recomendation.othernames}} {{recomendation.fathersurname}} {{recomendation.mothersurname}}</div>
+                                        <div>{{recomendation.docType.name}} {{recomendation.docNumber}} <div>{{recomendation.birthdate}}</div></div> 
+                                    </td>
+                                    <td class="col-md-4">
+                                        <button class="btn btn-success" type="button"><span class="glyphicon glyphicon-ok
+    "></span></button>
+                                        <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-zoom-in
+    "></span></button>
+                                    </td>  
+                                </tr> 
+                            </tbody> 
+                        </table>
+                    </div>  
+                </div>
+                
+                <hr>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
+                                <div class="form-group">
+                                    <span><label>Especialidad</label></span>
+                                    <select class="form-control" ng-model="NewTurnoCtrl.selectedEspecialidad" ng-options="especialidad.name for especialidad in NewTurnoCtrl.especialidades"></select>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
+                                <div class="form-group">
+                                    <span><label>Médico</label></span>
+                                    <select class="form-control" ng-model="NewTurnoCtrl.selectedMedico" ng-options="medico.name for medico in NewTurnoCtrl.medicos"></select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
+                                <div class="form-group">
+                                    <span><label>Prestación</label></span>
+                                    <select class="form-control" ng-model="NewTurnoCtrl.selectedPrestacion" ng-options="prestacion.name for prestacion in NewTurnoCtrl.prestaciones"></select>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
+                                <div class="form-group">
+                                    <span><label>Fecha</label></span>
+                                    <input type="date" name="turnDate" class="form-control" ng-model="NewTurnoCtrl.newTurno.turnDate"required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="row" ng-show="NewTurnoCtrl.selectedPrestacion">
+                            <div><b>{{NewTurnoCtrl.selectedPrestacion.name}}</b></div>
+                            <div>{{NewTurnoCtrl.selectedPrestacion.description}}</div>
+                            <div>Duracion: {{NewTurnoCtrl.selectedPrestacion.duration}}</div>
+                            <div>Observaciones: {{NewTurnoCtrl.selectedPrestacion.notes}}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="table table-hover"> 
+                            <thead> 
+                                <tr> 
+                                    <th>Fecha</th> 
+                                    <th>Hora</th> 
+                                    <th>Hasta</th>
+                                    <th>Especialidad</th> 
+                                    <th>Prestaciones</th> 
+                                    <th>Medico</th> 
+                                </tr> 
+                            </thead> 
+                            <tbody ng-show="NewTurnoCtrl.showTurnos()"> 
+                                <tr ng-repeat="(key, turno) in NewTurnoCtrl.turnos"> 
+                                    <td>{{turno.date}}</td> 
+                                    <td>{{turno.hour}}</td> 
+                                    <td>{{turno.hourTo}}</td> 
+                                    <td>{{turno.especialidad.name}}</td> 
+                                    <td>{{turno.prestacion.name}}</td> 
+                                    <td>{{turno.medic.name}}</td> 
+                                </tr> 
+                            </tbody> 
+                        </table>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <div class="form-group">
+                            <div class="col-md-6">
+                                <button id="btn-confirm" type="button" class="btn btn-success" ng-disabled="!NewTurnoCtrl.selectedDate">Confirmar</button>
+                            </div>
+                            <div class="col-md-6">
+                                <button id="btn-cancel" type="button" class="btn btn-danger">Cancelar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        	</form>
+        </div>
+    </div>
+</div>

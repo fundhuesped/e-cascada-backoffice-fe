@@ -40,6 +40,19 @@
           }
         }
       })
+      .state('newturno', {
+        url: '/newturno',
+        views: {
+          'navbar':  {
+            templateUrl: 'views/navbar/navbar.html',
+          },
+          'main':  {
+            templateUrl: 'views/turnos/newturno.html',
+            controller:'NewTurnoController',
+            controllerAs: 'NewTurnoCtrl'
+          },         
+        }
+      })
       .state('especialidades', {
         url: '/especialidades?detail=:especialidadId',
         views: {
