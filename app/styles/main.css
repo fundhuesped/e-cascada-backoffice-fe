@@ -28,3 +28,9 @@ body {
     border-radius: 5px;
     background-color: white;
 }
+
+.master-detail .right-column{
+    border-left: 1px solid;
+    border-color: grey;
+    margin-top: -16px;
+}

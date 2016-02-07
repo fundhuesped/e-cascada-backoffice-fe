@@ -1,12 +1,15 @@
 (function(){
     'use strict';
     
-    function pacienteCtrl ($stateParams) {
-        console.log($stateParams.especialidadId);
-    	this.paciente =
-    		{
-	    		id: 1,
-	    		firstname: 'Nicolas',
+    function pacienteCtrl ($stateParams, paciente) {
+        if(paciente){
+            this.paciente = paciente;
+            this.isModal = true;
+        }else{
+            this.paciente =
+            {
+                id: 1,
+                firstname: 'Nicolas',
                 othernames: 'Lelio',
                 fathersurname: 'Gonzalez',
                 mothersurname: 'Benedetti',
@@ -24,7 +27,9 @@
                     name: 'Admin'
                 },
                 lastModifiedBy:null
-    		};
+            };            
+        }
+
 
         this.turnos = [
         {
@@ -55,5 +60,5 @@
             this.editing = !this.editing;
         };
     }
-    angular.module('turnos.pacientes').controller('PacienteCtrl',['$stateParams',pacienteCtrl]);
+    angular.module('turnos.pacientes').controller('PacienteCtrl',['$stateParams','paciente',pacienteCtrl]);
 })();

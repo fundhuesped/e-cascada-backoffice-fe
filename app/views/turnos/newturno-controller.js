@@ -1,7 +1,50 @@
 (function(){
     'use strict';
     
-    function newTurnoController () {
+    function newTurnoController ($uibModal) {
+    	this.paciente = {};
+
+
+    	//Update seleccion when selecting turno 
+		this.updateSelectionRow = function updateSelectionRow(position, entities) {
+		  	angular.forEach(entities, function(turno, index) {
+		    	if (position != index) {
+		      		turno.selected = false;
+		      	}else{
+		      		turno.selected = !turno.selected;
+		      		if(this.selectedTurno == turno){
+		      			this.selectedTurno = null;
+		      		}else{
+		      			this.selectedTurno = turno;
+		      		}
+		      	}
+		  }.bind(this));
+		};
+
+		//Open the detailed pacient info modal
+		this.openPacienteModal = function openPacienteModal(selectedPaciente) {
+		    var modalInstance = $uibModal.open({
+		      templateUrl: '/views/pacientes/paciente.html',
+		      size: 'lg',
+		      controller: 'PacienteCtrl',
+		      controllerAs: 'PacienteCtrl',
+		      resolve: {
+		        paciente: function () {
+		          return selectedPaciente;
+		        }
+		      }
+		    });
+		};
+
+		this.selectPaciente = function selectPaciente(paciente){
+			this.paciente = paciente;
+			paciente.selected = true;
+		};
+
+    	this.clearPacienteSelection = function clearPacienteSelection(){
+    		delete this.paciente.selected;
+    		this.paciente = {};
+    	};
 
 		this.especialidades = [
     		{
@@ -93,11 +136,13 @@
 	                fathersurname: 'Perez',
 	                mothersurname: 'Cortes', 
 	                docType: {
-	                	id: 1,
+	                	id: '1',
 	                	name: 'DNI'
 	                },
 	                docNumber: '43355679',
-	                birthdate: '1967-02-01'
+	                birthdate: '1967-02-01',
+	                contactPhone: '1158773388',
+	                pnscode: 'MNPC1023NDM'
 	    		},
 	    		{
 		    		id: 5,
@@ -106,7 +151,7 @@
 	                fathersurname: '',
 	                mothersurname: 'Salvatierra', 
 	                docType: {
-	                	id: 1,
+	                	id: '1',
 	                	name: 'DNI'
 	                },
 	                docNumber: '28556279',
@@ -119,7 +164,7 @@
 	                fathersurname: 'Kitos',
 	                mothersurname: '', 
 	                docType: {
-	                	id: 1,
+	                	id: '1',
 	                	name: 'DNI'
 	                },
 	                docNumber: '33556279',
@@ -132,7 +177,7 @@
 	                fathersurname: 'Barros',
 	                mothersurname: 'Cuca', 
 	                docType: {
-	                	id: 3,
+	                	id: '3',
 	                	name: 'LC'
 	                },
 	                docNumber: '8556279',
@@ -181,10 +226,9 @@
 	    ];
 
 	    this.showTurnos = function showTurnos(){
-	    	console.log()
-	    	return (this.selectedPrestacion && this.selectedEspecialidad && this.newTurno.turnDate && this.selectedMedico);
+	    	return (this.selectedPrestacion && this.selectedEspecialidad && this.newTurno && this.newTurno.turnDate && this.selectedMedico);
 	    }
 
     }
-    angular.module('turnos.turnos').controller('NewTurnoController',[newTurnoController]);
+    angular.module('turnos.turnos').controller('NewTurnoController',['$uibModal',newTurnoController]);
 })();

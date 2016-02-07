@@ -6,6 +6,7 @@
   'ngResource',
   'ngSanitize',
   'ui.router',
+  'ui.bootstrap',
   'turnos.turnos',
   'turnos.navbar',
   'turnos.especialidades',
