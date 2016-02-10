@@ -163,31 +163,59 @@ glyphicon glyphicon-remove"></span> Limpiar seleccion de paciente</button>
                 </div>
                 <div class="row">
                     <div class="col-md-12">
-                        <table class="table"> 
-                            <thead> 
-                                <tr>
-                                    <th></th> 
-                                    <th>Fecha</th> 
-                                    <th>Hora</th> 
-                                    <th>Hasta</th>
-                                    <th>Especialidad</th> 
-                                    <th>Prestaciones</th> 
-                                    <th>Medico</th> 
-                                </tr> 
-                            </thead> 
-                            <tbody ng-show="NewTurnoCtrl.showTurnos()"> 
-                                <tr ng-repeat="(key, turno) in NewTurnoCtrl.turnos" ng-class="{'bg-success':turno.selected}" ng-click="NewTurnoCtrl.updateSelectionRow($index,NewTurnoCtrl.turnos)"> 
-                                    <td><input type="checkbox" ng-checked="turno.selected"></td>
-                                    <td>{{turno.date}}</td> 
-                                    <td>{{turno.hour}}</td> 
-                                    <td>{{turno.hourTo}}</td> 
-                                    <td>{{turno.especialidad.name}}</td> 
-                                    <td>{{turno.prestacion.name}}</td> 
-                                    <td>{{turno.medic.name}}</td> 
-                                </tr> 
-                            </tbody> 
-                        </table>
-                    </div>
+                    <uib-tabset>
+                        <uib-tab>
+                            <uib-tab-heading>
+                                <span class="glyphicon glyphicon-list-alt"></span> Listado
+                            </uib-tab-heading>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <table class="table"> 
+                                        <thead> 
+                                            <tr>
+                                                <th></th> 
+                                                <th>Fecha</th> 
+                                                <th>Hora</th> 
+                                                <th>Hasta</th>
+                                                <th>Especialidad</th> 
+                                                <th>Prestaciones</th> 
+                                                <th>Medico</th> 
+                                            </tr> 
+                                        </thead> 
+                                        <tbody ng-show="NewTurnoCtrl.showTurnos()"> 
+                                            <tr ng-repeat="(key, turno) in NewTurnoCtrl.turnos" ng-class="{'bg-success':turno.selected}" ng-click="NewTurnoCtrl.updateSelectionRow($index,NewTurnoCtrl.turnos)"> 
+                                                <td><input type="checkbox" ng-checked="turno.selected"></td>
+                                                <td>{{turno.date}}</td> 
+                                                <td>{{turno.hour}}</td> 
+                                                <td>{{turno.hourTo}}</td> 
+                                                <td>{{turno.especialidad.name}}</td> 
+                                                <td>{{turno.prestacion.name}}</td> 
+                                                <td>{{turno.medic.name}}</td> 
+                                            </tr> 
+                                        </tbody> 
+                                    </table>
+                                </div>
+                            </div>
+                        </uib-tab>
+                        <uib-tab select="NewTurnoCtrl.renderCalendar()">
+                            <uib-tab-heading>
+                                <span class="glyphicon glyphicon-calendar"></span> Calendario
+                            </uib-tab-heading>
+                            <div class="row">
+                                <div class="col-md-9">
+                                    <div ui-calendar="NewTurnoCtrl.calendarConfig" ng-model="NewTurnoCtrl.eventSources" calendar="newTurnosCalendar"></div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="row" ng-show="NewTurnoCtrl.selectedTurno">
+                                        <div><b>{{NewTurnoCtrl.selectedTurno.date}}</b></div>
+                                        <div>Horario: {{NewTurnoCtrl.selectedTurno.hour}} - {{NewTurnoCtrl.selectedTurno.hourTo}}</div>
+                                        <div>Medico: {{NewTurnoCtrl.selectedTurno.medic.name}}</div>
+                                        <div>Especialidad: {{NewTurnoCtrl.selectedTurno.especialidad.name}}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </uib-tab>
+                      </uib-tabset>
                 </div>
                 <div class="row">
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">

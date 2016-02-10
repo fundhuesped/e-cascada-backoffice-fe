@@ -1,13 +1,13 @@
 (function(){
     'use strict';
     
-    function turnosCtrl (TurnosSrv) {
+    function turnosCtrl (TurnosSrv,uiCalendarConfig) {
 	    var date = new Date();
     	var d = date.getDate();
     	var m = date.getMonth();
     	var y = date.getFullYear();
     	 /* config object */
-    this.eventSources = [];
+    	this.eventSources = [];
 	    this.calendarConfig = 
 	      {
 	        height: 450,
@@ -91,7 +91,6 @@
 			return this.listMedicos;
 		}
 	};
-
     }
-    angular.module('turnos.turnos').controller('TurnosCtrl',['TurnosSrv',turnosCtrl]);
+    angular.module('turnos.turnos').controller('TurnosCtrl',['TurnosSrv','uiCalendarConfig',turnosCtrl]);
 })();

@@ -1,17 +1,68 @@
 (function(){
     'use strict';
     
-    function newTurnoController ($uibModal) {
+    function newTurnoController ($uibModal,uiCalendarConfig) {
+	    var date = new Date();
+    	var d = date.getDate();
+    	var m = date.getMonth();
+    	var y = date.getFullYear();
+    	var self = this;
     	this.paciente = {};
 
+    	//Calendar
+	    this.eventSources = [];
+	    this.calendarConfig = 
+		      {
+		        height: 450,
+		        editable: false,
+		        lang: 'es',
+		        weekends: false,
+		        defaultView: 'agendaWeek',
+		        header:{
+		          left: 'agendaWeek month agendaDay',
+		          center: 'title',
+		          right: 'today prev,next'
+		        },
+                eventClick: function selectTurnoOnEventClick( date, jsEvent, view){
+			        	this.updateSelectionRow(date.id,this.turnos, date);
+			    }.bind(this)
+	    };
+	     
+	    this.renderCalendar = function renderCalendar() {
+	    	//Workarround to wait for the tab to appear
+	    	setTimeout(function(){ 
+	    		if(uiCalendarConfig.calendars.newTurnosCalendar){
+	        	uiCalendarConfig.calendars.newTurnosCalendar.fullCalendar('render');
+	      } }, 1);
+	    };
+
+		this.eventSources = [];
 
     	//Update seleccion when selecting turno 
-		this.updateSelectionRow = function updateSelectionRow(position, entities) {
+		this.updateSelectionRow = function updateSelectionRow(position, entities, calendarRepresentation) {
 		  	angular.forEach(entities, function(turno, index) {
 		    	if (position != index) {
 		      		turno.selected = false;
+		      		turno.calendarRepresentation.color = '#D8C358';
 		      	}else{
 		      		turno.selected = !turno.selected;
+		      		if(calendarRepresentation){
+			        	if(calendarRepresentation.selected){
+			        		calendarRepresentation.color = '#D8C358';
+			        		calendarRepresentation.selected = false;
+				      		turno.calendarRepresentation.color = '#D8C358';
+				      		this.selectedCalendarRepresentation = null;
+			        	}else{
+			        		calendarRepresentation.color = '#dff0d8';
+				      		this.selectedCalendarRepresentation = calendarRepresentation;
+			        		calendarRepresentation.selected = true;
+				      		turno.calendarRepresentation.color = '#dff0d8';
+			        	}
+    		        	uiCalendarConfig.calendars.newTurnosCalendar.fullCalendar( 'renderEvent',calendarRepresentation);
+		      		}
+		      		//console.log(uiCalendarConfig.calendars.newTurnosCalendar.fullCalendar);
+		        	//uiCalendarConfig.calendars.newTurnosCalendar.fullCalendar( 'rerenderEvents');
+		      		//console.log(this.eventSources);
 		      		if(this.selectedTurno == turno){
 		      			this.selectedTurno = null;
 		      		}else{
@@ -45,6 +96,10 @@
     		delete this.paciente.selected;
     		this.paciente = {};
     	};
+
+
+
+
 
 		this.especialidades = [
     		{
@@ -224,11 +279,25 @@
 				}
 			},
 	    ];
-
-	    this.showTurnos = function showTurnos(){
-	    	return (this.selectedPrestacion && this.selectedEspecialidad && this.newTurno && this.newTurno.turnDate && this.selectedMedico);
+	    function initTurnos(){
+	    	var turnosSource = [];
+			angular.forEach(self.turnos, function(turno, key) {
+				var tmpTurno = {id: key ,title: turno.medic.name, start: new Date(y, m, d + 2, 9, 0),end: new Date(y, m, d + 2, 9, 20),allDay: false,color:'#D8C358'};
+		  		turno.calendarRepresentation = tmpTurno;
+		  		turnosSource.push(tmpTurno);
+			});
+			self.eventSources.push(turnosSource);
 	    }
+	    this.showTurnos = function showTurnos(){
+	    	if(this.selectedPrestacion && this.selectedEspecialidad && this.newTurno && this.newTurno.turnDate && this.selectedMedico){
+	    		if(this.eventSources.length == 0){
+		    		initTurnos();
+	    		}
+	    		return true;
+	    	}
+	    	return false;
+	    };
 
     }
-    angular.module('turnos.turnos').controller('NewTurnoController',['$uibModal',newTurnoController]);
+    angular.module('turnos.turnos').controller('NewTurnoController',['$uibModal','uiCalendarConfig',newTurnoController]);
 })();

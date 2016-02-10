@@ -13,7 +13,7 @@
     "angular-ui-router": "*",
     "bootstrap-sass": "bootstrap-sass-official#~3.3.6",
     "angular-ui-calendar": "~1.0.1",
-    "angular-bootstrap": "~1.0.3",
+    "angular-bootstrap": "~1.1.2",
     "moment": "~2.11.1"
   },
   "devDependencies": {
@@ -22,6 +22,7 @@
   },
   "resolutions": {
     "angular": "1.4.8",
-    "jquery": "1.9.1 - 2"
+    "jquery": "1.9.1 - 2",
+    "angular-bootstrap": "~1.1.2"
   }
 }
