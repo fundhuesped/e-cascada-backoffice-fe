@@ -1,24 +1,20 @@
-<div class="container">
+<div class="">
     <div class="panel panel-default">
         <div class="panel-heading">    
             <h3 class="panel-title">Especialidad</h3>
         </div>
         <div class="panel-body">
-			<div class="col-md-9 col-md-offset-3">
-				<button ng-click="EspecialidadCtrl.toggleEdit()" class="btn btn-default">{{EspecialidadCtrl.editing?'Dejar de modificar':'Modificar'}} <span class="glyphicon glyphicon-pencil"></span></button>
-				<button ng-show="EspecialidadCtrl.editing" class="btn btn-default" >Eliminar <span class="glyphicon glyphicon-remove"></span></button>
-			</div>
-			<div class="col-md-6 col-md-offset-3" ng-show="!EspecialidadCtrl.editing">
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-show="!EspecialidadCtrl.editing">
 				<div class="row">
-					<div class="col-md-4"><label>Nombre</label></div>
+					<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4"><label>Nombre</label></div>
 					<div class="col-md-8">{{EspecialidadCtrl.especialidad.name}}</div>
 				</div>
 				<div class="row">
-					<div class="col-md-4"><label>Descripcion</label></div>
+					<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4"><label>Descripcion</label></div>
 					<div class="col-md-8">{{EspecialidadCtrl.especialidad.description}}</div>
 				</div>		    
 				<div class="row">
-					<div class="col-md-4"><label>Fecha de creacion</label></div>
+					<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4"><label>Fecha de creacion</label></div>
 					<div class="col-md-8">{{EspecialidadCtrl.especialidad.createdAt}} por {{EspecialidadCtrl.especialidad.createdBy.name}}</div>
 				</div>
 				<div class="row" ng-show="EspecialidadCtrl.especialidad.lastModifiedAt">
@@ -26,18 +22,24 @@
 					<div class="col-md-8">{{EspecialidadCtrl.especialidad.lastModifiedAt}} por {{EspecialidadCtrl.especialidad.lastModifiedBy.name}}</div>		
 				</div>
 			</div>
-			<form>
-				<div class="col-md-6 col-md-offset-3" ng-show="EspecialidadCtrl.editing">
+			<form name="EspecialidadCtrl.especialidadForm">
+				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-show="EspecialidadCtrl.editing">
 			  		<div class="form-group">
 						<span><label>Nombre</label><span>
 						<input type="text" name="name" class="form-control" ng-model="EspecialidadCtrl.especialidad.name"required></input >
 					</div>
 			  		<div class="form-group">
 						<span><label>Descripcion</label><span>
-						<input type="text" name="description" class="form-control" ng-model="EspecialidadCtrl.especialidad.description"></input>
+                        <textarea rows="4" cols="50" name="descripction" class="form-control" ng-model="EspecialidadCtrl.especialidad.description"required>
+                        </textarea>
 					</div>		    			
 				</div>
 			</form>
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+				<button ng-click="EspecialidadCtrl.confirm()" class="btn btn-primary">Confirmar <span class="glyphicon glyphicon-ok"></span></button>
+				<button ng-click="EspecialidadCtrl.cancel()" class="btn btn-warning">Cancelar</span></button>
+				<button  ng-click="EspecialidadCtrl.delete()" class="btn btn-danger pull-right" >Eliminar <span class="glyphicon glyphicon-remove"></span></button>
+			</div>
 		</div>
 	</div>
 </div>

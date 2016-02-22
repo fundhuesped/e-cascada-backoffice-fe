@@ -1,0 +1,41 @@
+<div>
+    <div class="panel panel-default">
+        <div class="panel-heading">    
+            <h3 class="panel-title">Nueva especialidad</h3>
+        </div>
+        <div class="panel-body">
+        	<form name="NewEspecialidadCtrl.newEspecialidadForm">
+        		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        			<div class="row">
+        		        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        		            <div class="form-group">
+        						<span><label>Nombre</label></span>
+        						<input type="text" name="othernames" class="form-control" ng-model="NewEspecialidadCtrl.newEspecialidad.name"required></input >
+        		            </div>
+        		        </div>
+        		    </div>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <div class="form-group">
+                                <span><label>Decripcion</label></span>
+                                <textarea rows="4" cols="50" name="descripction" class="form-control" ng-model="NewEspecialidadCtrl.newEspecialidad.description"required>
+                                </textarea>
+                            </div>
+                        </div>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <div class="form-group">
+                                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                    <button id="btn-confirm" type="submit" class="btn btn-success"ng-click="NewEspecialidadCtrl.confirm()">Confirmar</button>
+                                </div>
+                                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                    <button id="btn-cancel" type="button" class="btn btn-danger pull-right" ng-click="NewEspecialidadCtrl.close()">Cancelar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+        		</div>
+        	</form>
+        </div>
+    </div>
+</div>

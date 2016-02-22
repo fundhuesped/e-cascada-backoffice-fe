@@ -1,7 +1,7 @@
 (function(){
     'use strict';
     
-    function especialidadesCtrl () {
+    function especialidadesCtrl ($uibModal,toastr) {
     	this.especialidades = [
     		{
 	    		id: 1,
@@ -31,8 +31,43 @@
     	];
     	this.detail = function detail(especialidad){
     		this.especialidad = especialidad;
-    	}
+    	};
     	
+
+        this.modifyEspecialidad = function modifyEspecialidad(selectedEspecialidad){
+            var modalInstance = $uibModal.open({
+                templateUrl: '/views/especialidades/especialidad.html',
+                controller: 'EspecialidadCtrl',
+                controllerAs: 'EspecialidadCtrl',
+                resolve: {
+                    especialidad: function () {
+                      return selectedEspecialidad;
+                    }
+                }
+            });
+            modalInstance.result.then(function (result) {
+                if(result=='modified'){
+                   toastr.success('Especialidad modificada');                    
+                }else if(result=='deleted'){
+                   toastr.success('Especialidad eliminada');                    
+                }
+            }, function () {
+            });
+        };
+
+        this.newEspecialidad = function newEspecialidad(){
+            var modalInstance = $uibModal.open({
+              templateUrl: '/views/especialidades/newespecialidad.html',
+              controller: 'NewEspecialidadCtrl',
+              controllerAs: 'NewEspecialidadCtrl'
+            });
+            modalInstance.result.then(function () {
+               toastr.success('Especialidad creada');
+            }, function () {
+              
+            });
+        };
+                        
     }
-    angular.module('turnos.especialidades').controller('EspecialidadesCtrl',[especialidadesCtrl]);
+    angular.module('turnos.especialidades').controller('EspecialidadesCtrl',['$uibModal','toastr',especialidadesCtrl]);
 })();

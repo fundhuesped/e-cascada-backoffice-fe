@@ -12,7 +12,9 @@
   'turnos.especialidades',
   'turnos.prestaciones',
   'turnos.pacientes',
-  'turnos.login'
+  'turnos.login',
+  'darthwade.dwLoading',
+  'toastr'
 ])
   .config(function ($stateProvider, $urlRouterProvider) {
     //delete $httpProvider.defaults.headers.common['X-Requested-With'];
@@ -67,7 +69,19 @@
           },         
         }
       })
-      .state('especialidadDetail', {
+      .state('newespecialidad', {
+        url: '/newespecialidad',
+        views: {
+          'navbar':  {
+            templateUrl: 'views/navbar/navbar.html',
+          },
+          'main':  {
+            templateUrl: 'views/especialidades/newespecialidad.html',
+            controller:'NewEspecialidadCtrl',
+            controllerAs: 'NewEspecialidadCtrl'
+          },         
+        }
+      })      .state('especialidadDetail', {
         url: '/especialidad/:especialidadId',
         views: {
           'navbar':  {

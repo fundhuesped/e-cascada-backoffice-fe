@@ -14,11 +14,13 @@
         <!-- build:css(.tmp) styles/main.css -->
         <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
         <link rel="stylesheet" href="bower_components/fullcalendar/dist/fullcalendar.css"/>
+        <link rel="stylesheet" href="bower_components/angular-loading/angular-loading.css"/>
+        <link rel="stylesheet" href="bower_components/angular-toastr/dist/angular-toastr.css"/>
         <link rel="stylesheet" href="styles/main.css">
         <link rel="stylesheet" href="styles/login.css">
         <!-- endbuild -->
 </head>
-  <body ng-app="turnos.app">
+  <body ng-app="turnos.app" dw-loading="app" dw-loading-options="{}">
     <!--[if lt IE 7]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
@@ -75,6 +77,10 @@
         <script type="text/javascript" src="bower_components/fullcalendar/dist/fullcalendar.min.js"></script>
         <script type="text/javascript" src="bower_components/fullcalendar/dist/gcal.js"></script>
         <script type="text/javascript" src="bower_components/fullcalendar/dist/lang/es.js"></script>
+        <script type="text/javascript" src="bower_components/angular-toastr/dist/angular-toastr.js"></script>
+        <script type="text/javascript" src="bower_components/angular-toastr/dist/angular-toastr.tpls.js"></script>
+        <script type="text/javascript" src="bower_components/spin.js/spin.js"></script>
+        <script type="text/javascript" src="bower_components/angular-loading/angular-loading.js"></script>
         <!-- endbuild -->
 
         <!-- build:js scripts/modules.js -->
@@ -97,6 +103,7 @@
         <script src="views/especialidades/especialidades-module.js"></script>
         <script src="views/especialidades/especialidades-controller.js"></script>
         <script src="views/especialidades/especialidad-controller.js"></script>
+        <script src="views/especialidades/newespecialidad-controller.js"></script>
 
 
         <script src="views/prestaciones/prestaciones-module.js"></script>

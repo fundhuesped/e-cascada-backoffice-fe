@@ -34,3 +34,10 @@ body {
     border-color: grey;
     margin-top: -16px;
 }
+
+.panel-heading h3{
+    display: inline;
+}
+.panel-heading button{
+    margin-top: -8px;
+}

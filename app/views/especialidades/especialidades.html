@@ -2,6 +2,7 @@
     <div class="panel panel-default">
         <div class="panel-heading">    
             <h3 class="panel-title">Especialidades</h3>
+            <button id="btn-confirm" type="button" class="btn btn-success pull-right" ng-click="EspecialidadesCtrl.newEspecialidad()"><span class="glyphicon glyphicon-plus"></span> Nueva especialidad</button>
         </div>
         <div class="panel-body">
 			<div class="col-md-4" style="border-right: 1px solid;">
@@ -40,9 +41,7 @@
 					<div class="col-md-12" style="padding-top: 10px;">
 						<div class="row">
 							<div class="col-md-12">
-								<a ng-href="#especialidad/{{EspecialidadesCtrl.especialidad.id}}">
-									<button ng-click="EspecialidadesCtrl.toggleEdit()"   class="btn btn-default">{{EspecialidadCtrl.editing?'Dejar de modificar':'Modificar'}} <span class="glyphicon glyphicon-pencil"></span></button>
-								</a>
+								<button ng-click="EspecialidadesCtrl.modifyEspecialidad(EspecialidadesCtrl.especialidad)"   class="btn btn-primary pull-right">Modificar<span class="glyphicon glyphicon-pencil"></span></button>
 							</div>
 						</div>
 						<div class="row">
