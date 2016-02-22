@@ -1,0 +1,53 @@
+<div>
+    <div class="panel panel-default">
+        <div class="panel-heading">    
+            <h3 class="panel-title">Nueva prestacion</h3>
+        </div>
+        <div class="panel-body">
+        	<form name="NewPrestacionCtrl.newprestacionForm">
+        		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        			<div class="row">
+        		        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        		            <div class="form-group">
+        						<span><label>Nombre</label></span>
+        						<input type="text" name="othernames" class="form-control" ng-model="NewPrestacionCtrl.newPrestacion.name"required></input >
+        		            </div>
+        		        </div>
+        		    </div>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <div class="form-group">
+                                <span><label>Decripcion</label></span>
+                                <textarea rows="4" cols="50" name="descripction" class="form-control" ng-model="NewPrestacionCtrl.newPrestacion.description"required>
+                                </textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <span><label>Duracion</label></span>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <div class="form-group form-inline">
+                                <input type="number" name="hours" class="form-control" ng-model="NewPrestacionCtrl. newPrestacion.duration.hours" value="0" min="0" max="999">Horas
+                                <input type="number" name="minutes" class="form-control" ng-model="NewPrestacionCtrl.newPrestacion.duration.minutes" value="0" min="0" max="59">Minutos
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <div class="form-group">
+                                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                    <button id="btn-confirm" type="submit" class="btn btn-success"ng-click="NewPrestacionCtrl.confirm()">Confirmar</button>
+                                </div>
+                                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                    <button id="btn-cancel" type="button" class="btn btn-warning pull-right" ng-click="NewPrestacionCtrl.close()">Cancelar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+        		</div>
+        	</form>
+        </div>
+    </div>
+</div>

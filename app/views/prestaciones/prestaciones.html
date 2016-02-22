@@ -2,6 +2,7 @@
     <div class="panel panel-default">
         <div class="panel-heading">    
             <h3 class="panel-title">Prestaciones</h3>
+            <button id="btn-confirm" type="button" class="btn btn-success pull-right" ng-click="PrestacionesCtrl.create()"><span class="glyphicon glyphicon-plus"></span> Nueva prestacion</button>
         </div>
         <div class="panel-body">
 		   	<div class="col-md-4" style="border-right: 1px solid;">
@@ -20,7 +21,7 @@
 							<th scope="row">{{prestacion.id}}</th> 
 							<td>{{prestacion.name}}</td> 
 							<td>{{prestacion.description}}</td> 
-							<td>{{prestacion.duration}}</td> 
+							<td>{{prestacion.duration.hours}}h {{prestacion.duration.minutes}}m </td> 
 							<td hidden="hidden">
 								<a ng-href="#prestacion/{{prestacion.id}}">
 						            <button class="btn btn-default">
@@ -39,12 +40,10 @@
 			</div>	
 			<div class="col-md-8" ng-show="PrestacionesCtrl.prestacion">
 				<div class="row">
-					<div class="col-md-12" style="padding-top: 10px;">
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding-top: 10px;">
 						<div class="row">
-							<div class="col-md-12">
-								<a ng-href="#prestacion/{{PrestacionesCtrl.prestacion.id}}">
-									<button ng-click="PrestacionesCtrl.toggleEdit()"   class="btn btn-default">{{PrestacionesCtrl.editing?'Dejar de modificar':'Modificar'}} <span class="glyphicon glyphicon-pencil"></span></button>
-								</a>
+							<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+								<button ng-click="PrestacionesCtrl.modify(PrestacionesCtrl.prestacion)"   class="btn btn-primary pull-right">Modificar<span class="glyphicon glyphicon-pencil"></span></button>
 							</div>
 						</div>
 						<div class="row">
@@ -57,7 +56,7 @@
 						</div>		    
 						<div class="row">
 							<div class="col-md-4"><label>Duraction</label></div>
-							<div class="col-md-8">{{PrestacionesCtrl.prestacion.duration}}</div>
+							<div class="col-md-8">{{PrestacionesCtrl.prestacion.duration.hours}}h {{PrestacionesCtrl.prestacion.duration.minutes}}m</div>
 						</div>	
 						<div class="row">
 							<div class="col-md-4"><label>Fecha de creacion</label></div>

@@ -37,6 +37,7 @@
         this.modifyEspecialidad = function modifyEspecialidad(selectedEspecialidad){
             var modalInstance = $uibModal.open({
                 templateUrl: '/views/especialidades/especialidad.html',
+                backdrop:'static',
                 controller: 'EspecialidadCtrl',
                 controllerAs: 'EspecialidadCtrl',
                 resolve: {
@@ -57,9 +58,10 @@
 
         this.newEspecialidad = function newEspecialidad(){
             var modalInstance = $uibModal.open({
-              templateUrl: '/views/especialidades/newespecialidad.html',
-              controller: 'NewEspecialidadCtrl',
-              controllerAs: 'NewEspecialidadCtrl'
+                templateUrl: '/views/especialidades/newespecialidad.html',
+                backdrop:'static',
+                controller: 'NewEspecialidadCtrl',
+                controllerAs: 'NewEspecialidadCtrl'
             });
             modalInstance.result.then(function () {
                toastr.success('Especialidad creada');

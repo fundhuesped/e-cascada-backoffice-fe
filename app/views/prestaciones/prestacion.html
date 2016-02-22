@@ -1,13 +1,9 @@
-<div class="container">
+<div class="">
     <div class="panel panel-default">
         <div class="panel-heading">    
             <h3 class="panel-title">Prestacion</h3>
         </div>
         <div class="panel-body">
-			<div class="col-md-9 col-md-offset-3">
-				<button ng-click="PrestacionCtrl.toggleEdit()" class="btn btn-default">{{PrestacionCtrl.editing?'Dejar de modificar':'Modificar'}} <span class="glyphicon glyphicon-pencil"></span></button>
-				<button ng-show="PrestacionCtrl.editing" class="btn btn-default" >Eliminar <span class="glyphicon glyphicon-remove"></span></button>
-			</div>
 			<div class="col-md-6 col-md-offset-3" ng-show="!PrestacionCtrl.editing">
 				<div class="row">
 					<div class="col-md-4"><label>Nombre</label></div>
@@ -30,8 +26,8 @@
 					<div class="col-md-8">{{PrestacionCtrl.prestacion.name}}  por {{PrestacionCtrl.prestacion.lastModifiedBy.name}}</div>
 				</div>
 			</div>
-			<form>
-				<div class="col-md-6 col-md-offset-3" ng-show="PrestacionCtrl.editing">
+			<form name="PrestacionCtrl.prestacionForm">
+				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-show="PrestacionCtrl.editing">
 			  		<div class="form-group">
 						<span><label>Nombre</label></span>
 						<input type="text" name="name" class="form-control" ng-model="PrestacionCtrl.prestacion.name"required></input>
@@ -40,12 +36,24 @@
 						<span><label>Descripcion</label></span>
 						<input type="text" name="description" class="form-control" ng-model="PrestacionCtrl.prestacion.description"></input>
 					</div>		    			
-			  		<div class="form-group">
-						<span><label>Duracion</label></span>
-						<input type="text" name="duration" class="form-control" ng-model="PrestacionCtrl.prestacion.duration"></input>
-					</div>				
+					<div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <span><label>Duracion</label></span>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <div class="form-group form-inline">
+                                <input type="number" name="hours" class="form-control" ng-model="PrestacionCtrl.prestacion.duration.hours" value="0" min="0" max="999">Horas
+                                <input type="number" name="minutes" class="form-control" ng-model="PrestacionCtrl.prestacion.duration.minutes" value="0" min="0" max="59">Minutos
+                            </div>
+                        </div>
+                    </div>				
 				</div>
 			</form>
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+				<button ng-click="PrestacionCtrl.confirm()" class="btn btn-primary">Confirmar <span class="glyphicon glyphicon-ok"></span></button>
+				<button ng-click="PrestacionCtrl.cancel()" class="btn btn-warning">Cancelar</span></button>
+				<button  ng-click="PrestacionCtrl.delete()" class="btn btn-danger pull-right" >Eliminar <span class="glyphicon glyphicon-remove"></span></button>
+			</div>
 		</div>
 	</div>
 </div>
