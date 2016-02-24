@@ -35,15 +35,26 @@
             }
         };
 
-        this.delete = function confirm () {
-            if(this.prestacionForm.$valid){
-                $loading.start('app');
+        this.confirmModal = function confirmModal(){
+            this.confirmDelete();
+        }
+
+        this.confirmDelete = function confirmDelete(){
+            $loading.start('app');
                 setTimeout(function(){             
                     $loading.finish('app');
                     $uibModalInstance.close('deleted');
                 }, 3000);
-            }
+        };
+
+        this.showModal = function showModal(){
+            this.modalStyle = {display:'block'};
+        };
+
+        this.remove = function remove () {
+            this.showModal();
         }; 
+
         this.cancel = function cancel (){
             $uibModalInstance.dismiss('cancel');
         };

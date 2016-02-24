@@ -1,3 +1,20 @@
+<div class="modal fade" ng-class="{'in':PrestacionCtrl.modalStyle}" ng-style="PrestacionCtrl.modalStyle">
+  <div class="modal-dialog modal-confirmation">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">¿Eliminar?</h4>
+      </div>
+      <div class="modal-body">
+        <p>¿Esta seguro que desea eliminar la prestacion seleccionada?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-sucess btn-cancel" ng-click="PrestacionCtrl.dismissModal()">Cancelar</button>
+        <button type="button" class="btn btn-danger btn-confirm" ng-click="PrestacionCtrl.confirmModal()">Eliminar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="">
     <div class="panel panel-default">
         <div class="panel-heading">    
@@ -49,10 +66,15 @@
                     </div>				
 				</div>
 			</form>
-			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-				<button ng-click="PrestacionCtrl.confirm()" class="btn btn-primary">Confirmar <span class="glyphicon glyphicon-ok"></span></button>
-				<button ng-click="PrestacionCtrl.cancel()" class="btn btn-warning">Cancelar</span></button>
-				<button  ng-click="PrestacionCtrl.delete()" class="btn btn-danger pull-right" >Eliminar <span class="glyphicon glyphicon-remove"></span></button>
+
+			<div class="col-xs-6 col-sm-7 col-md-7 col-lg-7">
+				<button  ng-click="PrestacionCtrl.remove()" class="btn btn-danger" ><span class="glyphicon glyphicon-remove"></span> Eliminar</button>
+			</div>
+			<div class="col-xs-6 col-sm-2 col-md-2 col-lg-2">
+				<button ng-click="PrestacionCtrl.cancel()" class="btn btn-warning">Cancelar</button>
+			</div>
+			<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
+				<button ng-click="PrestacionCtrl.confirm()" class="btn btn-primary"><span class="glyphicon glyphicon-ok pull-right"></span> Confirmar</button>
 			</div>
 		</div>
 	</div>

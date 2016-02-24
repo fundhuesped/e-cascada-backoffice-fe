@@ -41,3 +41,20 @@ body {
 .panel-heading button{
     margin-top: -8px;
 }
+
+
+
+
+/*Modal confirmation (Just yes or no)*/
+.modal-confirmation{
+    width: 300px;
+}
+
+
+.modal-confirmation .btn-cancel{
+    float:left;
+}
+
+.modal-confirmation .btn-confirm{
+    float:right;
+}
