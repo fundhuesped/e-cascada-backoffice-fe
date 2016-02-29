@@ -35,9 +35,19 @@
             }
         };
 
+        //Confirm delete modal
+
+        this.showModal = function showModal(){
+            this.modalStyle = {display:'block'};
+        };
+
         this.confirmModal = function confirmModal(){
             this.confirmDelete();
-        }
+        };
+                
+        this.dismissModal = function showModal(){
+            this.modalStyle = {};
+        };
 
         this.confirmDelete = function confirmDelete(){
             $loading.start('app');
@@ -45,10 +55,6 @@
                     $loading.finish('app');
                     $uibModalInstance.close('deleted');
                 }, 3000);
-        };
-
-        this.showModal = function showModal(){
-            this.modalStyle = {display:'block'};
         };
 
         this.remove = function remove () {

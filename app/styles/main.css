@@ -37,12 +37,20 @@ body {
 
 .panel-heading h3{
     display: inline;
-}
-.panel-heading button{
-    margin-top: -8px;
+    line-height: 34px;
 }
 
 
+
+.panel-heading button.close{
+    margin-top: -2px;
+    -webkit-appearance: none;
+    padding: 0;
+    cursor: pointer;
+    background: 0 0;
+    border: 0;
+    float: right;
+}
 
 
 /*Modal confirmation (Just yes or no)*/
@@ -58,3 +66,28 @@ body {
 .modal-confirmation .btn-confirm{
     float:right;
 }
+
+
+.detail-info{
+    margin-top: 10px;
+}
+
+.detail-info .row{
+    line-height: 32px;
+}
+
+.detail-info .row:nth-of-type(1)::before{
+    content: "";
+    border-bottom: 1px solid;
+    width: 96%;
+    margin: auto;
+    border-color: lightgray;
+}
+.detail-info .row::after {
+    content: "";
+    border-bottom: 1px solid;
+    width: 96%;
+    margin: auto;
+    border-color: lightgray;
+}
+

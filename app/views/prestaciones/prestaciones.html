@@ -1,8 +1,29 @@
 <div class="container">
     <div class="panel panel-default">
-        <div class="panel-heading">    
-            <h3 class="panel-title">Prestaciones</h3>
-            <button id="btn-confirm" type="button" class="btn btn-success pull-right" ng-click="PrestacionesCtrl.create()"><span class="glyphicon glyphicon-plus"></span> Nueva prestacion</button>
+        <div class="panel-heading">
+        	<div class="row">
+        		<form class="form-inline" name="PrestacionesCtrl.searchPreferencesForm"> 
+        		<div class="col-md-5">    
+  		          	<h3 class="panel-title">Prestaciones</h3>
+	            </div>
+        		<div class="col-md-3">    
+	                	<input type="text" class="form-control" placeholder="Nombre" ng-model="PrestacionesCtrl.nameFilter">
+		              	<button type="button" class="btn btn-default" ng-click="PrestacionesCtrl.searchName()">Buscar</button>
+	            </div>
+	            <div class="col-md-2">
+		            <select class="form-control" ng-model="PrestacionesCtrl.statusFilter" ng-change="PrestacionesCtrl.changePrestacionesStatus()">
+		            	<option value="1">Activos</option>
+		            	<option value="2">Activos y desactivos</option>
+		            	<option value="3">Desactivos</option>
+		            </select>
+	            </div>
+	            <div class="col-md-2">            
+	            	<button id="btn-confirm" type="button" class="btn btn-success pull-right" ng-click="PrestacionesCtrl.create()">		
+	            		<span class="glyphicon glyphicon-plus"></span> Nueva prestación
+	            	</button>
+            	</div>
+            	</form>
+        	</div>
         </div>
         <div class="panel-body">
 		   	<div class="col-md-4" style="border-right: 1px solid;">
@@ -11,29 +32,16 @@
 						<tr> 
 							<th>#</th> 
 							<th>Nombre</th> 
-							<th>Descripcion</th> 
-							<th>Duracion</th> 
-							<th hidden="hidden">Acciones</th> 
+							<th>Descripción</th> 
+							<th>Duración</th> 
 						</tr> 
 					</thead> 
 					<tbody> 
-						<tr ng-repeat="(key, prestacion) in PrestacionesCtrl.prestaciones" ng-click="PrestacionesCtrl.detail(prestacion)"> 
+						<tr ng-repeat="(key, prestacion) in PrestacionesCtrl.prestaciones" ng-click="PrestacionesCtrl.detail(prestacion)" ng-class="{active:prestacion == PrestacionesCtrl.prestacion}"> 
 							<th scope="row">{{prestacion.id}}</th> 
 							<td>{{prestacion.name}}</td> 
 							<td>{{prestacion.description}}</td> 
-							<td>{{prestacion.duration.hours}}h {{prestacion.duration.minutes}}m </td> 
-							<td hidden="hidden">
-								<a ng-href="#prestacion/{{prestacion.id}}">
-						            <button class="btn btn-default">
-						            	<span class="glyphicon glyphicon-pencil">
-						            	</span>
-						            </button>
-						        </a>
-					            <button class="btn btn-default" ng-click="prestacion.delete(prestacion.id)">
-					            	<span class="glyphicon glyphicon-remove">
-					            	</span>
-					            </button>
-							</td> 
+							<td>{{prestacion.duration.hours}}h {{prestacion.duration.minutes}}m </td>
 						</tr> 
 					</tbody> 
 				</table>
@@ -43,29 +51,31 @@
 					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding-top: 10px;">
 						<div class="row">
 							<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-								<button ng-click="PrestacionesCtrl.modify(PrestacionesCtrl.prestacion)"   class="btn btn-primary pull-right">Modificar<span class="glyphicon glyphicon-pencil"></span></button>
+								<button ng-click="PrestacionesCtrl.modify(PrestacionesCtrl.prestacion)"   class="btn btn-primary pull-right"><span class="glyphicon glyphicon-pencil"></span> Modificar</button>
 							</div>
 						</div>
-						<div class="row">
-							<div class="col-md-4"><label>Nombre</label></div>
-							<div class="col-md-8">{{PrestacionesCtrl.prestacion.name}}</div>
+						<div class="detail-info">
+							<div class="row">
+								<div class="col-md-4"><label>Nombre</label></div>
+								<div class="col-md-8">{{PrestacionesCtrl.prestacion.name}}</div>
+							</div>
+							<div class="row">
+								<div class="col-md-4"><label>Descripción</label></div>
+								<div class="col-md-8">{{PrestacionesCtrl.prestacion.description}}</div>
+							</div>		    
+							<div class="row">
+								<div class="col-md-4"><label>Duración</label></div>
+								<div class="col-md-8">{{PrestacionesCtrl.prestacion.duration.hours}}h {{PrestacionesCtrl.prestacion.duration.minutes}}m</div>
+							</div>	
+							<div class="row">
+								<div class="col-md-4"><label>Fecha de creación</label></div>
+								<div class="col-md-8">{{PrestacionesCtrl.prestacion.createdAt}} por {{PrestacionesCtrl.prestacion.createdBy.name}}</div>
+							</div>
+							<div class="row" ng-show="PrestacionesCtrl.prestacion.lastModifiedAt">
+								<div class="col-md-4"><label>Fecha de modificación</label></div>
+								<div class="col-md-8">{{PrestacionesCtrl.prestacion.lastModifiedAt}} por {{PrestacionesCtrl.prestacion.lastModifiedBy.name}}</div>
+							</div>	
 						</div>
-						<div class="row">
-							<div class="col-md-4"><label>Descripcion</label></div>
-							<div class="col-md-8">{{PrestacionesCtrl.prestacion.description}}</div>
-						</div>		    
-						<div class="row">
-							<div class="col-md-4"><label>Duraction</label></div>
-							<div class="col-md-8">{{PrestacionesCtrl.prestacion.duration.hours}}h {{PrestacionesCtrl.prestacion.duration.minutes}}m</div>
-						</div>	
-						<div class="row">
-							<div class="col-md-4"><label>Fecha de creacion</label></div>
-							<div class="col-md-8">{{PrestacionesCtrl.prestacion.createdAt}} por {{PrestacionesCtrl.prestacion.createdBy.name}}</div>
-						</div>
-						<div class="row" ng-show="PrestacionesCtrl.prestacion.lastModifiedAt">
-							<div class="col-md-4"><label>Fecha de modificacion</label></div>
-							<div class="col-md-8">{{PrestacionesCtrl.prestacion.lastModifiedAt}} por {{PrestacionesCtrl.prestacion.lastModifiedBy.name}}</div>
-						</div>	
 					</div>	
 				</div>	
 			</div>

@@ -11,12 +11,12 @@
 						<tr> 
 							<th>#</th> 
 							<th>Nombre</th> 
-							<th>Descripcion</th> 
+							<th>Descripción</th> 
 							<th hidden="hidden">Acciones</th> 
 						</tr> 
 					</thead> 
 					<tbody> 
-						<tr ng-repeat="(key, especialidad) in EspecialidadesCtrl.especialidades" ng-click="EspecialidadesCtrl.detail(especialidad)"> 
+						<tr ng-repeat="(key, especialidad) in EspecialidadesCtrl.especialidades" ng-click="EspecialidadesCtrl.detail(especialidad)"  ng-class="{active:especialidad == EspecialidadesCtrl.especialidad}"> 
 							<th scope="row">{{especialidad.id}}</th> 
 							<td>{{especialidad.name}}</td> 
 							<td>{{especialidad.description}}</td> 
@@ -38,27 +38,29 @@
 			</div>	
 			<div class="col-md-8" ng-show="EspecialidadesCtrl.especialidad">
 				<div class="row">
-					<div class="col-md-12" style="padding-top: 10px;">
-						<div class="row">
+					<div class="col-md-12">
+						<div class="row detail-accions">
 							<div class="col-md-12">
-								<button ng-click="EspecialidadesCtrl.modifyEspecialidad(EspecialidadesCtrl.especialidad)"   class="btn btn-primary pull-right">Modificar<span class="glyphicon glyphicon-pencil"></span></button>
+								<button ng-click="EspecialidadesCtrl.modifyEspecialidad(EspecialidadesCtrl.especialidad)"   class="btn btn-primary pull-right"><span class="glyphicon glyphicon-pencil"></span> Modificar</button>
 							</div>
 						</div>
-						<div class="row">
-							<div class="col-md-4"><label>Nombre</label></div>
-							<div class="col-md-8">{{EspecialidadesCtrl.especialidad.name}}</div>
-						</div>
-						<div class="row">
-							<div class="col-md-4"><label>Descripcion</label></div>
-							<div class="col-md-8">{{EspecialidadesCtrl.especialidad.description}}</div>
-						</div>		    
-						<div class="row">
-							<div class="col-md-4"><label>Fecha de creacion</label></div>
-							<div class="col-md-8">{{EspecialidadesCtrl.especialidad.createdAt}} por {{EspecialidadesCtrl.especialidad.createdBy.name}}</div>
-						</div>
-						<div class="row" ng-show="EspecialidadesCtrl.especialidad.lastModifiedAt">
-							<div class="col-md-4"><label>Fecha de modificacion</label></div>
-							<div class="col-md-8">{{EspecialidadesCtrl.especialidad.lastModifiedAt}} por {{EspecialidadesCtrl.especialidad.lastModifiedBy.name}}</div>
+						<div class="detail-info">
+							<div class="row">
+								<div class="col-md-4"><label>Nombre</label></div>
+								<div class="col-md-8">{{EspecialidadesCtrl.especialidad.name}}</div>
+							</div>
+							<div class="row">
+								<div class="col-md-4"><label>Descripción</label></div>
+								<div class="col-md-8">{{EspecialidadesCtrl.especialidad.description}}</div>
+							</div>		    
+							<div class="row">
+								<div class="col-md-4"><label>Fecha de creación</label></div>
+								<div class="col-md-8">{{EspecialidadesCtrl.especialidad.createdAt}} por {{EspecialidadesCtrl.especialidad.createdBy.name}}</div>
+							</div>
+							<div class="row" ng-show="EspecialidadesCtrl.especialidad.lastModifiedAt">
+								<div class="col-md-4"><label>Fecha de modificación</label></div>
+								<div class="col-md-8">{{EspecialidadesCtrl.especialidad.lastModifiedAt}} por {{EspecialidadesCtrl.especialidad.lastModifiedBy.name}}</div>
+							</div>
 						</div>
 					</div>
 				</div>

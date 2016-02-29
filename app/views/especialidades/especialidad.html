@@ -1,3 +1,21 @@
+<div class="modal fade" ng-class="{'in':EspecialidadCtrl.modalStyle}" ng-style="EspecialidadCtrl.modalStyle">
+  <div class="modal-dialog modal-confirmation">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">¿Eliminar?</h4>
+      </div>
+      <div class="modal-body">
+        <p>¿Esta seguro que desea eliminar la especialidad seleccionada?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default btn-cancel" ng-click="EspecialidadCtrl.dismissModal()">Cancelar</button>
+        <button type="button" class="btn btn-danger btn-confirm" ng-click="EspecialidadCtrl.confirmModal()"><span class="glyphicon glyphicon-remove"></span> Eliminar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 <div class="">
     <div class="panel panel-default">
         <div class="panel-heading">    
@@ -29,17 +47,17 @@
 						<input type="text" name="name" class="form-control" ng-model="EspecialidadCtrl.especialidad.name"required></input >
 					</div>
 			  		<div class="form-group">
-						<span><label>Descripcion</label><span>
+						<span><label>Descripción</label><span>
                         <textarea rows="4" cols="50" name="descripction" class="form-control" ng-model="EspecialidadCtrl.especialidad.description"required>
                         </textarea>
 					</div>		    			
 				</div>
 			</form>
 			<div class="col-xs-6 col-sm-7 col-md-7 col-lg-7">
-				<button ng-click="EspecialidadCtrl.delete()" class="btn btn-danger " ><span class="glyphicon glyphicon-remove"></span> Eliminar</button>
+				<button ng-click="EspecialidadCtrl.remove()" class="btn btn-link " >Eliminar</button>
 			</div>
 			<div class="col-xs-6 col-sm-2 col-md-2 col-lg-2">
-				<button ng-click="EspecialidadCtrl.cancel()" class="btn btn-warning">Cancelar</button>
+				<button ng-click="EspecialidadCtrl.cancel()" class="btn btn-default">Cancelar</button>
 			</div>
 			<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
 				<button ng-click="EspecialidadCtrl.confirm()" class="btn btn-primary"><span class="glyphicon glyphicon-ok"></span> Confirmar</button>
