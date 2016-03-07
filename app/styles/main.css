@@ -91,3 +91,8 @@ body {
     border-color: lightgray;
 }
 
+.right-column .dw-loading.dw-loading-overlay{
+    min-height: 269px;
+}
+
+

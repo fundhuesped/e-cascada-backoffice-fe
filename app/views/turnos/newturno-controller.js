@@ -1,13 +1,21 @@
 (function(){
     'use strict';
     
-    function newTurnoController ($uibModal,uiCalendarConfig) {
+    function newTurnoController ($uibModal,uiCalendarConfig, toastr,$loading, $filter) {
 	    var date = new Date();
+	    var dateIncrement = 0;
+	    if (date.getDay() == 4){
+			dateIncrement =4;
+		}else{
+			if(date.getDay() == 5){
+				dateIncrement = 3;
+			}
+		}
     	var d = date.getDate();
     	var m = date.getMonth();
     	var y = date.getFullYear();
     	var self = this;
-    	this.paciente = {};
+    	this.paciente = null;
 
     	//Calendar
 	    this.eventSources = [];
@@ -93,8 +101,9 @@
 		};
 
     	this.clearPacienteSelection = function clearPacienteSelection(){
+    		this.recomendationList = [];
     		delete this.paciente.selected;
-    		this.paciente = {};
+    		this.paciente = null;
     	};
 
 
@@ -152,9 +161,24 @@
 			}
 		];
 		this.prestaciones = [
+			{
+	    		id: 2,
+	    		name: 'Consulta infectologia',
+                description: 'Consulta infectologia',
+                duration: '20m',
+                createdAt: '2016-01-02',
+                lastModifiedAt: null,
+                createdBy: {
+                    id:1,
+                    name: 'Admin'
+                },
+                notes: '',
+                lastModifiedBy:null
+
+    		},
     		{
 	    		id: 1,
-	    		name: 'Turno infecto primera vez',
+	    		name: 'Consulta infecto primera vez',
                 createdAt: '2016-01-02',
                 lastModifiedAt: null,
                 duration: '40m', 
@@ -167,20 +191,20 @@
                 lastModifiedBy:null
     		},
     		{
-	    		id: 2,
-	    		name: 'Turno infectologia',
-                description: 'Turno infectologia',
-                duration: '20m',
+	    		id: 3,
+	    		name: 'Retiro de medicación',
                 createdAt: '2016-01-02',
                 lastModifiedAt: null,
+                duration: '10m', 
+                description: '',
                 createdBy: {
                     id:1,
                     name: 'Admin'
                 },
-                notes: '',
+                notes : '',
                 lastModifiedBy:null
-
     		}
+    		
     	];
 
 	    this.recomendations = [
@@ -253,7 +277,7 @@
 				},
 				prestacion: {
 					id: 1,
-					name: 'Turno Infectologia',
+					name: 'Consulta Infectologia',
 				},
 				medic : {
 					id: 4,
@@ -271,7 +295,7 @@
 				},
 				prestacion: {
 					id: 1,
-					name: 'Turno Infectologia',
+					name: 'Consulta Infectologia',
 				},
 				medic : {
 					id: 4,
@@ -279,25 +303,99 @@
 				}
 			},
 	    ];
+
+	    this.lookForTurnos = function lookForTurnos(){
+            $loading.start('app');
+			setTimeout(function(){             
+                $loading.finish('app');
+		    	this.showTurnos = true;
+		    	initTurnos();
+                }.bind(this), 1000);
+	    };
+
+
+		this.shouldLookForPacient = function shouldLookForPacient(){
+			var populatedFields = 0;
+	    	if(this.paciente === null){
+	    		return false;
+	    	}
+
+	    	if(this.paciente.docNumber){
+	    		return true;
+	    	}
+
+	    	if(this.paciente.firstname){
+	    		populatedFields++;
+	    	}
+
+	    	if(this.paciente.fathersurname){
+	    		populatedFields++;
+	    	}
+
+	    	if(this.paciente.birthdate){
+	    		populatedFields++;
+	    	}
+
+	    	if(populatedFields>1){
+	    		return true;
+	    	}
+
+	    	return false;
+		};
+
+	    this.lookForPacientes = function lookForPacientes(){
+	    	if(this.shouldLookForPacient()){
+	            $loading.start('recomendations');
+				setTimeout(function(){             
+	                    $loading.finish('recomendations');
+				    	this.recomendationList = $filter('filter')(this.recomendations, this.paciente);
+	                }.bind(this), 1000);	    		
+		    }
+
+	    };
+
 	    function initTurnos(){
 	    	var turnosSource = [];
+	    	var increment = 0;
 			angular.forEach(self.turnos, function(turno, key) {
-				var tmpTurno = {id: key ,title: turno.medic.name, start: new Date(y, m, d + 2, 9, 0),end: new Date(y, m, d + 2, 9, 20),allDay: false,color:'#D8C358'};
+				
+				var tmpTurno = {id: key ,title: turno.medic.name, start: new Date(y, m, d + 2 + dateIncrement, 9+increment, 0),end: new Date(y, m, d + 2 + dateIncrement, 9+increment, 20),allDay: false,color:'#D8C358'};
 		  		turno.calendarRepresentation = tmpTurno;
 		  		turnosSource.push(tmpTurno);
+		  		increment++;
 			});
 			self.eventSources.push(turnosSource);
 	    }
+	    this.limpiarBusquedaTurno = function limpiarBusquedaTurno(){
+	    	this.showTurnos = false;
+	    	this.selectedPrestacion = null;
+	    	this.selectedEspecialidad = null;
+	    	this.selectedMedico = null;
+	    };
+
+	    this.confirmTurno = function confirmTurno(){
+                $loading.start('app');
+                setTimeout(function(){             
+                    $loading.finish('app');
+           			toastr.success('Turno creado con éxito');
+           			this.limpiarBusquedaTurno();
+           			this.selectedTurno.selected = false;
+           			this.selectedTurno = null;
+           			this.clearPacienteSelection();                    
+                }.bind(this), 3000);
+	    };
+
+	    /*
 	    this.showTurnos = function showTurnos(){
-	    	if(this.selectedPrestacion && this.selectedEspecialidad && this.newTurno && this.newTurno.turnDate && this.selectedMedico){
+	    	if(this.selectedPrestacion && this.selectedEspecialidad && this.newTurno && this.selectedMedico && this.buscando){
 	    		if(this.eventSources.length == 0){
 		    		initTurnos();
 	    		}
 	    		return true;
 	    	}
 	    	return false;
-	    };
+	    };*/
 
     }
-    angular.module('turnos.turnos').controller('NewTurnoController',['$uibModal','uiCalendarConfig',newTurnoController]);
+    angular.module('turnos.turnos').controller('NewTurnoController',['$uibModal','uiCalendarConfig','toastr','$loading','$filter',newTurnoController]);
 })();
