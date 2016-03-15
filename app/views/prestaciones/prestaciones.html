@@ -3,25 +3,25 @@
         <div class="panel-heading">
         	<div class="row">
         		<form class="form-inline" name="PrestacionesCtrl.searchPreferencesForm"> 
-        		<div class="col-md-5">    
-  		          	<h3 class="panel-title">Prestaciones</h3>
-	            </div>
-        		<div class="col-md-3">    
-	                	<input type="text" class="form-control" placeholder="Nombre" ng-model="PrestacionesCtrl.nameFilter">
-		              	<button type="button" class="btn btn-default" ng-click="PrestacionesCtrl.searchName()">Buscar</button>
-	            </div>
-	            <div class="col-md-2">
-		            <select class="form-control" ng-model="PrestacionesCtrl.statusFilter" ng-change="PrestacionesCtrl.changePrestacionesStatus()">
-		            	<option value="1">Activos</option>
-		            	<option value="2">Activos e inactivos</option>
-		            	<option value="3">Inactivos</option>
-		            </select>
-	            </div>
-	            <div class="col-md-2">            
-	            	<button id="btn-confirm" type="button" class="btn btn-success pull-right" ng-click="PrestacionesCtrl.create()">		
-	            		<span class="glyphicon glyphicon-plus"></span> Nueva prestación
-	            	</button>
-            	</div>
+	        		<div class="col-md-5">    
+	  		          	<h3 class="panel-title">Prestaciones</h3>
+		            </div>
+	        		<div class="col-md-3">    
+		                	<input type="text" class="form-control" placeholder="Nombre" ng-model="PrestacionesCtrl.nameFilter">
+			              	<button type="button" class="btn btn-default" ng-click="PrestacionesCtrl.searchName()">Buscar</button>
+		            </div>
+		            <div class="col-md-2">
+			            <select class="form-control" ng-model="PrestacionesCtrl.statusFilter" ng-change="PrestacionesCtrl.searchName()">
+			            	<option value="1">Activos</option>
+			            	<option value="2">Activos e inactivos</option>
+			            	<option value="3">Inactivos</option>
+			            </select>
+		            </div>
+		            <div class="col-md-2">            
+		            	<button id="btn-confirm" type="button" class="btn btn-success pull-right" ng-click="PrestacionesCtrl.create()">		
+		            		<span class="glyphicon glyphicon-plus"></span> Nueva prestación
+		            	</button>
+	            	</div>
             	</form>
         	</div>
         </div>
@@ -71,6 +71,14 @@
 								<div class="col-md-4"><label>Fecha de creación</label></div>
 								<div class="col-md-8">{{PrestacionesCtrl.prestacion.createdAt}} por {{PrestacionesCtrl.prestacion.createdBy.name}}</div>
 							</div>
+							<div class="row">
+								<div class="col-md-4"><label>Especialidad</label></div>
+								<div class="col-md-8">{{PrestacionesCtrl.prestacion.especialidadObj.name}}</div>
+							</div>		    
+							<div class="row">
+								<div class="col-md-4"><label>Notas</label></div>
+								<div class="col-md-8">{{PrestacionesCtrl.prestacion.notes}}</div>
+							</div>		
 							<div class="row" ng-show="PrestacionesCtrl.prestacion.lastModifiedAt">
 								<div class="col-md-4"><label>Fecha de modificación</label></div>
 								<div class="col-md-8">{{PrestacionesCtrl.prestacion.lastModifiedAt}} por {{PrestacionesCtrl.prestacion.lastModifiedBy.name}}</div>

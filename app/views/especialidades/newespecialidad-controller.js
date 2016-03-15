@@ -1,14 +1,20 @@
 (function(){
     'use strict';
     
-    function newespecialidadCtrl ($loading,$uibModalInstance) {
+    function newespecialidadCtrl ($loading,$uibModalInstance,Especialidad) {
         this.confirm = function confirm () {
             if(this.newEspecialidadForm.$valid){
-                $loading.start('newEspecialidad');
-                setTimeout(function(){             
+                var especialidad = new Especialidad();
+                especialidad.name = this.newEspecialidad.name;
+                especialidad.description = this.newEspecialidad.description;
+                especialidad.$save(function(){
                     $loading.finish('newEspecialidad');
                     $uibModalInstance.close('created');
-                 }, 3000);
+                },function(error){
+                    $loading.finish('newEspecialidad');
+                    $uibModalInstance.close('created');
+                }
+                );
             }
          };
         this.close = function close (){
@@ -24,5 +30,5 @@
             }
         };
     }
-    angular.module('turnos.especialidades').controller('NewEspecialidadCtrl',['$loading','$uibModalInstance',newespecialidadCtrl]);
+    angular.module('turnos.especialidades').controller('NewEspecialidadCtrl',['$loading','$uibModalInstance','Especialidad',newespecialidadCtrl]);
 })();

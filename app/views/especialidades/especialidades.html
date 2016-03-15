@@ -1,8 +1,31 @@
 <div class="container">
     <div class="panel panel-default">
-        <div class="panel-heading">    
-            <h3 class="panel-title">Especialidades</h3>
-            <button id="btn-confirm" type="button" class="btn btn-success pull-right" ng-click="EspecialidadesCtrl.newEspecialidad()"><span class="glyphicon glyphicon-plus"></span> Nueva especialidad</button>
+        <div class="panel-heading"> 
+        	<div class="row">
+
+	    		<form class="form-inline" name="EspecialidadesCtrl.searchPreferencesForm"> 
+	        		<div class="col-md-5">    
+	  		          	<h3 class="panel-title">Especialidades</h3>
+		            </div>
+	    			<div class="col-md-3">    
+	                	<input type="text" class="form-control" placeholder="Nombre" ng-model="EspecialidadesCtrl.nameFilter">
+		              	<button type="button" class="btn btn-default" ng-click="EspecialidadesCtrl.searchName()">Buscar</button>
+		            </div>   
+	            	<div class="col-md-2">
+			            <select class="form-control" ng-model="EspecialidadesCtrl.statusFilter" ng-change="EspecialidadesCtrl.searchName()">
+			            	<option value="1">Activos</option>
+			            	<option value="2">Activos e inactivos</option>
+			            	<option value="3">Inactivos</option>
+			            </select>
+		            </div>
+		            <div class="col-md-2">            
+
+		            	<button id="btn-confirm" type="button" class="btn btn-success pull-right" ng-click="EspecialidadesCtrl.newEspecialidad()">
+		            		<span class="glyphicon glyphicon-plus"></span> Nueva especialidad
+		            	</button>
+	            	</div>
+	        	</form>
+        	</div>
         </div>
         <div class="panel-body">
 			<div class="col-md-4" style="border-right: 1px solid;">

@@ -1,128 +1,34 @@
 (function(){
     'use strict';
     
-    function prestacionesCtrl ($uibModal, toastr) {
+    function prestacionesCtrl ($uibModal, toastr,Prestacion, Especialidad) {
         this.prestaciones = [];
-    	this.prestacionesSource = [
-    		{
-	    		id: 1,
-	    		name: 'Turno infecto primera vez',
-                createdAt: '2016-01-02',
-                lastModifiedAt: null,
-                duration: {
-                        hours: 0,
-                        minutes: 40
-                    }, 
-                description: 'Turno doble por primera vez infectologia',
-                createdBy: {
-                    id:1,
-                    name: 'Admin'
-                },
-                status: 'Activa',
-                lastModifiedBy:null
-    		},
-    		{
-	    		id: 2,
-	    		name: 'Turno infectologia',
-                description: 'Turno infectologia',
-                duration: {
-                        hours: 0,
-                        minutes: 20
-                    },                
-                createdAt: '2016-01-02',
-                lastModifiedAt: null,
-                createdBy: {
-                    id:1,
-                    name: 'Admin'
-                },
-                status: 'Activa',
-                lastModifiedBy:null
-
-    		},
-            {
-                id: 3,
-                name: 'CD4',
-                createdAt: '2016-01-02',
-                lastModifiedAt: null,
-                duration: {
-                        hours: 0,
-                        minutes: 10
-                    }, 
-                description: 'Analisis de laboratorio para CD4',
-                createdBy: {
-                    id:1,
-                    name: 'Admin'
-                },
-                status: 'Activa',
-                lastModifiedBy:null
-            },
-            {
-                id: 4,
-                name: 'Cargar viral',
-                createdAt: '2016-01-02',
-                lastModifiedAt: null,
-                duration: {
-                        hours: 0,
-                        minutes: 10
-                    }, 
-                description: 'Analisis de laboratior de carga viral',
-                createdBy: {
-                    id:1,
-                    name: 'Admin'
-                },
-                status: 'Inactivo',
-                lastModifiedBy:null
-            },
-    	];
-
-
-
-        //Controller initialization
-        this.init = function init(){
-            this.statusFilter = "1"; 
-            for (var i = this.prestacionesSource.length - 1; i >= 0; i--) {
-               if(this.prestacionesSource[i].status == "Activa"){
-                    this.prestaciones.push(this.prestacionesSource[i]);
-                }
-           };               
-        }
+        this.prestacion = null;
 
         this.searchName = function searchName(){
-            this.prestaciones = [];
             this.prestacion = null;
-            for (var i = this.prestacionesSource.length - 1; i >= 0; i--) {
-               if((
-                (this.statusFilter==1 
-                || this.statusFilter == 2 )
-                && this.prestacionesSource[i].status == "Activa" )||((this.statusFilter==2 || this.statusFilter == 3 )&& this.prestacionesSource[i].status == "Inactivo" ) ){
-                    if(this.prestacionesSource[i].name.indexOf(this.nameFilter)>-1 ){
-                        this.prestaciones.push(this.prestacionesSource[i]);                        
-                    }
+            var currentStatusFilter;
+            if(this.statusFilter==1){
+                currentStatusFilter = 'Active';
+            }else{
+                if(this.statusFilter==3){
+                    currentStatusFilter = 'Inactive';
                 }
-           }; 
-        };
-
-
-        this.changePrestacionesStatus = function changePrestacionesStatus(){
-            this.prestaciones = [];
-            this.prestacion = null;
-            for (var i = this.prestacionesSource.length - 1; i >= 0; i--) {
-               if((
-                (this.statusFilter==1 
-                || this.statusFilter == 2 )
-                && this.prestacionesSource[i].status == "Activa" )||((this.statusFilter==2 || this.statusFilter == 3 )&& this.prestacionesSource[i].status == "Inactivo" ) ){
-                    if(this.nameFilter){
-                        if(this.prestacionesSource[i].name.indexOf(this.nameFilter)>-1){
-                            this.prestaciones.push(this.prestacionesSource[i]);
-                        }
-                    }else{
-                        this.prestaciones.push(this.prestacionesSource[i]);
+            }
+            if(currentStatusFilter){
+                this.prestaciones = Prestacion.query({name:this.nameFilter,status:currentStatusFilter},function(){
+                   for (var i = this.prestaciones.length - 1; i >= 0; i--) {
+                        this.prestaciones[i].especialidadObj = Especialidad.get({especialidadId:this.prestaciones[i].especialidad.substr(-2,1)});
                     }
-                }
-           };    
+                }.bind(this));
+           }else{
+               this.prestaciones = Prestacion.query({name:this.nameFilter},function(){
+                   for (var i = this.prestaciones.length - 1; i >= 0; i--) {
+                        this.prestaciones[i].especialidadObj = Especialidad.get({especialidadId:this.prestaciones[i].especialidad.substr(-2,1)});
+                    }
+                }.bind(this));
+           }
         };
-
-        this.init();
 
     	this.detail = function detail(prestacion){
     		this.prestacion = prestacion;
@@ -141,12 +47,15 @@
                 }
             });
             modalInstance.result.then(function (result) {
-                if(result=='modified'){
-                   toastr.success('Prestacion modificada');                    
-                }else if(result=='deleted'){
-                   toastr.success('Prestacion eliminada');                    
+                if(result==='modified'){
+                   toastr.success('Prestación modificada');  
+                }else if(result==='deleted'){
+                   toastr.success('Prestación eliminada'); 
+                }else if(result==='reactivated'){
+                   toastr.success('Prestación reactivada');                      
                 }
-            }, function () {
+                this.searchName();     
+            }.bind(this), function () {
             });
         };
 
@@ -158,11 +67,19 @@
                 controllerAs: 'NewPrestacionCtrl'
             });
             modalInstance.result.then(function () {
-               toastr.success('Prestacion creada');
-            }, function () {         
+                toastr.success('Prestación creada');
+                this.searchName();     
+            }.bind(this), function () {         
             });
         };
-    	
+
+        //Controller initialization
+        this.init = function init(){
+            this.statusFilter = "1"; 
+            this.searchName();     
+        }
+        this.init();
+
     }
-    angular.module('turnos.prestaciones').controller('PrestacionesCtrl',['$uibModal','toastr',prestacionesCtrl]);
+    angular.module('turnos.prestaciones').controller('PrestacionesCtrl',['$uibModal','toastr','Prestacion','Especialidad',prestacionesCtrl]);
 })();

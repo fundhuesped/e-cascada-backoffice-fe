@@ -13,11 +13,14 @@
   'turnos.prestaciones',
   'turnos.pacientes',
   'turnos.login',
+  'turnos.resources',
   'darthwade.dwLoading',
   'toastr'
 ])
-  .config(function ($stateProvider, $urlRouterProvider) {
+  .config(function ($stateProvider, $urlRouterProvider,$resourceProvider) {
     //delete $httpProvider.defaults.headers.common['X-Requested-With'];
+    $resourceProvider.defaults.stripTrailingSlashes = false;
+    
     $urlRouterProvider.otherwise('/');
     $stateProvider
       .state('login', {

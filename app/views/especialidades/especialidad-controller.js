@@ -2,57 +2,69 @@
     'use strict';
     
     function especialidadCtrl ($loading,$uibModalInstance,especialidad) {
-    	this.especialidad = especialidad;
-/*    		{
-	    		id: 1,
-	    		name: 'Pediatria',
-                createdAt: '2016-01-02',
-                lastModifiedAt: null,
-                description: 'Especialidad dedicada a menores de 15 años',
-                createdBy: {
-                    id:1,
-                    name: 'Admin'
-                },
-                lastModifiedBy:null
-    		};*/
-/*        this.toggleEdit = function toggleEdit(){
-            this.editing = !this.editing;
-        };*/
+    	this.especialidad = angular.copy(especialidad);
         this.editing = true;
 
         this.confirm = function confirm () {
             if(this.especialidadForm.$valid){
                 $loading.start('app');
-                setTimeout(function(){             
+                this.especialidad.$update(function(){
                     $loading.finish('app');
-                    $uibModalInstance.close('modified');
-                }, 3000);
+                    $uibModalInstance.close('modified'); 
+                },function(){
+                    $loading.finish('app');
+                    $uibModalInstance.close('modified'); 
+                });
             }
         };
 
         //Confirm delete modal
-
         this.showModal = function showModal(){
             this.modalStyle = {display:'block'};
         };
 
         this.confirmModal = function confirmModal(){
-            this.confirmDelete();
+            this.confirmStatusChange();
         };
                 
         this.dismissModal = function showModal(){
             this.modalStyle = {};
         };
 
-        this.confirmDelete = function confirmDelete(){
+
+        this.confirmDelete = function confirmDelete(especialidadInstance){
+            especialidadInstance.status = 'Inactive';
+            especialidadInstance.$update(function(){
+                $loading.finish('app');
+                $uibModalInstance.close('deleted');
+            },function(){
+                $loading.finish('app');
+                $uibModalInstance.close('deleted');                    
+            });
+        }
+        this.confirmReactivate = function confirmReactivate(especialidadInstance){
+            especialidadInstance.status = 'Active';
+            especialidadInstance.$update(function(){
+                $loading.finish('app');
+                $uibModalInstance.close('reactivated');
+            },function(){
+                $loading.finish('app');
+                $uibModalInstance.close('reactivated');                    
+            });
+        }
+
+        this.confirmStatusChange = function confirmDelete(){
+            var especialidadInstance = angular.copy(especialidad);
             $loading.start('app');
-                setTimeout(function(){             
-                    $loading.finish('app');
-                    $uibModalInstance.close('deleted');
-                }, 3000);
+            if(especialidadInstance.status=='Active'){
+                this.confirmDelete(especialidadInstance);
+            }
+            if(especialidadInstance.status=='Inactive'){
+                this.confirmReactivate(especialidadInstance);
+            }
         };
 
-        this.remove = function remove () {
+        this.changeStatus = function changeStatus() {
             this.showModal();
         }; 
 
