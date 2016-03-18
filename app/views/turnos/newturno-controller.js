@@ -1,7 +1,7 @@
 (function(){
     'use strict';
     
-    function newTurnoController ($uibModal,uiCalendarConfig, toastr,$loading, $filter) {
+    function newTurnoController ($uibModal,uiCalendarConfig, toastr,$loading, $filter, Especialidad,Prestacion) {
 	    var date = new Date();
 	    var dateIncrement = 0;
 	    if (date.getDay() == 4){
@@ -16,6 +16,7 @@
     	var y = date.getFullYear();
     	var self = this;
     	this.paciente = null;
+    	this.especialidades = null;
 
     	//Calendar
 	    this.eventSources = [];
@@ -109,7 +110,7 @@
 
 
 
-
+/*
 		this.especialidades = [
     		{
 	    		id: 1,
@@ -137,7 +138,7 @@
 
     		}
     	];
-
+*/
 		this.medicos = [
 			{
 				id: 'fernandez',
@@ -364,12 +365,12 @@
 		  		turnosSource.push(tmpTurno);
 		  		increment++;
 			});
-			self.eventSources.push(turnosSource);
 	    }
 	    this.limpiarBusquedaTurno = function limpiarBusquedaTurno(){
 	    	this.showTurnos = false;
 	    	this.selectedPrestacion = null;
 	    	this.selectedEspecialidad = null;
+	    	this.prestaciones = [];
 	    	this.selectedMedico = null;
 	    };
 
@@ -385,17 +386,19 @@
                 }.bind(this), 3000);
 	    };
 
-	    /*
-	    this.showTurnos = function showTurnos(){
-	    	if(this.selectedPrestacion && this.selectedEspecialidad && this.newTurno && this.selectedMedico && this.buscando){
-	    		if(this.eventSources.length == 0){
-		    		initTurnos();
-	    		}
-	    		return true;
+	    this.searchPrestaciones = function searchPrestaciones(){
+	    	this.prestaciones = [];
+	    	if(this.selectedEspecialidad){
+		    	this.prestaciones = Prestacion.query({especialidad:this.selectedEspecialidad.id, status:'Active'});
 	    	}
-	    	return false;
-	    };*/
+	    };
 
+
+	    this.init = function init(){
+			this.especialidades = Especialidad.getActiveList();
+	    };
+
+	    this.init();
     }
-    angular.module('turnos.turnos').controller('NewTurnoController',['$uibModal','uiCalendarConfig','toastr','$loading','$filter',newTurnoController]);
+    angular.module('turnos.turnos').controller('NewTurnoController',['$uibModal','uiCalendarConfig','toastr','$loading','$filter','Especialidad','Prestacion',newTurnoController]);
 })();

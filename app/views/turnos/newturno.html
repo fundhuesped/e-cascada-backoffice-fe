@@ -130,7 +130,7 @@ glyphicon glyphicon-remove"></span> Limpiar seleccion de paciente</button>
                             <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
                                 <div class="form-group">
                                     <span><label>Especialidad(*)</label></span>
-                                    <select class="form-control" ng-model="NewTurnoCtrl.selectedEspecialidad" ng-options="especialidad.name for especialidad in NewTurnoCtrl.especialidades" required>
+                                    <select class="form-control" ng-model="NewTurnoCtrl.selectedEspecialidad" ng-options="especialidad.name for especialidad in NewTurnoCtrl.especialidades" ng-change="NewTurnoCtrl.searchPrestaciones()" required>
                                         <option value="">Todas las especialidades</option>
                                     </select>
                                 </div>
