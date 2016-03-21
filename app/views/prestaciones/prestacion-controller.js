@@ -3,7 +3,7 @@
     
     function prestacionCtrl ($loading,$uibModalInstance,Especialidad,prestacion) {
         this.prestacion = angular.copy(prestacion);
-        this.editing = true;
+        this.errorMessage = null;
 
         this.confirm = function confirm () {
             if(this.prestacionForm.$valid){
@@ -12,9 +12,10 @@
                     $loading.finish('app');
                     $uibModalInstance.close('modified'); 
                 },function(){
-                    $loading.finish('app');
-                    $uibModalInstance.close('modified'); 
-                });
+                    this.showErrorMessage();
+                }.bind(this));
+            }else{
+                this.errorMessage = 'Revise el formulario por favor';
             }
         };
 
@@ -37,9 +38,8 @@
                 $loading.finish('app');
                 $uibModalInstance.close('deleted');
             },function(){
-                $loading.finish('app');
-                $uibModalInstance.close('deleted');                    
-            });
+                this.showErrorMessage();
+            }.bind(this));
         };
 
         this.confirmReactivate = function confirmReactivate(prestacionInstance){
@@ -48,10 +48,16 @@
                 $loading.finish('app');
                 $uibModalInstance.close('reactivated');
             },function(){
-                $loading.finish('app');
-                $uibModalInstance.close('reactivated');                    
-            });
-        }
+                this.showErrorMessage();
+            }.bind(this));
+        };
+
+        this.showErrorMessage = function showErrorMessage(){
+            this.errorMessage = 'Ocurio un error en la comunicacion';
+        };
+        this.hideErrorMessage = function hideErrorMessage(){
+            this.errorMessage = null;
+        };
 
         this.confirmStatusChange = function confirmDelete(){
             var prestacionInstance = angular.copy(prestacion);

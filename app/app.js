@@ -84,7 +84,8 @@
             controllerAs: 'NewEspecialidadCtrl'
           },         
         }
-      })      .state('especialidadDetail', {
+      })      
+      .state('especialidadDetail', {
         url: '/especialidad/:especialidadId',
         views: {
           'navbar':  {

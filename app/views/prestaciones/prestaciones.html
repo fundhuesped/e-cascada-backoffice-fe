@@ -41,7 +41,7 @@
 							<th scope="row">{{prestacion.id}}</th> 
 							<td>{{prestacion.name}}</td> 
 							<td>{{prestacion.description}}</td> 
-							<td>{{prestacion.duration.hours}}h {{prestacion.duration.minutes}}m </td>
+							<td>{{prestacion.durationHours}}h {{prestacion.durationMinutes}}m </td>
 						</tr> 
 					</tbody> 
 				</table>
@@ -65,15 +65,11 @@
 							</div>		    
 							<div class="row">
 								<div class="col-md-4"><label>Duración</label></div>
-								<div class="col-md-8">{{PrestacionesCtrl.prestacion.duration.hours}}h {{PrestacionesCtrl.prestacion.duration.minutes}}m</div>
+								<div class="col-md-8">{{PrestacionesCtrl.prestacion.durationHours}}h {{PrestacionesCtrl.prestacion.durationMinutes}}m</div>
 							</div>	
 							<div class="row">
-								<div class="col-md-4"><label>Fecha de creación</label></div>
-								<div class="col-md-8">{{PrestacionesCtrl.prestacion.createdAt}} por {{PrestacionesCtrl.prestacion.createdBy.name}}</div>
-							</div>
-							<div class="row">
 								<div class="col-md-4"><label>Especialidad</label></div>
-								<div class="col-md-8">{{PrestacionesCtrl.prestacion.especialidadObj.name}}</div>
+								<div class="col-md-8">{{PrestacionesCtrl.prestacion.especialidad.name}}</div>
 							</div>		    
 							<div class="row">
 								<div class="col-md-4"><label>Notas</label></div>
@@ -82,7 +78,13 @@
 							<div class="row" ng-show="PrestacionesCtrl.prestacion.lastModifiedAt">
 								<div class="col-md-4"><label>Fecha de modificación</label></div>
 								<div class="col-md-8">{{PrestacionesCtrl.prestacion.lastModifiedAt}} por {{PrestacionesCtrl.prestacion.lastModifiedBy.name}}</div>
-							</div>	
+							</div>
+							<!--	
+							<div class="row">
+								<div class="col-md-4"><label>Fecha de creación</label></div>
+								<div class="col-md-8">{{PrestacionesCtrl.prestacion.createdAt}} por {{PrestacionesCtrl.prestacion.createdBy.name}}</div>
+							</div>
+							-->
 						</div>
 					</div>	
 				</div>	
