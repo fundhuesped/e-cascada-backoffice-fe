@@ -4,17 +4,20 @@
     function especialidadCtrl ($loading,$uibModalInstance,especialidad) {
     	this.especialidad = angular.copy(especialidad);
         this.editing = true;
+        this.errorMessage = null;
 
         this.confirm = function confirm () {
             if(this.especialidadForm.$valid){
+                this.hideErrorMessage();
                 $loading.start('app');
                 this.especialidad.$update(function(){
                     $loading.finish('app');
                     $uibModalInstance.close('modified'); 
                 },function(){
-                    $loading.finish('app');
-                    $uibModalInstance.close('modified'); 
+                    this.showErrorMessage();
                 });
+            }else{
+                this.errorMessage = 'Por favor revise el formulario';                
             }
         };
 
@@ -30,7 +33,12 @@
         this.dismissModal = function showModal(){
             this.modalStyle = {};
         };
-
+        this.showErrorMessage = function showErrorMessage(){
+            this.errorMessage = 'Ocurio un error en la comunicación';
+        };
+        this.hideErrorMessage = function hideErrorMessage(){
+            this.errorMessage = null;
+        };
 
         this.confirmDelete = function confirmDelete(especialidadInstance){
             especialidadInstance.status = 'Inactive';
@@ -58,9 +66,10 @@
             $loading.start('app');
             if(especialidadInstance.status=='Active'){
                 this.confirmDelete(especialidadInstance);
-            }
-            if(especialidadInstance.status=='Inactive'){
-                this.confirmReactivate(especialidadInstance);
+            }else{
+                if(especialidadInstance.status=='Inactive'){
+                    this.confirmReactivate(especialidadInstance);
+                }
             }
         };
 

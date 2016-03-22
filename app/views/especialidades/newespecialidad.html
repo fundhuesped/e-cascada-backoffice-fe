@@ -6,19 +6,25 @@
         <div class="panel-body">
         	<form name="NewEspecialidadCtrl.newEspecialidadForm">
         		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="row">
+                        <div class="alert alert-dismissable alert-warning" ng-show="NewEspecialidadCtrl.errorMessage">
+                          <button type="button" class="close" ng-click="NewEspecialidadCtrl.hideErrorMessage()">×</button>
+                          <p>{{NewEspecialidadCtrl.errorMessage}}</p>
+                        </div>
+                    </div>
         			<div class="row">
         		        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-        		            <div class="form-group">
-        						<span><label>Nombre</label></span>
-        						<input type="text" name="othernames" class="form-control" ng-model="NewEspecialidadCtrl.newEspecialidad.name"required></input >
+        		            <div class="form-group" ng-class="{'has-error':NewEspecialidadCtrl.newEspecialidadForm.name.$error.required}">
+        						<span><label>Nombre*</label></span>
+        						<input type="text" name="name" class="form-control" ng-model="NewEspecialidadCtrl.newEspecialidad.name" required></input >
         		            </div>
         		        </div>
         		    </div>
                     <div class="row">
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                            <div class="form-group">
-                                <span><label>Decripcion</label></span>
-                                <textarea rows="4" cols="50" name="descripction" class="form-control" ng-model="NewEspecialidadCtrl.newEspecialidad.description"required>
+                            <div class="form-group" ng-class="{'has-error':NewEspecialidadCtrl.newEspecialidadForm.description.$error.required}">
+                                <span><label>Decripción*</label></span>
+                                <textarea rows="4" cols="50" name="descripction" class="form-control" ng-model="NewEspecialidadCtrl.newEspecialidad.description" required>
                                 </textarea>
                             </div>
                         </div>

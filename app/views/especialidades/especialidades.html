@@ -76,7 +76,7 @@
 								<div class="col-md-4"><label>Descripción</label></div>
 								<div class="col-md-8">{{EspecialidadesCtrl.especialidad.description}}</div>
 							</div>		    
-							<div class="row">
+							<div class="row" ng-show="EspecialidadesCtrl.especialidad.createdAt">
 								<div class="col-md-4"><label>Fecha de creación</label></div>
 								<div class="col-md-8">{{EspecialidadesCtrl.especialidad.createdAt}} por {{EspecialidadesCtrl.especialidad.createdBy.name}}</div>
 							</div>

@@ -22,33 +22,21 @@
             <h3 class="panel-title">Especialidad</h3>
         </div>
         <div class="panel-body">
-			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-show="!EspecialidadCtrl.editing">
-				<div class="row">
-					<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4"><label>Nombre</label></div>
-					<div class="col-md-8">{{EspecialidadCtrl.especialidad.name}}</div>
-				</div>
-				<div class="row">
-					<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4"><label>Descripcion</label></div>
-					<div class="col-md-8">{{EspecialidadCtrl.especialidad.description}}</div>
-				</div>		    
-				<div class="row">
-					<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4"><label>Fecha de creacion</label></div>
-					<div class="col-md-8">{{EspecialidadCtrl.especialidad.createdAt}} por {{EspecialidadCtrl.especialidad.createdBy.name}}</div>
-				</div>
-				<div class="row" ng-show="EspecialidadCtrl.especialidad.lastModifiedAt">
-					<div class="col-md-4"><label>Fecha de modificacion</label></div>
-					<div class="col-md-8">{{EspecialidadCtrl.especialidad.lastModifiedAt}} por {{EspecialidadCtrl.especialidad.lastModifiedBy.name}}</div>		
-				</div>
-			</div>
 			<form name="EspecialidadCtrl.especialidadForm">
 				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-show="EspecialidadCtrl.editing">
-			  		<div class="form-group">
+                    <div class="row">
+                        <div class="alert alert-dismissable alert-warning" ng-show="EspecialidadCtrl.errorMessage">
+                          <button type="button" class="close" ng-click="EspecialidadCtrl.hideErrorMessage()">×</button>
+                          <p>{{EspecialidadCtrl.errorMessage}}</p>
+                        </div>
+                    </div>
+			  		<div class="form-group" ng-class="{'has-error':EspecialidadCtrl.especialidadForm.name.$error.required}">
 						<span><label>Nombre</label><span>
 						<input type="text" name="name" class="form-control" ng-model="EspecialidadCtrl.especialidad.name"required></input >
 					</div>
-			  		<div class="form-group">
+			  		<div class="form-group" ng-class="{'has-error':EspecialidadCtrl.especialidadForm.descripction.$error.required}">
 						<span><label>Descripción</label><span>
-                        <textarea rows="4" cols="50" name="descripction" class="form-control" ng-model="EspecialidadCtrl.especialidad.description"required>
+                        <textarea rows="4" cols="50" name="descripction" class="form-control" ng-model="EspecialidadCtrl.especialidad.description" required>
                         </textarea>
 					</div>		    			
 				</div>

@@ -7,15 +7,17 @@
 
         this.confirm = function confirm () {
             if(this.prestacionForm.$valid){
+                this.hideErrorMessage();
                 $loading.start('app');
                 this.prestacion.$update(function(){
                     $loading.finish('app');
                     $uibModalInstance.close('modified'); 
                 },function(){
+                    $loading.finish('app');
                     this.showErrorMessage();
                 }.bind(this));
             }else{
-                this.errorMessage = 'Revise el formulario por favor';
+                this.errorMessage = 'Por favor revise el formulario';
             }
         };
 
@@ -38,6 +40,7 @@
                 $loading.finish('app');
                 $uibModalInstance.close('deleted');
             },function(){
+                $loading.finish('app');
                 this.showErrorMessage();
             }.bind(this));
         };
@@ -48,12 +51,13 @@
                 $loading.finish('app');
                 $uibModalInstance.close('reactivated');
             },function(){
+                $loading.finish('app');
                 this.showErrorMessage();
             }.bind(this));
         };
 
         this.showErrorMessage = function showErrorMessage(){
-            this.errorMessage = 'Ocurio un error en la comunicacion';
+            this.errorMessage = 'Ocurio un error en la comunicación';
         };
         this.hideErrorMessage = function hideErrorMessage(){
             this.errorMessage = null;

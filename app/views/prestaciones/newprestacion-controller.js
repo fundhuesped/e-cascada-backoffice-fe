@@ -7,14 +7,15 @@
             duration:{}
         };
 
-
-
         this.confirm = function confirm () {
             if(this.newPrestacionForm.$valid){
+                this.hideErrorMessage();
+                $loading.start('newPrestacion');
                 var prestacion = new Prestacion();
                 prestacion.name = this.newPrestacion.name;
                 prestacion.description = this.newPrestacion.description;
                 prestacion.notes = this.newPrestacion.notes;
+                prestacion.status = 'Active';
                 prestacion.durationHours = this.newPrestacion.duration.hours;
                 prestacion.durationMinutes = this.newPrestacion.duration.minutes;
                 prestacion.especialidad = this.newPrestacion.especialidad.id;
@@ -24,20 +25,19 @@
                 },function(error){
                     $loading.finish('newPrestacion');
                     $uibModalInstance.close('error');
-                }
-                );
+                });
+            }else{
+                this.errorMessage = 'Por favor revise el formulario';
             }
-         };
+        };
 
-/*        this.confirm = function confirm () {
-            if(this.newprestacionForm.$valid){
-                $loading.start('app');
-                setTimeout(function(){             
-                    $loading.finish('app');
-                    $uibModalInstance.close('created');
-                 }, 3000);
-            }
-         };*/
+        this.showErrorMessage = function showErrorMessage(){
+            this.errorMessage = 'Ocurio un error en la comunicación';
+        };
+        this.hideErrorMessage = function hideErrorMessage(){
+            this.errorMessage = null;
+        };
+        
         this.close = function close (){
             $uibModalInstance.dismiss('cancel');
         };
