@@ -41,8 +41,8 @@
 					<tbody> 
 						<tr ng-repeat="(key, especialidad) in EspecialidadesCtrl.especialidades" ng-click="EspecialidadesCtrl.detail(especialidad)"  ng-class="{active:especialidad == EspecialidadesCtrl.especialidad}"> 
 							<th scope="row">{{especialidad.id}}</th> 
-							<td>{{especialidad.name}}</td> 
-							<td>{{especialidad.description}}</td> 
+							<td style="max-width:150px; word-wrap:break-word;">{{especialidad.name}}</td>
+							<td style="max-width:150px; word-wrap:break-word;">{{especialidad.description}}</td>
 							<td hidden="hidden">
 								<a ng-href="#especialidad/{{especialidad.id}}">
 						            <button class="btn btn-default">
@@ -70,11 +70,11 @@
 						<div class="detail-info">
 							<div class="row">
 								<div class="col-md-4"><label>Nombre</label></div>
-								<div class="col-md-8">{{EspecialidadesCtrl.especialidad.name}}</div>
+								<div class="col-md-8" style="word-wrap:break-word;">{{EspecialidadesCtrl.especialidad.name}}</div>
 							</div>
 							<div class="row">
 								<div class="col-md-4"><label>Descripción</label></div>
-								<div class="col-md-8">{{EspecialidadesCtrl.especialidad.description}}</div>
+								<div class="col-md-8" style="word-wrap:break-word;">{{EspecialidadesCtrl.especialidad.description}}</div>
 							</div>		    
 							<div class="row" ng-show="EspecialidadesCtrl.especialidad.createdAt">
 								<div class="col-md-4"><label>Fecha de creación</label></div>

@@ -16,7 +16,8 @@
         		        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
         		            <div class="form-group" ng-class="{'has-error':NewEspecialidadCtrl.newEspecialidadForm.name.$error.required}">
         						<span><label>Nombre*</label></span>
-        						<input type="text" name="name" class="form-control" ng-model="NewEspecialidadCtrl.newEspecialidad.name" required></input >
+        						<input type="text" name="name" maxlength="70" class="form-control" ng-model="NewEspecialidadCtrl.newEspecialidad.name" required></input>
+                                <span><label>(máximo 70 caracteres)</label></span>
         		            </div>
         		        </div>
         		    </div>
@@ -24,8 +25,9 @@
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                             <div class="form-group" ng-class="{'has-error':NewEspecialidadCtrl.newEspecialidadForm.description.$error.required}">
                                 <span><label>Decripción*</label></span>
-                                <textarea rows="4" cols="50" name="descripction" class="form-control" ng-model="NewEspecialidadCtrl.newEspecialidad.description" required>
+                                <textarea rows="4" cols="40" name="descripction" maxlength="150" class="form-control" ng-model="NewEspecialidadCtrl.newEspecialidad.description" required>
                                 </textarea>
+                                <span><label>(máximo 150 caracteres)</label></span>
                             </div>
                         </div>
                     </div>

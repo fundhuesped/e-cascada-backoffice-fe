@@ -39,8 +39,8 @@
 					<tbody> 
 						<tr ng-repeat="(key, prestacion) in PrestacionesCtrl.prestaciones" ng-click="PrestacionesCtrl.detail(prestacion)" ng-class="{active:prestacion == PrestacionesCtrl.prestacion}"> 
 							<th scope="row">{{prestacion.id}}</th> 
-							<td>{{prestacion.name}}</td> 
-							<td>{{prestacion.description}}</td> 
+							<td style="max-width:125px; word-wrap:break-word;">{{prestacion.name}}</td>
+							<td style="max-width:125px; word-wrap:break-word;">{{prestacion.description}}</td>
 							<td>{{prestacion.durationHours}}h {{prestacion.durationMinutes}}m </td>
 						</tr> 
 					</tbody> 
@@ -57,11 +57,11 @@
 						<div class="detail-info">
 							<div class="row">
 								<div class="col-md-4"><label>Nombre</label></div>
-								<div class="col-md-8">{{PrestacionesCtrl.prestacion.name}}</div>
+								<div class="col-md-8" style="word-wrap:break-word;">{{PrestacionesCtrl.prestacion.name}}</div>
 							</div>
 							<div class="row">
 								<div class="col-md-4"><label>Descripción</label></div>
-								<div class="col-md-8">{{PrestacionesCtrl.prestacion.description}}</div>
+								<div class="col-md-8" style="word-wrap:break-word;">{{PrestacionesCtrl.prestacion.description}}</div>
 							</div>		    
 							<div class="row">
 								<div class="col-md-4"><label>Duración</label></div>
@@ -69,11 +69,11 @@
 							</div>	
 							<div class="row">
 								<div class="col-md-4"><label>Especialidad</label></div>
-								<div class="col-md-8">{{PrestacionesCtrl.prestacion.especialidad.name}}</div>
+								<div class="col-md-8" style="word-wrap:break-word;">{{PrestacionesCtrl.prestacion.especialidad.name}}</div>
 							</div>		    
 							<div class="row">
 								<div class="col-md-4"><label>Notas</label></div>
-								<div class="col-md-8">{{PrestacionesCtrl.prestacion.notes}}</div>
+								<div class="col-md-8" style="word-wrap:break-word;">{{PrestacionesCtrl.prestacion.notes}}</div>
 							</div>		
 							<div class="row" ng-show="PrestacionesCtrl.prestacion.lastModifiedAt">
 								<div class="col-md-4"><label>Fecha de modificación</label></div>

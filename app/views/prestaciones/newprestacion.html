@@ -16,7 +16,8 @@
         		        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
         		            <div class="form-group" ng-class="{'has-error':NewPrestacionCtrl.newPrestacionForm.name.$error.required}">
         						<span><label>Nombre*</label></span>
-        						<input type="text" name="name" class="form-control" ng-model="NewPrestacionCtrl.newPrestacion.name" ng-required></input >
+        						<input type="text" name="name" maxlength="70" class="form-control" ng-model="NewPrestacionCtrl.newPrestacion.name" ng-required></input >
+                                <span><label>(máximo 70 caracteres)</label></span>
         		            </div>
         		        </div>
         		    </div>
@@ -24,8 +25,9 @@
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                             <div class="form-group" ng-class="{'has-error':NewPrestacionCtrl.newPrestacionForm.descripction.$error.required}">
                                 <span><label>Decripción*</label></span>
-                                <textarea rows="4" cols="50" name="descripction" class="form-control" ng-model="NewPrestacionCtrl.newPrestacion.description" ng-required>
+                                <textarea rows="4" cols="50" name="descripction" maxlength="150" class="form-control" ng-model="NewPrestacionCtrl.newPrestacion.description" ng-required>
                                 </textarea>
+                                <span><label>(máximo 150 caracteres)</label></span>
                             </div>
                         </div>
                     </div>
@@ -51,10 +53,11 @@
 
                     <div class="row">
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                            <div class="form-group" ng-class="{'has-error':NewPrestacionCtrl.newPrestacionForm.notes.$error.required}">
-                                <span><label>Notas*</label></span>
-                                <textarea rows="4" cols="50" name="notes" class="form-control" ng-model="NewPrestacionCtrl.newPrestacion.notes" ng-required>
+                            <div class="form-group">
+                                <span><label>Notas</label></span>
+                                <textarea rows="4" cols="50" name="notes" maxlength="150" class="form-control" ng-model="NewPrestacionCtrl.newPrestacion.notes">
                                 </textarea>
+                                <span><label>(máximo 150 caracteres)</label></span>
                             </div>
                         </div>
                     </div>

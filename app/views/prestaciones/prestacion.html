@@ -34,11 +34,13 @@
 				</div>
 			  		<div class="form-group" ng-class="{'has-error':PrestacionCtrl.prestacionForm.name.$error.required}">
 						<span><label>Nombre</label></span>
-						<input type="text" name="name" class="form-control" ng-model="PrestacionCtrl.prestacion.name"required></input>
+						<input type="text" name="name" maxlength="70" class="form-control" ng-model="PrestacionCtrl.prestacion.name"required></input>
+                        <span><label>(máximo 70 caracteres)</label></span>
 					</div>
 			  		<div class="form-group">
 						<span><label>Descripción</label></span>
-						<input type="text" name="description" class="form-control" ng-model="PrestacionCtrl.prestacion.description" ></input>
+						<input type="text" name="description" maxlength="150" class="form-control" ng-model="PrestacionCtrl.prestacion.description" ></input>
+                        <span><label>(máximo 150 caracteres)</label></span>
 					</div>	
 					<div class="row">
                         <div class="col-xs-12 col-sm-7 col-md-7 col-lg-7">
@@ -62,10 +64,11 @@
 
                     <div class="row">
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                            <div class="form-group" ng-class="{'has-error':PrestacionCtrl.prestacionForm.notes.$error.required}">
+                            <div class="form-group">
                                 <span><label>Notas</label></span>
-                                <textarea rows="4" cols="50" name="notes" class="form-control" ng-model="PrestacionCtrl.prestacion.notes"required >
+                                <textarea rows="4" cols="50" name="notes" maxlength="150" class="form-control" ng-model="PrestacionCtrl.prestacion.notes" >
                                 </textarea>
+                                <span><label>(máximo 150 caracteres)</label></span>
                             </div>
                         </div>
                     </div>
