@@ -18,7 +18,7 @@
                 prestacion.status = 'Active';
                 prestacion.durationHours = this.newPrestacion.duration.hours;
                 prestacion.durationMinutes = this.newPrestacion.duration.minutes;
-                prestacion.especialidad = this.newPrestacion.especialidad.id;
+                prestacion.especialidad = this.newPrestacion.especialidad;
                 prestacion.$save(function(){
                     $loading.finish('newPrestacion');
                     $uibModalInstance.close('created');

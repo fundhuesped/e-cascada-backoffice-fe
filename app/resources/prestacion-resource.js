@@ -24,7 +24,6 @@
             configurable: false,
             get: function () {
               var tempVal = Math.floor(this.duration/60)|0;
-              console.log(tempVal);
               return tempVal;
             },
             set: function (value) {
