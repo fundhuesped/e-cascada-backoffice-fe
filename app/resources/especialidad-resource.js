@@ -2,7 +2,7 @@
     'use strict';
     function EspecialidadProvider() {
       function EspecialidadResource($resource,apiBase) {
-        var Especialidad = $resource(apiBase + 'especialidad/:especialidadId/',{especialidadId:'@id'},{
+        var Especialidad = $resource(apiBase + 'practicas/especialidad/:especialidadId/',{especialidadId:'@id'},{
           update: {
             method:'PUT'
           },
@@ -19,7 +19,7 @@
         });
 
         Especialidad.getUrlForObjectId = function getUrlForObjectId(id){
-          return apiBase + 'especialidad/' + id + '/';
+          return apiBase + 'practicas/especialidad/' + id + '/';
         };
 
         return Especialidad;

@@ -161,6 +161,8 @@
 				selected: false
 			}
 		];
+
+		/*
 		this.prestaciones = [
 			{
 	    		id: 2,
@@ -207,6 +209,8 @@
     		}
     		
     	];
+    	*/
+
 
 	    this.recomendations = [
 	    		{
@@ -220,7 +224,7 @@
 	                	name: 'DNI'
 	                },
 	                docNumber: '43355679',
-	                birthdate: '1967-02-01',
+	                /*birthdate: '1967-02-01',*/
 	                contactPhone: '1158773388',
 	                pnscode: 'MNPC1023NDM'
 	    		},

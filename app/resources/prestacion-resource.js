@@ -2,7 +2,7 @@
     'use strict';
     function PrestacionProvider() {
       function PrestacionResource($resource,apiBase) {
-        var Prestacion = $resource(apiBase + 'prestacion/:prestacionId/',{prestacionId:'@id'},{
+        var Prestacion = $resource(apiBase + 'practicas/prestacion/:prestacionId/',{prestacionId:'@id'},{
           update: {
             method:'PUT'
           },

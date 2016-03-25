@@ -124,6 +124,19 @@
           },         
         }
       })
+      .state('pacientes', {
+        url: '/pacientes?detail=:pacienteId',
+        views: {
+          'navbar':  {
+            templateUrl: 'views/navbar/navbar.html',
+          },
+          'main':  {
+            templateUrl: 'views/pacientes/pacientes.html',
+            controller:'PacientesCtrl',
+            controllerAs: 'PacientesCtrl'
+          },
+        }
+      })
       .state('newpaciente', {
         url: '/newpaciente',
         views: {

@@ -1,38 +1,79 @@
 (function(){
     'use strict';
-    
-    function especialidadesCtrl () {
-    	this.especialidades = [
-    		{
-	    		id: 1,
-	    		name: 'Pediatria',
-                createdAt: '2016-01-02',
-                lastModifiedAt: null,
-                description: 'Especialidad dedicada a menores de 15 años',
-                createdBy: {
-                    id:1,
-                    name: 'Admin'
-                },
-                lastModifiedBy:null
-    		},
-    		{
-	    		id: 2,
-	    		name: 'Infectologia',
-                description: 'Se encarga del estudio, la prevención, el diagnóstico, tratamiento y pronóstico de las enfermedades producidas por agentes infecciosos',
-                createdAt: '2016-01-02',
-                lastModifiedAt: null,
-                createdBy: {
-                    id:1,
-                    name: 'Admin'
-                },
-                lastModifiedBy:null
 
-    		}
-    	];
-    	this.detail = function detail(especialidad){
-    		this.especialidad = especialidad;
-    	}
-    	
+    function pacientesCtrl ($uibModal,toastr,Paciente) {
+        this.pacientes = [];
+        this.paciente = null;
+
+        this.detail = function detail(paciente){
+            this.paciente = paciente;
+        };
+
+        this.modifyPaciente = function modifyPaciente(selectedPaciente){
+            var modalInstance = $uibModal.open({
+                templateUrl: '/views/pacientes/paciente.html',
+                backdrop:'static',
+                controller: 'PacienteCtrl',
+                controllerAs: 'PacienteCtrl',
+                resolve: {
+                    paciente: function () {
+                        return selectedPaciente;
+                    }
+                }
+            });
+            modalInstance.result.then(function (result) {
+                if(result=='modified'){
+                    toastr.success('Paciente modificado');
+                }else if(result=='deleted'){
+                    toastr.success('Paciente eliminado');
+                }else if(result=='reactivated'){
+                    toastr.success('Paciente reactivado');
+                }
+                this.searchName();
+            }.bind(this), function () {
+            });
+        };
+
+        this.searchName = function searchName(){
+            this.paciente = null;
+            var currentStatusFilter;
+            if(this.statusFilter==1){
+                currentStatusFilter = 'Active';
+            }else{
+                if(this.statusFilter==3){
+                    currentStatusFilter = 'Inactive';
+                }
+            }
+            if(currentStatusFilter){
+                this.pacientes = Paciente.query({name:this.nameFilter,status:currentStatusFilter});
+
+            }else{
+                this.pacientes = Paciente.query({name:this.nameFilter});
+            }
+
+        };
+
+        this.newPaciente = function newPaciente(){
+            var modalInstance = $uibModal.open({
+                templateUrl: '/views/pacientes/newpaciente.html',
+                backdrop:'static',
+                controller: 'NewPacienteCtrl',
+                controllerAs: 'NewPacienteCtrl'
+            });
+            modalInstance.result.then(function () {
+                toastr.success('Paciente creado');
+                this.searchName();
+            }.bind(this), function () {
+
+            });
+        };
+
+        //Controller initialization
+        this.init = function init(){
+            this.statusFilter = "1";
+            this.searchName();
+        };
+        this.init();
     }
-    angular.module('turnos.especialidades').controller('EspecialidadesCtrl',[especialidadesCtrl]);
+    angular.module('turnos.pacientes').controller('PacientesCtrl',['$uibModal','toastr','Paciente',pacientesCtrl]);
 })();

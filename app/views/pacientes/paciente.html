@@ -1,156 +1,55 @@
-<div ng-class="{container:!PacienteCtrl.isModal}">
-    <div class="panel panel-default">
-        <div class="panel-heading">    
-            <h3 class="panel-title">Detalle de paciente</h3>
-        </div>
-        <div class="panel-body">
-        	<form name="paciente">
-        		<div class="col-md-6 col-md-offset-3">
-        			<div class="row">
-        		        <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
-        		            <div class="form-group">
-        						<span><label>Primer nombre</label></span>
-        						<input type="text" name="firstname" class="form-control" ng-model="PacienteCtrl.paciente.firstname"required  ng-show="PacienteCtrl.editing" ></input >
-                                <p class="form-control-static" ng-show="!PacienteCtrl.editing">{{PacienteCtrl.paciente.firstname}}</p>
-        		            </div>
-        		        </div>
-        		        <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
-        		            <div class="form-group">
-        						<span><label>Otros nombres</label></span>
-        						<input type="text" name="othernames" class="form-control" ng-model="PacienteCtrl.paciente.othernames"required  ng-show="PacienteCtrl.editing"></input >
-                                <p class="form-control-static" ng-show="!PacienteCtrl.editing">{{PacienteCtrl.paciente.othernames}}</p>
-
-        		            </div>
-        		        </div>
-        		    </div>
-                    <div class="row">
-                        <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
-                            <div class="form-group">
-                                <span><label>Apellido paterno</label></span>
-                                <input type="text" name="fathersurname" class="form-control" ng-model="PacienteCtrl.paciente.fathersurname"required  ng-show="PacienteCtrl.editing"></input >
-                                <p class="form-control-static" ng-show="!PacienteCtrl.editing">{{PacienteCtrl.paciente.fathersurname}}</p>
-                            </div>
-                        </div>
-                        <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
-                            <div class="form-group">
-                                <span><label>Apellido materno</label></span>
-                                <input type="text" name="mothersurname" class="form-control" ng-model="PacienteCtrl.paciente.mothersurname"required  ng-show="PacienteCtrl.editing"></input >
-                                <p class="form-control-static" ng-show="!PacienteCtrl.editing">{{PacienteCtrl.paciente.mothersurname}}</p>
-
-                            </div>
-                        </div>
-                    </div>
-        			<div class="row">
-                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                            <div class="row">
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                    <span><label>Tipo y número de documento</label></span>
-                                </div>
-                                <div class="form-group">
-                                    <!-- just add has-error in error case -->
-                                    <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
-                                        <select class="form-control" id="idDocType" ng-model="PacienteCtrl.paciente.docType.id" ng-show="PacienteCtrl.editing" required>
-                                            <option value="1" selected>DNI</option>
-                                            <option value="2">LE</option>
-                                            <option value="3">LC</option>
-                                            <option value="4">Pasaporte</option>
-                                        </select>
-                                        <p class="form-control-static" ng-show="!PacienteCtrl.editing">{{PacienteCtrl.paciente.docType.name}}</p>
-
-                                    </div>
-                                    <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7 form-group">
-                                        <input class="form-control" maxlength="20" type="text" name="dni" id="docNumber" ng-model="PacienteCtrl.paciente.docNumber" required  ng-show="PacienteCtrl.editing">
-                                        <p class="form-control-static" ng-show="!PacienteCtrl.editing">{{PacienteCtrl.paciente.docNumber}}</p>
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
-                            <div class="row">
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                    <span><label>Sexo al nacer</label></span>
-                                </div>
-                                <div class="form-group">
-                                    <!-- just add has-error in error case -->
-                                    <div class="col-xs-6 col-sm-12 col-md-12 col-lg-12">
-                                        <select class="form-control" id="genderAtBirth" ng-model="PacienteCtrl.paciente.genderAtBirth" required  ng-show="PacienteCtrl.editing">
-                                            <option value="" disabled selected>Sexo</option>
-                                            <option value="F">Femenino</option>
-                                            <option value="M">Masculino</option>
-                                        </select>
-                                        <p class="form-control-static" ng-show="!PacienteCtrl.editing">{{PacienteCtrl.paciente.genderAtBirth=='F'?'Femenino':'Masculino'}}</p>
-                                    </div>
-                                    <div class="clearfix"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
-                            <div class="form-group">
-                                <span><label>Fecha de nacimiento</label></span>
-                                <input type="date" name="birthdate" class="form-control" ng-model="PacienteCtrl.paciente.birthdate"required ng-show="PacienteCtrl.editing"></input >
-                                <p class="form-control-static" ng-show="!PacienteCtrl.editing">{{PacienteCtrl.paciente.birthdate}}</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                            <div class="form-group">
-                                <div class="col-md-6">
-                                    <button id="btn-confirm" type="button" ng-click="PacienteCtrl.toggleEdit()"class="btn btn-success">Modificar</button>
-                                </div>
-                                <div class="col-md-6" ng-show="PacienteCtrl.editing">
-                                    <button id="btn-cancel" type="button" class="btn btn-danger">Cancelar</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-        		</div>
-        	</form>
+<div class="modal fade" ng-class="{'in':PacienteCtrl.modalStyle}" ng-style="PacienteCtrl.modalStyle">
+    <div class="modal-dialog modal-confirmation">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">¿{{PacienteCtrl.paciente.status == "Active" ? "Eliminar" : "Reactivar"}}?</h4>
+            </div>
+            <div class="modal-body">
+                <p>¿Esta seguro que desea {{EspecialidadCtrl.especialidad.status == "Active" ? "eliminar" : "reactivar"}} la especialidad seleccionada?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-cancel" ng-click="EspecialidadCtrl.dismissModal()">Cancelar</button>
+                <button type="button" class="btn btn-danger btn-confirm" ng-click="EspecialidadCtrl.confirmModal()"><span class="glyphicon glyphicon-remove"></span> {{EspecialidadCtrl.especialidad.status == "Active" ? "Eliminar" : "Reactivar"}}</button>
+            </div>
         </div>
     </div>
+</div>
+
+
+<div class="">
     <div class="panel panel-default">
-        <div class="panel-heading">    
-            <h3 class="panel-title">Turnos</h3>
+        <div class="panel-heading">
+            <h3 class="panel-title">Especialidad</h3>
         </div>
         <div class="panel-body">
-	        <table class="table table-hover"> 
-				<thead> 
-					<tr> 
-						<th>#</th> 
-						<th>Fecha</th> 
-						<th>Especialidad</th> 
-						<th>Prestacion</th> 
-						<th>Medico</th> 
-						<th>Estado</th> 
-						<th>Acciones</th> 
-					</tr> 
-				</thead> 
-				<tbody> 
-					<tr ng-repeat="(key, turno) in PacienteCtrl.turnos"> 
-						<th scope="row">{{turno.id}}</th> 
-						<td>{{turno.fecha}}</td> 
-						<td>{{turno.especialidad}}</td> 
-						<td>{{turno.prestacion}}</td> 
-						<td>{{turno.medico}}</td> 
-						<td>{{turno.estado}}</td> 
-						<td>
-							<a ng-href="#turno/{{turno.id}}">
-					            <button class="btn btn-default">
-					            	<span class="glyphicon glyphicon-pencil">
-					            	</span>
-					            </button>
-					        </a>
-				            <button class="btn btn-default" ng-click="PacienteCtrl.delete(turno.id)">
-				            	<span class="glyphicon glyphicon-remove">
-				            	</span>
-				            </button>
-						</td> 
-					</tr> 
-				</tbody> 
-			</table>
-    	</div>
+            <form name="EspecialidadCtrl.especialidadForm">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-show="EspecialidadCtrl.editing">
+                    <div class="row">
+                        <div class="alert alert-dismissable alert-warning" ng-show="EspecialidadCtrl.errorMessage">
+                            <button type="button" class="close" ng-click="EspecialidadCtrl.hideErrorMessage()">×</button>
+                            <p>{{EspecialidadCtrl.errorMessage}}</p>
+                        </div>
+                    </div>
+                    <div class="form-group" ng-class="{'has-error':EspecialidadCtrl.especialidadForm.name.$error.required}">
+						<span><label>Nombre</label><span>
+						<input type="text" name="name" class="form-control" ng-model="EspecialidadCtrl.especialidad.name"required></input >
+                    </div>
+                    <div class="form-group" ng-class="{'has-error':EspecialidadCtrl.especialidadForm.descripction.$error.required}">
+						<span><label>Descripción</label><span>
+                        <textarea rows="4" cols="50" name="descripction" class="form-control" ng-model="EspecialidadCtrl.especialidad.description" required>
+                        </textarea>
+                    </div>
+                </div>
+            </form>
+            <div class="col-xs-6 col-sm-7 col-md-7 col-lg-7">
+                <button ng-click="EspecialidadCtrl.changeStatus()" class="btn btn-link " >{{EspecialidadCtrl.especialidad.status == "Active" ? "Eliminar" : "Reactivar"}}</button>
+            </div>
+            <div class="col-xs-6 col-sm-2 col-md-2 col-lg-2">
+                <button ng-click="EspecialidadCtrl.cancel()" class="btn btn-default">Cancelar</button>
+            </div>
+            <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
+                <button ng-click="EspecialidadCtrl.confirm()" class="btn btn-primary"><span class="glyphicon glyphicon-ok"></span> Confirmar</button>
+            </div>
+        </div>
     </div>
 </div>
