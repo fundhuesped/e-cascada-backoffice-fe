@@ -67,14 +67,13 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                            <div class="row">
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                    <div class="form-group" ng-class="{'has-error':NewPacienteCtrl.newPacienteForm.birthDate.$error.required}">
-                                        <span><label>Fecha Nacimiento*</label></span>
-                                        <input type="date" name="birthDate" class="form-control" ng-model="NewPacienteCtrl.newPaciente.birthDate" placeholder="yyyy-MM-dd" min="1900-01-01" max="2030-12-31" required />
-                                    </div>
-                                </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-10 col-lg-10 col-lg-10 col-lg-10">
+                            <div class="form-group" ng-class="{'has-error':NewPacienteCtrl.newPacienteForm.birthDate.$error.required}">
+                                <span><label>Fecha nacimiento</label></span>
+                                <input rsmdatedropdowns ng-model="NewPacienteCtrl.newPaciente.birthDate"/>
                             </div>
                         </div>
                     </div>

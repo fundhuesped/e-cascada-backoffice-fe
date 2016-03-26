@@ -14,18 +14,15 @@
                                         <span><label>Tipo y número de documento</label></span>
                                     </div>
                                     <div class="form-group">
-                                        <!-- just add has-error in error case -->
-                                        <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
-                                            <select class="form-control" id="idDocType" ng-model="NewTurnoCtrl.paciente.docType.id" ng-disabled="NewTurnoCtrl.paciente.id">
-                                                <option value=""></option>
-                                                <option value="1" selected="selected">DNI</option>
-                                                <option value="2">LE</option>
-                                                <option value="3">LC</option>
-                                                <option value="4">Pasaporte</option>
-                                            </select>
+                                        <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
+                                            <div class="form-group" ng-class="{'has-error':NewTurnoCtrl.newPaciente.documentType.$error.required}">
+                                                <select class="form-control" name="document" ng-model="NewTurnoCtrl.paciente.documentType" ng-disabled="NewTurnoCtrl.paciente.id" ng-options="document as document.name for document in NewTurnoCtrl.documents track by document.id" ng-change="NewTurnoCtrl.lookForPacientes()">
+                                                    <option value=""></option>
+                                                </select>
+                                            </div>
                                         </div>
                                         <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7 form-group">
-                                            <input class="form-control" maxlength="20" type="text" name="dni" id="docNumber" ng-model="NewTurnoCtrl.paciente.docNumber" ng-disabled="NewTurnoCtrl.paciente.id" ng-model-options="{ debounce: { 'default': 500 } }" ng-change="NewTurnoCtrl.lookForPacientes()">
+                                            <input class="form-control" maxlength="20" type="text" name="document" id="documentNumber" ng-model="NewTurnoCtrl.paciente.documentNumber" ng-disabled="NewTurnoCtrl.paciente.id" ng-model-options="{ debounce: { 'default': 500 } }" ng-change="NewTurnoCtrl.lookForPacientes()">
                                         </div>
                                     </div>
                                 </div>
@@ -35,35 +32,13 @@
             		        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
             		            <div class="form-group">
             						<span><label>Nombre(*)</label></span>
-            						<input type="text" name="firstname" class="form-control" ng-model="NewTurnoCtrl.paciente.firstname" required ng-disabled="NewTurnoCtrl.paciente.id" ng-model-options="{ debounce: { 'default': 500 } }" ng-change="NewTurnoCtrl.lookForPacientes()">
+            						<input type="text" name="firstName" class="form-control" ng-model="NewTurnoCtrl.paciente.firstName" required ng-disabled="NewTurnoCtrl.paciente.id" ng-model-options="{ debounce: { 'default': 500 } }" ng-change="NewTurnoCtrl.lookForPacientes()">
             		            </div>
             		        </div>
                             <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                                 <div class="form-group">
                                     <span><label>Apellido(*)</label></span>
-                                    <input type="text" name="fathersurname" class="form-control" ng-model="NewTurnoCtrl.paciente.fathersurname" required ng-disabled="NewTurnoCtrl.paciente.id" ng-model-options="{ debounce: { 'default': 500 } }" ng-change="NewTurnoCtrl.lookForPacientes()">
-                                </div>
-                            </div>
-                        </div>
-            			<div class="row">
-                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                                <div class="row">
-                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                        <div class="form-group">
-                                            <span><label>Fecha de nacimiento</label></span>
-                                            <input type="date" name="birthdate" class="form-control" ng-model="NewTurnoCtrl.paciente.birthdate" ng-disabled="NewTurnoCtrl.paciente.id" ng-model-options="{ debounce: { 'default': 500 } }" ng-change="NewTurnoCtrl.lookForPacientes()">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                                <div class="row">
-                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                        <div class="form-group">
-                                            <span><label>Teléfono(*)</label></span>
-                                            <input type="text" name="contactPhone" class="form-control" ng-model="NewTurnoCtrl.paciente.contactPhone" required ng-model-options="{ debounce: { 'default': 500 } }">
-                                        </div>
-                                    </div>
+                                    <input type="text" name="fatherSurname" class="form-control" ng-model="NewTurnoCtrl.paciente.fatherSurname" required ng-disabled="NewTurnoCtrl.paciente.id" ng-model-options="{ debounce: { 'default': 500 } }" ng-change="NewTurnoCtrl.lookForPacientes()">
                                 </div>
                             </div>
                         </div>
@@ -72,34 +47,53 @@
                                 <div class="row">
                                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                         <div class="form-group">
+                                            <span><label>Teléfono(*)</label></span>
+                                            <input type="text" name="contactPhone" class="form-control" ng-disabled="NewTurnoCtrl.paciente.id" ng-model="NewTurnoCtrl.paciente.telephone" required ng-model-options="{ debounce: { 'default': 500 } }">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <div class="form-group">
                                             <span><label>Email</label></span>
-                                            <input type="email" name="email" class="form-control" ng-model="NewTurnoCtrl.paciente.email">
+                                            <input type="email" name="email" class="form-control" ng-model="NewTurnoCtrl.paciente.email" ng-disabled="NewTurnoCtrl.paciente.id" ng-change="NewTurnoCtrl.lookForPacientes()">
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <!--<div class="row">
-                            <div class="col-xs-4 col-xs-offset-8 col-sm-4 col-xs-offset-8 col-md-4 col-xs-offset-8 col-lg-4 col-xs-offset-8">
-                                <button id="btn-confirm" type="button" class="btn btn-success" ng-click="NewTurnoCtrl.lookForPacientes()" >Buscar</button>
+            			<div class="row">
+                            <div class="col-lg-10 col-lg-10 col-lg-10 col-lg-10">
+                                <div class="row">
+                                    <div class="col-lg-10 col-lg-10 col-lg-10 col-lg-10">
+                                        <div class="form-group">
+                                            <span><label>Fecha de nacimiento</label></span>
+                                            <input rsmdatedropdowns ng-model="NewTurnoCtrl.paciente.birthDate" ng-disabled="NewTurnoCtrl.paciente.id" ng-model-options="{ debounce: { 'default': 500 } }" ng-change="NewTurnoCtrl.lookForPacientes()">
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        -->
                     </div>
                     <div class="col-md-6 right-column" >
                         <div class="row">
                             <div ng-show="!NewTurnoCtrl.shouldLookForPacient()" style="font-size: 20px;padding: 80px;">
                                 Por favor comience a completar el formulario para buscar pacientes
                             </div>
-                            <table class="table" dw-loading="recomendations"> 
-                                <tbody> 
-                                    <tr ng-repeat="(key, recomendation) in NewTurnoCtrl.recomendationList" ng-class="{'bg-success':recomendation.selected}"> 
+                            <table class="table" dw-loading="recomendations">
+                                <tbody>
+                                    <tr ng-repeat="(key, recomendation) in NewTurnoCtrl.recomendationList" ng-class="{'bg-success':recomendation.selected}">
                                         <td class="col-md-5">
-                                            <div><label>{{recomendation.firstname}} {{recomendation.othernames}} {{recomendation.fathersurname}} {{recomendation.mothersurname}}</label></div>
-                                            <div>{{recomendation.docType.name}} {{recomendation.docNumber}} <div>{{recomendation.birthdate || 'No informado'}}</div></div> 
+                                            <div><label>{{recomendation.firstName}} {{recomendation.otherNames}} {{recomendation.fatherSurname}} {{recomendation.motherSurname}}</label></div>
+                                            <div>{{recomendation.documentType.name}} {{recomendation.documentNumber}} <div>{{recomendation.birthDate || 'No informado'}}</div></div>
                                         </td>
                                         <td class="col-md-4">
-                                            <div><label>Tel:</label> {{recomendation.contactPhone || 'No informado'}}</div>
+                                            <div><label>Tel</label> {{recomendation.telephone || 'No informado'}}</div>
+                                        </td>
+                                        <td class="col-md-4">
+                                            <div><label>e-m@il</label> {{recomendation.email || 'No informado'}}</div>
                                         </td>
                                         <td class="col-md-3">
                                             <button class="btn btn-success" type="button" ng-click="NewTurnoCtrl.selectPaciente(recomendation)" ng-show="!NewTurnoCtrl.paciente.id">
@@ -108,8 +102,8 @@
                                             <button class="btn btn-default" type="button" ng-click="NewTurnoCtrl.openPacienteModal(recomendation)">
                                                 <span class="glyphicon glyphicon-zoom-in"></span>
                                             </button>
-                                        </td>  
-                                    </tr> 
+                                        </td>
+                                    </tr>
                                 </tbody> 
                             </table>
                             </div>
