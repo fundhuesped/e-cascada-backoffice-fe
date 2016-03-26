@@ -5,11 +5,11 @@
                 <h4 class="modal-title">¿{{PacienteCtrl.paciente.status == "Active" ? "Eliminar" : "Reactivar"}}?</h4>
             </div>
             <div class="modal-body">
-                <p>¿Esta seguro que desea {{EspecialidadCtrl.especialidad.status == "Active" ? "eliminar" : "reactivar"}} la especialidad seleccionada?</p>
+                <p>¿Esta seguro que desea {{PacienteCtrl.paciente.status == "Active" ? "eliminar" : "reactivar"}} el paciente seleccionado?</p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default btn-cancel" ng-click="EspecialidadCtrl.dismissModal()">Cancelar</button>
-                <button type="button" class="btn btn-danger btn-confirm" ng-click="EspecialidadCtrl.confirmModal()"><span class="glyphicon glyphicon-remove"></span> {{EspecialidadCtrl.especialidad.status == "Active" ? "Eliminar" : "Reactivar"}}</button>
+                <button type="button" class="btn btn-default btn-cancel" ng-click="PacienteCtrl.dismissModal()">Cancelar</button>
+                <button type="button" class="btn btn-danger btn-confirm" ng-click="PacienteCtrl.confirmModal()"><span class="glyphicon glyphicon-remove"></span> {{PacienteCtrl.paciente.status == "Active" ? "Eliminar" : "Reactivar"}}</button>
             </div>
         </div>
     </div>
@@ -19,36 +19,141 @@
 <div class="">
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h3 class="panel-title">Especialidad</h3>
+            <h3 class="panel-title">Paciente</h3>
         </div>
         <div class="panel-body">
-            <form name="EspecialidadCtrl.especialidadForm">
-                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-show="EspecialidadCtrl.editing">
+            <form name="PacienteCtrl.pacienteForm">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                     <div class="row">
-                        <div class="alert alert-dismissable alert-warning" ng-show="EspecialidadCtrl.errorMessage">
-                            <button type="button" class="close" ng-click="EspecialidadCtrl.hideErrorMessage()">×</button>
-                            <p>{{EspecialidadCtrl.errorMessage}}</p>
+                        <div class="alert alert-dismissable alert-warning" ng-show="PacienteCtrl.errorMessage">
+                            <button type="button" class="close" ng-click="NewPacienteCtrl.hideErrorMessage()">×</button>
+                            <p>{{PacienteCtrl.errorMessage}}</p>
                         </div>
                     </div>
-                    <div class="form-group" ng-class="{'has-error':EspecialidadCtrl.especialidadForm.name.$error.required}">
-						<span><label>Nombre</label><span>
-						<input type="text" name="name" class="form-control" ng-model="EspecialidadCtrl.especialidad.name"required></input >
+
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
+                            <div class="form-group" ng-class="{'has-error':PacienteCtrl.pacienteForm.firstName.$error.required}">
+                                <span><label>Nombre*</label></span>
+                                <input type="text" name="firstName" maxlength="70" class="form-control" ng-model="PacienteCtrl.paciente.firstName" required>
+                                <span><label>(máximo 70 caracteres)</label></span>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
+                            <div class="form-group">
+                                <span><label>Otro nombre</label></span>
+                                <input type="text" name="otherNames" maxlength="70" class="form-control" ng-model="PacienteCtrl.paciente.otherNames">
+                                <span><label>(máximo 70 caracteres)</label></span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-group" ng-class="{'has-error':EspecialidadCtrl.especialidadForm.descripction.$error.required}">
-						<span><label>Descripción</label><span>
-                        <textarea rows="4" cols="50" name="descripction" class="form-control" ng-model="EspecialidadCtrl.especialidad.description" required>
-                        </textarea>
+
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
+                            <div class="form-group" ng-class="{'has-error':PacienteCtrl.pacienteForm.fatherSurname.$error.required}">
+                                <span><label>Apellido paterno*</label></span>
+                                <input type="text" name="fatherSurname" maxlength="70" class="form-control" ng-model="PacienteCtrl.paciente.fatherSurname" required>
+                                <span><label>(máximo 70 caracteres)</label></span>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
+                            <div class="form-group">
+                                <span><label>Apellido materno</label></span>
+                                <input type="text" name="motherSurname" maxlength="70" class="form-control" ng-model="PacienteCtrl.paciente.motherSurname">
+                                <span><label>(máximo 70 caracteres)</label></span>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </form>
+
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <span><label>Tipo y número de documento</label></span>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
+                                        <div class="form-group" ng-class="{'has-error':PacienteCtrl.pacienteForm.documentType.$error.required}">
+                                            <select class="form-control" name="document" ng-model="PacienteCtrl.paciente.documentType" ng-options="document as document.name for document in PacienteCtrl.documents track by document.id" required>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7 form-group">
+                                        <input class="form-control" maxlength="10" type="text" name="documentNumber" id="documentNumber" ng-model="PacienteCtrl.paciente.documentNumber" required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <div class="form-group" ng-class="{'has-error':PacienteCtrl.pacienteForm.birthDate.$error.required}">
+                                        <span><label>Fecha Nacimiento*</label></span>
+                                        <input rsmdatedropdowns ng-model="PacienteCtrl.paciente.birthDate" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <span><label>Sexo al nacer</label></span>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-xs-6 col-sm-12 col-md-12 col-lg-12">
+                                        <div class="form-group" ng-class="{'has-error':PacienteCtrl.pacienteForm.genderAtBirth.$error.required}">
+                                            <select class="form-control" name="genderAtBirth" ng-model="PacienteCtrl.paciente.genderAtBirth" ng-options="genderAtBirth as genderAtBirth.name for genderAtBirth in PacienteCtrl.sexTypes track by genderAtBirth.id" required>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <span><label>Genero por eleccion</label></span>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-xs-6 col-sm-12 col-md-12 col-lg-12">
+                                        <div class="form-group" ng-class="{'has-error':PacienteCtrl.pacienteForm.genderOfChoice.$error.required}">
+                                            <select class="form-control" name="genderOfChoice" ng-model="PacienteCtrl.paciente.genderOfChoice" ng-options="genderOfChoice as genderOfChoice.name for genderOfChoice in PacienteCtrl.sexTypes track by genderOfChoice.id" required>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
+                            <div class="form-group">
+                                <span><label>Email</label></span>
+                                <input type="text" name="email" maxlength="70" class="form-control" ng-model="PacienteCtrl.paciente.email">
+                                <span><label>(máximo 70 caracteres)</label></span>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
+                            <div class="form-group" ng-class="{'has-error':PacienteCtrl.pacienteForm.telephone.$error.required}">
+                                <span><label>Telefono*</label></span>
+                                <input type="text" name="telephone" maxlength="70" class="form-control" ng-model="PacienteCtrl.paciente.telephone" required>
+                                <span><label>(máximo 70 caracteres)</label></span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
             <div class="col-xs-6 col-sm-7 col-md-7 col-lg-7">
-                <button ng-click="EspecialidadCtrl.changeStatus()" class="btn btn-link " >{{EspecialidadCtrl.especialidad.status == "Active" ? "Eliminar" : "Reactivar"}}</button>
+                <button ng-click="PacienteCtrl.changeStatus()" class="btn btn-link " >{{PacienteCtrl.paciente.status == "Active" ? "Eliminar" : "Reactivar"}}</button>
             </div>
             <div class="col-xs-6 col-sm-2 col-md-2 col-lg-2">
-                <button ng-click="EspecialidadCtrl.cancel()" class="btn btn-default">Cancelar</button>
+                <button ng-click="PacienteCtrl.cancel()" class="btn btn-default">Cancelar</button>
             </div>
             <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
-                <button ng-click="EspecialidadCtrl.confirm()" class="btn btn-primary"><span class="glyphicon glyphicon-ok"></span> Confirmar</button>
+                <button ng-click="PacienteCtrl.confirm()" class="btn btn-primary"><span class="glyphicon glyphicon-ok"></span>Confirmar</button>
             </div>
         </div>
     </div>

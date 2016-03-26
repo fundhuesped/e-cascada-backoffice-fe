@@ -1,64 +1,93 @@
 (function(){
     'use strict';
-    
-    function pacienteCtrl ($stateParams, paciente) {
-        if(paciente){
-            this.paciente = paciente;
-            this.isModal = true;
-        }else{
-            this.paciente =
-            {
-                id: 1,
-                firstname: 'Nicolas',
-                othernames: 'Lelio',
-                fathersurname: 'Gonzalez',
-                mothersurname: 'Benedetti',
-                docType: {
-                    id: 1,
-                    name: 'DNI'
-                },
-                genderAtBirth: 'M',
-                docNumber: '34456863',
-                birthdate:'1989-01-07',
-                createdAt: '2016-01-02',
-                lastModifiedAt: null,
-                createdBy: {
-                    id:1,
-                    name: 'Admin'
-                },
-                lastModifiedBy:null
-            };            
+
+    function pacienteCtrl ($loading,$uibModalInstance,$filter,paciente,Document,Sex) {
+        this.paciente = angular.copy(paciente);
+        this.editing = true;
+        this.errorMessage = null;
+
+        this.confirm = function confirm () {
+            if(this.pacienteForm.$valid){
+                this.hideErrorMessage();
+                $loading.start('app');
+                this.paciente.birthDate = $filter('date')(this.paciente.birthDate, "yyyy-MM-dd");
+                this.paciente.$update(function(){
+                    $loading.finish('app');
+                    $uibModalInstance.close('modified');
+                },function(){
+                    this.showErrorMessage();
+                });
+            }else{
+                this.errorMessage = 'Por favor revise el formulario';
+            }
+        };
+
+        //Confirm delete modal
+        this.showModal = function showModal(){
+            this.modalStyle = {display:'block'};
+        };
+
+        this.confirmModal = function confirmModal(){
+            this.confirmStatusChange();
+        };
+
+        this.dismissModal = function showModal(){
+            this.modalStyle = {};
+        };
+        this.showErrorMessage = function showErrorMessage(){
+            this.errorMessage = 'Ocurio un error en la comunicación';
+        };
+        this.hideErrorMessage = function hideErrorMessage(){
+            this.errorMessage = null;
+        };
+
+        this.confirmDelete = function confirmDelete(pacienteInstance){
+            pacienteInstance.status = 'Inactive';
+            pacienteInstance.$update(function(){
+                $loading.finish('app');
+                $uibModalInstance.close('deleted');
+            },function(){
+                $loading.finish('app');
+                $uibModalInstance.close('deleted');
+            });
+        }
+        this.confirmReactivate = function confirmReactivate(pacienteInstance){
+            pacienteInstance.status = 'Active';
+            pacienteInstance.$update(function(){
+                $loading.finish('app');
+                $uibModalInstance.close('reactivated');
+            },function(){
+                $loading.finish('app');
+                $uibModalInstance.close('reactivated');
+            });
         }
 
-
-        this.turnos = [
-        {
-            id: 1,
-            fecha: '2016-02-02',
-            especialidad: 'Infectologia',
-            prestacion: 'Turno infectologia',
-            medico: 'Fernandez',
-            estado:'Pendiente de confirmar'
-        },
-        {
-            id: 2,
-            fecha: '2016-01-28',
-            especialidad: 'Infectologia',
-            prestacion: 'Turno medicamento',
-            medico: 'Fernandez',
-            estado:'Confirmado'
-        },
-        {
-            id: 3,
-            fecha: '2015-10-16',
-            especialidad: 'Infectologia',
-            prestacion: 'Turno medicamento',
-            medico: 'Fernandez',
-            estado:'Cerrado'
-        }]    
-        this.toggleEdit = function toggleEdit(){
-            this.editing = !this.editing;
+        this.confirmStatusChange = function confirmDelete(){
+            var pacienteInstance = angular.copy(paciente);
+            $loading.start('app');
+            if(pacienteInstance.status=='Active'){
+                this.confirmDelete(pacienteInstance);
+            }else{
+                if(pacienteInstance.status=='Inactive'){
+                    this.confirmReactivate(pacienteInstance);
+                }
+            }
         };
+
+        this.changeStatus = function changeStatus() {
+            this.showModal();
+        };
+
+        this.cancel = function cancel (){
+            $uibModalInstance.dismiss('cancel');
+        };
+
+        this.init = function init(){
+            this.documents = Document.getActiveList();
+            this.sexTypes = Sex.getActiveList()
+        };
+        this.init();
+
     }
-    angular.module('turnos.pacientes').controller('PacienteCtrl',['$stateParams','paciente',pacienteCtrl]);
+    angular.module('turnos.pacientes').controller('PacienteCtrl',['$loading','$uibModalInstance','$filter','paciente','Document','Sex',pacienteCtrl]);
 })();

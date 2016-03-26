@@ -16,18 +16,11 @@
                 }
             }
             if(currentStatusFilter){
-                this.prestaciones = Prestacion.query({name:this.nameFilter,status:currentStatusFilter},function(){
-                   for (var i = this.prestaciones.length - 1; i >= 0; i--) {
-                        this.prestaciones[i].especialidadObj = Especialidad.get({especialidadId:this.prestaciones[i].especialidad.id});
-                    }
-                }.bind(this));
-           }else{
-               this.prestaciones = Prestacion.query({name:this.nameFilter},function(){
-                   for (var i = this.prestaciones.length - 1; i >= 0; i--) {
-                        this.prestaciones[i].especialidadObj = Especialidad.get({especialidadId:this.prestaciones[i].especialidad.id});
-                    }
-                }.bind(this));
-           }
+                this.prestaciones = Prestacion.query({name:this.nameFilter,status:currentStatusFilter});
+
+            }else{
+                this.prestaciones = Prestacion.query({name:this.nameFilter});
+            }
         };
 
     	this.detail = function detail(prestacion){

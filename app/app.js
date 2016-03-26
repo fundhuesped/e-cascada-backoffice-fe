@@ -15,7 +15,8 @@
   'turnos.login',
   'turnos.resources',
   'darthwade.dwLoading',
-  'toastr'
+  'toastr',
+  'date-dropdowns'
 ])
   .config(function ($stateProvider, $urlRouterProvider,$resourceProvider) {
     //delete $httpProvider.defaults.headers.common['X-Requested-With'];
