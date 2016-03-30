@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    function newTurnoController($uibModal, uiCalendarConfig, toastr, $loading, $filter, Especialidad, Prestacion, Paciente, Document) {
+    function newTurnoController($uibModal, uiCalendarConfig, toastr, $loading, $filter, Especialidad, Prestacion, Paciente, Document, Province, District, Location) {
         var date = new Date();
         var dateIncrement = 0;
         if (date.getDay() == 4) {
@@ -276,13 +276,28 @@
             }
         };
 
+        this.searchLocations = function searchLocations() {
+            this.locations = [];
+            if (this.selectedDistrict) {
+                this.locations = Location.query({district: this.selectedDistrict.id, status: 'Active'});
+            }
+        };
+
+        this.searchDistricts = function searchDistricts() {
+            this.districts = [];
+            if (this.selectedProvince) {
+                this.districts = District.query({province: this.selectedProvince.id, status: 'Active'});
+            }
+        };
+
         this.init = function init() {
             this.documents = Document.getActiveList();
             this.especialidades = Especialidad.getActiveList();
+            this.provinces = Province.getActiveList();
         };
 
         this.init();
     }
 
-    angular.module('turnos.turnos').controller('NewTurnoController', ['$uibModal', 'uiCalendarConfig', 'toastr', '$loading', '$filter', 'Especialidad', 'Prestacion', 'Paciente', 'Document', newTurnoController]);
+    angular.module('turnos.turnos').controller('NewTurnoController', ['$uibModal', 'uiCalendarConfig', 'toastr', '$loading', '$filter', 'Especialidad', 'Prestacion', 'Paciente', 'Document', 'Province', 'District', 'Location', newTurnoController]);
 })();

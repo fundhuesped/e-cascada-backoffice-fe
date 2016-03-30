@@ -123,6 +123,50 @@ glyphicon glyphicon-remove"></span> Limpiar seleccion de paciente</button>
                         <div class="row">
                             <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
                                 <div class="form-group">
+                                    <span><label>Provincia(*)</label></span>
+                                    <select class="form-control" ng-model="NewTurnoCtrl.selectedProvince" ng-options="province.name for province in NewTurnoCtrl.provinces" ng-change="NewTurnoCtrl.searchDistricts()" required>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
+                                <div class="form-group">
+                                    <span><label>Partido(*)</label></span>
+                                    <select class="form-control" ng-model="NewTurnoCtrl.selectedDistrict" ng-options="district.name for district in NewTurnoCtrl.districts" ng-change="NewTurnoCtrl.searchLocations()" required>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
+                                <div class="form-group">
+                                    <span><label>Localidad(*)</label></span>
+                                    <select class="form-control" ng-model="NewTurnoCtrl.selectedLocation" ng-options="location.name for location in NewTurnoCtrl.locations" required>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <hr>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
+                                <div class="form-group">
                                     <span><label>Especialidad(*)</label></span>
                                     <select class="form-control" ng-model="NewTurnoCtrl.selectedEspecialidad" ng-options="especialidad.name for especialidad in NewTurnoCtrl.especialidades" ng-change="NewTurnoCtrl.searchPrestaciones()" required>
                                         <option value="">Todas las especialidades</option>
