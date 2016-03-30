@@ -104,7 +104,7 @@
             this.locations = Location.getActiveList();
             this.civilStatusTypes = CivilStatus.getActiveList();
             this.educationTypes = Education.getActiveList();
-            this.SocialServices = SocialService.getActiveList();
+            this.socialServices = SocialService.getActiveList();
         };
         this.init();
 
