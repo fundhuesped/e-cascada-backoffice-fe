@@ -105,6 +105,8 @@
             this.civilStatusTypes = CivilStatus.getActiveList();
             this.educationTypes = Education.getActiveList();
             this.socialServices = SocialService.getActiveList();
+            this.selectedDistrict = this.paciente.location.district;
+            this.selectedProvince = this.paciente.location.district.province;
         };
         this.init();
 
