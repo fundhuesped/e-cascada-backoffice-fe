@@ -2,6 +2,12 @@
     'use strict';
 
     function newPacienteCtrl($loading, $uibModalInstance, $filter, Paciente, Document, Sex, Province, District, Location, SocialService, CivilStatus, Education) {
+        this.newPaciente = {
+            socialService:{},
+            civilStatus:{},
+            education:{}
+        };
+
         this.confirm = function confirm() {
             if (this.newPacienteForm.$valid) {
                 this.hideErrorMessage();
@@ -21,15 +27,21 @@
                 paciente.street = this.newPaciente.street;
                 paciente.postal = this.newPaciente.postal;
                 paciente.location = this.newPaciente.location;
-                paciente.primaryPhoneNumber = this.newPaciente.primaryPhoneNumber;
-                paciente.primaryPhoneContact = this.newPaciente.primaryPhoneContact;
-                paciente.primaryPhoneMessage = this.newPaciente.primaryPhoneMessage;
+                paciente.primaryPhone = this.newPaciente.primaryPhone;
+                paciente.secondPhone = this.newPaciente.secondPhone;
+                paciente.thirdPhone = this.newPaciente.thirdPhone;
+                paciente.primaryPhone.id = 0;
+                paciente.secondPhone.id = 0;
+                paciente.thirdPhone.id = 0;
                 paciente.occupation = this.newPaciente.occupation;
                 paciente.terms = this.newPaciente.terms;
                 paciente.socialService = this.newPaciente.socialService;
                 paciente.socialServiceNumber = this.newPaciente.socialServiceNumber;
                 paciente.civilStatus = this.newPaciente.civilStatus;
                 paciente.education = this.newPaciente.education;
+                paciente.bornPlace = this.newPaciente.bornPlace;
+                paciente.firstVisit = $filter('date')(this.newPaciente.firstVisit, "yyyy-MM-dd");
+                paciente.notes = this.newPaciente.notes;
                 paciente.$save(function () {
                         $loading.finish('newPaciente');
                         $uibModalInstance.close('created');

@@ -155,21 +155,64 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="col-xs-5">
+                            <div class="form-group">
+                                <span><label>Lugar de nacimiento</label></span>
+                                <input type="text" name="bornPlace" maxlength="40" class="form-control" ng-model="PacienteCtrl.paciente.bornPlace">
+                                <span><label>(máximo 40 caracteres)</label></span>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="row">
                         <div class="col-xs-5">
                             <div class="form-group" ng-class="{'has-error':PacienteCtrl.pacienteForm.primaryPhoneNumber.$error.required}">
                                 <span><label>Telefono*</label></span>
-                                <input type="text" name="primaryPhoneNumber" maxlength="20" class="form-control" ng-model="PacienteCtrl.paciente.primaryPhoneNumber" required>
-                                <input type="checkbox" ng-model="PacienteCtrl.paciente.primaryPhoneMessage">
+                                <input type="text" name="primaryPhoneNumber" maxlength="20" class="form-control" ng-model="PacienteCtrl.paciente.primaryPhone.number" required>
+                                <input type="checkbox" ng-model="PacienteCtrl.paciente.primaryPhone.message">
                                 <span><label>Acepta mensajes</label></span>
                             </div>
                         </div>
                         <div class="col-xs-5">
                             <div class="form-group" ng-class="{'has-error':PacienteCtrl.pacienteForm.primaryPhoneContact.$error.required}">
                                 <span><label>Contacto*</label></span>
-                                <input type="text" name="primaryPhoneContact" maxlength="70" class="form-control" ng-model="PacienteCtrl.paciente.primaryPhoneContact" required>
+                                <input type="text" name="primaryPhoneContact" maxlength="70" class="form-control" ng-model="PacienteCtrl.paciente.primaryPhone.contact" required>
+                                <span><label>(máximo 70 caracteres)</label></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-5">
+                            <div class="form-group">
+                                <span><label>Telefono Alternativo 1</label></span>
+                                <input type="text" name="secondPhoneNumber" maxlength="20" class="form-control" ng-model="PacienteCtrl.paciente.secondPhone.number">
+                                <input type="checkbox" ng-model="PacienteCtrl.paciente.secondPhone.message">
+                                <span><label>Acepta mensajes</label></span>
+                            </div>
+                        </div>
+                        <div class="col-xs-5">
+                            <div class="form-group">
+                                <span><label>Contacto</label></span>
+                                <input type="text" name="secondPhoneNumber" maxlength="70" class="form-control" ng-model="PacienteCtrl.paciente.secondPhone.contact">
+                                <span><label>(máximo 70 caracteres)</label></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-5">
+                            <div class="form-group">
+                                <span><label>Telefono Alternativo 2</label></span>
+                                <input type="text" name="thirdPhoneNumber" maxlength="20" class="form-control" ng-model="PacienteCtrl.paciente.thirdPhone.number">
+                                <input type="checkbox" ng-model="PacienteCtrl.paciente.thirdPhone.message">
+                                <span><label>Acepta mensajes</label></span>
+                            </div>
+                        </div>
+                        <div class="col-xs-5">
+                            <div class="form-group">
+                                <span><label>Contacto</label></span>
+                                <input type="text" name="thirdPhoneNumber" maxlength="70" class="form-control" ng-model="PacienteCtrl.paciente.thirdPhone.contact">
                                 <span><label>(máximo 70 caracteres)</label></span>
                             </div>
                         </div>
@@ -218,6 +261,26 @@
                             <span><label>Número asociado</label></span>
                             <input type="text" name="socialServiceNumber" maxlength="20" class="form-control" ng-model="PacienteCtrl.paciente.socialServiceNumber">
                             <span><label>(máximo 20 caracteres)</label></span>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-11">
+                            <div class="form-group">
+                                <span><label>Primera visita</label></span>
+                                <input rsmdatedropdowns ng-model="PacienteCtrl.paciente.firstVisit"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <div class="form-group">
+                                <span><label>Notas</label></span>
+                                <textarea rows="4" cols="50" name="notes" maxlength="150" class="form-control" ng-model="PacienteCtrl.paciente.notes">
+                                </textarea>
+                                <span><label>(máximo 150 caracteres)</label></span>
+                            </div>
                         </div>
                     </div>
 
