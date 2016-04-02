@@ -3,31 +3,6 @@
 
     function newPacienteCtrl($loading, $uibModalInstance, $filter, Paciente, Document, Sex, Province, District, Location, SocialService, CivilStatus, Education) {
         this.newPaciente = {
-            firstName:"Ruben",
-            otherNames:"Andres",
-            fatherSurname:"Ghio",
-            motherSurname:"Mazzoni",
-            documentType:{
-                id:1
-            },
-            documentNumber:"29266349",
-            birthDate:"1981-06-05",
-            genderAtBirth:{
-                id:1
-            },
-            genderOfChoice:{
-                id:1
-            },
-            email:"r_ghio@hotmail.com",
-            street:"Camino",
-            postal:"CP1879",
-            primaryPhone:{
-                number:"1140702207",
-                contact:"Ruben Ghio",
-                message:true
-            },
-
-            //Necesarios
             socialService:null,
             civilStatus:null,
             education:null
