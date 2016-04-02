@@ -3,9 +3,34 @@
 
     function newPacienteCtrl($loading, $uibModalInstance, $filter, Paciente, Document, Sex, Province, District, Location, SocialService, CivilStatus, Education) {
         this.newPaciente = {
-            socialService:{},
-            civilStatus:{},
-            education:{}
+            firstName:"Ruben",
+            otherNames:"Andres",
+            fatherSurname:"Ghio",
+            motherSurname:"Mazzoni",
+            documentType:{
+                id:1
+            },
+            documentNumber:"29266349",
+            birthDate:"1981-06-05",
+            genderAtBirth:{
+                id:1
+            },
+            genderOfChoice:{
+                id:1
+            },
+            email:"r_ghio@hotmail.com",
+            street:"Camino",
+            postal:"CP1879",
+            primaryPhone:{
+                number:"1140702207",
+                contact:"Ruben Ghio",
+                message:true
+            },
+
+            //Necesarios
+            socialService:null,
+            civilStatus:null,
+            education:null
         };
 
         this.confirm = function confirm() {
@@ -27,12 +52,15 @@
                 paciente.street = this.newPaciente.street;
                 paciente.postal = this.newPaciente.postal;
                 paciente.location = this.newPaciente.location;
-                paciente.primaryPhone = this.newPaciente.primaryPhone;
-                paciente.secondPhone = this.newPaciente.secondPhone;
-                paciente.thirdPhone = this.newPaciente.thirdPhone;
-                paciente.primaryPhone.id = 0;
-                paciente.secondPhone.id = 0;
-                paciente.thirdPhone.id = 0;
+                paciente.primaryPhoneNumber = this.newPaciente.primaryPhoneNumber;
+                paciente.primaryPhoneContact = this.newPaciente.primaryPhoneContact;
+                paciente.primaryPhoneMessage = this.newPaciente.primaryPhoneMessage;
+                paciente.secondPhoneNumber = this.newPaciente.secondPhoneNumber;
+                paciente.secondPhoneContact = this.newPaciente.secondPhoneContact;
+                paciente.secondPhoneMessage = this.newPaciente.secondPhoneMessage;
+                paciente.thirdPhoneNumber = this.newPaciente.thirdPhoneNumber;
+                paciente.thirdPhoneContact = this.newPaciente.thirdPhoneContact;
+                paciente.thirdPhoneMessage = this.newPaciente.thirdPhoneMessage;
                 paciente.occupation = this.newPaciente.occupation;
                 paciente.terms = this.newPaciente.terms;
                 paciente.socialService = this.newPaciente.socialService;

@@ -51,7 +51,7 @@
                         <div class="col-xs-5">
                             <div class="form-group" ng-class="{'has-error':NewPacienteCtrl.newPacienteForm.documentType.$error.required}">
                                 <span><label>Tipo documento*</label></span>
-                                <select class="form-control" name="document" ng-model="NewPacienteCtrl.newPaciente.documentType" ng-options="document.name for document in NewPacienteCtrl.documents"  ng-required>
+                                <select class="form-control" name="document" ng-model="NewPacienteCtrl.newPaciente.documentType" ng-options="document as document.name for document in NewPacienteCtrl.documents track by document.id" ng-required>
                                     <option value=""></option>
                                 </select>
                             </div>
@@ -75,14 +75,14 @@
                         <div class="col-xs-5">
                             <span><label>Sexo al nacer</label></span>
                             <div class="form-group" ng-class="{'has-error':NewPacienteCtrl.newPacienteForm.genderAtBirth.$error.required}">
-                                <select class="form-control" name="genderAtBirth" ng-model="NewPacienteCtrl.newPaciente.genderAtBirth" ng-options="genderAtBirth.name for genderAtBirth in NewPacienteCtrl.sexTypes" ng-required>
+                                <select class="form-control" name="genderAtBirth" ng-model="NewPacienteCtrl.newPaciente.genderAtBirth" ng-options="genderAtBirth as genderAtBirth.name for genderAtBirth in NewPacienteCtrl.sexTypes track by genderAtBirth.id" ng-required>
                                 </select>
                             </div>
                         </div>
                         <div class="col-xs-5">
                             <span><label>Genero por eleccion</label></span>
                             <div class="form-group" ng-class="{'has-error':NewPacienteCtrl.newPacienteForm.genderOfChoice.$error.required}">
-                                <select class="form-control" name="genderOfChoice" ng-model="NewPacienteCtrl.newPaciente.genderOfChoice" ng-options="genderOfChoice.name for genderOfChoice in NewPacienteCtrl.sexTypes" ng-required>
+                                <select class="form-control" name="genderOfChoice" ng-model="NewPacienteCtrl.newPaciente.genderOfChoice" ng-options="genderOfChoice as genderOfChoice.name for genderOfChoice in NewPacienteCtrl.sexTypes track by genderOfChoice.id" ng-required>
                                 </select>
                             </div>
                         </div>
@@ -110,7 +110,7 @@
                             <div class="form-group">
                                 <span><label>Provincia</label></span>
                                 <div class="form-group" ng-class="{'has-error':NewPacienteCtrl.newPacienteForm.selectedProvince.$error.required}">
-                                    <select name="selectedProvince" class="form-control" ng-model="NewPacienteCtrl.selectedProvince" ng-options="province.name for province in NewPacienteCtrl.provinces" ng-change="NewPacienteCtrl.searchDistricts()" required>
+                                    <select name="selectedProvince" class="form-control" ng-model="NewPacienteCtrl.selectedProvince" ng-options="province as province.name for province in NewPacienteCtrl.provinces track by province.id" ng-change="NewPacienteCtrl.searchDistricts()" required>
                                     </select>
                                 </div>
                             </div>
@@ -119,7 +119,7 @@
                             <div class="form-group">
                                 <span><label>Partido</label></span>
                                 <div class="form-group" ng-class="{'has-error':NewPacienteCtrl.newPacienteForm.selectedDistrict.$error.required}">
-                                    <select name="selectedDistrict" class="form-control" ng-model="NewPacienteCtrl.selectedDistrict" ng-options="district.name for district in NewPacienteCtrl.districts" ng-change="NewPacienteCtrl.searchLocations()" required>
+                                    <select name="selectedDistrict" class="form-control" ng-model="NewPacienteCtrl.selectedDistrict" ng-options="district as district.name for district in NewPacienteCtrl.districts track by district.id" ng-change="NewPacienteCtrl.searchLocations()" required>
                                     </select>
                                 </div>
                             </div>
@@ -131,7 +131,7 @@
                             <div class="form-group">
                                 <span><label>Localidad</label></span>
                                 <div class="form-group" ng-class="{'has-error':NewPacienteCtrl.newPacienteForm.location.$error.required}">
-                                    <select name="location" class="form-control" ng-model="NewPacienteCtrl.newPaciente.location" ng-options="location.name for location in NewPacienteCtrl.locations" required>
+                                    <select name="location" class="form-control" ng-model="NewPacienteCtrl.newPaciente.location" ng-options="location as location.name for location in NewPacienteCtrl.locations track by location.id" required>
                                     </select>
                                 </div>
                             </div>
@@ -147,18 +147,18 @@
 
                     <div class="row">
                         <div class="col-xs-5">
-                            <div class="form-group" ng-class="{'has-error':NewPacienteCtrl.pacienteForm.primaryPhoneNumber.$error.required}">
+                            <div class="form-group" ng-class="{'has-error':NewPacienteCtrl.newPacienteForm.primaryPhoneNumber.$error.required}">
                                 <span><label>Telefono*</label></span>
-                                <input type="text" name="primaryPhoneNumber" maxlength="20" class="form-control" ng-model="NewPacienteCtrl.newPaciente.primaryPhone.number" required>
-                                <input type="checkbox" ng-model="NewPacienteCtrl.newPaciente.primaryPhone.message">
+                                <input type="text" name="primaryPhoneNumber" maxlength="20" class="form-control" ng-model="NewPacienteCtrl.newPaciente.primaryPhoneNumber" required>
+                                <input type="checkbox" ng-model="NewPacienteCtrl.newPaciente.primaryPhoneMessage">
                                 <span><label>Acepta mensajes</label></span>
                             </div>
                         </div>
                         <div class="col-xs-5">
-                            <div class="form-group" ng-class="{'has-error':NewPacienteCtrl.pacienteForm.primaryPhoneContact.$error.required}">
+                            <div class="form-group" ng-class="{'has-error':NewPacienteCtrl.newPacienteForm.primaryPhoneContact.$error.required}">
                                 <span><label>Contacto*</label></span>
-                                <input type="text" name="primaryPhoneContact" maxlength="70" class="form-control" ng-model="NewPacienteCtrl.newPaciente.primaryPhone.contact" required>
-                                <span><label>(máximo 70 caracteres)</label></span>
+                                <input type="text" name="primaryPhoneContact" maxlength="40" class="form-control" ng-model="NewPacienteCtrl.newPaciente.primaryPhoneContact" required>
+                                <span><label>(máximo 40 caracteres)</label></span>
                             </div>
                         </div>
                     </div>
@@ -167,16 +167,16 @@
                         <div class="col-xs-5">
                             <div class="form-group">
                                 <span><label>Telefono Alternativo 1</label></span>
-                                <input type="text" name="secondPhoneNumber" maxlength="20" class="form-control" ng-model="NewPacienteCtrl.newPaciente.secondPhone.number">
-                                <input type="checkbox" ng-model="NewPacienteCtrl.newPaciente.secondPhone.message">
+                                <input type="text" name="secondPhoneNumber" maxlength="20" class="form-control" ng-model="NewPacienteCtrl.newPaciente.secondPhoneNumber">
+                                <input type="checkbox" ng-model="NewPacienteCtrl.newPaciente.secondPhoneMessage">
                                 <span><label>Acepta mensajes</label></span>
                             </div>
                         </div>
                         <div class="col-xs-5">
                             <div class="form-group">
-                                <span><label>Contacto*</label></span>
-                                <input type="text" name="secondPhoneNumber" maxlength="70" class="form-control" ng-model="NewPacienteCtrl.newPaciente.secondPhone.contact">
-                                <span><label>(máximo 70 caracteres)</label></span>
+                                <span><label>Contacto</label></span>
+                                <input type="text" name="secondPhoneNumber" maxlength="40" class="form-control" ng-model="NewPacienteCtrl.newPaciente.secondPhoneContact">
+                                <span><label>(máximo 40 caracteres)</label></span>
                             </div>
                         </div>
                     </div>
@@ -185,16 +185,16 @@
                         <div class="col-xs-5">
                             <div class="form-group">
                                 <span><label>Telefono Alternativo 2</label></span>
-                                <input type="text" name="thirdPhoneNumber" maxlength="20" class="form-control" ng-model="NewPacienteCtrl.newPaciente.thirdPhone.number">
-                                <input type="checkbox" ng-model="NewPacienteCtrl.newPaciente.thirdPhone.message">
+                                <input type="text" name="thirdPhoneNumber" maxlength="20" class="form-control" ng-model="NewPacienteCtrl.newPaciente.thirdPhoneNumber">
+                                <input type="checkbox" ng-model="NewPacienteCtrl.newPaciente.thirdPhoneMessage">
                                 <span><label>Acepta mensajes</label></span>
                             </div>
                         </div>
                         <div class="col-xs-5">
                             <div class="form-group">
-                                <span><label>Contacto*</label></span>
-                                <input type="text" name="thirdPhoneNumber" maxlength="70" class="form-control" ng-model="NewPacienteCtrl.newPaciente.thirdPhone.contact">
-                                <span><label>(máximo 70 caracteres)</label></span>
+                                <span><label>Contacto</label></span>
+                                <input type="text" name="thirdPhoneNumber" maxlength="40" class="form-control" ng-model="NewPacienteCtrl.newPaciente.thirdPhoneContact">
+                                <span><label>(máximo 40 caracteres)</label></span>
                             </div>
                         </div>
                     </div>
@@ -266,9 +266,9 @@
                     </div>
 
                     <div class="row">
-                        <div class="form-group" ng-class="{'has-error':NewPacienteCtrl.newPacienteForm.terms.$error.required}">
-                            <span><label>Acepto terminos y condiciones*</label></span>
-                            <input name="terms" type="checkbox" ng-model="NewPacienteCtrl.newPaciente.terms" required>
+                        <div class="form-group">
+                            <span><label>Acepto consentimiento informado de datos</label></span>
+                            <input name="terms" type="checkbox" ng-model="NewPacienteCtrl.newPaciente.terms">
                         </div>
                     </div>
 

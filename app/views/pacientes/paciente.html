@@ -168,16 +168,16 @@
                         <div class="col-xs-5">
                             <div class="form-group" ng-class="{'has-error':PacienteCtrl.pacienteForm.primaryPhoneNumber.$error.required}">
                                 <span><label>Telefono*</label></span>
-                                <input type="text" name="primaryPhoneNumber" maxlength="20" class="form-control" ng-model="PacienteCtrl.paciente.primaryPhone.number" required>
-                                <input type="checkbox" ng-model="PacienteCtrl.paciente.primaryPhone.message">
+                                <input type="text" name="primaryPhoneNumber" maxlength="20" class="form-control" ng-model="PacienteCtrl.paciente.primaryPhoneNumber" required>
+                                <input type="checkbox" ng-model="PacienteCtrl.paciente.primaryPhoneMessage">
                                 <span><label>Acepta mensajes</label></span>
                             </div>
                         </div>
                         <div class="col-xs-5">
                             <div class="form-group" ng-class="{'has-error':PacienteCtrl.pacienteForm.primaryPhoneContact.$error.required}">
                                 <span><label>Contacto*</label></span>
-                                <input type="text" name="primaryPhoneContact" maxlength="70" class="form-control" ng-model="PacienteCtrl.paciente.primaryPhone.contact" required>
-                                <span><label>(máximo 70 caracteres)</label></span>
+                                <input type="text" name="primaryPhoneContact" maxlength="40" class="form-control" ng-model="PacienteCtrl.paciente.primaryPhoneContact" required>
+                                <span><label>(máximo 40 caracteres)</label></span>
                             </div>
                         </div>
                     </div>
@@ -186,16 +186,16 @@
                         <div class="col-xs-5">
                             <div class="form-group">
                                 <span><label>Telefono Alternativo 1</label></span>
-                                <input type="text" name="secondPhoneNumber" maxlength="20" class="form-control" ng-model="PacienteCtrl.paciente.secondPhone.number">
-                                <input type="checkbox" ng-model="PacienteCtrl.paciente.secondPhone.message">
+                                <input type="text" name="secondPhoneNumber" maxlength="20" class="form-control" ng-model="PacienteCtrl.paciente.secondPhoneNumber">
+                                <input type="checkbox" ng-model="PacienteCtrl.paciente.secondPhoneMessage">
                                 <span><label>Acepta mensajes</label></span>
                             </div>
                         </div>
                         <div class="col-xs-5">
                             <div class="form-group">
                                 <span><label>Contacto</label></span>
-                                <input type="text" name="secondPhoneNumber" maxlength="70" class="form-control" ng-model="PacienteCtrl.paciente.secondPhone.contact">
-                                <span><label>(máximo 70 caracteres)</label></span>
+                                <input type="text" name="secondPhoneNumber" maxlength="40" class="form-control" ng-model="PacienteCtrl.paciente.secondPhoneContact">
+                                <span><label>(máximo 40 caracteres)</label></span>
                             </div>
                         </div>
                     </div>
@@ -204,16 +204,16 @@
                         <div class="col-xs-5">
                             <div class="form-group">
                                 <span><label>Telefono Alternativo 2</label></span>
-                                <input type="text" name="thirdPhoneNumber" maxlength="20" class="form-control" ng-model="PacienteCtrl.paciente.thirdPhone.number">
-                                <input type="checkbox" ng-model="PacienteCtrl.paciente.thirdPhone.message">
+                                <input type="text" name="thirdPhoneNumber" maxlength="20" class="form-control" ng-model="PacienteCtrl.paciente.thirdPhoneNumber">
+                                <input type="checkbox" ng-model="PacienteCtrl.paciente.thirdPhoneMessage">
                                 <span><label>Acepta mensajes</label></span>
                             </div>
                         </div>
                         <div class="col-xs-5">
                             <div class="form-group">
                                 <span><label>Contacto</label></span>
-                                <input type="text" name="thirdPhoneNumber" maxlength="70" class="form-control" ng-model="PacienteCtrl.paciente.thirdPhone.contact">
-                                <span><label>(máximo 70 caracteres)</label></span>
+                                <input type="text" name="thirdPhoneNumber" maxlength="40" class="form-control" ng-model="PacienteCtrl.paciente.thirdPhoneContact">
+                                <span><label>(máximo 40 caracteres)</label></span>
                             </div>
                         </div>
                     </div>
@@ -285,9 +285,9 @@
                     </div>
 
                     <div class="row">
-                        <div class="form-group" ng-class="{'has-error':PacienteCtrl.pacienteForm.terms.$error.required}">
-                            <span><label>Acepto terminos y condiciones*</label></span>
-                            <input name="terms" type="checkbox" ng-model="PacienteCtrl.paciente.terms" required>
+                        <div class="form-group">
+                            <span><label>Acepto consentimiento informado de datos</label></span>
+                            <input name="terms" type="checkbox" ng-model="PacienteCtrl.paciente.terms">
                         </div>
                     </div>
                 </div>
