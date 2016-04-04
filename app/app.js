@@ -55,7 +55,7 @@ angular.module('turnos.app', [
                     },
                     'main': {
                         templateUrl: 'views/turnos/newturno.html',
-                        controller: 'NewTurnoController',
+                        controller: 'NewTurnoCtrl',
                         controllerAs: 'NewTurnoCtrl'
                     },
                 }

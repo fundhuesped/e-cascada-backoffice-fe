@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    function newTurnoController($uibModal, uiCalendarConfig, toastr, $loading, $filter, Especialidad, Prestacion, Paciente, Document, Province, District, Location) {
+    function newTurnoCtrl($uibModal, uiCalendarConfig, toastr, $loading, $filter, Especialidad, Prestacion, Paciente, Document, Profesional) {
         var date = new Date();
         var dateIncrement = 0;
         if (date.getDay() == 4) {
@@ -95,7 +95,7 @@
 
             //Only way I found to inject Controller to refresh list after modal closing
             var ctrl = this;
-            modalInstance.result.then(function() {
+            modalInstance.result.then(function () {
                 ctrl.lookForPacientes()
             })
         };
@@ -111,29 +111,7 @@
             this.paciente = null;
         };
 
-        this.medicos = [
-            {
-                id: 'fernandez',
-                name: 'Fernandez',
-                color: '#ee8505',
-                selected: false
-
-            },
-            {
-                id: 'ramirez',
-                name: 'Ramirez',
-                color: '#3a87ad',
-                selected: false
-
-            },
-            {
-                id: 'perez',
-                name: 'Perez',
-                color: '#3a87ad',
-                selected: false
-            }
-        ];
-
+        /*
         this.turnos = [
             {
                 id: 123156,
@@ -172,6 +150,7 @@
                 }
             },
         ];
+        */
 
         this.lookForTurnos = function lookForTurnos() {
             $loading.start('app');
@@ -225,7 +204,9 @@
                 this.recomendations = Paciente.getActiveList();
                 setTimeout(function () {
                     $loading.finish('recomendations');
-                    this.recomendationList = $filter('filter')(this.recomendations, this.paciente);
+                    this.copyPaciente = angular.copy(this.paciente);
+                    this.copyPaciente.birthDate = $filter('date')(this.copyPaciente.birthDate, "yyyy-MM-dd");
+                    this.recomendationList = $filter('filter')(this.recomendations, this.copyPaciente);
                 }.bind(this), 1000);
             }
         };
@@ -254,7 +235,7 @@
             this.selectedPrestacion = null;
             this.selectedEspecialidad = null;
             this.prestaciones = [];
-            this.selectedMedico = null;
+            this.selectedProfesional = null;
         };
 
         this.confirmTurno = function confirmTurno() {
@@ -269,35 +250,28 @@
             }.bind(this), 3000);
         };
 
-        this.searchPrestaciones = function searchPrestaciones() {
+        this.searchPrestacionesMedicos = function searchPrestacionesMedicos() {
             this.prestaciones = [];
             if (this.selectedEspecialidad) {
                 this.prestaciones = Prestacion.query({especialidad: this.selectedEspecialidad.id, status: 'Active'});
+                this.profesionales = Profesional.query({especialidad: this.selectedEspecialidad.id, status: 'Active'});
             }
         };
 
-        this.searchLocations = function searchLocations() {
-            this.locations = [];
-            if (this.selectedDistrict) {
-                this.locations = Location.query({district: this.selectedDistrict.id, status: 'Active'});
-            }
-        };
-
-        this.searchDistricts = function searchDistricts() {
-            this.districts = [];
-            if (this.selectedProvince) {
-                this.districts = District.query({province: this.selectedProvince.id, status: 'Active'});
+        this.searchProfesionales = function searchProfesionales() {
+            this.profesionales = [];
+            if (this.selectedPrestacion) {
+                this.profesionales = Profesional.query({prestacion: this.selectedPrestacion.id, status: 'Active'});
             }
         };
 
         this.init = function init() {
             this.documents = Document.getActiveList();
             this.especialidades = Especialidad.getActiveList();
-            this.provinces = Province.getActiveList();
         };
 
         this.init();
     }
 
-    angular.module('turnos.turnos').controller('NewTurnoController', ['$uibModal', 'uiCalendarConfig', 'toastr', '$loading', '$filter', 'Especialidad', 'Prestacion', 'Paciente', 'Document', 'Province', 'District', 'Location', newTurnoController]);
+    angular.module('turnos.turnos').controller('NewTurnoCtrl', ['$uibModal', 'uiCalendarConfig', 'toastr', '$loading', '$filter', 'Especialidad', 'Prestacion', 'Paciente', 'Document', 'Profesional', newTurnoCtrl]);
 })();
