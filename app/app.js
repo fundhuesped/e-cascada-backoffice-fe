@@ -13,6 +13,7 @@ angular.module('turnos.app', [
         'turnos.prestaciones',
         'turnos.pacientes',
         'turnos.profesionales',
+        'turnos.agendas',
         'turnos.login',
         'turnos.resources',
         'darthwade.dwLoading',
@@ -202,6 +203,32 @@ angular.module('turnos.app', [
                         controllerAs: 'ProfesionalCtrl'
                     },
                 }
+            })
+            .state('agendas', {
+                url: '/agendas?detail=:agendaId',
+                views: {
+                    'navbar': {
+                        templateUrl: 'views/navbar/navbar.html',
+                    },
+                    'main': {
+                        templateUrl: 'views/agendas/agendas.html',
+                        controller: 'AgendasCtrl',
+                        controllerAs: 'AgendasCtrl'
+                    },
+                }
+            })
+            .state('newagenda', {
+              url: '/newagenda',
+              views: {
+                'navbar': {
+                  templateUrl: 'views/navbar/navbar.html',
+                },
+                'main': {
+                  templateUrl: 'views/agendas/newagenda.html',
+                  controller: 'NewAgendaCtrl',
+                  controllerAs: 'NewAgendaCtrl'
+                },
+              }
             })
         ;
     });
