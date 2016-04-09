@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  function newAgendaCtrl($scope, $loading, $uibModalInstance, $filter, Agenda, Profesional) {
+  function newAgendaCtrl($loading, $uibModalInstance, $filter, Agenda, Profesional) {
     this.daysStr = [{
       "id": 1,
       "name": "Lu",
@@ -239,5 +239,5 @@
     this.init();
   }
 
-  angular.module('turnos.agendas').controller('NewAgendaCtrl', ['$scope', '$loading', '$uibModalInstance', '$filter', 'Agenda', 'Profesional', newAgendaCtrl]);
+  angular.module('turnos.agendas').controller('NewAgendaCtrl', ['$loading', '$uibModalInstance', '$filter', 'Agenda', 'Profesional', newAgendaCtrl]);
 })();

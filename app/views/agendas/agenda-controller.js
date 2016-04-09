@@ -5,6 +5,42 @@
     this.agenda = angular.copy(agenda);
     this.editing = true;
     this.errorMessage = null;
+    this.daysStr = [{
+      "id": 1,
+      "name": "Lu",
+      "selected": false
+    },
+      {
+        "id": 2,
+        "name": "Ma",
+        "selected": false
+      },
+      {
+        "id": 3,
+        "name": "Mie",
+        "selected": false
+      },
+      {
+        "id": 4,
+        "name": "Jue",
+        "selected": false
+      },
+      {
+        "id": 5,
+        "name": "Vi",
+        "selected": false
+      },
+      {
+        "id": 6,
+        "name": "Sa",
+        "selected": false
+      },
+      {
+        "id": 7,
+        "name": "Do",
+        "selected": false
+      }
+    ];
 
     this.confirm = function confirm() {
       if (this.agendaForm.$valid) {
@@ -51,6 +87,7 @@
         $uibModalInstance.close('deleted');
       });
     }
+
     this.confirmReactivate = function confirmReactivate(agendaInstance) {
       agendaInstance.status = 'Active';
       agendaInstance.$update(function () {
@@ -82,10 +119,53 @@
       $uibModalInstance.dismiss('cancel');
     };
 
-    this.init = function init() {
+    this.checkAllRow = function checkAllRow(period) {
+      var i, j, selection;
+      for (i = 0; i < this.agenda.periods.length; i++) {
+        selection = this.agenda.periods[i];
+        if (selection.id === period.id) {
+          for (j = 0; j < this.agenda.periods[i].daysOfWeek.length; j++) {
+            this.agenda.periods[i].daysOfWeek[j].selected = this.agenda.periods[i].selected;
+          }
+        }
+      }
     };
-    this.init();
 
+    this.checkAllColumn = function checkAllColumn(day) {
+      var i, j, selection;
+      for (i = 0; i < this.agenda.periods.length; i++) {
+        for (j = 0; j < this.agenda.periods[i].daysOfWeek.length; j++) {
+          selection = this.agenda.periods[i].daysOfWeek[j];
+          if (selection.name.indexOf(day.name) == 0) {
+            selection.selected = day.selected;
+          }
+        }
+      }
+    };
+
+    this.changeState = function changeState(day, period) {
+      period.selected = false;
+      var i, selection;
+      for (i = 0; i < this.daysStr.length; i++) {
+        selection = this.daysStr[i];
+        if (selection.name.indexOf(day.day) == 0) {
+          selection.selected = false;
+          break;
+        }
+      }
+    };
+
+    this.init = function init() {
+      this.selectedProfesionalName = this.agenda.profesional.fatherSurname + ', ' + this.agenda.profesional.firstName;
+      this.selectedEspecialidadName = this.agenda.prestacion.especialidad.name;
+      this.selectedPrestacionName = this.agenda.prestacion.name;
+      this.hoursFrom = parseInt(this.agenda.start.substr(0, 2), 10);
+      this.minutesFrom = parseInt(this.agenda.start.substr(3, 2), 10);
+      this.hoursTo = parseInt(this.agenda.end.substr(0, 2), 10);
+      this.minutesTo = parseInt(this.agenda.end.substr(3, 2), 10);
+    };
+
+    this.init();
   }
 
   angular.module('turnos.agendas').controller('AgendaCtrl', ['$loading', '$uibModalInstance', '$filter', 'agenda', agendaCtrl]);

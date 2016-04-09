@@ -1,14 +1,14 @@
 (function () {
   'use strict';
 
-  function agendasCtrl($uibModal, Agenda) {
+  function agendasCtrl($uibModal, toastr, Agenda) {
     this.agendas = [];
     this.agenda = null;
 
     this.detail = function detail(agenda) {
       this.agenda = agenda;
-      this.startTime = '19000101T' + this.agenda.start;
-      this.endTime = '19000101T' + this.agenda.end;
+      this.startTime = this.agenda.start.substr(0, 5);
+      this.endTime = this.agenda.end.substr(0, 5);
     };
 
     this.modifyAgenda = function modifyAgenda(selectedAgenda) {
@@ -79,5 +79,5 @@
 
   }
 
-  angular.module('turnos.agendas').controller('AgendasCtrl', ['$uibModal', 'Agenda', agendasCtrl]);
+  angular.module('turnos.agendas').controller('AgendasCtrl', ['$uibModal', 'toastr', 'Agenda', agendasCtrl]);
 })();

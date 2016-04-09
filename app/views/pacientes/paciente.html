@@ -130,7 +130,7 @@
                             <div class="form-group">
                                 <span><label>Provincia</label></span>
                                 <div class="form-group" ng-class="{'has-error':PacienteCtrl.pacienteForm.selectedProvince.$error.required}">
-                                    <select name="selectedProvince" class="form-control" ng-model="PacienteCtrl.selectedProvince"º ng-options="province as province.name for province in PacienteCtrl.provinces track by province.id" ng-change="PacienteCtrl.searchDistricts()" required>
+                                    <select name="selectedProvince" class="form-control" ng-model="PacienteCtrl.selectedProvince" ng-options="province as province.name for province in PacienteCtrl.provinces track by province.id" ng-change="PacienteCtrl.searchDistricts()" required>
                                     </select>
                                 </div>
                             </div>
