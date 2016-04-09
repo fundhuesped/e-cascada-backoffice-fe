@@ -122,7 +122,7 @@
               </thead>
               <tbody>
               <tr ng-repeat="period in NewAgendaCtrl.agenda.periods">
-                <td align="center">{{period.from}}-{{period.to}} <input type="checkbox" ng-model="period.selected" ng-click="NewAgendaCtrl.checkAllRow(period)"></td>
+                <td align="center">{{period.start}}-{{period.end}} <input type="checkbox" ng-model="period.selected" ng-click="NewAgendaCtrl.checkAllRow(period)"></td>
                 <td align="center" ng-repeat="day in period.daysOfWeek"><input type="checkbox" ng-model="day.selected" ng-change="NewAgendaCtrl.changeState(day, period)">
                 </td>
               </tr>
