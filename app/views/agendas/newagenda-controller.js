@@ -3,37 +3,37 @@
 
   function newAgendaCtrl($loading, $uibModalInstance, $filter, Agenda, Profesional) {
     this.daysStr = [{
-      "id": 1,
+      "index": 0,
       "name": "Lu",
       "selected": false
     },
       {
-        "id": 2,
+        "index": 1,
         "name": "Ma",
         "selected": false
       },
       {
-        "id": 3,
+        "index": 2,
         "name": "Mie",
         "selected": false
       },
       {
-        "id": 4,
+        "index": 3,
         "name": "Jue",
         "selected": false
       },
       {
-        "id": 5,
+        "index": 4,
         "name": "Vi",
         "selected": false
       },
       {
-        "id": 6,
+        "index": 5,
         "name": "Sa",
         "selected": false
       },
       {
-        "id": 7,
+        "index": 6,
         "name": "Do",
         "selected": false
       }
@@ -118,8 +118,7 @@
           var daysArray = [], day, j;
           for (j = 0; j < this.daysStr.length; j++) {
             day = {
-              //"id": j + '-' + this.daysStr[j].name,
-              "id": j,
+              "index": j,
               "name": this.daysStr[j].name,
               "selected": false
             }
