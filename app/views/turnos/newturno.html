@@ -1,6 +1,6 @@
 <div ng-class="{container:!NewTurnoCtrl.isModal}" style="padding-bottom:70px;">
     <div class="panel panel-default">
-        <div class="panel-heading">    
+        <div class="panel-heading">
             <h3 class="panel-title">Nuevo turno</h3>
         </div>
         <div class="panel-body master-detail">
@@ -90,7 +90,7 @@
                                             <div>{{recomendation.documentType.name}} {{recomendation.documentNumber}} <div>{{recomendation.birthDate || 'No informado'}}</div></div>
                                         </td>
                                         <td class="col-md-4">
-                                            <div><label>Tel</label> {{recomendation.telephone || 'No informado'}}</div>
+                                            <div><label>Tel</label> {{recomendation.primaryPhoneNumber || 'No informado'}}</div>
                                         </td>
                                         <td class="col-md-4">
                                             <div><label>e-m@il</label> {{recomendation.email || 'No informado'}}</div>
@@ -104,16 +104,16 @@
                                             </button>
                                         </td>
                                     </tr>
-                                </tbody> 
+                                </tbody>
                             </table>
                             </div>
                         <div class="row" ng-show="NewTurnoCtrl.paciente.id">
                             <div class="col-md-12">
                                 <button class="btn btn-warning" type="button" ng-click="NewTurnoCtrl.clearPacienteSelection()" ><span class="
 glyphicon glyphicon-remove"></span> Limpiar seleccion de paciente</button>
-                            </div>  
+                            </div>
                         </div>
-                    </div>  
+                    </div>
                 </div>
 
                 <hr>
@@ -187,29 +187,29 @@ glyphicon glyphicon-remove"></span> Limpiar seleccion de paciente</button>
                             </uib-tab-heading>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <table class="table"> 
-                                        <thead> 
+                                    <table class="table">
+                                        <thead>
                                             <tr>
-                                                <th></th> 
-                                                <th>Fecha</th> 
-                                                <th>Hora</th> 
+                                                <th></th>
+                                                <th>Fecha</th>
+                                                <th>Hora</th>
                                                 <th>Hasta</th>
-                                                <th>Especialidad</th> 
-                                                <th>Prestaciones</th> 
+                                                <th>Especialidad</th>
+                                                <th>Prestaciones</th>
                                                 <th>Profesional</th>
-                                            </tr> 
-                                        </thead> 
-                                        <tbody ng-show="NewTurnoCtrl.showTurnos"> 
-                                            <tr ng-repeat="(key, turno) in NewTurnoCtrl.turnos" ng-class="{'bg-success':turno.selected}" ng-click="NewTurnoCtrl.updateSelectionRow($index,NewTurnoCtrl.turnos)"> 
+                                            </tr>
+                                        </thead>
+                                        <tbody ng-show="NewTurnoCtrl.showTurnos">
+                                            <tr ng-repeat="(key, turno) in NewTurnoCtrl.turnos" ng-class="{'bg-success':turno.selected}" ng-click="NewTurnoCtrl.updateSelectionRow($index,NewTurnoCtrl.turnos)">
                                                 <td><input type="checkbox" ng-checked="turno.selected"></td>
-                                                <td>{{turno.date}}</td> 
-                                                <td>{{turno.hour}}</td> 
-                                                <td>{{turno.hourTo}}</td> 
-                                                <td>{{turno.especialidad.name}}</td> 
-                                                <td>{{turno.prestacion.name}}</td> 
-                                                <td>{{turno.profesional.name}}</td>
-                                            </tr> 
-                                        </tbody> 
+                                                <td>{{turno.day | date : 'dd-MM-yyyy'}}</td>
+                                                <td>{{turno.start}}</td>
+                                                <td>{{turno.end}}</td>
+                                                <td>{{turno.prestacion.especialidad.name}}</td>
+                                                <td>{{turno.prestacion.name}}</td>
+                                                <td>{{turno.profesional.fatherSurname}}, {{turno.profesional.firstName}}</td>
+                                            </tr>
+                                        </tbody>
                                     </table>
                                 </div>
                             </div>
