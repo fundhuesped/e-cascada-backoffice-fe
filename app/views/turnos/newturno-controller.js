@@ -2,24 +2,12 @@
   'use strict';
 
   function newTurnoCtrl($scope, $uibModal, uiCalendarConfig, toastr, $loading, $filter, Especialidad, Prestacion, Paciente, Document, Profesional, Turno) {
-    var date = new Date();
-    var dateIncrement = 0;
-    if (date.getDay() == 4) {
-      dateIncrement = 4;
-    } else {
-      if (date.getDay() == 5) {
-        dateIncrement = 3;
-      }
-    }
-    var d = date.getDate();
-    var m = date.getMonth();
-    var y = date.getFullYear();
-    var self = this;
     this.paciente = null;
     this.especialidades = null;
 
     //Calendar
     this.eventSources = [];
+
     this.calendarConfig =
     {
       height: 450,
@@ -45,8 +33,6 @@
         }
       }, 1);
     };
-
-    this.eventSources = [];
 
     //Update seleccion when selecting turno
     this.updateSelectionRow = function updateSelectionRow(position, entities, calendarRepresentation) {
@@ -117,13 +103,12 @@
         $loading.finish('app');
         this.showTurnos = true;
         $scope.turnos = [];
-        $scope.eventSources = [];
         Turno.query({prestacion: this.selectedPrestacion.id, taken: false}).$promise.then(function (results) {
           angular.forEach(results, function (turno) {
             $scope.turnos.push(turno);
             var startTime = new Date(turno.day + "T" + turno.start);
             var endTime = new Date(turno.day + "T" + turno.end);
-            var tmpTurno = {
+            var event = {
               id: turno.id,
               title: turno.profesional.fatherSurname,
               start: startTime,
@@ -131,12 +116,10 @@
               allDay: false,
               color: '#D8C358'
             };
-            turno.calendarRepresentation = tmpTurno;
-            $scope.eventSources.push(tmpTurno);
+            turno.calendarRepresentation = event;
           });
         });
         this.turnos = $scope.turnos;
-        this.eventSources = $scope.eventSources;
       }.bind(this), 1000);
     };
 
