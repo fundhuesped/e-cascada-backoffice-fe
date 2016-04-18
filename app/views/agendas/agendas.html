@@ -1,0 +1,94 @@
+<div class="container">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <div class="row">
+        <form class="form-inline" name="AgendasCtrl.searchPreferencesForm">
+          <div class="col-md-5">
+            <h3 class="panel-title">Agendas</h3>
+          </div>
+          <div class="col-md-3">
+            <input type="text" class="form-control" placeholder="Nombre" ng-model="AgendasCtrl.nameFilter">
+            <button type="button" class="btn btn-default" ng-click="AgendasCtrl.searchName()">Buscar</button>
+          </div>
+          <div class="col-md-2">
+            <select class="form-control" ng-model="AgendasCtrl.statusFilter" ng-change="AgendasCtrl.searchName()">
+              <option value="1">Activos</option>
+              <option value="2">Activos e inactivos</option>
+              <option value="3">Inactivos</option>
+            </select>
+          </div>
+          <div class="col-md-2">
+            <button id="btn-confirm" type="button" class="btn btn-success pull-right"
+                    ng-click="AgendasCtrl.newAgenda()">
+              <span class="glyphicon glyphicon-plus"></span> Nueva agenda
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="panel-body">
+      <div class="col-md-6" style="border-right: 1px solid;">
+        <table class="table table-hover">
+          <thead>
+          <tr>
+            <th>#</th>
+            <th>Profesional</th>
+            <th>Especialidad</th>
+            <th>Prestacion</th>
+            <th hidden="hidden">Acciones</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr ng-repeat="(key, agenda) in AgendasCtrl.agendas" ng-click="AgendasCtrl.detail(agenda)"
+              ng-class="{active:agenda == AgendasCtrl.agenda}">
+            <th scope="row">{{agenda.id}}</th>
+            <td style="max-width:150px; word-wrap:break-word;">{{agenda.profesional.fatherSurname}}</td>
+            <td style="max-width:150px; word-wrap:break-word;">{{agenda.prestacion.especialidad.name}}</td>
+            <td style="max-width:150px; word-wrap:break-word;">{{agenda.prestacion.name}}</td>
+            <td hidden="hidden">
+              <a ng-href="#agenda/{{agenda.id}}">
+                <button class="btn btn-default">
+						            	<span class="glyphicon glyphicon-pencil">
+						            	</span>
+                </button>
+              </a>
+              <button class="btn btn-default" ng-click="AgendasCtrl.delete(agenda.id)">
+					            	<span class="glyphicon glyphicon-remove">
+					            	</span>
+              </button>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="col-md-6" ng-show="AgendasCtrl.agenda">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="row detail-accions">
+              <div class="col-md-12">
+                <button ng-click="AgendasCtrl.modifyAgenda(AgendasCtrl.agenda)" class="btn btn-primary pull-right"><span
+                  class="glyphicon glyphicon-pencil"></span> Modificar
+                </button>
+              </div>
+            </div>
+            <div class="detail-info">
+              <div class="row">
+                <div class="col-md-4"><label>Nombre completo</label></div>
+                <div class="col-md-8" style="word-wrap:break-word;">{{AgendasCtrl.agenda.profesional.fatherSurname}}, {{AgendasCtrl.agenda.profesional.firstName}}</div>
+              </div>
+              <div class="row">
+                <div class="col-md-4"><label>Vigencia</label></div>
+                <div class="col-md-8" style="word-wrap:break-word;">{{AgendasCtrl.agenda.validFrom | date : 'dd-MM-yyyy'}} a {{AgendasCtrl.agenda.validTo | date : 'dd-MM-yyyy'}}</div>
+              </div>
+              <div class="row">
+                <div class="col-md-4"><label>Horario atención</label></div>
+                <div class="col-md-8" style="word-wrap:break-word;">{{AgendasCtrl.startTime}} a {{AgendasCtrl.endTime}}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

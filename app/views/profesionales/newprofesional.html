@@ -1,0 +1,214 @@
+<div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Nuevo profesional</h3>
+        </div>
+        <div class="panel-body">
+            <form name="NewProfesionalCtrl.newProfesionalForm">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="row">
+                        <div class="alert alert-dismissable alert-warning" ng-show="NewProfesionalCtrl.errorMessage">
+                            <button type="button" class="close" ng-click="NewProfesionalCtrl.hideErrorMessage()">×</button>
+                            <p>{{NewProfesionalCtrl.errorMessage}}</p>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
+                            <div class="form-group" ng-class="{'has-error':NewProfesionalCtrl.newProfesionalForm.firstName.$error.required}">
+                                <span><label>Nombre*</label></span>
+                                <input type="text" name="firstName" maxlength="70" class="form-control" ng-model="NewProfesionalCtrl.newProfesional.firstName" required>
+                                <span><label>(máximo 70 caracteres)</label></span>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
+                            <div class="form-group">
+                                <span><label>Otro nombre</label></span>
+                                <input type="text" name="otherNames" maxlength="70" class="form-control" ng-model="NewProfesionalCtrl.newProfesional.otherNames">
+                                <span><label>(máximo 70 caracteres)</label></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
+                            <div class="form-group" ng-class="{'has-error':NewProfesionalCtrl.newProfesionalForm.fatherSurname.$error.required}">
+                                <span><label>Apellido paterno*</label></span>
+                                <input type="text" name="fatherSurname" maxlength="70" class="form-control" ng-model="NewProfesionalCtrl.newProfesional.fatherSurname" required>
+                                <span><label>(máximo 70 caracteres)</label></span>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
+                            <div class="form-group">
+                                <span><label>Apellido materno</label></span>
+                                <input type="text" name="motherSurname" maxlength="70" class="form-control" ng-model="NewProfesionalCtrl.newProfesional.motherSurname">
+                                <span><label>(máximo 70 caracteres)</label></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-5">
+                            <div class="form-group" ng-class="{'has-error':NewProfesionalCtrl.newProfesionalForm.documentType.$error.required}">
+                                <span><label>Tipo documento*</label></span>
+                                <select class="form-control" name="document" ng-model="NewProfesionalCtrl.newProfesional.documentType" ng-options="document as document.name for document in NewProfesionalCtrl.documents track by document.id" ng-required>
+                                    <option value=""></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-xs-5" ng-class="{'has-error':NewProfesionalCtrl.newProfesionalForm.documentNumber.$error.required}">
+                            <span><label>Número*</label></span>
+                            <input class="form-control" maxlength="10" type="text" name="documentNumber" id="documentNumber" ng-model="NewProfesionalCtrl.newProfesional.documentNumber" required>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-11">
+                            <div class="form-group" ng-class="{'has-error':NewProfesionalCtrl.newProfesionalForm.birthDate.$error.required}">
+                                <span><label>Fecha nacimiento</label></span>
+                                <input rsmdatedropdowns ng-model="NewProfesionalCtrl.newProfesional.birthDate"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <br>
+                        <div class="col-xs-5">
+                            <span><label>Sexo al nacer</label></span>
+                            <div class="form-group" ng-class="{'has-error':NewProfesionalCtrl.newProfesionalForm.genderAtBirth.$error.required}">
+                                <select class="form-control" name="genderAtBirth" ng-model="NewProfesionalCtrl.newProfesional.genderAtBirth" ng-options="genderAtBirth as genderAtBirth.name for genderAtBirth in NewProfesionalCtrl.sexTypes track by genderAtBirth.id" ng-required>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-xs-5">
+                            <span><label>Genero por eleccion</label></span>
+                            <div class="form-group" ng-class="{'has-error':NewProfesionalCtrl.newProfesionalForm.genderOfChoice.$error.required}">
+                                <select class="form-control" name="genderOfChoice" ng-model="NewProfesionalCtrl.newProfesional.genderOfChoice" ng-options="genderOfChoice as genderOfChoice.name for genderOfChoice in NewProfesionalCtrl.sexTypes track by genderOfChoice.id" ng-required>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-5">
+                            <div class="form-group" ng-class="{'has-error':NewProfesionalCtrl.newProfesionalForm.street.$error.required}">
+                                <span><label>Calle</span>
+                                <input type="text" name="street" maxlength="150" class="form-control" ng-model="NewProfesionalCtrl.newProfesional.street" required>
+                                <span><label>(máximo 150 caracteres)</label></span>
+                            </div>
+                        </div>
+                        <div class="col-xs-5">
+                            <div class="form-group" ng-class="{'has-error':NewProfesionalCtrl.newProfesionalForm.postal.$error.required}">
+                                <span><label>Código Postal</label></span>
+                                <input type="text" name="postal" maxlength="10" class="form-control" ng-model="NewProfesionalCtrl.newProfesional.postal" required>
+                                <span><label>(máximo 10 caracteres)</label></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-5">
+                            <div class="form-group">
+                                <span><label>Provincia</label></span>
+                                <div class="form-group" ng-class="{'has-error':NewProfesionalCtrl.newProfesionalForm.selectedProvince.$error.required}">
+                                    <select name="selectedProvince" class="form-control" ng-model="NewProfesionalCtrl.selectedProvince" ng-options="province as province.name for province in NewProfesionalCtrl.provinces track by province.id" ng-change="NewProfesionalCtrl.searchDistricts()" required>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-5">
+                            <div class="form-group">
+                                <span><label>Partido</label></span>
+                                <div class="form-group" ng-class="{'has-error':NewProfesionalCtrl.newProfesionalForm.selectedDistrict.$error.required}">
+                                    <select name="selectedDistrict" class="form-control" ng-model="NewProfesionalCtrl.selectedDistrict" ng-options="district as district.name for district in NewProfesionalCtrl.districts track by district.id" ng-change="NewProfesionalCtrl.searchLocations()" required>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-5">
+                            <div class="form-group">
+                                <span><label>Localidad</label></span>
+                                <div class="form-group" ng-class="{'has-error':NewProfesionalCtrl.newProfesionalForm.location.$error.required}">
+                                    <select name="location" class="form-control" ng-model="NewProfesionalCtrl.newProfesional.location" ng-options="location as location.name for location in NewProfesionalCtrl.locations track by location.id" required>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-5">
+                            <div class="form-group">
+                                <span><label>Email</label></span>
+                                <input type="text" name="email" maxlength="70" class="form-control" ng-model="NewProfesionalCtrl.newProfesional.email">
+                                <span><label>(máximo 70 caracteres)</label></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-5">
+                            <div class="form-group" ng-class="{'has-error':NewProfesionalCtrl.newProfesionalForm.primaryPhoneNumber.$error.required}">
+                                <span><label>Telefono*</label></span>
+                                <input type="text" name="primaryPhoneNumber" maxlength="20" class="form-control" ng-model="NewProfesionalCtrl.newProfesional.primaryPhoneNumber" required>
+                                <input type="checkbox" ng-model="NewProfesionalCtrl.newProfesional.primaryPhoneMessage">
+                                <span><label>Acepta mensajes</label></span>
+                            </div>
+                        </div>
+                        <div class="col-xs-5">
+                            <div class="form-group" ng-class="{'has-error':NewProfesionalCtrl.newProfesionalForm.primaryPhoneContact.$error.required}">
+                                <span><label>Contacto*</label></span>
+                                <input type="text" name="primaryPhoneContact" maxlength="40" class="form-control" ng-model="NewProfesionalCtrl.newProfesional.primaryPhoneContact" required>
+                                <span><label>(máximo 40 caracteres)</label></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-5">
+                            <span><label>Estado civil</label></span>
+                            <select class="form-control" name="civilStatus" ng-model="NewProfesionalCtrl.newProfesional.civilStatus" ng-options="civilStatus.name for civilStatus in NewProfesionalCtrl.civilStatusTypes">
+                                <option value="" selected="selected">---Seleccione---</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <br>
+                            <span><label>Prestaciones</label></span>
+                            <div class="form-group">
+                                <select name="selectedPrestaciones" ng-model="NewProfesionalCtrl.newProfesional.prestaciones" ng-options='prestacion as (prestacion.name + " - " + prestacion.especialidad.name) for prestacion in NewProfesionalCtrl.prestaciones track by prestacion.id' multiple>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <div class="form-group">
+                                <span><label>Notas</label></span>
+                                <textarea rows="4" cols="50" name="notes" maxlength="150" class="form-control" ng-model="NewProfesionalCtrl.newProfesional.notes">
+                                </textarea>
+                                <span><label>(máximo 150 caracteres)</label></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <div class="form-group">
+                                <div class="col-xs-2 col-xs-offset-7 col-sm-2 col-sm-offset-7 col-md-2 col-md-offset-7 col-lg-2 col-lg-offset-7">
+                                    <button id="btn-cancel" type="button" class="btn btn-default" ng-click="NewProfesionalCtrl.close()">Cancelar</button>
+                                </div>
+                                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                                    <button id="btn-confirm" type="submit" class="btn btn-success  pull-right"ng-click="NewProfesionalCtrl.confirm()"><span class="glyphicon glyphicon-ok"></span> Confirmar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

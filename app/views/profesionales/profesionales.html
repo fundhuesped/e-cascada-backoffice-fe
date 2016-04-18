@@ -1,0 +1,94 @@
+<div class="container">
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<div class="row">
+				<form class="form-inline" name="ProfesionalesCtrl.searchPreferencesForm">
+					<div class="col-md-5">
+						<h3 class="panel-title">Profesionales</h3>
+					</div>
+					<div class="col-md-3">
+						<input type="text" class="form-control" placeholder="Nombre" ng-model="ProfesionalesCtrl.nameFilter">
+						<button type="button" class="btn btn-default" ng-click="ProfesionalesCtrl.searchName()">Buscar</button>
+					</div>
+					<div class="col-md-2">
+						<select class="form-control" ng-model="ProfesionalesCtrl.statusFilter" ng-change="ProfesionalesCtrl.searchName()">
+							<option value="1">Activos</option>
+							<option value="2">Activos e inactivos</option>
+							<option value="3">Inactivos</option>
+						</select>
+					</div>
+					<div class="col-md-2">
+						<button id="btn-confirm" type="button" class="btn btn-success pull-right" ng-click="ProfesionalesCtrl.newProfesional()">
+							<span class="glyphicon glyphicon-plus"></span> Nuevo profesional
+						</button>
+					</div>
+				</form>
+			</div>
+		</div>
+		<div class="panel-body">
+			<div class="col-md-4" style="border-right: 1px solid;">
+				<table class="table table-hover">
+					<thead>
+					<tr>
+						<th>#</th>
+						<th>Nombre</th>
+						<th>Apellido</th>
+					</tr>
+					</thead>
+					<tbody>
+					<tr ng-repeat="(key, profesional) in ProfesionalesCtrl.profesionales" ng-click="ProfesionalesCtrl.detail(profesional)" ng-class="{active:profesional == ProfesionalesCtrl.profesional}">
+						<th scope="row">{{profesional.id}}</th>
+						<td style="max-width:125px; word-wrap:break-word;">{{profesional.firstName}}</td>
+						<td style="max-width:125px; word-wrap:break-word;">{{profesional.fatherSurname}}</td>
+					</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="col-md-8" ng-show="ProfesionalesCtrl.profesional">
+				<div class="row">
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding-top: 10px;">
+						<div class="row">
+							<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+								<button ng-click="ProfesionalesCtrl.modifyProfesional(ProfesionalesCtrl.profesional)" class="btn btn-primary pull-right"><span class="glyphicon glyphicon-pencil"></span>Modificar</button>
+							</div>
+						</div>
+						<div class="detail-info">
+							<div class="row">
+								<div class="col-md-4"><label>Nombre</label></div>
+								<div class="col-md-8" style="word-wrap:break-word;">{{ProfesionalesCtrl.profesional.firstName}} {{ProfesionalesCtrl.profesional.otherNames}}</div>
+							</div>
+							<div class="row">
+								<div class="col-md-4"><label>Apellido</label></div>
+								<div class="col-md-8" style="word-wrap:break-word;">{{ProfesionalesCtrl.profesional.fatherSurname}} {{ProfesionalesCtrl.profesional.motherSurname}}</div>
+							</div>
+							<div class="row">
+								<div class="col-md-4"><label>Tipo y Nro documento</label></div>
+								<div class="col-md-8" style="word-wrap:break-word;">({{ProfesionalesCtrl.profesional.documentType.name}}) {{ProfesionalesCtrl.profesional.documentNumber}}</div>
+							</div>
+							<div class="row">
+								<div class="col-md-4"><label>Fecha nacimiento</label></div>
+								<div class="col-md-8" style="word-wrap:break-word;">{{ProfesionalesCtrl.profesional.birthDate}}</div>
+							</div>
+							<div class="row">
+								<div class="col-md-4"><label>Email</label></div>
+								<div class="col-md-8" style="word-wrap:break-word;">{{ProfesionalesCtrl.profesional.email}}</div>
+							</div>
+							<div class="row">
+								<div class="col-md-4"><label>Teléfono</label></div>
+								<div class="col-md-8" style="word-wrap:break-word;">{{ProfesionalesCtrl.profesional.primaryPhoneNumber}}</div>
+							</div>
+							<div class="row">
+								<div class="col-md-4"><label>Prestaciones</label></div>
+								<div class="col-md-8">
+									<ul>
+										<li ng-repeat="prestacion in ProfesionalesCtrl.profesional.prestaciones">{{prestacion.name}} ({{prestacion.especialidad.name}})</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

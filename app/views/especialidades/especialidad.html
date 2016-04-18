@@ -5,11 +5,16 @@
         <h4 class="modal-title">¿{{EspecialidadCtrl.especialidad.status == "Active" ? "Eliminar" : "Reactivar"}}?</h4>
       </div>
       <div class="modal-body">
-        <p>¿Esta seguro que desea {{EspecialidadCtrl.especialidad.status == "Active" ? "eliminar" : "reactivar"}} la especialidad seleccionada?</p>
+        <p>¿Esta seguro que desea {{EspecialidadCtrl.especialidad.status == "Active" ? "eliminar" : "reactivar"}} la
+          especialidad seleccionada?</p>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default btn-cancel" ng-click="EspecialidadCtrl.dismissModal()">Cancelar</button>
-        <button type="button" class="btn btn-danger btn-confirm" ng-click="EspecialidadCtrl.confirmModal()"><span class="glyphicon glyphicon-remove"></span> {{EspecialidadCtrl.especialidad.status == "Active" ? "Eliminar" : "Reactivar"}}</button>
+        <button type="button" class="btn btn-default btn-cancel" ng-click="EspecialidadCtrl.dismissModal()">Cancelar
+        </button>
+        <button type="button" class="btn btn-danger btn-confirm" ng-click="EspecialidadCtrl.confirmModal()"><span
+          class="glyphicon glyphicon-remove"></span> {{EspecialidadCtrl.especialidad.status == "Active" ? "Eliminar" :
+          "Reactivar"}}
+        </button>
       </div>
     </div>
   </div>
@@ -17,39 +22,46 @@
 
 
 <div class="">
-    <div class="panel panel-default">
-        <div class="panel-heading">    
-            <h3 class="panel-title">Especialidad</h3>
-        </div>
-        <div class="panel-body">
-			<form name="EspecialidadCtrl.especialidadForm">
-				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-show="EspecialidadCtrl.editing">
-                    <div class="row">
-                        <div class="alert alert-dismissable alert-warning" ng-show="EspecialidadCtrl.errorMessage">
-                          <button type="button" class="close" ng-click="EspecialidadCtrl.hideErrorMessage()">×</button>
-                          <p>{{EspecialidadCtrl.errorMessage}}</p>
-                        </div>
-                    </div>
-			  		<div class="form-group" ng-class="{'has-error':EspecialidadCtrl.especialidadForm.name.$error.required}">
-						<span><label>Nombre</label><span>
-						<input type="text" name="name" class="form-control" ng-model="EspecialidadCtrl.especialidad.name"required></input >
-					</div>
-			  		<div class="form-group" ng-class="{'has-error':EspecialidadCtrl.especialidadForm.descripction.$error.required}">
-						<span><label>Descripción</label><span>
-                        <textarea rows="4" cols="50" name="descripction" class="form-control" ng-model="EspecialidadCtrl.especialidad.description" required>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Especialidad</h3>
+    </div>
+    <div class="panel-body">
+      <form name="EspecialidadCtrl.especialidadForm">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-show="EspecialidadCtrl.editing">
+          <div class="row">
+            <div class="alert alert-dismissable alert-warning" ng-show="EspecialidadCtrl.errorMessage">
+              <button type="button" class="close" ng-click="EspecialidadCtrl.hideErrorMessage()">×</button>
+              <p>{{EspecialidadCtrl.errorMessage}}</p>
+            </div>
+          </div>
+          <div class="form-group" ng-class="{'has-error':EspecialidadCtrl.especialidadForm.name.$error.required}">
+            <span><label>Nombre</label></span>
+            <input type="text" name="name" class="form-control" ng-model="EspecialidadCtrl.especialidad.name"
+                   required></input>
+          </div>
+          <div class="form-group"
+               ng-class="{'has-error':EspecialidadCtrl.especialidadForm.descripction.$error.required}">
+            <span><label>Descripción</label></span>
+                        <textarea rows="4" cols="50" name="descripction" class="form-control"
+                                  ng-model="EspecialidadCtrl.especialidad.description" required>
                         </textarea>
-					</div>		    			
-				</div>
-			</form>
-			<div class="col-xs-6 col-sm-7 col-md-7 col-lg-7">
-				<button ng-click="EspecialidadCtrl.changeStatus()" class="btn btn-link " >{{EspecialidadCtrl.especialidad.status == "Active" ? "Eliminar" : "Reactivar"}}</button>
-			</div>
-			<div class="col-xs-6 col-sm-2 col-md-2 col-lg-2">
-				<button ng-click="EspecialidadCtrl.cancel()" class="btn btn-default">Cancelar</button>
-			</div>
-			<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
-				<button ng-click="EspecialidadCtrl.confirm()" class="btn btn-primary"><span class="glyphicon glyphicon-ok"></span> Confirmar</button>
-			</div>
-		</div>
-	</div>
+          </div>
+        </div>
+      </form>
+      <div class="col-xs-6 col-sm-7 col-md-7 col-lg-7">
+        <button ng-click="EspecialidadCtrl.changeStatus()" class="btn btn-link ">{{EspecialidadCtrl.especialidad.status
+          == "Active" ? "Eliminar" : "Reactivar"}}
+        </button>
+      </div>
+      <div class="col-xs-6 col-sm-2 col-md-2 col-lg-2">
+        <button ng-click="EspecialidadCtrl.cancel()" class="btn btn-default">Cancelar</button>
+      </div>
+      <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
+        <button ng-click="EspecialidadCtrl.confirm()" class="btn btn-primary"><span
+          class="glyphicon glyphicon-ok"></span> Confirmar
+        </button>
+      </div>
+    </div>
+  </div>
 </div>
