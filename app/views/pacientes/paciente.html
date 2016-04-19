@@ -20,6 +20,9 @@
     <div class="panel panel-default">
         <div class="panel-heading">
             <h3 class="panel-title">Paciente</h3>
+            <button type="button" class="pull-right close" ng-click="PacienteCtrl.cancel();">
+                <span class="glyphicon glyphicon-remove"></span>
+            </button>
         </div>
         <div class="panel-body">
 
@@ -91,6 +94,7 @@
                     </div>
 
                     <div class="row">
+                        <br>
                         <div class="col-xs-5">
                             <span><label>Sexo al nacer</label></span>
                             <div class="form-group" ng-class="{'has-error':PacienteCtrl.pacienteForm.genderAtBirth.$error.required}">
@@ -129,7 +133,7 @@
                             <div class="form-group">
                                 <span><label>Provincia</label></span>
                                 <div class="form-group" ng-class="{'has-error':PacienteCtrl.pacienteForm.selectedProvince.$error.required}">
-                                    <select name="selectedProvince" class="form-control" ng-model="PacienteCtrl.selectedProvince"º ng-options="province as province.name for province in PacienteCtrl.provinces track by province.id" ng-change="PacienteCtrl.searchDistricts()" required>
+                                    <select name="selectedProvince" class="form-control" ng-model="PacienteCtrl.selectedProvince" ng-options="province as province.name for province in PacienteCtrl.provinces track by province.id" ng-change="PacienteCtrl.searchDistricts()" required>
                                     </select>
                                 </div>
                             </div>
@@ -251,6 +255,7 @@
                     </div>
 
                     <div class="row">
+                        <br>
                         <div class="col-xs-5">
                             <span><label>Obra social</label></span>
                             <select class="form-control" name="socialService" ng-model="PacienteCtrl.paciente.socialService" ng-options="socialService as socialService.name for socialService in PacienteCtrl.socialServices track by socialService.id">
@@ -274,6 +279,7 @@
                     </div>
 
                     <div class="row">
+                        <br>
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                             <div class="form-group">
                                 <span><label>Notas</label></span>

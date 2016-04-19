@@ -1,296 +1,299 @@
 <div ng-class="{container:!NewTurnoCtrl.isModal}" style="padding-bottom:70px;">
-    <div class="panel panel-default">
-        <div class="panel-heading">    
-            <h3 class="panel-title">Nuevo turno</h3>
-        </div>
-        <div class="panel-body master-detail">
-        	<form name="newPaciente">
-                <div class="row">
-            		<div class="col-md-6">
-                        <div class="row">
-                            <div class="col-xs-12 col-sm-7 col-md-7 col-lg-7">
-                                <div class="row">
-                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                        <span><label>Tipo y número de documento</label></span>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
-                                            <div class="form-group" ng-class="{'has-error':NewTurnoCtrl.newPaciente.documentType.$error.required}">
-                                                <select class="form-control" name="document" ng-model="NewTurnoCtrl.paciente.documentType" ng-disabled="NewTurnoCtrl.paciente.id" ng-options="document as document.name for document in NewTurnoCtrl.documents track by document.id" ng-change="NewTurnoCtrl.lookForPacientes()">
-                                                    <option value=""></option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7 form-group">
-                                            <input class="form-control" maxlength="20" type="text" name="document" id="documentNumber" ng-model="NewTurnoCtrl.paciente.documentNumber" ng-disabled="NewTurnoCtrl.paciente.id" ng-model-options="{ debounce: { 'default': 500 } }" ng-change="NewTurnoCtrl.lookForPacientes()">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-            			<div class="row">
-            		        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-            		            <div class="form-group">
-            						<span><label>Nombre(*)</label></span>
-            						<input type="text" name="firstName" class="form-control" ng-model="NewTurnoCtrl.paciente.firstName" required ng-disabled="NewTurnoCtrl.paciente.id" ng-model-options="{ debounce: { 'default': 500 } }" ng-change="NewTurnoCtrl.lookForPacientes()">
-            		            </div>
-            		        </div>
-                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                                <div class="form-group">
-                                    <span><label>Apellido(*)</label></span>
-                                    <input type="text" name="fatherSurname" class="form-control" ng-model="NewTurnoCtrl.paciente.fatherSurname" required ng-disabled="NewTurnoCtrl.paciente.id" ng-model-options="{ debounce: { 'default': 500 } }" ng-change="NewTurnoCtrl.lookForPacientes()">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                                <div class="row">
-                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                        <div class="form-group">
-                                            <span><label>Teléfono(*)</label></span>
-                                            <input type="text" name="contactPhone" class="form-control" ng-disabled="NewTurnoCtrl.paciente.id" ng-model="NewTurnoCtrl.paciente.telephone" required ng-model-options="{ debounce: { 'default': 500 } }">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                                <div class="row">
-                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                        <div class="form-group">
-                                            <span><label>Email</label></span>
-                                            <input type="email" name="email" class="form-control" ng-model="NewTurnoCtrl.paciente.email" ng-disabled="NewTurnoCtrl.paciente.id" ng-change="NewTurnoCtrl.lookForPacientes()">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-            			<div class="row">
-                            <div class="col-lg-10 col-lg-10 col-lg-10 col-lg-10">
-                                <div class="row">
-                                    <div class="col-lg-10 col-lg-10 col-lg-10 col-lg-10">
-                                        <div class="form-group">
-                                            <span><label>Fecha de nacimiento</label></span>
-                                            <input rsmdatedropdowns ng-model="NewTurnoCtrl.paciente.birthDate" ng-disabled="NewTurnoCtrl.paciente.id" ng-model-options="{ debounce: { 'default': 500 } }" ng-change="NewTurnoCtrl.lookForPacientes()">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 right-column" >
-                        <div class="row">
-                            <div ng-show="!NewTurnoCtrl.shouldLookForPacient()" style="font-size: 20px;padding: 80px;">
-                                Por favor comience a completar el formulario para buscar pacientes
-                            </div>
-                            <table class="table" dw-loading="recomendations">
-                                <tbody>
-                                    <tr ng-repeat="(key, recomendation) in NewTurnoCtrl.recomendationList" ng-class="{'bg-success':recomendation.selected}">
-                                        <td class="col-md-5">
-                                            <div><label>{{recomendation.firstName}} {{recomendation.otherNames}} {{recomendation.fatherSurname}} {{recomendation.motherSurname}}</label></div>
-                                            <div>{{recomendation.documentType.name}} {{recomendation.documentNumber}} <div>{{recomendation.birthDate || 'No informado'}}</div></div>
-                                        </td>
-                                        <td class="col-md-4">
-                                            <div><label>Tel</label> {{recomendation.telephone || 'No informado'}}</div>
-                                        </td>
-                                        <td class="col-md-4">
-                                            <div><label>e-m@il</label> {{recomendation.email || 'No informado'}}</div>
-                                        </td>
-                                        <td class="col-md-3">
-                                            <button class="btn btn-success" type="button" ng-click="NewTurnoCtrl.selectPaciente(recomendation)" ng-show="!NewTurnoCtrl.paciente.id">
-                                                <span class="glyphicon glyphicon-ok"></span>
-                                            </button>
-                                            <button class="btn btn-default" type="button" ng-click="NewTurnoCtrl.openPacienteModal(recomendation)">
-                                                <span class="glyphicon glyphicon-zoom-in"></span>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                </tbody> 
-                            </table>
-                            </div>
-                        <div class="row" ng-show="NewTurnoCtrl.paciente.id">
-                            <div class="col-md-12">
-                                <button class="btn btn-warning" type="button" ng-click="NewTurnoCtrl.clearPacienteSelection()" ><span class="
-glyphicon glyphicon-remove"></span> Limpiar seleccion de paciente</button>
-                            </div>  
-                        </div>
-                    </div>  
-                </div>
-                
-                <hr>
-
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="row">
-                            <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
-                                <div class="form-group">
-                                    <span><label>Provincia(*)</label></span>
-                                    <select class="form-control" ng-model="NewTurnoCtrl.selectedProvince" ng-options="province.name for province in NewTurnoCtrl.provinces" ng-change="NewTurnoCtrl.searchDistricts()" required>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="row">
-                            <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
-                                <div class="form-group">
-                                    <span><label>Partido(*)</label></span>
-                                    <select class="form-control" ng-model="NewTurnoCtrl.selectedDistrict" ng-options="district.name for district in NewTurnoCtrl.districts" ng-change="NewTurnoCtrl.searchLocations()" required>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="row">
-                            <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
-                                <div class="form-group">
-                                    <span><label>Localidad(*)</label></span>
-                                    <select class="form-control" ng-model="NewTurnoCtrl.selectedLocation" ng-options="location.name for location in NewTurnoCtrl.locations" required>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <hr>
-
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="row">
-                            <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
-                                <div class="form-group">
-                                    <span><label>Especialidad(*)</label></span>
-                                    <select class="form-control" ng-model="NewTurnoCtrl.selectedEspecialidad" ng-options="especialidad.name for especialidad in NewTurnoCtrl.especialidades" ng-change="NewTurnoCtrl.searchPrestaciones()" required>
-                                        <option value="">Todas las especialidades</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
-                                <div class="form-group">
-                                    <span><label>Médico</label></span>
-                                    <select class="form-control" ng-model="NewTurnoCtrl.selectedMedico" ng-options="medico.name for medico in NewTurnoCtrl.medicos">
-                                        <option value="">Todos los médicos</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
-                                <div class="form-group">
-                                    <span><label>Prestación(*)</label></span>
-                                    <select class="form-control" ng-model="NewTurnoCtrl.selectedPrestacion" ng-options="prestacion.name for prestacion in NewTurnoCtrl.prestaciones" required>
-                                        <option value="">Seleccione prestación</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
-                                <div class="form-group">
-                                    <span><label>Fecha</label></span>
-                                    <input type="date" name="turnDate" class="form-control" ng-model="NewTurnoCtrl.newTurno.turnDate" required>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-xs-6 col-xs-offset-5 col-sm-6 col-sm-offset-5 col-md-6 col-md-offset-5 col-lg-6 col-lg-offset-5">
-                                <button ng-click="NewTurnoCtrl.limpiarBusquedaTurno()" class="btn btn-default" type="button">Limpiar busqueda</button>
-                                <button id="btn-confirm" type="button" class="btn btn-success" ng-click="NewTurnoCtrl.lookForTurnos()" ng-disabled="!NewTurnoCtrl.selectedPrestacion || (!NewTurnoCtrl.selectedEspecialidad && !NewTurnoCtrl.selectedMedico)">Buscar</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div ng-show="NewTurnoCtrl.selectedPrestacion">
-                            <div class="row">
-                                <b>{{NewTurnoCtrl.selectedPrestacion.name}}</b>
-                            </div>
-                            <div class="row">
-                                {{NewTurnoCtrl.selectedPrestacion.description}}
-                            </div>
-                            <div class="row">
-                                Duración: {{NewTurnoCtrl.selectedPrestacion.duration}}
-                            </div>
-                            <div class="row">
-                                Observaciones: {{NewTurnoCtrl.selectedPrestacion.notes}}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row" style="margin-top:15px;">
-                    <div class="col-md-12">
-                    <uib-tabset>
-                        <uib-tab>
-                            <uib-tab-heading>
-                                <span class="glyphicon glyphicon-list-alt"></span> Listado
-                            </uib-tab-heading>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <table class="table"> 
-                                        <thead> 
-                                            <tr>
-                                                <th></th> 
-                                                <th>Fecha</th> 
-                                                <th>Hora</th> 
-                                                <th>Hasta</th>
-                                                <th>Especialidad</th> 
-                                                <th>Prestaciones</th> 
-                                                <th>Medico</th> 
-                                            </tr> 
-                                        </thead> 
-                                        <tbody ng-show="NewTurnoCtrl.showTurnos"> 
-                                            <tr ng-repeat="(key, turno) in NewTurnoCtrl.turnos" ng-class="{'bg-success':turno.selected}" ng-click="NewTurnoCtrl.updateSelectionRow($index,NewTurnoCtrl.turnos)"> 
-                                                <td><input type="checkbox" ng-checked="turno.selected"></td>
-                                                <td>{{turno.date}}</td> 
-                                                <td>{{turno.hour}}</td> 
-                                                <td>{{turno.hourTo}}</td> 
-                                                <td>{{turno.especialidad.name}}</td> 
-                                                <td>{{turno.prestacion.name}}</td> 
-                                                <td>{{turno.medic.name}}</td> 
-                                            </tr> 
-                                        </tbody> 
-                                    </table>
-                                </div>
-                            </div>
-                        </uib-tab>
-                        <uib-tab select="NewTurnoCtrl.renderCalendar()">
-                            <uib-tab-heading>
-                                <span class="glyphicon glyphicon-calendar"></span> Calendario
-                            </uib-tab-heading>
-                            <div class="row">
-                                <div class="col-md-9">
-                                    <div ui-calendar="NewTurnoCtrl.calendarConfig" ng-model="NewTurnoCtrl.eventSources" calendar="newTurnosCalendar"></div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="row" ng-show="NewTurnoCtrl.selectedTurno">
-                                        <div><b>{{NewTurnoCtrl.selectedTurno.date}}</b></div>
-                                        <div>Horario: {{NewTurnoCtrl.selectedTurno.hour}} - {{NewTurnoCtrl.selectedTurno.hourTo}}</div>
-                                        <div>Medico: {{NewTurnoCtrl.selectedTurno.medic.name}}</div>
-                                        <div>Especialidad: {{NewTurnoCtrl.selectedTurno.especialidad.name}}</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </uib-tab>
-                      </uib-tabset>
-                </div>
-                <div class="row">
-                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                        <div class="form-group">
-                            <div class="col-xs-2 col-xs-offset-7 col-sm-2 col-sm-offset-7 col-md-2 col-md-offset-7 col-lg-2 col-lg-offset-7">
-                                <button id="btn-cancel" type="button" class="btn btn-default">Cancelar</button>
-                            </div>
-                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                                <button id="btn-confirm" type="button" class="btn btn-success" ng-disabled="!NewTurnoCtrl.selectedTurno && !NewTurnoCtrl.paciente" ng-click="NewTurnoCtrl.confirmTurno()">Confirmar</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-        	</form>
-        </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Nuevo turno</h3>
     </div>
+    <div class="panel-body master-detail">
+      <form name="newPaciente">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="row">
+              <div class="col-xs-12 col-sm-7 col-md-7 col-lg-7">
+                <div class="row">
+                  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <span><label>Tipo y número de documento</label></span>
+                  </div>
+                  <div class="form-group">
+                    <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
+                      <div class="form-group"
+                           ng-class="{'has-error':NewTurnoCtrl.newPaciente.documentType.$error.required}">
+                        <select class="form-control" name="document" ng-model="NewTurnoCtrl.paciente.documentType"
+                                ng-disabled="NewTurnoCtrl.paciente.id"
+                                ng-options="document as document.name for document in NewTurnoCtrl.documents track by document.id"
+                                ng-change="NewTurnoCtrl.lookForPacientes()">
+                          <option value=""></option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7 form-group">
+                      <input class="form-control" maxlength="20" type="text" name="document" id="documentNumber"
+                             ng-model="NewTurnoCtrl.paciente.documentNumber" ng-disabled="NewTurnoCtrl.paciente.id"
+                             ng-model-options="{ debounce: { 'default': 500 } }"
+                             ng-change="NewTurnoCtrl.lookForPacientes()">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <div class="form-group">
+                  <span><label>Nombre(*)</label></span>
+                  <input type="text" name="firstName" class="form-control" ng-model="NewTurnoCtrl.paciente.firstName"
+                         required ng-disabled="NewTurnoCtrl.paciente.id"
+                         ng-model-options="{ debounce: { 'default': 500 } }"
+                         ng-change="NewTurnoCtrl.lookForPacientes()">
+                </div>
+              </div>
+              <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <div class="form-group">
+                  <span><label>Apellido(*)</label></span>
+                  <input type="text" name="fatherSurname" class="form-control"
+                         ng-model="NewTurnoCtrl.paciente.fatherSurname" required ng-disabled="NewTurnoCtrl.paciente.id"
+                         ng-model-options="{ debounce: { 'default': 500 } }"
+                         ng-change="NewTurnoCtrl.lookForPacientes()">
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <div class="row">
+                  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="form-group">
+                      <span><label>Teléfono(*)</label></span>
+                      <input type="text" name="contactPhone" class="form-control" ng-disabled="NewTurnoCtrl.paciente.id"
+                             ng-model="NewTurnoCtrl.paciente.primaryPhoneNumber" required
+                             ng-model-options="{ debounce: { 'default': 500 } }">
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <div class="row">
+                  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="form-group">
+                      <span><label>Email</label></span>
+                      <input type="email" name="email" class="form-control" ng-model="NewTurnoCtrl.paciente.email"
+                             ng-disabled="NewTurnoCtrl.paciente.id" ng-change="NewTurnoCtrl.lookForPacientes()">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-10 col-lg-10 col-lg-10 col-lg-10">
+                <div class="row">
+                  <div class="col-lg-10 col-lg-10 col-lg-10 col-lg-10">
+                    <div class="form-group">
+                      <span><label>Fecha de nacimiento</label></span>
+                      <input rsmdatedropdowns ng-model="NewTurnoCtrl.paciente.birthDate"
+                             ng-disabled="NewTurnoCtrl.paciente.id" ng-model-options="{ debounce: { 'default': 500 } }"
+                             ng-change="NewTurnoCtrl.lookForPacientes()">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 right-column">
+            <div class="row">
+              <div ng-show="!NewTurnoCtrl.shouldLookForPacient()" style="font-size: 20px;padding: 80px;">
+                Por favor comience a completar el formulario para buscar pacientes
+              </div>
+              <table class="table" dw-loading="recomendations">
+                <tbody>
+                <tr ng-repeat="(key, recomendation) in NewTurnoCtrl.recomendationList"
+                    ng-class="{'bg-success':recomendation.selected}">
+                  <td class="col-md-5">
+                    <div><label>{{recomendation.firstName}} {{recomendation.otherNames}} {{recomendation.fatherSurname}}
+                      {{recomendation.motherSurname}}</label></div>
+                    <div>{{recomendation.documentType.name}} {{recomendation.documentNumber}}
+                      <div>{{recomendation.birthDate || 'No informado'}}</div>
+                    </div>
+                  </td>
+                  <td class="col-md-4">
+                    <div><label>Tel</label> {{recomendation.primaryPhoneNumber || 'No informado'}}</div>
+                  </td>
+                  <td class="col-md-4">
+                    <div><label>e-m@il</label> {{recomendation.email || 'No informado'}}</div>
+                  </td>
+                  <td class="col-md-3">
+                    <button class="btn btn-success" type="button" ng-click="NewTurnoCtrl.selectPaciente(recomendation)"
+                            ng-show="!NewTurnoCtrl.paciente.id">
+                      <span class="glyphicon glyphicon-ok"></span>
+                    </button>
+                    <button class="btn btn-default" type="button"
+                            ng-click="NewTurnoCtrl.openPacienteModal(recomendation)">
+                      <span class="glyphicon glyphicon-zoom-in"></span>
+                    </button>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="row" ng-show="NewTurnoCtrl.paciente.id">
+              <div class="col-md-12">
+                <button class="btn btn-warning" type="button" ng-click="NewTurnoCtrl.clearPacienteSelection()"><span
+                  class="
+glyphicon glyphicon-remove"></span> Limpiar seleccion de paciente
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <hr>
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="row">
+              <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
+                <div class="form-group">
+                  <span><label>Especialidad(*)</label></span>
+                  <select class="form-control" ng-model="NewTurnoCtrl.selectedEspecialidad"
+                          ng-options="especialidad.name for especialidad in NewTurnoCtrl.especialidades"
+                          ng-change="NewTurnoCtrl.searchPrestacionesMedicos()" required>
+                    <option value="">Todas las especialidades</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
+                <div class="form-group">
+                  <span><label>Profesional</label></span>
+                  <select class="form-control" ng-model="NewTurnoCtrl.selectedProfesional"
+                          ng-options='profesional as (profesional.fatherSurname + ", " + profesional.firstName) for profesional in NewTurnoCtrl.profesionales track by profesional.id'>
+                    <option value="">Todos los médicos</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
+                <div class="form-group">
+                  <span><label>Prestación(*)</label></span>
+                  <select class="form-control" ng-model="NewTurnoCtrl.selectedPrestacion"
+                          ng-options="prestacion.name for prestacion in NewTurnoCtrl.prestaciones"
+                          ng-change="NewTurnoCtrl.searchProfesionales()" required>
+                    <option value="">Seleccione prestación</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-11">
+                <div class="form-group">
+                  <span><label>Fecha</label></span>
+                  <input rsmdatedropdowns ng-model="NewTurnoCtrl.selectedDate"
+                         ng-model-options="{ debounce: { 'default': 500 } }">
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <br>
+              <div
+                class="col-xs-6 col-xs-offset-5 col-sm-6 col-sm-offset-5 col-md-6 col-md-offset-5 col-lg-6 col-lg-offset-5">
+                <button ng-click="NewTurnoCtrl.limpiarBusquedaTurno()" class="btn btn-default" type="button">Limpiar
+                  busqueda
+                </button>
+                <button id="btn-confirm" type="button" class="btn btn-success" ng-click="NewTurnoCtrl.lookForTurnos()"
+                        ng-disabled="!NewTurnoCtrl.selectedPrestacion || (!NewTurnoCtrl.selectedEspecialidad && !NewTurnoCtrl.selectedProfesional)">
+                  Buscar
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div ng-show="NewTurnoCtrl.selectedPrestacion">
+              <div class="row">
+                <b>{{NewTurnoCtrl.selectedPrestacion.name}}</b>
+              </div>
+              <div class="row">
+                {{NewTurnoCtrl.selectedPrestacion.description}}
+              </div>
+              <div class="row">
+                Duración: {{NewTurnoCtrl.selectedPrestacion.duration}}
+              </div>
+              <div class="row">
+                Observaciones: {{NewTurnoCtrl.selectedPrestacion.notes}}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row" style="margin-top:15px;">
+          <div class="col-md-12">
+            <uib-tabset>
+              <uib-tab>
+                <uib-tab-heading>
+                  <span class="glyphicon glyphicon-list-alt"></span> Listado
+                </uib-tab-heading>
+                <div class="row">
+                  <div class="col-md-12">
+                    <table class="table">
+                      <thead>
+                      <tr>
+                        <th></th>
+                        <th>Fecha</th>
+                        <th>Hora</th>
+                        <th>Hasta</th>
+                        <th>Especialidad</th>
+                        <th>Prestaciones</th>
+                        <th>Profesional</th>
+                      </tr>
+                      </thead>
+                      <tbody ng-show="NewTurnoCtrl.showTurnos">
+                      <tr ng-repeat="(key, turno) in NewTurnoCtrl.turnos" ng-class="{'bg-success':turno.selected}"
+                          ng-click="NewTurnoCtrl.updateSelectionRow($index,NewTurnoCtrl.turnos)">
+                        <td><input type="checkbox" ng-checked="turno.selected"></td>
+                        <td>{{turno.day | date : 'dd-MM-yyyy'}}</td>
+                        <td>{{turno.start}}</td>
+                        <td>{{turno.end}}</td>
+                        <td>{{turno.prestacion.especialidad.name}}</td>
+                        <td>{{turno.prestacion.name}}</td>
+                        <td>{{turno.profesional.fatherSurname}}, {{turno.profesional.firstName}}</td>
+                      </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </uib-tab>
+              <uib-tab select="NewTurnoCtrl.renderCalendar()">
+                <uib-tab-heading>
+                  <span class="glyphicon glyphicon-calendar"></span> Calendario
+                </uib-tab-heading>
+                <div class="row">
+                  <div class="col-md-9">
+                    <div ui-calendar="NewTurnoCtrl.calendarConfig" ng-model="NewTurnoCtrl.eventSources"
+                         calendar="newTurnosCalendar"></div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="row" ng-show="NewTurnoCtrl.selectedTurno">
+                      <div><b>{{NewTurnoCtrl.selectedTurno.date}}</b></div>
+                      <div>Horario: {{NewTurnoCtrl.selectedTurno.hour}} - {{NewTurnoCtrl.selectedTurno.hourTo}}</div>
+                      <div>Profesional: {{NewTurnoCtrl.selectedTurno.profesional.name}}</div>
+                      <div>Especialidad: {{NewTurnoCtrl.selectedTurno.especialidad.name}}</div>
+                    </div>
+                  </div>
+                </div>
+              </uib-tab>
+            </uib-tabset>
+          </div>
+          <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+              <div class="form-group">
+                <div
+                  class="col-xs-2 col-xs-offset-7 col-sm-2 col-sm-offset-7 col-md-2 col-md-offset-7 col-lg-2 col-lg-offset-7">
+                  <button id="btn-cancel" type="button" class="btn btn-default">Cancelar</button>
+                </div>
+                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                  <button id="btn-confirm" type="button" class="btn btn-success"
+                          ng-disabled="!NewTurnoCtrl.selectedTurno || !NewTurnoCtrl.selectedPaciente"
+                          ng-click="NewTurnoCtrl.confirmTurno()">Confirmar
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+      </form>
+    </div>
+  </div>
 </div>

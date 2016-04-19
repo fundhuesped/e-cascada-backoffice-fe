@@ -1,0 +1,153 @@
+<div class="modal fade" ng-class="{'in':AgendaCtrl.modalStyle}" ng-style="AgendaCtrl.modalStyle">
+  <div class="modal-dialog modal-confirmation">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">¿{{AgendaCtrl.agenda.status == "Active" ? "Eliminar" : "Reactivar"}}?</h4>
+      </div>
+      <div class="modal-body">
+        <p>¿Esta seguro que desea {{AgendaCtrl.agenda.status == "Active" ? "eliminar" : "reactivar"}} la agenda
+          seleccionada?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default btn-cancel" ng-click="AgendaCtrl.dismissModal()">Cancelar</button>
+        <button type="button" class="btn btn-danger btn-confirm" ng-click="AgendaCtrl.confirmModal()"><span
+          class="glyphicon glyphicon-remove"></span> {{AgendaCtrl.agenda.status == "Active" ? "Eliminar" : "Reactivar"}}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Agenda</h3>
+      <button type="button" class="pull-right close" ng-click="AgendaCtrl.cancel();">
+        <span class="glyphicon glyphicon-remove"></span>
+      </button>
+    </div>
+    <div class="panel-body">
+      <form name="AgendaCtrl.agendaForm">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
+          <div class="row">
+            <div class="alert alert-dismissable alert-warning" ng-show="AgendaCtrl.errorMessage">
+              <button type="button" class="close" ng-click="AgendaCtrl.hideErrorMessage()">×</button>
+              <p>{{AgendaCtrl.errorMessage}}</p>
+            </div>
+          </div>
+          <div class="row">
+            <br>
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+              <span><label>Profesional</label></span>
+              <input type="text" name="selectedProfesional" class="form-control" ng-model="AgendaCtrl.selectedProfesionalName" ng-disabled="true">
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+              <span><label>Especialidades</label></span>
+              <input type="text" name="selectedEspecialidad" class="form-control" ng-model="AgendaCtrl.selectedEspecialidadName" ng-disabled="true">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+              <span><label>Prestacion</label></span>
+              <input type="text" name="selectedPrestacion" class="form-control" ng-model="AgendaCtrl.selectedPrestacionName" ng-disabled="true">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+              <h4>Vigencia</h4>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+              <div class="form-group">
+                <span><label>Desde*</label></span>
+                <input name="validFrom" rsmdatedropdowns ng-model="AgendaCtrl.agenda.validFrom" ng-disabled="true"/>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <br>
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+              <div class="form-group">
+                <span><label>Hasta*</label></span>
+                <input name="validTo" rsmdatedropdowns ng-model="AgendaCtrl.agenda.validTo" ng-disabled="true"/>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+              <h4>Horario de atención</h4>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+              <span><label>Desde*</label></span>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+              <input type="number" name="hoursFrom" class="form-control" ng-model="AgendaCtrl.hoursFrom" value="0"
+                     min="0" max="24" ng-disabled="true">Horas
+            </div>
+            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+              <input type="number" name="minutesFrom" class="form-control" ng-model="AgendaCtrl.minutesFrom"
+                     value="0" min="0" max="59" ng-disabled="true" required>Minutos
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+              <span><label>Hasta*</label></span>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+              <input type="number" name="hoursTo" class="form-control" ng-model="AgendaCtrl.hoursTo" value="0"
+                     min="0" max="24" ng-disabled="true" required>Horas
+            </div>
+            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+              <input type="number" name="minutesTo" class="form-control" ng-model="AgendaCtrl.minutesTo" value="0"
+                     min="0" max="59" ng-disabled="true" required>Minutos
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-8">
+          <div class="row">
+            <br>
+            <table class="table">
+              <thead>
+              <tr>
+                <th>
+                  <label/>
+                </th>
+                <th ng-repeat="day in AgendaCtrl.daysStr">
+                  <label>{{day.name}} <input type="checkbox" ng-model="day.selected" ng-click="AgendaCtrl.checkAllColumn(day)" /></label>
+                </th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr ng-repeat="period in AgendaCtrl.agenda.periods">
+                <td align="center">{{period.start}}-{{period.end}} <input type="checkbox" ng-model="period.selected" ng-click="AgendaCtrl.checkAllRow(period)"></td>
+                <td align="center" ng-repeat="day in period.daysOfWeek"><input type="checkbox" ng-model="day.selected" ng-change="AgendaCtrl.changeState(day, period)">
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </form>
+      <div class="col-xs-6 col-sm-7 col-md-7 col-lg-7">
+        <button ng-click="AgendaCtrl.changeStatus()" class="btn btn-link ">{{AgendaCtrl.agenda.status
+          == "Active" ? "Eliminar" : "Reactivar"}}
+        </button>
+      </div>
+      <div class="col-xs-6 col-sm-2 col-md-2 col-lg-2">
+        <button ng-click="AgendaCtrl.cancel()" class="btn btn-default">Cancelar</button>
+      </div>
+      <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
+        <button ng-click="AgendaCtrl.confirm()" class="btn btn-primary"><span
+          class="glyphicon glyphicon-ok"></span> Confirmar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
