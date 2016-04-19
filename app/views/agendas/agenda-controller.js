@@ -6,39 +6,39 @@
     this.editing = true;
     this.errorMessage = null;
     this.daysStr = [{
-      "id": 1,
-      "name": "Lu",
-      "selected": false
+      'id': 1,
+      'name': 'Lu',
+      'selected': false
     },
       {
-        "id": 2,
-        "name": "Ma",
-        "selected": false
+        'id': 2,
+        'name': 'Ma',
+        'selected': false
       },
       {
-        "id": 3,
-        "name": "Mie",
-        "selected": false
+        'id': 3,
+        'name': 'Mie',
+        'selected': false
       },
       {
-        "id": 4,
-        "name": "Jue",
-        "selected": false
+        'id': 4,
+        'name': 'Jue',
+        'selected': false
       },
       {
-        "id": 5,
-        "name": "Vi",
-        "selected": false
+        'id': 5,
+        'name': 'Vi',
+        'selected': false
       },
       {
-        "id": 6,
-        "name": "Sa",
-        "selected": false
+        'id': 6,
+        'name': 'Sa',
+        'selected': false
       },
       {
-        "id": 7,
-        "name": "Do",
-        "selected": false
+        'id': 7,
+        'name': 'Do',
+        'selected': false
       }
     ];
 
@@ -46,13 +46,13 @@
       if (this.agendaForm.$valid) {
         this.hideErrorMessage();
         $loading.start('app');
-        this.agenda.birthDate = $filter('date')(this.agenda.birthDate, "yyyy-MM-dd");
+        this.agenda.birthDate = $filter('date')(this.agenda.birthDate, 'yyyy-MM-dd');
         this.agenda.$update(function () {
           $loading.finish('app');
           $uibModalInstance.close('modified');
         }, function () {
           this.showErrorMessage();
-        });
+        }.bind(this));
       } else {
         this.errorMessage = 'Por favor revise el formulario';
       }
@@ -86,7 +86,7 @@
         $loading.finish('app');
         $uibModalInstance.close('deleted');
       });
-    }
+    };
 
     this.confirmReactivate = function confirmReactivate(agendaInstance) {
       agendaInstance.status = 'Active';
@@ -97,15 +97,15 @@
         $loading.finish('app');
         $uibModalInstance.close('reactivated');
       });
-    }
+    };
 
     this.confirmStatusChange = function confirmDelete() {
       var agendaInstance = angular.copy(agenda);
       $loading.start('app');
-      if (agendaInstance.status == 'Active') {
+      if (agendaInstance.status === 'Active') {
         this.confirmDelete(agendaInstance);
       } else {
-        if (agendaInstance.status == 'Inactive') {
+        if (agendaInstance.status === 'Inactive') {
           this.confirmReactivate(agendaInstance);
         }
       }
@@ -136,7 +136,7 @@
       for (i = 0; i < this.agenda.periods.length; i++) {
         for (j = 0; j < this.agenda.periods[i].daysOfWeek.length; j++) {
           selection = this.agenda.periods[i].daysOfWeek[j];
-          if (selection.name.indexOf(day.name) == 0) {
+          if (selection.name.indexOf(day.name) === 0) {
             selection.selected = day.selected;
           }
         }
@@ -148,7 +148,7 @@
       var i, selection;
       for (i = 0; i < this.daysStr.length; i++) {
         selection = this.daysStr[i];
-        if (selection.name.indexOf(day.day) == 0) {
+        if (selection.name.indexOf(day.day) === 0) {
           selection.selected = false;
           break;
         }

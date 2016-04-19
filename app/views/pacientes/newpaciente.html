@@ -2,6 +2,9 @@
     <div class="panel panel-default">
         <div class="panel-heading">
             <h3 class="panel-title">Nuevo paciente</h3>
+            <button type="button" class="pull-right close" ng-click="NewPacienteCtrl.close();">
+                <span class="glyphicon glyphicon-remove"></span>
+            </button>            
         </div>
         <div class="panel-body">
             <form name="NewPacienteCtrl.newPacienteForm">
@@ -65,7 +68,7 @@
                     <div class="row">
                         <div class="col-xs-11">
                             <div class="form-group" ng-class="{'has-error':NewPacienteCtrl.newPacienteForm.birthDate.$error.required}">
-                                <span><label>Fecha nacimiento</label></span>
+                                <span><label>Fecha nacimiento*</label></span>
                                 <input rsmdatedropdowns ng-model="NewPacienteCtrl.newPaciente.birthDate"/>
                             </div>
                         </div>
@@ -74,14 +77,14 @@
                     <div class="row">
                         <br>
                         <div class="col-xs-5">
-                            <span><label>Sexo al nacer</label></span>
+                            <span><label>Sexo al nacer*</label></span>
                             <div class="form-group" ng-class="{'has-error':NewPacienteCtrl.newPacienteForm.genderAtBirth.$error.required}">
                                 <select class="form-control" name="genderAtBirth" ng-model="NewPacienteCtrl.newPaciente.genderAtBirth" ng-options="genderAtBirth as genderAtBirth.name for genderAtBirth in NewPacienteCtrl.sexTypes track by genderAtBirth.id" ng-required>
                                 </select>
                             </div>
                         </div>
                         <div class="col-xs-5">
-                            <span><label>Genero por eleccion</label></span>
+                            <span><label>Genero por elección*</label></span>
                             <div class="form-group" ng-class="{'has-error':NewPacienteCtrl.newPacienteForm.genderOfChoice.$error.required}">
                                 <select class="form-control" name="genderOfChoice" ng-model="NewPacienteCtrl.newPaciente.genderOfChoice" ng-options="genderOfChoice as genderOfChoice.name for genderOfChoice in NewPacienteCtrl.sexTypes track by genderOfChoice.id" ng-required>
                                 </select>
@@ -92,14 +95,14 @@
                     <div class="row">
                         <div class="col-xs-5">
                             <div class="form-group" ng-class="{'has-error':NewPacienteCtrl.newPacienteForm.street.$error.required}">
-                                <span><label>Calle</span>
+                                <span><label>Calle*</span>
                                 <input type="text" name="street" maxlength="150" class="form-control" ng-model="NewPacienteCtrl.newPaciente.street" required>
                                 <span><label>(máximo 150 caracteres)</label></span>
                             </div>
                         </div>
                         <div class="col-xs-5">
                             <div class="form-group" ng-class="{'has-error':NewPacienteCtrl.newPacienteForm.postal.$error.required}">
-                                <span><label>Código Postal</label></span>
+                                <span><label>Código Postal*</label></span>
                                 <input type="text" name="postal" maxlength="10" class="form-control" ng-model="NewPacienteCtrl.newPaciente.postal" required>
                                 <span><label>(máximo 10 caracteres)</label></span>
                             </div>
@@ -109,7 +112,7 @@
                     <div class="row">
                         <div class="col-xs-5">
                             <div class="form-group">
-                                <span><label>Provincia</label></span>
+                                <span><label>Provincia*</label></span>
                                 <div class="form-group" ng-class="{'has-error':NewPacienteCtrl.newPacienteForm.selectedProvince.$error.required}">
                                     <select name="selectedProvince" class="form-control" ng-model="NewPacienteCtrl.selectedProvince" ng-options="province as province.name for province in NewPacienteCtrl.provinces track by province.id" ng-change="NewPacienteCtrl.searchDistricts()" required>
                                     </select>
@@ -118,7 +121,7 @@
                         </div>
                         <div class="col-xs-5">
                             <div class="form-group">
-                                <span><label>Partido</label></span>
+                                <span><label>Partido*</label></span>
                                 <div class="form-group" ng-class="{'has-error':NewPacienteCtrl.newPacienteForm.selectedDistrict.$error.required}">
                                     <select name="selectedDistrict" class="form-control" ng-model="NewPacienteCtrl.selectedDistrict" ng-options="district as district.name for district in NewPacienteCtrl.districts track by district.id" ng-change="NewPacienteCtrl.searchLocations()" required>
                                     </select>
@@ -130,7 +133,7 @@
                     <div class="row">
                         <div class="col-xs-5">
                             <div class="form-group">
-                                <span><label>Localidad</label></span>
+                                <span><label>Localidad*</label></span>
                                 <div class="form-group" ng-class="{'has-error':NewPacienteCtrl.newPacienteForm.location.$error.required}">
                                     <select name="location" class="form-control" ng-model="NewPacienteCtrl.newPaciente.location" ng-options="location as location.name for location in NewPacienteCtrl.locations track by location.id" required>
                                     </select>

@@ -7,8 +7,6 @@
             <h3 class="panel-title">Agendas</h3>
           </div>
           <div class="col-md-3">
-            <input type="text" class="form-control" placeholder="Nombre" ng-model="AgendasCtrl.nameFilter">
-            <button type="button" class="btn btn-default" ng-click="AgendasCtrl.searchName()">Buscar</button>
           </div>
           <div class="col-md-2">
             <select class="form-control" ng-model="AgendasCtrl.statusFilter" ng-change="AgendasCtrl.searchName()">
@@ -74,7 +72,7 @@
             </div>
             <div class="detail-info">
               <div class="row">
-                <div class="col-md-4"><label>Nombre completo</label></div>
+                <div class="col-md-4"><label>Nombre profesional</label></div>
                 <div class="col-md-8" style="word-wrap:break-word;">{{AgendasCtrl.agenda.profesional.fatherSurname}}, {{AgendasCtrl.agenda.profesional.firstName}}</div>
               </div>
               <div class="row">

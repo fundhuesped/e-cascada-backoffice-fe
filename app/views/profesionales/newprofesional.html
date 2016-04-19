@@ -2,6 +2,9 @@
     <div class="panel panel-default">
         <div class="panel-heading">
             <h3 class="panel-title">Nuevo profesional</h3>
+            <button type="button" class="pull-right close" ng-click="NewProfesionalCtrl.cancel();">
+                <span class="glyphicon glyphicon-remove"></span>
+            </button>
         </div>
         <div class="panel-body">
             <form name="NewProfesionalCtrl.newProfesionalForm">
@@ -65,7 +68,7 @@
                     <div class="row">
                         <div class="col-xs-11">
                             <div class="form-group" ng-class="{'has-error':NewProfesionalCtrl.newProfesionalForm.birthDate.$error.required}">
-                                <span><label>Fecha nacimiento</label></span>
+                                <span><label>Fecha nacimiento*</label></span>
                                 <input rsmdatedropdowns ng-model="NewProfesionalCtrl.newProfesional.birthDate"/>
                             </div>
                         </div>
@@ -74,14 +77,14 @@
                     <div class="row">
                         <br>
                         <div class="col-xs-5">
-                            <span><label>Sexo al nacer</label></span>
+                            <span><label>Sexo al nacer*</label></span>
                             <div class="form-group" ng-class="{'has-error':NewProfesionalCtrl.newProfesionalForm.genderAtBirth.$error.required}">
                                 <select class="form-control" name="genderAtBirth" ng-model="NewProfesionalCtrl.newProfesional.genderAtBirth" ng-options="genderAtBirth as genderAtBirth.name for genderAtBirth in NewProfesionalCtrl.sexTypes track by genderAtBirth.id" ng-required>
                                 </select>
                             </div>
                         </div>
                         <div class="col-xs-5">
-                            <span><label>Genero por eleccion</label></span>
+                            <span><label>Genero por eleccion*</label></span>
                             <div class="form-group" ng-class="{'has-error':NewProfesionalCtrl.newProfesionalForm.genderOfChoice.$error.required}">
                                 <select class="form-control" name="genderOfChoice" ng-model="NewProfesionalCtrl.newProfesional.genderOfChoice" ng-options="genderOfChoice as genderOfChoice.name for genderOfChoice in NewProfesionalCtrl.sexTypes track by genderOfChoice.id" ng-required>
                                 </select>
@@ -92,14 +95,14 @@
                     <div class="row">
                         <div class="col-xs-5">
                             <div class="form-group" ng-class="{'has-error':NewProfesionalCtrl.newProfesionalForm.street.$error.required}">
-                                <span><label>Calle</span>
+                                <span><label>Calle*</span>
                                 <input type="text" name="street" maxlength="150" class="form-control" ng-model="NewProfesionalCtrl.newProfesional.street" required>
                                 <span><label>(máximo 150 caracteres)</label></span>
                             </div>
                         </div>
                         <div class="col-xs-5">
                             <div class="form-group" ng-class="{'has-error':NewProfesionalCtrl.newProfesionalForm.postal.$error.required}">
-                                <span><label>Código Postal</label></span>
+                                <span><label>Código Postal*</label></span>
                                 <input type="text" name="postal" maxlength="10" class="form-control" ng-model="NewProfesionalCtrl.newProfesional.postal" required>
                                 <span><label>(máximo 10 caracteres)</label></span>
                             </div>
@@ -109,7 +112,7 @@
                     <div class="row">
                         <div class="col-xs-5">
                             <div class="form-group">
-                                <span><label>Provincia</label></span>
+                                <span><label>Provincia*</label></span>
                                 <div class="form-group" ng-class="{'has-error':NewProfesionalCtrl.newProfesionalForm.selectedProvince.$error.required}">
                                     <select name="selectedProvince" class="form-control" ng-model="NewProfesionalCtrl.selectedProvince" ng-options="province as province.name for province in NewProfesionalCtrl.provinces track by province.id" ng-change="NewProfesionalCtrl.searchDistricts()" required>
                                     </select>
@@ -118,7 +121,7 @@
                         </div>
                         <div class="col-xs-5">
                             <div class="form-group">
-                                <span><label>Partido</label></span>
+                                <span><label>Partido*</label></span>
                                 <div class="form-group" ng-class="{'has-error':NewProfesionalCtrl.newProfesionalForm.selectedDistrict.$error.required}">
                                     <select name="selectedDistrict" class="form-control" ng-model="NewProfesionalCtrl.selectedDistrict" ng-options="district as district.name for district in NewProfesionalCtrl.districts track by district.id" ng-change="NewProfesionalCtrl.searchLocations()" required>
                                     </select>
@@ -130,7 +133,7 @@
                     <div class="row">
                         <div class="col-xs-5">
                             <div class="form-group">
-                                <span><label>Localidad</label></span>
+                                <span><label>Localidad*</label></span>
                                 <div class="form-group" ng-class="{'has-error':NewProfesionalCtrl.newProfesionalForm.location.$error.required}">
                                     <select name="location" class="form-control" ng-model="NewProfesionalCtrl.newProfesional.location" ng-options="location as location.name for location in NewProfesionalCtrl.locations track by location.id" required>
                                     </select>

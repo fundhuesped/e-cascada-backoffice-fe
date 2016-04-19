@@ -17,6 +17,7 @@
         backdrop: 'static',
         controller: 'AgendaCtrl',
         controllerAs: 'AgendaCtrl',
+        size: 'lg',
         resolve: {
           agenda: function () {
             return selectedAgenda;
@@ -59,6 +60,7 @@
       var modalInstance = $uibModal.open({
         templateUrl: '/views/agendas/newagenda.html',
         backdrop: 'static',
+        size: 'lg',
         controller: 'NewAgendaCtrl',
         controllerAs: 'NewAgendaCtrl'
       });

@@ -24,6 +24,7 @@
                 profesional.genderAtBirth = this.newProfesional.genderAtBirth;
                 profesional.genderOfChoice = this.newProfesional.genderOfChoice;
                 profesional.email = this.newProfesional.email;
+                //TODO: Set as default
                 profesional.status = 'Active';
                 profesional.street = this.newProfesional.street;
                 profesional.postal = this.newProfesional.postal;
@@ -39,7 +40,7 @@
                         $uibModalInstance.close('created');
                     }, function (error) {
                         this.showErrorMessage();
-                    }
+                    }.bind(this)
                 );
             } else {
                 this.errorMessage = 'Por favor revise el formulario';

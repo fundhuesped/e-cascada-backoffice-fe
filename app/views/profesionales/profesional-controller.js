@@ -16,7 +16,7 @@
                     $uibModalInstance.close('modified');
                 },function(){
                     this.showErrorMessage();
-                });
+                }.bind(this));
             }else{
                 this.errorMessage = 'Por favor revise el formulario';
             }

@@ -3,39 +3,39 @@
 
   function newAgendaCtrl($loading, $uibModalInstance, $filter, Agenda, Profesional) {
     this.daysStr = [{
-      "index": 0,
-      "name": "Lu",
-      "selected": false
-    },
-      {
-        "index": 1,
-        "name": "Ma",
-        "selected": false
+      'index': 0,
+      'name': 'Lu',
+      'selected': false
       },
       {
-        "index": 2,
-        "name": "Mie",
-        "selected": false
+        'index': 1,
+        'name': 'Ma',
+        'selected': false
       },
       {
-        "index": 3,
-        "name": "Jue",
-        "selected": false
+        'index': 2,
+        'name': 'Mie',
+        'selected': false
       },
       {
-        "index": 4,
-        "name": "Vi",
-        "selected": false
+        'index': 3,
+        'name': 'Jue',
+        'selected': false
       },
       {
-        "index": 5,
-        "name": "Sa",
-        "selected": false
+        'index': 4,
+        'name': 'Vi',
+        'selected': false
       },
       {
-        "index": 6,
-        "name": "Do",
-        "selected": false
+        'index': 5,
+        'name': 'Sa',
+        'selected': false
+      },
+      {
+        'index': 6,
+        'name': 'Do',
+        'selected': false
       }
     ];
     this.showTable = false;
@@ -61,10 +61,10 @@
         var agenda = new Agenda();
         agenda.profesional = this.selectedProfesional;
         agenda.prestacion = this.selectedPrestacion;
-        agenda.start = this.hoursFrom + ":" + this.minutesFrom
-        agenda.end = this.hoursTo + ":" + this.minutesTo
-        agenda.validFrom = $filter('date')(this.agenda.validFrom, "yyyy-MM-dd");
-        agenda.validTo = $filter('date')(this.agenda.validTo, "yyyy-MM-dd");
+        agenda.start = this.hoursFrom + ':' + this.minutesFrom
+        agenda.end = this.hoursTo + ':' + this.minutesTo
+        agenda.validFrom = $filter('date')(this.agenda.validFrom, 'yyyy-MM-dd');
+        agenda.validTo = $filter('date')(this.agenda.validTo, 'yyyy-MM-dd');
         agenda.start = this.agenda.start;
         agenda.end = this.agenda.end;
         agenda.periods = this.agenda.periods;
@@ -73,8 +73,8 @@
             $loading.finish('newAgenda');
             $uibModalInstance.close('created');
           }, function (error) {
-            console.log(error.status + ' - ' + error.statusText);
-          }
+            this.errorMessage = error.status + ' - ' + error.statusText;
+          }.bind(this)
         );
       } else {
         this.errorMessage = 'Por favor revise el formulario';
@@ -118,25 +118,25 @@
           var daysArray = [], day, j;
           for (j = 0; j < this.daysStr.length; j++) {
             day = {
-              "index": j,
-              "name": this.daysStr[j].name,
-              "selected": false
+              'index': j,
+              'name': this.daysStr[j].name,
+              'selected': false
             }
             daysArray.push(day);
           }
           period = {
-            "id": index,
-            "start": $filter('date')(varFrom, "HH:mm"),
-            "end": $filter('date')(varTo, "HH:mm"),
-            "selected": false,
-            "daysOfWeek": daysArray
+            'id': index,
+            'start': $filter('date')(varFrom, 'HH:mm'),
+            'end': $filter('date')(varTo, 'HH:mm'),
+            'selected': false,
+            'daysOfWeek': daysArray
           };
           periods.push(period);
           varFrom = varTo;
         }
 
-        this.agenda.start = $filter('date')(periodFrom, "HH:mm");
-        this.agenda.end = $filter('date')(periodTo, "HH:mm");
+        this.agenda.start = $filter('date')(periodFrom, 'HH:mm');
+        this.agenda.end = $filter('date')(periodTo, 'HH:mm');
         this.agenda.periods = periods;
 
         if (periods.length > 0) {
