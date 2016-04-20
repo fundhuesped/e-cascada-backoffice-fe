@@ -209,9 +209,9 @@
         this.selectedTurno.$update(function(){
           $loading.finish('app');
           toastr.success('Turno creado con éxito');
-          //this.limpiarBusquedaTurno();
-          //this.selectedTurno = null;
-          //this.clearPacienteSelection();
+          this.limpiarBusquedaTurno();
+          this.selectedTurno = null;
+          this.clearPacienteSelection();
           console.log('Turno creado');
         },function(error){
           $loading.finish('app');
