@@ -298,7 +298,35 @@
                     </div>
                 </div>
             </form>
-
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Fecha</th>
+                                <th>Hora</th>
+                                <th>Hasta</th>
+                                <th>Especialidad</th>
+                                <th>Prestaciones</th>
+                                <th>Profesional</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="(key, turno) in PacienteCtrl.turnos" ng-class="{'bg-success':turno.selected}"
+                              >
+                                <td><input type="checkbox" ng-checked="turno.selected"></td>
+                                <td>{{turno.day | date : 'dd-MM-yyyy'}}</td>
+                                <td>{{turno.start}}</td>
+                                <td>{{turno.end}}</td>
+                                <td>{{turno.prestacion.especialidad.name}}</td>
+                                <td>{{turno.prestacion.name}}</td>
+                                <td>{{turno.profesional.fatherSurname}}, {{turno.profesional.firstName}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
             <div class="col-xs-6 col-sm-7 col-md-7 col-lg-7">
                 <button ng-click="PacienteCtrl.changeStatus()" class="btn btn-link " >{{PacienteCtrl.paciente.status == "Active" ? "Eliminar" : "Reactivar"}}</button>
             </div>

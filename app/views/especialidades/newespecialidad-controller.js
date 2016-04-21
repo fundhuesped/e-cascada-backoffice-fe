@@ -5,17 +5,18 @@
         this.confirm = function confirm () {
             if(this.newEspecialidadForm.$valid){
                 this.hideErrorMessage();
-                $loading.start('newEspecialidad');
+                $loading.start('app');
                 var especialidad = new Especialidad();
                 especialidad.name = this.newEspecialidad.name;
                 especialidad.description = this.newEspecialidad.description;
                 especialidad.status = 'Active';
                 especialidad.$save(function(){
-                    $loading.finish('newEspecialidad');
+                    $loading.finish('app');
                     $uibModalInstance.close('created');
                 },function(error){
+                    $loading.finish('app');
                     this.showErrorMessage();
-                }
+                }.bind(this)
                 );
             }else{
                 this.errorMessage = 'Por favor revise el formulario';

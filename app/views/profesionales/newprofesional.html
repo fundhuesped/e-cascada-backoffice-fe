@@ -54,7 +54,7 @@
                         <div class="col-xs-5">
                             <div class="form-group" ng-class="{'has-error':NewProfesionalCtrl.newProfesionalForm.documentType.$error.required}">
                                 <span><label>Tipo documento*</label></span>
-                                <select class="form-control" name="document" ng-model="NewProfesionalCtrl.newProfesional.documentType" ng-options="document as document.name for document in NewProfesionalCtrl.documents track by document.id" ng-required>
+                                <select class="form-control" name="document" ng-model="NewProfesionalCtrl.newProfesional.documentType" ng-options="document as document.name for document in NewProfesionalCtrl.documents track by document.id" required>
                                     <option value=""></option>
                                 </select>
                             </div>
@@ -79,14 +79,14 @@
                         <div class="col-xs-5">
                             <span><label>Sexo al nacer*</label></span>
                             <div class="form-group" ng-class="{'has-error':NewProfesionalCtrl.newProfesionalForm.genderAtBirth.$error.required}">
-                                <select class="form-control" name="genderAtBirth" ng-model="NewProfesionalCtrl.newProfesional.genderAtBirth" ng-options="genderAtBirth as genderAtBirth.name for genderAtBirth in NewProfesionalCtrl.sexTypes track by genderAtBirth.id" ng-required>
+                                <select class="form-control" name="genderAtBirth" ng-model="NewProfesionalCtrl.newProfesional.genderAtBirth" ng-options="genderAtBirth as genderAtBirth.name for genderAtBirth in NewProfesionalCtrl.sexTypes track by genderAtBirth.id" required>
                                 </select>
                             </div>
                         </div>
                         <div class="col-xs-5">
                             <span><label>Genero por eleccion*</label></span>
                             <div class="form-group" ng-class="{'has-error':NewProfesionalCtrl.newProfesionalForm.genderOfChoice.$error.required}">
-                                <select class="form-control" name="genderOfChoice" ng-model="NewProfesionalCtrl.newProfesional.genderOfChoice" ng-options="genderOfChoice as genderOfChoice.name for genderOfChoice in NewProfesionalCtrl.sexTypes track by genderOfChoice.id" ng-required>
+                                <select class="form-control" name="genderOfChoice" ng-model="NewProfesionalCtrl.newProfesional.genderOfChoice" ng-options="genderOfChoice as genderOfChoice.name for genderOfChoice in NewProfesionalCtrl.sexTypes track by genderOfChoice.id" required>
                                 </select>
                             </div>
                         </div>

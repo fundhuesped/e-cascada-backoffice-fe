@@ -1,10 +1,11 @@
 (function(){
     'use strict';
 
-    function pacienteCtrl ($loading,$uibModalInstance,$filter,paciente,Document,Sex, Province, District, Location, SocialService, CivilStatus, Education) {
+    function pacienteCtrl ($loading,$uibModalInstance,$filter,paciente,Document,Turno,Sex, Province, District, Location, SocialService, CivilStatus, Education) {
         this.paciente = angular.copy(paciente);
         this.editing = true;
         this.errorMessage = null;
+        this.turnos = [];
 
         this.confirm = function confirm () {
             if(this.pacienteForm.$valid){
@@ -107,9 +108,10 @@
             this.socialServices = SocialService.getActiveList();
             this.selectedDistrict = this.paciente.location.district;
             this.selectedProvince = this.paciente.location.district.province;
+            this.turnos = Turno.query({status:'Active',paciente:this.paciente.id});
         };
         this.init();
 
     }
-    angular.module('turnos.pacientes').controller('PacienteCtrl',['$loading','$uibModalInstance','$filter','paciente','Document','Sex', 'Province', 'District', 'Location', 'SocialService', 'CivilStatus', 'Education', pacienteCtrl]);
+    angular.module('turnos.pacientes').controller('PacienteCtrl',['$loading','$uibModalInstance','$filter','paciente','Document','Turno','Sex', 'Province', 'District', 'Location', 'SocialService', 'CivilStatus', 'Education', pacienteCtrl]);
 })();
