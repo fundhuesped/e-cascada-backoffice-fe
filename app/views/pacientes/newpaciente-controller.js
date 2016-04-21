@@ -11,7 +11,7 @@
         this.confirm = function confirm() {
             if (this.newPacienteForm.$valid) {
                 this.hideErrorMessage();
-                $loading.start('newPaciente');
+                $loading.start('app');
                 var paciente = new Paciente();
                 paciente.firstName = this.newPaciente.firstName;
                 paciente.otherNames = this.newPaciente.otherNames;
@@ -46,9 +46,10 @@
                 paciente.firstVisit = $filter('date')(this.newPaciente.firstVisit, "yyyy-MM-dd");
                 paciente.notes = this.newPaciente.notes;
                 paciente.$save(function () {
-                        $loading.finish('newPaciente');
+                        $loading.finish('app');
                         $uibModalInstance.close('created');
                     }, function (error) {
+                        $loading.finish('app');
                         this.showErrorMessage();
                     }.bind(this)
                 );

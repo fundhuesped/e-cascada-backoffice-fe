@@ -10,7 +10,7 @@
         this.confirm = function confirm () {
             if(this.newPrestacionForm.$valid){
                 this.hideErrorMessage();
-                $loading.start('newPrestacion');
+                $loading.start('app');
                 var prestacion = new Prestacion();
                 prestacion.name = this.newPrestacion.name;
                 prestacion.description = this.newPrestacion.description;
@@ -20,12 +20,12 @@
                 prestacion.durationMinutes = this.newPrestacion.duration.minutes;
                 prestacion.especialidad = this.newPrestacion.especialidad;
                 prestacion.$save(function(){
-                    $loading.finish('newPrestacion');
+                    $loading.finish('app');
                     $uibModalInstance.close('created');
                 },function(error){
-                    $loading.finish('newPrestacion');
-                    $uibModalInstance.close('error');
-                });
+                    $loading.finish('app');
+                    this.showErrorMessage();
+                }.bind(this));
             }else{
                 this.errorMessage = 'Por favor revise el formulario';
             }

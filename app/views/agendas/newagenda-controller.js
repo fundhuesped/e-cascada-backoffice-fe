@@ -57,7 +57,7 @@
     this.confirm = function confirm() {
       if (this.newAgendaForm.$valid) {
         this.hideErrorMessage();
-        $loading.start('newAgenda');
+        $loading.start('app');
         var agenda = new Agenda();
         agenda.profesional = this.selectedProfesional;
         agenda.prestacion = this.selectedPrestacion;
@@ -70,9 +70,10 @@
         agenda.periods = this.agenda.periods;
         agenda.status = 'Active';
         agenda.$save(function () {
-            $loading.finish('newAgenda');
+            $loading.finish('app');
             $uibModalInstance.close('created');
           }, function (error) {
+            $loading.finish('app');
             this.errorMessage = error.status + ' - ' + error.statusText;
           }.bind(this)
         );
@@ -121,7 +122,7 @@
               'index': j,
               'name': this.daysStr[j].name,
               'selected': false
-            }
+            };
             daysArray.push(day);
           }
           period = {

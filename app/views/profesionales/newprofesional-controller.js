@@ -12,7 +12,7 @@
         this.confirm = function confirm() {
             if (this.newProfesionalForm.$valid) {
                 this.hideErrorMessage();
-                $loading.start('newProfesional');
+                $loading.start('app');
                 var profesional = new Profesional();
                 profesional.firstName = this.newProfesional.firstName;
                 profesional.otherNames = this.newProfesional.otherNames;
@@ -36,9 +36,10 @@
                 profesional.notes = this.newProfesional.notes;
                 profesional.prestaciones = this.newProfesional.prestaciones;
                 profesional.$save(function () {
-                        $loading.finish('newProfesional');
+                        $loading.finish('app');
                         $uibModalInstance.close('created');
                     }, function (error) {
+                        $loading.finish('app');
                         this.showErrorMessage();
                     }.bind(this)
                 );

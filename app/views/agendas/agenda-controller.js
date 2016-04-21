@@ -51,6 +51,7 @@
           $loading.finish('app');
           $uibModalInstance.close('modified');
         }, function () {
+          $loading.finish('app');
           this.showErrorMessage();
         }.bind(this));
       } else {

@@ -1,13 +1,14 @@
 (function () {
   'use strict';
 
-  function newTurnoCtrl($scope, $uibModal, uiCalendarConfig, toastr, $loading, $filter, Especialidad, Prestacion, Paciente, Document, Profesional, Turno) {
+  function newTurnoCtrl($uibModal, uiCalendarConfig, toastr, $loading, $filter, Especialidad, Prestacion, Paciente, Document, Profesional, Turno) {
     this.paciente = null;
     this.especialidades = null;
     this.selectedPaciente = null;
     this.newTurno = {};
 
     //Calendar
+    var turnosSource = [];
     this.eventSources = [];
 
     this.calendarConfig =
@@ -30,7 +31,9 @@
     this.renderCalendar = function renderCalendar() {
       //Workarround to wait for the tab to appear
       setTimeout(function () {
+        console.log('rendrizo');
         if (uiCalendarConfig.calendars.newTurnosCalendar) {
+        console.log('rendrizo ahora ');
           uiCalendarConfig.calendars.newTurnosCalendar.fullCalendar('render');
         }
       }, 1);
@@ -89,8 +92,8 @@
       //Only way I found to inject Controller to refresh list after modal closing
       var ctrl = this;
       modalInstance.result.then(function () {
-        ctrl.lookForPacientes()
-      })
+        ctrl.lookForPacientes();
+      });
     };
 
     this.selectPaciente = function selectPaciente(paciente) {
@@ -108,36 +111,38 @@
 
     this.lookForTurnos = function lookForTurnos() {
       $loading.start('app');
-      setTimeout(function () {
+      this.showTurnos = true;
+      this.turnos = [];
+      var turnoDate;
+      if (this.selectedDate) {
+        turnoDate = $filter('date')(this.selectedDate, "yyyy-MM-dd");
+      }
+      var turnoProf;
+      if (this.selectedProfesional) {
+        turnoProf = this.selectedProfesional.id;
+      }
+      Turno.query({prestacion: this.selectedPrestacion.id, profesional: turnoProf, day: turnoDate, taken: false}).$promise.then(function (results) {
+        turnosSource =[];
+        angular.forEach(results, function (turno) {
+          this.turnos.push(turno);
+          var startTime = new Date(turno.day + "T" + turno.start);
+          var endTime = new Date(turno.day + "T" + turno.end);
+          var event = {
+            id: turno.id,
+            title: turno.profesional.fatherSurname,
+            start: startTime,
+            end: endTime,
+            allDay: false,
+            color: '#D8C358'
+          };
+          turnosSource.push(event);
+          turno.calendarRepresentation = event;
+        }.bind(this));
+        this.eventSources.push(turnosSource);
+        console.log(this.eventSources);
+        this.renderCalendar();
         $loading.finish('app');
-        this.showTurnos = true;
-        $scope.turnos = [];
-        var turnoDate;
-        if (this.selectedDate) {
-          turnoDate = $filter('date')(this.selectedDate, "yyyy-MM-dd");
-        }
-        var turnoProf;
-        if (this.selectedProfesional) {
-          turnoProf = this.selectedProfesional.id;
-        }
-        Turno.query({prestacion: this.selectedPrestacion.id, profesional: turnoProf, day: turnoDate, taken: false}).$promise.then(function (results) {
-          angular.forEach(results, function (turno) {
-            $scope.turnos.push(turno);
-            var startTime = new Date(turno.day + "T" + turno.start);
-            var endTime = new Date(turno.day + "T" + turno.end);
-            var event = {
-              id: turno.id,
-              title: turno.profesional.fatherSurname,
-              start: startTime,
-              end: endTime,
-              allDay: false,
-              color: '#D8C358'
-            };
-            turno.calendarRepresentation = event;
-          });
-        });
-        this.turnos = $scope.turnos;
-      }.bind(this), 1000);
+      }.bind(this));
     };
 
     this.shouldLookForPacient = function shouldLookForPacient() {
@@ -180,14 +185,17 @@
     this.lookForPacientes = function lookForPacientes() {
       if (this.shouldLookForPacient()) {
         $loading.start('recomendations');
-        this.recomendations = Paciente.getActiveList();
-        setTimeout(function () {
+        this.recomendations = Paciente.getActiveList(function(recomendations){
           $loading.finish('recomendations');
           this.copyPaciente = angular.copy(this.paciente);
           this.copyPaciente.birthDate = $filter('date')(this.copyPaciente.birthDate, "yyyy-MM-dd");
-          this.recomendationList = $filter('filter')(this.recomendations, this.copyPaciente);
-        }.bind(this), 1000);
-      }
+          this.recomendationList = $filter('filter')(recomendations, this.copyPaciente);
+          }.bind(this), function(){
+            $loading.finish('recomendations');
+            console.log('Failed get activePacientes');
+          }
+        );
+        }
     };
 
     this.limpiarBusquedaTurno = function limpiarBusquedaTurno() {
@@ -202,23 +210,25 @@
 
     this.confirmTurno = function confirmTurno() {
       $loading.start('app');
-      setTimeout(function () {
-        this.selectedTurno.paciente = this.selectedPaciente;
-        console.log(this.selectedTurno);
-        this.selectedTurno.taken = true;
-        this.selectedTurno.$update(function(){
-          $loading.finish('app');
-          toastr.success('Turno creado con éxito');
-          //this.limpiarBusquedaTurno();
-          //this.selectedTurno = null;
-          //this.clearPacienteSelection();
-          console.log('Turno creado');
-        },function(error){
-          $loading.finish('app');
-          console.log('Error creando turno');
-        });
-      }.bind(this), 3000);
+
+      this.selectedTurno.paciente = this.selectedPaciente;
+      this.selectedTurno.taken = true;
+      this.selectedTurno.$update(function(){
+        $loading.finish('app');
+        toastr.success('Turno creado con éxito');
+        this.limpiarBusquedaTurno();
+        this.turnos = [];
+        this.newPaciente = null;
+        this.selectedTurno = null;
+        this.clearPacienteSelection();
+      }.bind(this),function(error){
+        $loading.finish('app');
+        console.log('Error creando turno');
+      });
     };
+
+
+
 
     this.searchPrestacionesMedicos = function searchPrestacionesMedicos() {
       this.prestaciones = [];
@@ -243,5 +253,5 @@
     this.init();
   }
 
-  angular.module('turnos.turnos').controller('NewTurnoCtrl', ['$scope', '$uibModal', 'uiCalendarConfig', 'toastr', '$loading', '$filter', 'Especialidad', 'Prestacion', 'Paciente', 'Document', 'Profesional', 'Turno', newTurnoCtrl]);
+  angular.module('turnos.turnos').controller('NewTurnoCtrl', [ '$uibModal', 'uiCalendarConfig', 'toastr', '$loading', '$filter', 'Especialidad', 'Prestacion', 'Paciente', 'Document', 'Profesional', 'Turno', newTurnoCtrl]);
 })();
