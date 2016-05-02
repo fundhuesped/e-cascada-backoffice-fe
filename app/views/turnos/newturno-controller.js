@@ -6,7 +6,7 @@
     this.especialidades = null;
     this.selectedPaciente = null;
     this.newTurno = {};
-
+    var selectedRepresentation;
     //Calendar
     var turnosSource = [];
     this.eventSources = [];
@@ -31,9 +31,7 @@
     this.renderCalendar = function renderCalendar() {
       //Workarround to wait for the tab to appear
       setTimeout(function () {
-        console.log('rendrizo');
         if (uiCalendarConfig.calendars.newTurnosCalendar) {
-        console.log('rendrizo ahora ');
           uiCalendarConfig.calendars.newTurnosCalendar.fullCalendar('render');
         }
       }, 1);
@@ -41,26 +39,71 @@
 
     //Update seleccion when selecting turno
     this.updateSelectionRow = function updateSelectionRow(position, entities, calendarRepresentation) {
+
+      if(calendarRepresentation){
+        if(calendarRepresentation.selected){
+          selectedRepresentation = null;
+        }else{
+          if(selectedRepresentation){
+            selectedRepresentation.color = '#D8C358';
+            selectedRepresentation.selected = false;
+          }
+          selectedRepresentation = calendarRepresentation;
+        }
+      }else{
+        for (var i = this.eventSources[0].length - 1; i >= 0; i--) {
+          
+          if(this.eventSources[0][i].id == position){
+            if(this.eventSources[0][i].selected){
+              this.eventSources[0][i].color = '#D8C358';
+              this.eventSources[0][i].selected = false;
+              selectedRepresentation = null;  
+            }else{
+              this.eventSources[0][i].color = '#6CC547';
+              this.eventSources[0][i].selected = true;
+              selectedRepresentation = event;            
+            }
+          }else{
+            if(this.eventSources[0][i].selected){
+              this.eventSources[0][i].selected = false;
+              this.eventSources[0][i].color = '#D8C358';
+            }
+          }
+        }
+          
+
+      }
       angular.forEach(entities, function (turno, index) {
-        if (position != index) {
-          turno.selected = false;
-          turno.calendarRepresentation.color = '#D8C358';
+
+        if (position != turno.id) {
+          if(turno.selected){
+            turno.selected = false;
+            //turno.calendarRepresentation.color = '#D8C358';
+            //uiCalendarConfig.calendars.newTurnosCalendar.fullCalendar('removeEvents', turno.calendarRepresentation.id);
+            //uiCalendarConfig.calendars.newTurnosCalendar.fullCalendar('renderEvent', turno.calendarRepresentation,true);
+          }
         } else {
           turno.selected = !turno.selected;
           if (calendarRepresentation) {
             if (calendarRepresentation.selected) {
               calendarRepresentation.color = '#D8C358';
               calendarRepresentation.selected = false;
-              turno.calendarRepresentation.color = '#D8C358';
-              this.selectedCalendarRepresentation = null;
+//              turno.calendarRepresentation.color = '#D8C358';
+//              this.selectedCalendarRepresentation = null;
             } else {
-              calendarRepresentation.color = '#dff0d8';
-              this.selectedCalendarRepresentation = calendarRepresentation;
+              calendarRepresentation.color = '#6CC547';
+              /*if(this.selectedCalendarRepresentation){
+                this.selectedCalendarRepresentation.color = '#D8C358';
+                this.selectedCalendarRepresentation.selected = false;
+                this.selectedCalendarRepresentation = calendarRepresentation;                
+              }*/
               calendarRepresentation.selected = true;
-              turno.calendarRepresentation.color = '#dff0d8';
+//              turno.calendarRepresentation.color = '#dff0d8';
             }
-            uiCalendarConfig.calendars.newTurnosCalendar.fullCalendar('renderEvent', calendarRepresentation);
+            //uiCalendarConfig.calendars.newTurnosCalendar.fullCalendar('removeEvents', turno.calendarRepresentation._id);
+            //uiCalendarConfig.calendars.newTurnosCalendar.fullCalendar('renderEvent', turno.calendarRepresentation,true);
           }
+
           if (this.selectedTurno == turno) {
             this.selectedTurno = null;
           } else {
@@ -73,8 +116,12 @@
           }
         }
       }.bind(this));
+      uiCalendarConfig.calendars.newTurnosCalendar.fullCalendar( 'rerenderEvents' );
     };
 
+    this.reRedender = function(){
+            uiCalendarConfig.calendars.newTurnosCalendar.fullCalendar( 'rerenderEvents' );
+    }
     //Open the detailed pacient info modal
     this.openPacienteModal = function openPacienteModal(selectedPaciente) {
       var modalInstance = $uibModal.open({
@@ -127,13 +174,15 @@
           this.turnos.push(turno);
           var startTime = new Date(turno.day + "T" + turno.start);
           var endTime = new Date(turno.day + "T" + turno.end);
+          console.log(startTime);
           var event = {
             id: turno.id,
             title: turno.profesional.fatherSurname,
             start: startTime,
             end: endTime,
             allDay: false,
-            color: '#D8C358'
+            color: '#D8C358',
+            timezone:'America/Argentina/Buenos_Aires'
           };
           turnosSource.push(event);
           turno.calendarRepresentation = event;
