@@ -45,10 +45,14 @@
                 }
             }
             if(currentStatusFilter){
-                this.especialidades = Especialidad.query({name:this.nameFilter,status:currentStatusFilter});
+                this.especialidadesDataSet = Especialidad.query({name:this.nameFilter,status:currentStatusFilter},function(result){
+                    this.especialidades = result.results;
+                }.bind(this));
 
            }else{
-               this.especialidades = Especialidad.query({name:this.nameFilter});
+               this.especialidadesDataSet = Especialidad.query({name:this.nameFilter},function(result){
+                    this.especialidades = result.results;
+                }.bind(this));
            }
 
         };

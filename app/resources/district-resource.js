@@ -2,21 +2,45 @@
     'use strict';
     function DistrictProvider() {
         function DistrictResource($resource, apiBase) {
+            function transformDataSet(data){ 
+                      return angular.fromJson(data).results;
+            }
             var District = $resource(apiBase + 'comun/district/:districtId/', {districtId: '@id'}, {
                 update: {
                     method: 'PUT'
                 },
-                getActiveList: {
+                getActiveList:{
                     method: 'GET',
-                    params: {status: 'Active'},
-                    isArray: true
+                    params:{status:'Active'},
+                    isArray: true,
+                    transformResponse: transformDataSet
+                  },
+                getInactiveList:{
+                    method: 'GET',
+                    params:{status:'Inactive'},
+                    isArray: true,
+                    transformResponse: transformDataSet
                 },
-                getInactiveList: {
+                query:{
                     method: 'GET',
-                    params: {status: 'Inactive'},
-                    isArray: true
+                    isArray: true,
+                    transformResponse: transformDataSet
                 }
             });
+            District._getActiveList = District.getActiveList;
+            District.getActiveList = function(callbackOK,callbackNOK){
+              var promise = this._getActiveList(function(data){
+                promise = data.results;
+                if(callbackOK){
+                  callbackOK(data.results);
+                }
+              },function(error){
+                if(callbackNOK){
+                  callbackNOK(error);
+                }
+              });
+              return promise;
+            };
 
             District.getUrlForObjectId = function getUrlForObjectId(id) {
                 return apiBase + 'comun/district/' + id + '/';

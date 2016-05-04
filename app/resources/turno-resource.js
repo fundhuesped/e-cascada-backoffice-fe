@@ -15,6 +15,15 @@
           method: 'GET',
           params: {status: 'Inactive'},
           isArray: true
+        },
+        query:{
+            method: 'GET',
+            params:{status:'Inactive'},
+            isArray: true,
+            transformResponse: function(data){ 
+              var tmp = angular.fromJson(data);
+                return tmp.results;
+            }
         }
       });
 

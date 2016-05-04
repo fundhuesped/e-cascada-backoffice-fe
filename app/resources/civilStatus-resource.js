@@ -2,19 +2,29 @@
     'use strict';
     function CivilStatusProvider() {
         function CivilStatusResource($resource, apiBase) {
+            function transformDataSet(data){ 
+                      return angular.fromJson(data).results;
+            }
             var CivilStatus = $resource(apiBase + 'comun/civilStatusType/:civilStatusTypeId/', {civilStatusTypeId: '@id'}, {
                 update: {
                     method: 'PUT'
                 },
-                getActiveList: {
+                getActiveList:{
                     method: 'GET',
-                    params: {status: 'Active'},
-                    isArray: true
+                    params:{status:'Active'},
+                    isArray: true,
+                    transformResponse: transformDataSet
                 },
-                getInactiveList: {
+                getInactiveList:{
                     method: 'GET',
-                    params: {status: 'Inactive'},
-                    isArray: true
+                    params:{status:'Inactive'},
+                    isArray: true,
+                    transformResponse: transformDataSet
+                },
+                query:{
+                    method: 'GET',
+                    isArray: true,
+                    transformResponse: transformDataSet
                 }
             });
 

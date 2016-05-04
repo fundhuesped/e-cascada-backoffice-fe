@@ -241,8 +241,8 @@ glyphicon glyphicon-remove"></span> Limpiar seleccion de paciente
                       </tr>
                       </thead>
                       <tbody ng-show="NewTurnoCtrl.showTurnos">
-                      <tr ng-repeat="(key, turno) in NewTurnoCtrl.turnos" ng-class="{'bg-success':turno.selected}"
-                          ng-click="NewTurnoCtrl.updateSelectionRow($index,NewTurnoCtrl.turnos)">
+                      <tr ng-repeat="(key, turno) in NewTurnoCtrl.turnos | orderBy : 'day'" ng-class="{'bg-success':turno.selected}"
+                          ng-click="NewTurnoCtrl.updateSelectionRow(turno.id,NewTurnoCtrl.turnos)">
                         <td><input type="checkbox" ng-checked="turno.selected"></td>
                         <td>{{turno.day | date : 'dd-MM-yyyy'}}</td>
                         <td>{{turno.start}}</td>
@@ -258,7 +258,7 @@ glyphicon glyphicon-remove"></span> Limpiar seleccion de paciente
               </uib-tab>
               <uib-tab select="NewTurnoCtrl.renderCalendar()">
                 <uib-tab-heading>
-                  <span class="glyphicon glyphicon-calendar"></span> Calendario
+                  <span class="glyphicon glyphicon-calendar" ></span> Calendario
                 </uib-tab-heading>
                 <div class="row">
                   <div class="col-md-9">
@@ -266,11 +266,13 @@ glyphicon glyphicon-remove"></span> Limpiar seleccion de paciente
                          calendar="newTurnosCalendar"></div>
                   </div>
                   <div class="col-md-3">
+                  <button ng-click="NewTurnoCtrl.reRedender()" type="button">Refresh</button>
                     <div class="row" ng-show="NewTurnoCtrl.selectedTurno">
-                      <div><b>{{NewTurnoCtrl.selectedTurno.date}}</b></div>
-                      <div>Horario: {{NewTurnoCtrl.selectedTurno.hour}} - {{NewTurnoCtrl.selectedTurno.hourTo}}</div>
-                      <div>Profesional: {{NewTurnoCtrl.selectedTurno.profesional.name}}</div>
-                      <div>Especialidad: {{NewTurnoCtrl.selectedTurno.especialidad.name}}</div>
+                      <div><b>{{NewTurnoCtrl.selectedTurno.day | date : 'dd-MM-yyyy'}}</b></div>
+                      <div><label>Horario:</label> {{NewTurnoCtrl.selectedTurno.start}} - {{NewTurnoCtrl.selectedTurno.end}}</div>
+                      <div><label>Profesional:</label> {{NewTurnoCtrl.selectedTurno.profesional.fatherSurname}}, {{NewTurnoCtrl.selectedTurno.profesional.firstName}}</div>
+                      <div><label>Especialidad:</label> {{NewTurnoCtrl.selectedTurno.prestacion.especialidad.name}}</div>
+                      <div><label>Prestacion:</label> {{NewTurnoCtrl.selectedTurno.prestacion.name}}</div>
                     </div>
                   </div>
                 </div>

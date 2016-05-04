@@ -4,7 +4,8 @@
     function pacientesCtrl ($uibModal,toastr,Paciente) {
         this.pacientes = [];
         this.paciente = null;
-
+        this.pacientesDataSet = null;
+        
         this.detail = function detail(paciente){
             this.paciente = paciente;
         };
@@ -45,12 +46,14 @@
                 }
             }
             if(currentStatusFilter){
-                this.pacientes = Paciente.query({name:this.nameFilter,status:currentStatusFilter});
-
+                this.pacientesDataSet = Paciente.query({name:this.nameFilter,status:currentStatusFilter},function(result){
+                    this.pacientes = result.results;
+                }.bind(this));
             }else{
-                this.pacientes = Paciente.query({name:this.nameFilter});
+                this.pacientesDataSet = Paciente.query({name:this.nameFilter},function(result){
+                    this.pacientes = result.results;
+                }.bind(this));
             }
-
         };
 
         this.newPaciente = function newPaciente(){
