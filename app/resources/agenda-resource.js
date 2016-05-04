@@ -14,7 +14,11 @@
         getInactiveList: {
           method: 'GET',
           params: {status: 'Inactive'},
-          isArray: true
+          isArray: true,
+        },
+        query:{
+          method: 'GET',
+          isArray: false            
         }
       });
 

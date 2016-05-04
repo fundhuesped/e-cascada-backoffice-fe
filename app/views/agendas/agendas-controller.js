@@ -48,10 +48,13 @@
         }
       }
       if (currentStatusFilter) {
-        this.agendas = Agenda.query({name: this.nameFilter, status: currentStatusFilter});
-
+        this.agendasDataSet = Agenda.query({name: this.nameFilter, status: currentStatusFilter},function(result){
+          this.agendas = result.results;
+          }.bind(this));
       } else {
-        this.agendas = Agenda.query({name: this.nameFilter});
+        this.agendasDataSet = Agenda.query({name: this.nameFilter},function(result){
+          this.agendas = result.results;
+          }.bind(this));
       }
 
     };

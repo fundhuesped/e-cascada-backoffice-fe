@@ -16,10 +16,14 @@
                 }
             }
             if(currentStatusFilter){
-                this.prestaciones = Prestacion.query({name:this.nameFilter,status:currentStatusFilter});
+                this.prestacionesDataSet = Prestacion.query({name:this.nameFilter,status:currentStatusFilter},function(result){
+                    this.prestaciones = result.results;
+                }.bind(this));;
 
             }else{
-                this.prestaciones = Prestacion.query({name:this.nameFilter});
+                this.prestacionesDataSet = Prestacion.query({name:this.nameFilter},function(result){
+                    this.prestaciones = result.results;
+                }.bind(this));;
             }
         };
 

@@ -9,12 +9,16 @@
           getActiveList:{
             method: 'GET',
             params:{status:'Active'},
-            isArray: true
+            isArray: false
           },
           getInactiveList:{
             method: 'GET',
             params:{status:'Inactive'},
-            isArray: true
+            isArray: false
+          },
+          query:{
+            method: 'GET',
+            isArray: false
           }
         });
 
