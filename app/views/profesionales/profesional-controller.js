@@ -1,48 +1,53 @@
 (function(){
     'use strict';
+    /* jshint validthis: true */
+    /*jshint latedef: nofunc */
 
     function profesionalCtrl ($loading,$uibModalInstance,$filter,profesional,Document,Sex, Province, District, Location, CivilStatus, Prestacion) {
-        this.profesional = angular.copy(profesional);
-        this.editing = true;
-        this.errorMessage = null;
-
-        this.confirm = function confirm () {
-            if(this.profesionalForm.$valid){
-                this.hideErrorMessage();
+        var vm = this;
+        vm.profesional = angular.copy(profesional);
+        vm.editing = true;
+        vm.errorMessage = null;
+        vm.confirm = confirm;
+        vm.showModal = showModal;
+        
+        function confirm () {
+            if(vm.profesionalForm.$valid){
+                vm.hideErrorMessage();
                 $loading.start('app');
-                this.profesional.birthDate = $filter('date')(this.profesional.birthDate, "yyyy-MM-dd");
-                this.profesional.$update(function(){
+                vm.profesional.birthDate = $filter('date')(vm.profesional.birthDate, 'yyyy-MM-dd');
+                vm.profesional.$update(function(){
                     $loading.finish('app');
                     $uibModalInstance.close('modified');
                 },function(){
                     $loading.finish('app');
-                    this.showErrorMessage();
-                }.bind(this));
+                    vm.showErrorMessage();
+                }.bind(vm));
             }else{
-                this.errorMessage = 'Por favor revise el formulario';
+                vm.errorMessage = 'Por favor revise el formulario';
             }
-        };
+        }
 
         //Confirm delete modal
-        this.showModal = function showModal(){
-            this.modalStyle = {display:'block'};
+        function showModal(){
+            vm.modalStyle = {display:'block'};
+        }
+
+        vm.confirmModal = function confirmModal(){
+            vm.confirmStatusChange();
         };
 
-        this.confirmModal = function confirmModal(){
-            this.confirmStatusChange();
+        vm.dismissModal = function showModal(){
+            vm.modalStyle = {};
+        };
+        vm.showErrorMessage = function showErrorMessage(){
+            vm.errorMessage = 'Ocurio un error en la comunicación';
+        };
+        vm.hideErrorMessage = function hideErrorMessage(){
+            vm.errorMessage = null;
         };
 
-        this.dismissModal = function showModal(){
-            this.modalStyle = {};
-        };
-        this.showErrorMessage = function showErrorMessage(){
-            this.errorMessage = 'Ocurio un error en la comunicación';
-        };
-        this.hideErrorMessage = function hideErrorMessage(){
-            this.errorMessage = null;
-        };
-
-        this.confirmDelete = function confirmDelete(profesionalInstance){
+        vm.confirmDelete = function confirmDelete(profesionalInstance){
             profesionalInstance.status = 'Inactive';
             profesionalInstance.$update(function(){
                 $loading.finish('app');
@@ -52,7 +57,7 @@
                 $uibModalInstance.close('deleted');
             });
         }
-        this.confirmReactivate = function confirmReactivate(profesionalInstance){
+        vm.confirmReactivate = function confirmReactivate(profesionalInstance){
             profesionalInstance.status = 'Active';
             profesionalInstance.$update(function(){
                 $loading.finish('app');
@@ -63,52 +68,52 @@
             });
         }
 
-        this.confirmStatusChange = function confirmDelete(){
+        vm.confirmStatusChange = function confirmDelete(){
             var profesionalInstance = angular.copy(profesional);
             $loading.start('app');
             if(profesionalInstance.status=='Active'){
-                this.confirmDelete(profesionalInstance);
+                vm.confirmDelete(profesionalInstance);
             }else{
                 if(profesionalInstance.status=='Inactive'){
-                    this.confirmReactivate(profesionalInstance);
+                    vm.confirmReactivate(profesionalInstance);
                 }
             }
         };
 
-        this.changeStatus = function changeStatus() {
-            this.showModal();
+        vm.changeStatus = function changeStatus() {
+            vm.showModal();
         };
 
-        this.cancel = function cancel (){
+        vm.cancel = function cancel (){
             $uibModalInstance.dismiss('cancel');
         };
 
-        this.searchLocations = function searchLocations() {
-            this.locations = [];
-            if (this.selectedDistrict) {
-                this.locations = Location.query({district: this.selectedDistrict.id, status: 'Active'});
+        vm.searchLocations = function searchLocations() {
+            vm.locations = [];
+            if (vm.selectedDistrict) {
+                vm.locations = Location.query({district: vm.selectedDistrict.id, status: 'Active'});
             }
         };
 
-        this.searchDistricts = function searchDistricts() {
-            this.districts = [];
-            if (this.selectedProvince) {
-                this.districts = District.query({province: this.selectedProvince.id, status: 'Active'});
+        vm.searchDistricts = function searchDistricts() {
+            vm.districts = [];
+            if (vm.selectedProvince) {
+                vm.districts = District.query({province: vm.selectedProvince.id, status: 'Active'});
             }
         };
 
-        this.init = function init(){
-            this.documents = Document.getActiveList();
-            this.sexTypes = Sex.getActiveList();
-            this.provinces = Province.getActiveList();
-            this.districts = District.getActiveList();
-            this.locations = Location.getActiveList();
-            this.civilStatusTypes = CivilStatus.getActiveList();
-            this.selectedDistrict = this.profesional.location.district;
-            this.selectedProvince = this.profesional.location.district.province;
-            this.prestaciones = Prestacion.getActiveList();
+        vm.init = function init(){
+            vm.documents = Document.getActiveList();
+            vm.sexTypes = Sex.getActiveList();
+            vm.provinces = Province.getActiveList();
+            vm.districts = District.getActiveList();
+            vm.locations = Location.getActiveList();
+            vm.civilStatusTypes = CivilStatus.getActiveList();
+            vm.selectedDistrict = vm.profesional.location.district;
+            vm.selectedProvince = {id:vm.profesional.location.district.province};
+            vm.prestaciones = Prestacion.getActiveList();
         };
-        this.init();
+        vm.init();
 
     }
     angular.module('turnos.profesionales').controller('ProfesionalCtrl',['$loading','$uibModalInstance','$filter','profesional','Document','Sex', 'Province', 'District', 'Location', 'CivilStatus', 'Prestacion', profesionalCtrl]);

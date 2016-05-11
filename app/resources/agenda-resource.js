@@ -2,23 +2,29 @@
   'use strict';
   function AgendaProvider() {
     function AgendaResource($resource, apiBase) {
-      var Agenda = $resource(apiBase + 'practicas/agenda/:agendaId/', {agendaId: '@id'}, {
+        function transformDataSet(data){ 
+                  return angular.fromJson(data).results;
+        }
+        var Agenda = $resource(apiBase + 'practicas/agenda/:agendaId/', {agendaId: '@id'}, {
         update: {
           method: 'PUT'
         },
         getActiveList: {
           method: 'GET',
           params: {status: 'Active'},
-          isArray: true
+          isArray: true,
+          transformResponse: transformDataSet          
         },
         getInactiveList: {
           method: 'GET',
           params: {status: 'Inactive'},
           isArray: true,
+          transformResponse: transformDataSet
         },
         query:{
           method: 'GET',
-          isArray: false            
+          isArray: true,            
+          transformResponse: transformDataSet
         }
       });
 

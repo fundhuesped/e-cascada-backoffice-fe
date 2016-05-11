@@ -2,6 +2,9 @@
     'use strict';
     function PacienteProvider() {
       function PacienteResource($resource,apiBase) {
+        function transformDataSet(data){ 
+                  return angular.fromJson(data).results;
+        }
         var Paciente = $resource(apiBase + 'pacientes/paciente/:pacienteId/',{pacienteId:'@id'},{
           update: {
             method:'PUT'
@@ -9,16 +12,19 @@
           getActiveList:{
             method: 'GET',
             params:{status:'Active'},
-            isArray: false
+            isArray: true,
+            transformResponse: transformDataSet
           },
           getInactiveList:{
             method: 'GET',
             params:{status:'Inactive'},
-            isArray: false
+            isArray: true,
+            transformResponse: transformDataSet            
           },
           query:{
             method: 'GET',
-            isArray: false
+            isArray: true,
+            transformResponse: transformDataSet
           }
         });
 

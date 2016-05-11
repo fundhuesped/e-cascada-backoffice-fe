@@ -173,7 +173,7 @@
                             <div class="form-group" ng-class="{'has-error':PacienteCtrl.pacienteForm.primaryPhoneNumber.$error.required}">
                                 <span><label>Telefono*</label></span>
                                 <input type="text" name="primaryPhoneNumber" maxlength="20" class="form-control" ng-model="PacienteCtrl.paciente.primaryPhoneNumber" required>
-                                <input type="checkbox" ng-model="PacienteCtrl.paciente.primaryPhoneMessage">
+                                <input type="checkbox" ng-model="PacienteCtrl.paciente.primaryPhoneMessage" ng-true-value="true" ng-false-value="false">
                                 <span><label>Acepta mensajes</label></span>
                             </div>
                         </div>

@@ -2,28 +2,30 @@
   'use strict';
   function TurnoProvider() {
     function TurnoResource($resource, apiBase) {
-      var Turno = $resource(apiBase + 'practicas/turno/:turnoId/', {turnoId: '@id'}, {
+        function transformDataSet(data){ 
+                  return angular.fromJson(data).results;
+        }
+        var Turno = $resource(apiBase + 'practicas/turno/:turnoId/', {turnoId: '@id'}, {
         update: {
           method: 'PUT'
         },
         getActiveList: {
           method: 'GET',
           params: {status: 'Active'},
-          isArray: true
+          isArray: true,
+          transformResponse: transformDataSet
         },
         getInactiveList: {
           method: 'GET',
           params: {status: 'Inactive'},
-          isArray: true
+          isArray: true,
+          transformResponse: transformDataSet
         },
         query:{
             method: 'GET',
             params:{status:'Inactive'},
             isArray: true,
-            transformResponse: function(data){ 
-              var tmp = angular.fromJson(data);
-                return tmp.results;
-            }
+            transformResponse: transformDataSet
         }
       });
 

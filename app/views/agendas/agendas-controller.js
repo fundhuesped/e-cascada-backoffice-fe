@@ -1,5 +1,7 @@
 (function () {
   'use strict';
+  /* jshint validthis: true */
+  /*jshint latedef: nofunc */
 
   function agendasCtrl($uibModal, toastr, Agenda) {
     this.agendas = [];
@@ -48,9 +50,7 @@
         }
       }
       if (currentStatusFilter) {
-        this.agendasDataSet = Agenda.query({name: this.nameFilter, status: currentStatusFilter},function(result){
-          this.agendas = result.results;
-          }.bind(this));
+        this.agendasDataSet = Agenda.query({name: this.nameFilter, status: currentStatusFilter});
       } else {
         this.agendasDataSet = Agenda.query({name: this.nameFilter},function(result){
           this.agendas = result.results;

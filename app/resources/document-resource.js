@@ -22,9 +22,9 @@
             transformResponse: transformDataSet
           },
           query:{
-              method: 'GET',
-              isArray: true,
-              transformResponse: transformDataSet
+            method: 'GET',
+            isArray: true,
+            transformResponse: transformDataSet
           }
         });
 

@@ -1,16 +1,39 @@
 (function(){
     'use strict';
+    /* jshint validthis: true */
+     /*jshint latedef: nofunc */
+    angular
+        .module('turnos.pacientes')
+        .controller('PacientesCtrl',pacientesCtrl);
 
+    pacientesCtrl.$inject = ['$uibModal',
+                             'toastr',
+                             'Paciente'];
+    
     function pacientesCtrl ($uibModal,toastr,Paciente) {
-        this.pacientes = [];
-        this.paciente = null;
-        this.pacientesDataSet = null;
-        
-        this.detail = function detail(paciente){
-            this.paciente = paciente;
-        };
+        var vm = this;
+        vm.detail = detail;
+        var modalInstance;        
+        vm.modifyPaciente = modifyPaciente;
+        vm.newPaciente = newPaciente;
+        vm.pacientes = [];
+        vm.paciente = null;
+        vm.pacientesDataSet = null;
+        vm.searchName = searchName;
 
-        this.modifyPaciente = function modifyPaciente(selectedPaciente){
+        activate();
+        
+        //Controller initialization
+        function activate(){
+            vm.statusFilter = '1';
+            vm.searchName();
+        }
+
+        function detail(paciente){
+            vm.paciente = paciente;
+        }
+
+        function modifyPaciente(selectedPaciente){
             var modalInstance = $uibModal.open({
                 templateUrl: '/views/pacientes/paciente.html',
                 backdrop:'static',
@@ -23,41 +46,37 @@
                 }
             });
             modalInstance.result.then(function (result) {
-                if(result=='modified'){
+                if(result==='modified'){
                     toastr.success('Paciente modificado');
-                }else if(result=='deleted'){
+                }else if(result==='deleted'){
                     toastr.success('Paciente eliminado');
-                }else if(result=='reactivated'){
+                }else if(result==='reactivated'){
                     toastr.success('Paciente reactivado');
                 }
-                this.searchName();
-            }.bind(this), function () {
+                vm.searchName();
+            }.bind(vm), function () {
             });
-        };
+        }
 
-        this.searchName = function searchName(){
-            this.paciente = null;
+        function searchName(){
+            vm.paciente = null;
             var currentStatusFilter;
-            if(this.statusFilter==1){
+            if(vm.statusFilter==1){
                 currentStatusFilter = 'Active';
             }else{
-                if(this.statusFilter==3){
+                if(vm.statusFilter==3){
                     currentStatusFilter = 'Inactive';
                 }
             }
             if(currentStatusFilter){
-                this.pacientesDataSet = Paciente.query({name:this.nameFilter,status:currentStatusFilter},function(result){
-                    this.pacientes = result.results;
-                }.bind(this));
+                vm.pacientes = Paciente.query({name:vm.nameFilter,status:currentStatusFilter});
             }else{
-                this.pacientesDataSet = Paciente.query({name:this.nameFilter},function(result){
-                    this.pacientes = result.results;
-                }.bind(this));
+                vm.pacientes = Paciente.query({name:vm.nameFilter});
             }
-        };
+        }
 
-        this.newPaciente = function newPaciente(){
-            var modalInstance = $uibModal.open({
+        function newPaciente(){
+            modalInstance = $uibModal.open({
                 templateUrl: '/views/pacientes/newpaciente.html',
                 backdrop:'static',
                 controller: 'NewPacienteCtrl',
@@ -65,18 +84,9 @@
             });
             modalInstance.result.then(function () {
                 toastr.success('Paciente creado');
-                this.searchName();
-            }.bind(this), function () {
-
+                vm.searchName();
+            }, function () {
             });
-        };
-
-        //Controller initialization
-        this.init = function init(){
-            this.statusFilter = "1";
-            this.searchName();
-        };
-        this.init();
+        }
     }
-    angular.module('turnos.pacientes').controller('PacientesCtrl',['$uibModal','toastr','Paciente',pacientesCtrl]);
 })();

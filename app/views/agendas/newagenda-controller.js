@@ -1,7 +1,10 @@
 (function () {
   'use strict';
+  /* jshint validthis: true */
+  /*jshint latedef: nofunc */
+  function newAgendaCtrl($loading, $uibModalInstance, $filter, Agenda, Profesional, Especialidad, Prestacion) {
+    var vm = this;
 
-  function newAgendaCtrl($loading, $uibModalInstance, $filter, Agenda, Profesional) {
     this.daysStr = [{
       'index': 0,
       'name': 'Lu',
@@ -119,6 +122,7 @@
           var daysArray = [], day, j;
           for (j = 0; j < this.daysStr.length; j++) {
             day = {
+              'id': j+1,
               'index': j,
               'name': this.daysStr[j].name,
               'selected': false
@@ -158,8 +162,10 @@
 
     this.searchPrestaciones = function searchPrestaciones() {
       this.prestaciones = [];
+
       if (this.selectedEspecialidad && this.selectedProfesional) {
-        var i, j, exist;
+        vm.prestaciones = Prestacion.query({especialidad: vm.selectedEspecialidad.id,profesional: vm.selectedProfesional.id, status: 'Active'});
+  /*      var i, j, exist;
         for (i = 0; i < this.selectedProfesional.prestaciones.length; i++) {
           if (this.selectedProfesional.prestaciones[i].especialidad.id === this.selectedEspecialidad.id) {
             exist = false;
@@ -173,14 +179,15 @@
               this.prestaciones.push(this.selectedProfesional.prestaciones[i]);
             }
           }
-        }
+        }*/
       }
     };
 
     this.searchEspecialidades = function searchEspecialidades() {
       this.especialidades = [];
       if (this.selectedProfesional) {
-        var i, j, exist;
+        vm.especialidades = Especialidad.query({profesional: vm.selectedProfesional.id, status: 'Active'});
+/*        var i, j, exist;
         for (i = 0; i < this.selectedProfesional.prestaciones.length; i++) {
           exist = false;
           for (j = 0; j < this.especialidades.length; j++) {
@@ -192,7 +199,7 @@
           if (!exist) {
             this.especialidades.push(this.selectedProfesional.prestaciones[i].especialidad);
           }
-        }
+        }*/
       }
     };
 
@@ -239,5 +246,5 @@
     this.init();
   }
 
-  angular.module('turnos.agendas').controller('NewAgendaCtrl', ['$loading', '$uibModalInstance', '$filter', 'Agenda', 'Profesional', newAgendaCtrl]);
+  angular.module('turnos.agendas').controller('NewAgendaCtrl', ['$loading', '$uibModalInstance', '$filter', 'Agenda', 'Profesional', 'Especialidad', 'Prestacion', newAgendaCtrl]);
 })();

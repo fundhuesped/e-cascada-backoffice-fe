@@ -1,48 +1,72 @@
 (function(){
     'use strict';
+    /* jshint validthis: true */
+    /*jshint latedef: nofunc */
 
     function pacienteCtrl ($loading,$uibModalInstance,$filter,paciente,Document,Turno,Sex, Province, District, Location, SocialService, CivilStatus, Education) {
-        this.paciente = angular.copy(paciente);
-        this.editing = true;
-        this.errorMessage = null;
-        this.turnos = [];
+        var vm = this;
 
-        this.confirm = function confirm () {
-            if(this.pacienteForm.$valid){
-                this.hideErrorMessage();
+        vm.paciente = angular.copy(paciente);
+        vm.editing = true;
+        vm.errorMessage = null;
+        vm.turnos = [];
+        vm.confirm = confirm;
+        vm.confirmDelete = confirmDelete;
+
+
+        activate();
+
+        function activate(){
+            //TODO: Make sure everything is set to callback
+            vm.documents = Document.getActiveList();
+            vm.sexTypes = Sex.getActiveList();
+            vm.provinces = Province.getActiveList();
+            vm.districts = District.getActiveList();
+            vm.locations = Location.getActiveList();
+            vm.civilStatusTypes = CivilStatus.getActiveList();
+            vm.educationTypes = Education.getActiveList();
+            vm.socialServices = SocialService.getActiveList();
+            vm.selectedDistrict = vm.paciente.location.district;
+            vm.selectedProvince = {id:vm.paciente.location.district.province};
+            vm.turnos = Turno.query({status:'Active',paciente:vm.paciente.id});
+        }
+
+        function confirm () {
+            if(vm.pacienteForm.$valid){
+                vm.hideErrorMessage();
                 $loading.start('app');
-                this.paciente.birthDate = $filter('date')(this.paciente.birthDate, "yyyy-MM-dd");
-                this.paciente.$update(function(){
+                vm.paciente.birthDate = $filter('date')(vm.paciente.birthDate, 'yyyy-MM-dd');
+                vm.paciente.$update(function(){
                     $loading.finish('app');
                     $uibModalInstance.close('modified');
                 },function(){
-                    this.showErrorMessage();
+                    vm.showErrorMessage();
                 });
             }else{
-                this.errorMessage = 'Por favor revise el formulario';
+                vm.errorMessage = 'Por favor revise el formulario';
             }
-        };
+        }
 
         //Confirm delete modal
-        this.showModal = function showModal(){
-            this.modalStyle = {display:'block'};
+        vm.showModal = function showModal(){
+            vm.modalStyle = {display:'block'};
         };
 
-        this.confirmModal = function confirmModal(){
-            this.confirmStatusChange();
+        vm.confirmModal = function confirmModal(){
+            vm.confirmStatusChange();
         };
 
-        this.dismissModal = function showModal(){
-            this.modalStyle = {};
+        vm.dismissModal = function showModal(){
+            vm.modalStyle = {};
         };
-        this.showErrorMessage = function showErrorMessage(){
-            this.errorMessage = 'Ocurio un error en la comunicación';
+        vm.showErrorMessage = function showErrorMessage(){
+            vm.errorMessage = 'Ocurio un error en la comunicación';
         };
-        this.hideErrorMessage = function hideErrorMessage(){
-            this.errorMessage = null;
+        vm.hideErrorMessage = function hideErrorMessage(){
+            vm.errorMessage = null;
         };
 
-        this.confirmDelete = function confirmDelete(pacienteInstance){
+        function confirmDelete(pacienteInstance){
             pacienteInstance.status = 'Inactive';
             pacienteInstance.$update(function(){
                 $loading.finish('app');
@@ -52,7 +76,7 @@
                 $uibModalInstance.close('deleted');
             });
         }
-        this.confirmReactivate = function confirmReactivate(pacienteInstance){
+        vm.confirmReactivate = function confirmReactivate(pacienteInstance){
             pacienteInstance.status = 'Active';
             pacienteInstance.$update(function(){
                 $loading.finish('app');
@@ -63,54 +87,41 @@
             });
         }
 
-        this.confirmStatusChange = function confirmDelete(){
+        vm.confirmStatusChange = function confirmDelete(){
             var pacienteInstance = angular.copy(paciente);
             $loading.start('app');
             if(pacienteInstance.status=='Active'){
-                this.confirmDelete(pacienteInstance);
+                vm.confirmDelete(pacienteInstance);
             }else{
                 if(pacienteInstance.status=='Inactive'){
-                    this.confirmReactivate(pacienteInstance);
+                    vm.confirmReactivate(pacienteInstance);
                 }
             }
         };
 
-        this.changeStatus = function changeStatus() {
-            this.showModal();
+        vm.changeStatus = function changeStatus() {
+            vm.showModal();
         };
 
-        this.cancel = function cancel (){
+        vm.cancel = function cancel (){
             $uibModalInstance.dismiss('cancel');
         };
 
-        this.searchLocations = function searchLocations() {
-            this.locations = [];
-            if (this.selectedDistrict) {
-                this.locations = Location.query({district: this.selectedDistrict.id, status: 'Active'});
+        vm.searchLocations = function searchLocations() {
+            vm.locations = [];
+            if (vm.selectedDistrict) {
+                vm.locations = Location.query({district: vm.selectedDistrict.id, status: 'Active'});
             }
         };
 
-        this.searchDistricts = function searchDistricts() {
-            this.districts = [];
-            if (this.selectedProvince) {
-                this.districts = District.query({province: this.selectedProvince.id, status: 'Active'});
+        vm.searchDistricts = function searchDistricts() {
+            vm.districts = [];
+            if (vm.selectedProvince) {
+                vm.districts = District.query({province: vm.selectedProvince.id, status: 'Active'});
             }
         };
 
-        this.init = function init(){
-            this.documents = Document.getActiveList();
-            this.sexTypes = Sex.getActiveList();
-            this.provinces = Province.getActiveList();
-            this.districts = District.getActiveList();
-            this.locations = Location.getActiveList();
-            this.civilStatusTypes = CivilStatus.getActiveList();
-            this.educationTypes = Education.getActiveList();
-            this.socialServices = SocialService.getActiveList();
-            this.selectedDistrict = this.paciente.location.district;
-            this.selectedProvince = this.paciente.location.district.province;
-            this.turnos = Turno.query({status:'Active',paciente:this.paciente.id});
-        };
-        this.init();
+
 
     }
     angular.module('turnos.pacientes').controller('PacienteCtrl',['$loading','$uibModalInstance','$filter','paciente','Document','Turno','Sex', 'Province', 'District', 'Location', 'SocialService', 'CivilStatus', 'Education', pacienteCtrl]);
