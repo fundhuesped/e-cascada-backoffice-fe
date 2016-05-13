@@ -26,8 +26,10 @@
             vm.civilStatusTypes = CivilStatus.getActiveList();
             vm.educationTypes = Education.getActiveList();
             vm.socialServices = SocialService.getActiveList();
-            vm.selectedDistrict = vm.paciente.location.district;
-            vm.selectedProvince = {id:vm.paciente.location.district.province};
+            if(vm.selectedDistrict){
+                vm.selectedDistrict = vm.paciente.location.district;
+                vm.selectedProvince = {id:vm.paciente.location.district.province};
+            }
             vm.turnos = Turno.query({status:'Active',paciente:vm.paciente.id});
         }
 
@@ -36,6 +38,7 @@
                 vm.hideErrorMessage();
                 $loading.start('app');
                 vm.paciente.birthDate = $filter('date')(vm.paciente.birthDate, 'yyyy-MM-dd');
+                vm.paciente.firstVisit = $filter('date')(vm.paciente.firstVisit, 'yyyy-MM-dd');
                 vm.paciente.$update(function(){
                     $loading.finish('app');
                     $uibModalInstance.close('modified');

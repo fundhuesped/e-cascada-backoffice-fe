@@ -84,6 +84,7 @@
 
     function clearPacienteSelection() {
       vm.recomendationList = [];
+      vm.selectedPaciente = null;
       delete vm.paciente.selected;
       vm.paciente = null;
     }
@@ -98,8 +99,9 @@
         paciente.firstName = vm.paciente.firstName;
         paciente.fatherSurname = vm.paciente.fatherSurname;
         paciente.primaryPhoneNumber = vm.paciente.primaryPhoneNumber;
-        paciente.save(function(createdPaciente){
-          vm.selectedPaciente = createdPaciente;
+        paciente.prospect = true;
+        paciente.$save(function(createdPaciente){
+          vm.selectedTurno.paciente = createdPaciente;
           vm.reserveTurno();
         },function(error){
           console.log(error);

@@ -110,7 +110,7 @@
             vm.locations = Location.getActiveList();
             vm.civilStatusTypes = CivilStatus.getActiveList();
             vm.selectedDistrict = vm.profesional.location.district;
-            vm.selectedProvince = {id:vm.profesional.location.district.province};
+            vm.selectedProvince = vm.profesional.location.district.province;
             vm.prestaciones = Prestacion.getActiveList();
         };
         vm.init();

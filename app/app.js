@@ -48,6 +48,19 @@ angular.module('turnos.app', [
                     }
                 }
             })
+            .state('turnosCalendar', {
+                url: '/turnosCalendar',
+                views: {
+                    'navbar': {
+                        templateUrl: 'views/navbar/navbar.html',
+                    },
+                    'main': {
+                        templateUrl: 'views/turnos/turnos.html',
+                        controller: 'TurnosCtrl',
+                        controllerAs: 'TurnosCtrl'
+                    }
+                }
+            })
             .state('newturno', {
                 url: '/newturno',
                 views: {

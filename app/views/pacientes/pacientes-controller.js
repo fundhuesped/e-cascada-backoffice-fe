@@ -26,7 +26,7 @@
         //Controller initialization
         function activate(){
             vm.statusFilter = '1';
-            vm.searchName();
+            vm.pacientes = Paciente.getActiveList();
         }
 
         function detail(paciente){
@@ -37,6 +37,7 @@
             var modalInstance = $uibModal.open({
                 templateUrl: '/views/pacientes/paciente.html',
                 backdrop:'static',
+                size: 'lg',
                 controller: 'PacienteCtrl',
                 controllerAs: 'PacienteCtrl',
                 resolve: {
@@ -61,17 +62,25 @@
         function searchName(){
             vm.paciente = null;
             var currentStatusFilter;
+            if(vm.searchPreferencesForm.searchName && vm.searchPreferencesForm.$valid){
+                currentStatusFilter = getStatusFilter();
+                if(currentStatusFilter){
+                    vm.pacientes = Paciente.query({firstName:vm.nameFilter,status:currentStatusFilter});
+                }else{
+                    vm.pacientes = Paciente.query({firstName:vm.nameFilter});
+                }
+            }else{
+                toastr.warning('Ingrese almenos 3 caracteres para buscar');
+            }
+        }
+
+        function getStatusFilter(){
             if(vm.statusFilter==1){
-                currentStatusFilter = 'Active';
+                    return 'Active';
             }else{
                 if(vm.statusFilter==3){
-                    currentStatusFilter = 'Inactive';
+                    return 'Inactive';
                 }
-            }
-            if(currentStatusFilter){
-                vm.pacientes = Paciente.query({name:vm.nameFilter,status:currentStatusFilter});
-            }else{
-                vm.pacientes = Paciente.query({name:vm.nameFilter});
             }
         }
 

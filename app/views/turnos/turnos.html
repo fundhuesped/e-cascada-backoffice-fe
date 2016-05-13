@@ -5,47 +5,22 @@
 		  		<h3 class="panel-title">Medicos</h3>
 			</div>
 		  	<div class="panel-body">
-				<div class="form-group">
-					<input type="text" name="firstname" class="form-control" ng-model="TurnosCtrl.medicosSearch" placeholder="Nombre del medico"></input>
-	            </div>	    		
-		        <div class="checkbox" style="color:#ee8505">
-			  		<label>
-				    	<input type="checkbox" ng-model="TurnosCtrl.fernandez" ng-change="TurnosCtrl.toggleSources()">
-				    	Doctor Fernandez
-				  	</label>
-				</div>
-				<div class="checkbox" style="color:#3a87ad">
-				  	<label>
-				    	<input type="checkbox" ng-model="TurnosCtrl.ramirez" ng-change="TurnosCtrl.toggleSources()" >
-				    	Doctor Ramirez
-				  	</label>
-				</div>
+		  		<form name="TurnosCtrl.searchProfesionalForm">
+					<div class="form-group">
+						<input type="text" name="firstname" class="form-control" ng-model="TurnosCtrl.search.firstName" placeholder="Nombre del medico" ></input>
+		            </div>	    		
+			        <div class="checkbox" ng-repeat="(key, profesional) in TurnosCtrl.profesionales | filter:TurnosCtrl.search" >
+				  		<label>
+					    	<input type="checkbox" ng-checked="profesional.selected" ng-click="TurnosCtrl.selectProfesional(profesional)">
+					    	{{profesional.fatherSurname}},{{profesional.firstName }}
+					  	</label>
+					</div>
+				</form>
   			</div>
 		</div>	
-		<div class="panel panel-default">
-		  	<div class="panel-heading">    
-		  		<h3 class="panel-title">Especialidades</h3>
-			</div>
-		  	<div class="panel-body">
-				<div class="form-group">
-					<input type="text" name="firstname" class="form-control" placeholder="Especialidad"></input>
-	            </div>	    		
-		        <div class="checkbox" style="color:#D8C358">
-			  		<label>
-				    	<input type="checkbox" ng-model="TurnosCtrl.infecto" ng-change="TurnosCtrl.toggleSources()">
-				    	Infectologia
-				  	</label>
-				</div>
-				<div class="checkbox" style="color:#6D0839">
-				  	<label>
-				    	<input type="checkbox" ng-model="TurnosCtrl.gineco" ng-change="TurnosCtrl.toggleSources()" >
-				    	Giencologia
-				  	</label>
-				</div>
-  			</div>
-		</div>		
 	</div>
-	<div class="col-md-9">
+	<div class="col-md-9" id="printSection">
+	<h1 id="printSectionTitle">{{TurnosCtrl.selectedProfesional.fatherSurname}},{{TurnosCtrl.selectedProfesional.firstName }}</h1>
 		<div ui-calendar="TurnosCtrl.calendarConfig" ng-model="TurnosCtrl.eventSources">
 	</div>
 </div>

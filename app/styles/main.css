@@ -108,3 +108,31 @@ body {
 .no-padding-right{
     padding-right: 0px;
 }
+
+@media screen {
+    #printSectionTitle{
+        display: none;
+        visibility: hidden;
+    }
+}
+@media print {
+    body * {
+        visibility:hidden;
+    }
+
+    #printSection, #printSection * {
+        visibility:visible;
+    }
+    .fc-left {
+        visibility:hidden;
+    }
+    #printSectionTitle{
+        display: block;
+    }
+    #printSection {
+        position:absolute;
+        left:0;
+        top:0;
+    }
+}
+
