@@ -23,7 +23,6 @@
         },
         query:{
             method: 'GET',
-            params:{status:'Inactive'},
             isArray: true,
             transformResponse: transformDataSet
         }

@@ -1,15 +1,28 @@
 (function(){
     'use strict';
+    /* jshint validthis: true */
+    /*jshint latedef: nofunc */
     
     function especialidadesCtrl ($uibModal,toastr,Especialidad) {
-    	this.especialidades = [];
-        this.especialidad = null;
+    	var vm = this;
+        vm.especialidades = [];
+        vm.especialidad = null;
     	
-        this.detail = function detail(especialidad){
-    		this.especialidad = especialidad;
+
+        activate();
+
+        //Controller initialization
+        function activate(){
+            vm.statusFilter = '1'; 
+            vm.especialidades = Especialidad.getActiveList();
+        }
+
+
+        vm.detail = function detail(especialidad){
+    		vm.especialidad = especialidad;
     	};
     	
-        this.modifyEspecialidad = function modifyEspecialidad(selectedEspecialidad){
+        vm.modifyEspecialidad = function modifyEspecialidad(selectedEspecialidad){
             var modalInstance = $uibModal.open({
                 templateUrl: '/views/especialidades/especialidad.html',
                 backdrop:'static',
@@ -29,35 +42,31 @@
                 }else if(result=='reactivated'){
                    toastr.success('Especialidad reactivada');                      
                 }
-               this.searchName();                  
-            }.bind(this), function () {
+               vm.searchName();                  
+            }.bind(vm), function () {
             });
         };
 
-        this.searchName = function searchName(){
-            this.especialidad = null;
+        vm.searchName = function searchName(){
+            vm.especialidad = null;
             var currentStatusFilter;
-            if(this.statusFilter==1){
+            if(vm.statusFilter==1){
                 currentStatusFilter = 'Active';
             }else{
-                if(this.statusFilter==3){
+                if(vm.statusFilter==3){
                     currentStatusFilter = 'Inactive';
                 }
             }
             if(currentStatusFilter){
-                this.especialidadesDataSet = Especialidad.query({name:this.nameFilter,status:currentStatusFilter},function(result){
-                    this.especialidades = result.results;
-                }.bind(this));
+                vm.especialidades = Especialidad.query({name:vm.nameFilter,status:currentStatusFilter});
 
            }else{
-               this.especialidadesDataSet = Especialidad.query({name:this.nameFilter},function(result){
-                    this.especialidades = result.results;
-                }.bind(this));
+               vm.especialidades = Especialidad.query({name:vm.nameFilter});
            }
 
         };
 
-        this.newEspecialidad = function newEspecialidad(){
+        vm.newEspecialidad = function newEspecialidad(){
             var modalInstance = $uibModal.open({
                 templateUrl: '/views/especialidades/newespecialidad.html',
                 backdrop:'static',
@@ -66,18 +75,13 @@
             });
             modalInstance.result.then(function () {
                toastr.success('Especialidad creada');
-               this.searchName();
-            }.bind(this), function () {
+               vm.searchName();
+            }.bind(vm), function () {
               
             });
         };
         
-        //Controller initialization
-        this.init = function init(){
-            this.statusFilter = "1"; 
-            this.searchName();
-        };
-        this.init();
+
                         
     }
     angular.module('turnos.especialidades').controller('EspecialidadesCtrl',['$uibModal','toastr','Especialidad',especialidadesCtrl]);

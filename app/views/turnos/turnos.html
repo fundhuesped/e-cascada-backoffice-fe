@@ -2,12 +2,12 @@
 	<div class="col-md-3">
 		<div class="panel panel-default">
 		  	<div class="panel-heading">    
-		  		<h3 class="panel-title">Medicos</h3>
+		  		<h3 class="panel-title">Profesionales</h3>
 			</div>
 		  	<div class="panel-body">
 		  		<form name="TurnosCtrl.searchProfesionalForm">
 					<div class="form-group">
-						<input type="text" name="firstname" class="form-control" ng-model="TurnosCtrl.search.firstName" placeholder="Nombre del medico" ></input>
+						<input type="text" name="firstname" class="form-control" ng-model="TurnosCtrl.search.firstName" placeholder="Nombre del profesional" ></input>
 		            </div>	    		
 			        <div class="checkbox" ng-repeat="(key, profesional) in TurnosCtrl.profesionales | filter:TurnosCtrl.search" >
 				  		<label>
@@ -20,7 +20,27 @@
 		</div>	
 	</div>
 	<div class="col-md-9" id="printSection">
-	<h1 id="printSectionTitle">{{TurnosCtrl.selectedProfesional.fatherSurname}},{{TurnosCtrl.selectedProfesional.firstName }}</h1>
-		<div ui-calendar="TurnosCtrl.calendarConfig" ng-model="TurnosCtrl.eventSources">
+		<h4 id="printSectionTitle">{{TurnosCtrl.selectedProfesional.fatherSurname}},{{TurnosCtrl.selectedProfesional.firstName }}</h4>
+		<div ui-calendar="TurnosCtrl.calendarConfig" ng-model="TurnosCtrl.eventSources" class="turnos-calendar"  calendar="myCalendar"></div>	
+		<div id="printSectionWithoutTurno">
+			<span>Pacientes sin turno (Solo los da el profesional)</span>
+			<table class="table table-bordered">
+				<tr>
+					<td>1</td>
+				</tr>
+				<tr>
+					<td>2</td>
+				</tr>
+				<tr>
+					<td>3</td>
+				</tr>
+				<tr>
+					<td>4</td>
+				</tr>
+				<tr>
+					<td>5</td>
+				</tr>
+			</table>
+		</div>
 	</div>
 </div>

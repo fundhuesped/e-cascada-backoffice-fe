@@ -109,10 +109,21 @@ body {
     padding-right: 0px;
 }
 
+.fc-day-grid{
+    display: none;
+}
+
+.turnos-calendar .fc-slats tr {
+    height: 35px;
+}
 @media screen {
     #printSectionTitle{
         display: none;
         visibility: hidden;
+    }
+    #printSectionWithoutTurno{
+        visibility: hidden;
+        display: none;
     }
 }
 @media print {
@@ -124,10 +135,16 @@ body {
         visibility:visible;
     }
     .fc-left {
-        visibility:hidden;
+        visibility:hidden!important;
+    }
+    .fc-toolbar{
+        display: none;
     }
     #printSectionTitle{
         display: block;
+    }
+    #printSectionWithoutTurno tr{
+        font-size: 10px;
     }
     #printSection {
         position:absolute;
