@@ -31,7 +31,7 @@
                 profesional.location = this.newProfesional.location;
                 profesional.primaryPhoneNumber = this.newProfesional.primaryPhoneNumber;
                 profesional.primaryPhoneContact = this.newProfesional.primaryPhoneContact;
-                profesional.primaryPhoneMessage = this.newProfesional.primaryPhoneMessage;
+                profesional.primaryPhoneMessage = this.newProfesional.primaryPhoneMessage || false;
                 profesional.civilStatus = this.newProfesional.civilStatus;
                 profesional.notes = this.newProfesional.notes;
                 profesional.prestaciones = this.newProfesional.prestaciones;

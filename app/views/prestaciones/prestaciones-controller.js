@@ -1,37 +1,48 @@
 (function(){
     'use strict';
+    /* jshint validthis: true */
+    /*jshint latedef: nofunc */
+    angular
+        .module('turnos.prestaciones')
+        .controller('PrestacionesCtrl',prestacionesCtrl);
+    prestacionesCtrl.$inject = ['$uibModal','toastr','Prestacion'];
     
-    function prestacionesCtrl ($uibModal, toastr,Prestacion, Especialidad) {
-        this.prestaciones = [];
-        this.prestacion = null;
+    function prestacionesCtrl ($uibModal, toastr, Prestacion) {
+        var vm = this;
+        vm.prestaciones = [];
+        vm.prestacion = null;
 
-        this.searchName = function searchName(){
-            this.prestacion = null;
+        activate();
+
+        //Controller initialization
+        function activate(){
+            vm.statusFilter = '1'; 
+            vm.prestaciones = Prestacion.getActiveList();
+        }
+
+        vm.searchName = function searchName(){
+            vm.prestacion = null;
             var currentStatusFilter;
-            if(this.statusFilter==1){
+            if(vm.statusFilter==1){
                 currentStatusFilter = 'Active';
             }else{
-                if(this.statusFilter==3){
+                if(vm.statusFilter==3){
                     currentStatusFilter = 'Inactive';
                 }
             }
             if(currentStatusFilter){
-                this.prestacionesDataSet = Prestacion.query({name:this.nameFilter,status:currentStatusFilter},function(result){
-                    this.prestaciones = result.results;
-                }.bind(this));;
+                vm.prestacionesDataSet = Prestacion.query({name:vm.nameFilter,status:currentStatusFilter});
 
             }else{
-                this.prestacionesDataSet = Prestacion.query({name:this.nameFilter},function(result){
-                    this.prestaciones = result.results;
-                }.bind(this));;
+                vm.prestacionesDataSet = Prestacion.query({name:vm.nameFilter});
             }
         };
 
-    	this.detail = function detail(prestacion){
-    		this.prestacion = prestacion;
+    	vm.detail = function detail(prestacion){
+    		vm.prestacion = prestacion;
     	};
 
-        this.modify = function modify(selected){
+        vm.modify = function modify(selected){
             var modalInstance = $uibModal.open({
                 templateUrl: '/views/prestaciones/prestacion.html',
                 controller: 'PrestacionCtrl',
@@ -51,12 +62,12 @@
                 }else if(result==='reactivated'){
                    toastr.success('Prestación reactivada');                      
                 }
-                this.searchName();     
-            }.bind(this), function () {
+                vm.searchName();     
+            }.bind(vm), function () {
             });
         };
 
-        this.create = function create(){
+        vm.create = function create(){
             var modalInstance = $uibModal.open({
                 templateUrl: '/views/prestaciones/newprestacion.html',
                 backdrop:'static',
@@ -65,18 +76,9 @@
             });
             modalInstance.result.then(function () {
                 toastr.success('Prestación creada');
-                this.searchName();     
-            }.bind(this), function () {         
+                vm.searchName();     
+            }.bind(vm), function () {         
             });
         };
-
-        //Controller initialization
-        this.init = function init(){
-            this.statusFilter = "1"; 
-            this.searchName();     
-        }
-        this.init();
-
     }
-    angular.module('turnos.prestaciones').controller('PrestacionesCtrl',['$uibModal','toastr','Prestacion','Especialidad',prestacionesCtrl]);
 })();

@@ -1,17 +1,53 @@
 (function () {
   'use strict';
+  /* jshint validthis: true */
+  /*jshint latedef: nofunc */
 
+  angular
+    .module('turnos.turnos')
+    .controller('NewTurnoCtrl',newTurnoCtrl);
+  
+  newTurnoCtrl.$inject =  [ '$uibModal', 
+                            'uiCalendarConfig', 
+                            'toastr', 
+                            '$loading', 
+                            '$filter', 
+                            'Especialidad', 
+                            'Prestacion', 
+                            'Paciente', 
+                            'Document', 
+                            'Profesional', 
+                            'Turno'];
   function newTurnoCtrl($uibModal, uiCalendarConfig, toastr, $loading, $filter, Especialidad, Prestacion, Paciente, Document, Profesional, Turno) {
-    this.paciente = null;
-    this.especialidades = null;
-    this.selectedPaciente = null;
-    this.newTurno = {};
+
+    var vm = this;
+    vm.canConfirmTurno = canConfirmTurno;
+    vm.clearPacienteSelection = clearPacienteSelection;
+    vm.confirmTurno = confirmTurno;
+    vm.especialidades = null;
+    vm.eventSources = [];
+    vm.limpiarBusquedaTurno = limpiarBusquedaTurno;
+    vm.lookForPacientes = lookForPacientes;
+    vm.lookForTurnos = lookForTurnos;
+    vm.newTurno = {};
+    vm.openPacienteModal = openPacienteModal;
+    vm.paciente = null;
+    vm.renderCalendar = renderCalendar;
+    vm.reRedender = reRedender;
+    vm.reserveTurno = reserveTurno;
+    vm.searchPrestacionesMedicos = searchPrestacionesMedicos;
+    vm.searchProfesionales = searchProfesionales;
+    vm.selectPaciente = selectPaciente;
+    vm.selectedPaciente = null;
     var selectedRepresentation;
+    vm.shouldLookForPacient = shouldLookForPacient;
     //Calendar
     var turnosSource = [];
-    this.eventSources = [];
+    vm.updateSelectionRow = updateSelectionRow;
 
-    this.calendarConfig =
+    activate();
+
+    vm.calendarConfig =
     {
       height: 450,
       editable: false,
@@ -24,22 +60,231 @@
         right: 'today prev,next'
       },
       eventClick: function selectTurnoOnEventClick(date, jsEvent, view) {
-        this.updateSelectionRow(date.id, this.turnos, date);
-      }.bind(this)
+        vm.updateSelectionRow(date.id, vm.turnos, date);
+      }
     };
 
-    this.renderCalendar = function renderCalendar() {
+    function activate() {
+      vm.documents = Document.getActiveList();
+      vm.especialidades = Especialidad.getActiveList();
+    }
+
+    function canConfirmTurno(){
+      if(vm.selectedTurno){
+        if(vm.selectedPaciente){
+          return true;
+        }else{
+          if(vm.paciente && vm.paciente.firstName && vm.paciente.fatherSurname && vm.paciente.primaryPhoneNumber) {
+            return true;
+          }
+        }
+      }
+      return false; 
+    }
+
+    function clearPacienteSelection() {
+      vm.recomendationList = [];
+      vm.selectedPaciente = null;
+      delete vm.paciente.selected;
+      vm.paciente = null;
+    }
+
+    function confirmTurno() {
+      $loading.start('app');
+      if(vm.selectedPaciente){
+        vm.selectedTurno.paciente = vm.selectedPaciente;
+          vm.reserveTurno();
+      }else{
+        var paciente = new Paciente();        
+        paciente.firstName = vm.paciente.firstName;
+        paciente.fatherSurname = vm.paciente.fatherSurname;
+        paciente.primaryPhoneNumber = vm.paciente.primaryPhoneNumber;
+        paciente.prospect = true;
+        paciente.$save(function(createdPaciente){
+          vm.selectedTurno.paciente = createdPaciente;
+          vm.reserveTurno();
+        },function(error){
+          console.log(error);
+        }
+        );
+      }
+    }
+
+    function limpiarBusquedaTurno() {
+      vm.showTurnos = false;
+      vm.selectedPrestacion = null;
+      vm.selectedEspecialidad = null;
+      vm.prestaciones = [];
+      vm.selectedProfesional = null;
+      vm.selectedDate = null;
+      vm.selectedPaciente = null;
+    }
+
+    function lookForPacientes() {
+      if (vm.shouldLookForPacient()) {
+        $loading.start('recomendations');
+        vm.recomendations = Paciente.getActiveList(function(recomendations){
+          $loading.finish('recomendations');
+          vm.copyPaciente = angular.copy(vm.paciente);
+          vm.copyPaciente.birthDate = $filter('date')(vm.copyPaciente.birthDate, "yyyy-MM-dd");
+          vm.recomendationList = $filter('filter')(recomendations, vm.copyPaciente);
+          }.bind(vm), function(){
+            $loading.finish('recomendations');
+            console.log('Failed get activePacientes');
+          }
+        );
+        }
+    }
+
+    function lookForTurnos() {
+      $loading.start('app');
+      vm.showTurnos = true;
+      vm.turnos = [];
+      var turnoDate;
+      if (vm.selectedDate) {
+        turnoDate = $filter('date')(vm.selectedDate, 'yyyy-MM-dd');
+      }
+      var turnoProf;
+      if (vm.selectedProfesional) {
+        turnoProf = vm.selectedProfesional.id;
+      }
+      Turno.query({prestacion: vm.selectedPrestacion.id, profesional: turnoProf, day: turnoDate, taken: false}).$promise.then(function (results) {
+        turnosSource =[];
+        angular.forEach(results, function (turno) {
+          vm.turnos.push(turno);
+          var startTime = new Date(turno.day + 'T' + turno.start);
+          var endTime = new Date(turno.day + 'T' + turno.end);
+          console.log(startTime);
+          var event = {
+            id: turno.id,
+            title: turno.profesional.fatherSurname,
+            start: startTime,
+            end: endTime,
+            allDay: false,
+            color: '#D8C358',
+            timezone:'America/Argentina/Buenos_Aires'
+          };
+          turnosSource.push(event);
+          turno.calendarRepresentation = event;
+        });
+        vm.eventSources.push(turnosSource);
+        console.log(vm.eventSources);
+        vm.renderCalendar();
+        $loading.finish('app');
+        });
+      }
+
+    //Open the detailed pacient info modal
+    function openPacienteModal(selectedPaciente) {
+      var modalInstance = $uibModal.open({
+        templateUrl: '/views/pacientes/paciente.html',
+        size: 'lg',
+        controller: 'PacienteCtrl',
+        controllerAs: 'PacienteCtrl',
+        resolve: {
+          paciente: function () {
+            return selectedPaciente;
+          }
+        }
+      });
+
+      //Only way I found to inject Controller to refresh list after modal closing
+      var ctrl = vm;
+      modalInstance.result.then(function () {
+        ctrl.lookForPacientes();
+      });
+    }
+
+    function renderCalendar() {
       //Workarround to wait for the tab to appear
       setTimeout(function () {
         if (uiCalendarConfig.calendars.newTurnosCalendar) {
           uiCalendarConfig.calendars.newTurnosCalendar.fullCalendar('render');
         }
       }, 1);
-    };
+    }
+    
+    function reRedender() {
+      uiCalendarConfig.calendars.newTurnosCalendar.fullCalendar( 'rerenderEvents' );
+    }
+
+    function reserveTurno(){
+      vm.selectedTurno.taken = true;
+      vm.selectedTurno.$update(function(){
+        $loading.finish('app');
+        toastr.success('Turno creado con éxito');
+        vm.limpiarBusquedaTurno();
+        vm.turnos = [];
+        vm.newPaciente = null;
+        vm.selectedTurno = null;
+        vm.clearPacienteSelection();
+      }.bind(vm),function(error){
+        $loading.finish('app');
+        console.log('Error creando turno');
+      });
+    }    
+
+    function searchPrestacionesMedicos() {
+      vm.prestaciones = [];
+      if (vm.selectedEspecialidad) {
+        vm.prestaciones = Prestacion.query({especialidad: vm.selectedEspecialidad.id, status: 'Active'});
+        vm.profesionales = Profesional.query({especialidad: vm.selectedEspecialidad.id, status: 'Active'});
+      }
+    }
+
+    function searchProfesionales() {
+      vm.profesionales = [];
+      if (vm.selectedPrestacion) {
+        vm.profesionales = Profesional.query({prestacion: vm.selectedPrestacion.id, status: 'Active'});
+      }
+    }
+
+    function selectPaciente(paciente) {      
+      vm.paciente = paciente;
+      vm.selectedPaciente = paciente;
+      vm.newTurno.paciente = paciente;
+      paciente.selected = true;
+    }
+
+    function shouldLookForPacient() {
+      var populatedFields = 0;
+      if (vm.paciente === null) {
+        return false;
+      }
+
+      if (vm.paciente.documentType) {
+        populatedFields++;
+      }
+
+      if (vm.paciente.documentNumber) {
+        return true;
+      }
+
+      if (vm.paciente.firstName) {
+        populatedFields++;
+      }
+
+      if (vm.paciente.fatherSurname) {
+        populatedFields++;
+      }
+
+      if (vm.paciente.birthDate) {
+        populatedFields++;
+      }
+
+      if (vm.paciente.email) {
+        populatedFields++;
+      }
+
+      if (populatedFields > 1) {
+        return true;
+      }
+
+      return false;
+    }
 
     //Update seleccion when selecting turno
-    this.updateSelectionRow = function updateSelectionRow(position, entities, calendarRepresentation) {
-
+    function updateSelectionRow(position, entities, calendarRepresentation) {
       if(calendarRepresentation){
         if(calendarRepresentation.selected){
           selectedRepresentation = null;
@@ -51,22 +296,22 @@
           selectedRepresentation = calendarRepresentation;
         }
       }else{
-        for (var i = this.eventSources[0].length - 1; i >= 0; i--) {
+        for (var i = vm.eventSources[0].length - 1; i >= 0; i--) {
           
-          if(this.eventSources[0][i].id == position){
-            if(this.eventSources[0][i].selected){
-              this.eventSources[0][i].color = '#D8C358';
-              this.eventSources[0][i].selected = false;
+          if(vm.eventSources[0][i].id == position){
+            if(vm.eventSources[0][i].selected){
+              vm.eventSources[0][i].color = '#D8C358';
+              vm.eventSources[0][i].selected = false;
               selectedRepresentation = null;  
             }else{
-              this.eventSources[0][i].color = '#6CC547';
-              this.eventSources[0][i].selected = true;
+              vm.eventSources[0][i].color = '#6CC547';
+              vm.eventSources[0][i].selected = true;
               selectedRepresentation = event;            
             }
           }else{
-            if(this.eventSources[0][i].selected){
-              this.eventSources[0][i].selected = false;
-              this.eventSources[0][i].color = '#D8C358';
+            if(vm.eventSources[0][i].selected){
+              vm.eventSources[0][i].selected = false;
+              vm.eventSources[0][i].color = '#D8C358';
             }
           }
         }
@@ -88,219 +333,35 @@
             if (calendarRepresentation.selected) {
               calendarRepresentation.color = '#D8C358';
               calendarRepresentation.selected = false;
-//              turno.calendarRepresentation.color = '#D8C358';
-//              this.selectedCalendarRepresentation = null;
+              //turno.calendarRepresentation.color = '#D8C358';
+              //vm.selectedCalendarRepresentation = null;
             } else {
               calendarRepresentation.color = '#6CC547';
-              /*if(this.selectedCalendarRepresentation){
-                this.selectedCalendarRepresentation.color = '#D8C358';
-                this.selectedCalendarRepresentation.selected = false;
-                this.selectedCalendarRepresentation = calendarRepresentation;                
+              /*if(vm.selectedCalendarRepresentation){
+                vm.selectedCalendarRepresentation.color = '#D8C358';
+                vm.selectedCalendarRepresentation.selected = false;
+                vm.selectedCalendarRepresentation = calendarRepresentation;                
               }*/
               calendarRepresentation.selected = true;
-//              turno.calendarRepresentation.color = '#dff0d8';
+              //turno.calendarRepresentation.color = '#dff0d8';
             }
             //uiCalendarConfig.calendars.newTurnosCalendar.fullCalendar('removeEvents', turno.calendarRepresentation._id);
             //uiCalendarConfig.calendars.newTurnosCalendar.fullCalendar('renderEvent', turno.calendarRepresentation,true);
           }
 
-          if (this.selectedTurno == turno) {
-            this.selectedTurno = null;
+          if (vm.selectedTurno == turno) {
+            vm.selectedTurno = null;
           } else {
-            this.selectedTurno = turno;
-            this.newTurno.prestacion = turno.prestacion;
-            this.newTurno.profesional = turno.profesional;
-            this.newTurno.day = turno.day;
-            this.newTurno.start = turno.start;
-            this.newTurno.end = turno.end;
+            vm.selectedTurno = turno;
+            vm.newTurno.prestacion = turno.prestacion;
+            vm.newTurno.profesional = turno.profesional;
+            vm.newTurno.day = turno.day;
+            vm.newTurno.start = turno.start;
+            vm.newTurno.end = turno.end;
           }
         }
-      }.bind(this));
+      }.bind(vm));
       uiCalendarConfig.calendars.newTurnosCalendar.fullCalendar( 'rerenderEvents' );
-    };
-
-    this.reRedender = function(){
-            uiCalendarConfig.calendars.newTurnosCalendar.fullCalendar( 'rerenderEvents' );
     }
-    //Open the detailed pacient info modal
-    this.openPacienteModal = function openPacienteModal(selectedPaciente) {
-      var modalInstance = $uibModal.open({
-        templateUrl: '/views/pacientes/paciente.html',
-        size: 'lg',
-        controller: 'PacienteCtrl',
-        controllerAs: 'PacienteCtrl',
-        resolve: {
-          paciente: function () {
-            return selectedPaciente;
-          }
-        }
-      });
-
-      //Only way I found to inject Controller to refresh list after modal closing
-      var ctrl = this;
-      modalInstance.result.then(function () {
-        ctrl.lookForPacientes();
-      });
-    };
-
-    this.selectPaciente = function selectPaciente(paciente) {
-      this.paciente = paciente;
-      this.selectedPaciente = paciente;
-      this.newTurno.paciente = paciente;
-      paciente.selected = true;
-    };
-
-    this.clearPacienteSelection = function clearPacienteSelection() {
-      this.recomendationList = [];
-      delete this.paciente.selected;
-      this.paciente = null;
-    };
-
-    this.lookForTurnos = function lookForTurnos() {
-      $loading.start('app');
-      this.showTurnos = true;
-      this.turnos = [];
-      var turnoDate;
-      if (this.selectedDate) {
-        turnoDate = $filter('date')(this.selectedDate, "yyyy-MM-dd");
-      }
-      var turnoProf;
-      if (this.selectedProfesional) {
-        turnoProf = this.selectedProfesional.id;
-      }
-      Turno.query({prestacion: this.selectedPrestacion.id, profesional: turnoProf, day: turnoDate, taken: false}).$promise.then(function (results) {
-        turnosSource =[];
-        angular.forEach(results, function (turno) {
-          this.turnos.push(turno);
-          var startTime = new Date(turno.day + "T" + turno.start);
-          var endTime = new Date(turno.day + "T" + turno.end);
-          console.log(startTime);
-          var event = {
-            id: turno.id,
-            title: turno.profesional.fatherSurname,
-            start: startTime,
-            end: endTime,
-            allDay: false,
-            color: '#D8C358',
-            timezone:'America/Argentina/Buenos_Aires'
-          };
-          turnosSource.push(event);
-          turno.calendarRepresentation = event;
-        }.bind(this));
-        this.eventSources.push(turnosSource);
-        console.log(this.eventSources);
-        this.renderCalendar();
-        $loading.finish('app');
-      }.bind(this));
-    };
-
-    this.shouldLookForPacient = function shouldLookForPacient() {
-      var populatedFields = 0;
-      if (this.paciente === null) {
-        return false;
-      }
-
-      if (this.paciente.documentType) {
-        populatedFields++;
-      }
-
-      if (this.paciente.documentNumber) {
-        return true;
-      }
-
-      if (this.paciente.firstName) {
-        populatedFields++;
-      }
-
-      if (this.paciente.fatherSurname) {
-        populatedFields++;
-      }
-
-      if (this.paciente.birthDate) {
-        populatedFields++;
-      }
-
-      if (this.paciente.email) {
-        populatedFields++;
-      }
-
-      if (populatedFields > 1) {
-        return true;
-      }
-
-      return false;
-    };
-
-    this.lookForPacientes = function lookForPacientes() {
-      if (this.shouldLookForPacient()) {
-        $loading.start('recomendations');
-        this.recomendations = Paciente.getActiveList(function(recomendations){
-          $loading.finish('recomendations');
-          this.copyPaciente = angular.copy(this.paciente);
-          this.copyPaciente.birthDate = $filter('date')(this.copyPaciente.birthDate, "yyyy-MM-dd");
-          this.recomendationList = $filter('filter')(recomendations, this.copyPaciente);
-          }.bind(this), function(){
-            $loading.finish('recomendations');
-            console.log('Failed get activePacientes');
-          }
-        );
-        }
-    };
-
-    this.limpiarBusquedaTurno = function limpiarBusquedaTurno() {
-      this.showTurnos = false;
-      this.selectedPrestacion = null;
-      this.selectedEspecialidad = null;
-      this.prestaciones = [];
-      this.selectedProfesional = null;
-      this.selectedDate = null;
-      this.selectedPaciente = null;
-    };
-
-    this.confirmTurno = function confirmTurno() {
-      $loading.start('app');
-
-      this.selectedTurno.paciente = this.selectedPaciente;
-      this.selectedTurno.taken = true;
-      this.selectedTurno.$update(function(){
-        $loading.finish('app');
-        toastr.success('Turno creado con éxito');
-        this.limpiarBusquedaTurno();
-        this.turnos = [];
-        this.newPaciente = null;
-        this.selectedTurno = null;
-        this.clearPacienteSelection();
-      }.bind(this),function(error){
-        $loading.finish('app');
-        console.log('Error creando turno');
-      });
-    };
-
-
-
-
-    this.searchPrestacionesMedicos = function searchPrestacionesMedicos() {
-      this.prestaciones = [];
-      if (this.selectedEspecialidad) {
-        this.prestaciones = Prestacion.query({especialidad: this.selectedEspecialidad.id, status: 'Active'});
-        this.profesionales = Profesional.query({especialidad: this.selectedEspecialidad.id, status: 'Active'});
-      }
-    };
-
-    this.searchProfesionales = function searchProfesionales() {
-      this.profesionales = [];
-      if (this.selectedPrestacion) {
-        this.profesionales = Profesional.query({prestacion: this.selectedPrestacion.id, status: 'Active'});
-      }
-    };
-
-    this.init = function init() {
-      this.documents = Document.getActiveList();
-      this.especialidades = Especialidad.getActiveList();
-    };
-
-    this.init();
   }
-
-  angular.module('turnos.turnos').controller('NewTurnoCtrl', [ '$uibModal', 'uiCalendarConfig', 'toastr', '$loading', '$filter', 'Especialidad', 'Prestacion', 'Paciente', 'Document', 'Profesional', 'Turno', newTurnoCtrl]);
 })();

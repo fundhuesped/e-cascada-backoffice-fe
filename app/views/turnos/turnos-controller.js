@@ -1,96 +1,105 @@
 (function(){
     'use strict';
-    
-    function turnosCtrl (TurnosSrv,uiCalendarConfig) {
-	    var date = new Date();
-    	var d = date.getDate();
-    	var m = date.getMonth();
-    	var y = date.getFullYear();
+    /* jshint validthis: true */
+     /*jshint latedef: nofunc */
+    angular
+    	.module('turnos.turnos')
+    	.controller('TurnosCtrl', turnosCtrl);
+
+	turnosCtrl.$inject = ['Turno', 'Profesional', '$loading', '$filter'];
+
+    function turnosCtrl (Turno, Profesional, $loading, $filter) {
+	    var vm = this;
+        vm.eventSources = [];
+		vm.profesionales = [];
+    	vm.searchProfesional = searchProfesional;
+    	vm.lookForTurnos = lookForTurnos;
+        vm.search = [];
+    	vm.selectProfesional = selectProfesional;
+		var createCalendarTurnoEvent = createCalendarTurnoEvent;
+		vm.turnos = [];
+    	
     	 /* config object */
-    	this.eventSources = [];
-	    this.calendarConfig = 
-	      {
-	        height: 450,
+    	vm.eventSources = [];
+	    vm.calendarConfig = {
+	        height: 550,
 	        editable: false,
 	        lang: 'es',
 	        weekends: false,
+	        defaultView: 'agendaWeek',
 	        header:{
 	          left: 'month agendaWeek agendaDay',
 	          center: 'title',
 	          right: 'today prev,next'
 	        },
+	        businessHours:{
+						    start: '8:00',
+						    end: '16:00', 
+						    dow: [ 1, 2, 3, 4, 5 ]
+							}
 	    };
-	this.toggleSources = function toggleSources(){
-		this.eventSources.length = 0;
-		if(this.ramirez){
-			var ramirezCal = 	     [ 
-				{title: 'Hanna Blade', start: new Date(y, m, d + 2, 9, 0),end: new Date(y, m, d + 3, 16, 20),allDay: false},
-				{title: 'Kenneth Burts', start: new Date(y, m, d + 2, 9, 20),end: new Date(y, m, d + 3, 16, 40),allDay: false},
-	      		{title: 'Vacaciones',start: new Date(y, m, d + 5),end: new Date(y, m, d + 20)}];
-			this.eventSources.push(ramirezCal);
-		}
-		if(this.fernandez){
-			var fernandezCal = 	     [ 
-				{title: 'Jessie Blake', start: new Date(y, m, d + 2, 9, 0),end: new Date(y, m, d + 3, 9, 20),allDay: false,color:'#ee8505'},
-				{title: 'Tom Umland', start: new Date(y, m, d + 2, 9, 20),end: new Date(y, m, d + 3, 9, 40),allDay: false,color:'#ee8505'},
-				{title: 'Molly Truluck', start: new Date(y, m, d + 2, 9, 40),end: new Date(y, m, d + 3, 10, 0),allDay: false,color:'#ee8505'},
-				{title: 'Merrilee Eoff', start: new Date(y, m, d + 2, 10, 0),end: new Date(y, m, d + 3, 10, 20),allDay: false,color:'#ee8505'}];
-			this.eventSources.push(fernandezCal);
-		}
-		if(this.infecto){
-			var infectocal = 	     [ 
-				{title: 'Hanna Blade', start: new Date(y, m, d + 2, 9, 0),end: new Date(y, m, d + 3, 16, 20),allDay: false,color:'#D8C358'},
-				{title: 'Kenneth Burts', start: new Date(y, m, d + 2, 9, 20),end: new Date(y, m, d + 3, 16, 40),allDay: false,color:'#D8C358'},
-				{title: 'Lola Burns', start: new Date(y, m, d + 2, 9, 20),end: new Date(y, m, d + 3, 16, 40),allDay: false,color:'#D8C358'}];
-			this.eventSources.push(infectocal);
-		}
-		if(this.gineco){
-			var  ginecocal = 	     [ 
-				{title: 'Hanna Blade', start: new Date(y, m, d + 3, 9, 0),end: new Date(y, m, d + 3, 16, 20),allDay: false,color:'#6D0839'}];
-			this.eventSources.push(ginecocal);			
-		}
-		console.log(this.eventSources);
-	}
 
+	    activate();
 
+	    function activate(){
+	        vm.profesionales = Profesional.query({status: 'Active'});
+	    }
 
-	this.listMedicos = [
-		{
-			id: 'fernandez',
-			name: 'Fernandez',
-			color: '#ee8505',
-			selected: false
+		function searchProfesional(){
+			if(vm.searchProfesional.firstname.length>0){
+		        vm.profesionales = Profesional.query({firstName: vm.searchProfesional.firstname, status: 'Active'});
 
-		},
-		{
-			id: 'ramirez',
-			name: 'Ramirez',
-			color: '#3a87ad',
-			selected: false
-
-		},
-		{
-			id: 'perez',
-			name: 'Perez',
-			color: '#3a87ad',
-			selected: false
-		}
-	];
-
-	this.medicos = function medicos(){
-		var tmpMedicos = [];
-		console.log(this.medicosSearch);
-		if(this.medicosSearch){
-			for (var i = this.listMedicos.length - 1; i >= 0; i--) {
-				if(this.listMedicos[i].name.search(this.medicosSearch)!==-1){
-					tmpMedicos.push(this.listMedicos[i]);
-				}
 			}
-			return tmpMedicos;
-		}else{
-			return this.listMedicos;
 		}
-	};
+		
+		function selectProfesional(profesional){
+			if(vm.selectedProfesional && vm.selectedProfesional != profesional){
+				vm.selectedProfesional.selected = false;
+			}
+	        vm.eventSources.length = 0;
+			vm.selectedProfesional = profesional;
+			vm.selectedProfesional.selected = true;
+			vm.lookForTurnos(profesional.id);
+		}
+
+	    function lookForTurnos(idProfesional) {
+	      	$loading.start('app');
+	    	var date = new Date();
+	      	vm.turnos.length = 0;
+	      	var formatedDate = $filter('date')(date, 'yyyy-MM-dd');
+	      	Turno.query({profesional: idProfesional, day__gte: formatedDate})
+	      	   .$promise
+	      	   .then(function (results) {
+			        var turnosSource =[];
+			        angular.forEach(results, function (turno) {
+			        	var event = createCalendarTurnoEvent(turno);
+			          	turnosSource.push(event);
+			          	turno.calendarRepresentation = event;
+		        	});
+			        vm.eventSources.push(turnosSource);
+			        $loading.finish('app');
+	        	});
+	      }
+
+      	function createCalendarTurnoEvent(turno){
+	        var startTime = new Date(turno.day + 'T' + turno.start);
+	        var endTime = new Date(turno.day + 'T' + turno.end);
+	        var title = '';
+	        var color = '#FFFFFF';
+	        if(turno.taken){
+	         	color = '#D8C358';
+	         	title = turno.paciente.fatherSurname + ',' + turno.paciente.firstName + '-' + turno.paciente.primaryPhoneNumber;
+	        }
+	        return {
+	            id: turno.id,
+	            title: title,
+	            start: startTime,
+	            end: endTime,
+	            allDay: false,
+	            color: color,
+	            borderColor: '#000000',
+	            timezone:'America/Argentina/Buenos_Aires'
+	         };
+      	}
     }
-    angular.module('turnos.turnos').controller('TurnosCtrl',['TurnosSrv','uiCalendarConfig',turnosCtrl]);
 })();

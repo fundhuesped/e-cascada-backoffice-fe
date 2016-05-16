@@ -1,17 +1,28 @@
 (function () {
   'use strict';
+  /* jshint validthis: true */
+  /*jshint latedef: nofunc */
 
   function agendasCtrl($uibModal, toastr, Agenda) {
-    this.agendas = [];
-    this.agenda = null;
+    var vm = this;
+    vm.agendas = [];
+    vm.agenda = null;
 
-    this.detail = function detail(agenda) {
-      this.agenda = agenda;
-      this.startTime = this.agenda.start.substr(0, 5);
-      this.endTime = this.agenda.end.substr(0, 5);
+    activate();
+
+    //Controller initialization
+    function activate() {
+      vm.statusFilter = '1';
+      vm.agendas = Agenda.getActiveList();
+    }
+
+    vm.detail = function detail(agenda) {
+      vm.agenda = agenda;
+      vm.startTime = vm.agenda.start.substr(0, 5);
+      vm.endTime = vm.agenda.end.substr(0, 5);
     };
 
-    this.modifyAgenda = function modifyAgenda(selectedAgenda) {
+    vm.modifyAgenda = function modifyAgenda(selectedAgenda) {
       var modalInstance = $uibModal.open({
         templateUrl: '/views/agendas/agenda.html',
         backdrop: 'static',
@@ -32,34 +43,30 @@
         } else if (result == 'reactivated') {
           toastr.success('Agenda reactivada');
         }
-        this.searchName();
-      }.bind(this), function () {
+        vm.searchName();
+      }.bind(vm), function () {
       });
     };
 
-    this.searchName = function searchName() {
-      this.agenda = null;
+    vm.searchName = function searchName() {
+      vm.agenda = null;
       var currentStatusFilter;
-      if (this.statusFilter == 1) {
+      if (vm.statusFilter == 1) {
         currentStatusFilter = 'Active';
       } else {
-        if (this.statusFilter == 3) {
+        if (vm.statusFilter == 3) {
           currentStatusFilter = 'Inactive';
         }
       }
       if (currentStatusFilter) {
-        this.agendasDataSet = Agenda.query({name: this.nameFilter, status: currentStatusFilter},function(result){
-          this.agendas = result.results;
-          }.bind(this));
+        vm.agendas = Agenda.query({name: vm.nameFilter, status: currentStatusFilter});
       } else {
-        this.agendasDataSet = Agenda.query({name: this.nameFilter},function(result){
-          this.agendas = result.results;
-          }.bind(this));
+        vm.agendas = Agenda.query({name: vm.nameFilter});
       }
 
     };
 
-    this.newAgenda = function newAgenda() {
+    vm.newAgenda = function newAgenda() {
       var modalInstance = $uibModal.open({
         templateUrl: '/views/agendas/newagenda.html',
         backdrop: 'static',
@@ -69,18 +76,13 @@
       });
       modalInstance.result.then(function () {
         toastr.success('Agenda creada');
-        this.searchName();
-      }.bind(this), function () {
+        vm.searchName();
+      }, function () {
 
       });
     };
 
-    //Controller initialization
-    this.init = function init() {
-      this.statusFilter = "1";
-      this.searchName();
-    };
-    this.init();
+
 
   }
 

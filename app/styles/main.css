@@ -108,3 +108,48 @@ body {
 .no-padding-right{
     padding-right: 0px;
 }
+
+.fc-day-grid{
+    display: none;
+}
+
+.turnos-calendar .fc-slats tr {
+    height: 35px;
+}
+@media screen {
+    #printSectionTitle{
+        display: none;
+        visibility: hidden;
+    }
+    #printSectionWithoutTurno{
+        visibility: hidden;
+        display: none;
+    }
+}
+@media print {
+    body * {
+        visibility:hidden;
+    }
+
+    #printSection, #printSection * {
+        visibility:visible;
+    }
+    .fc-left {
+        visibility:hidden!important;
+    }
+    .fc-toolbar{
+        display: none;
+    }
+    #printSectionTitle{
+        display: block;
+    }
+    #printSectionWithoutTurno tr{
+        font-size: 10px;
+    }
+    #printSection {
+        position:absolute;
+        left:0;
+        top:0;
+    }
+}
+

@@ -2,6 +2,9 @@
     'use strict';
     function EspecialidadProvider() {
       function EspecialidadResource($resource,apiBase) {
+        function transformDataSet(data){ 
+                  return angular.fromJson(data).results;
+        }
         var Especialidad = $resource(apiBase + 'practicas/especialidad/:especialidadId/',{especialidadId:'@id'},{
           update: {
             method:'PUT'
@@ -9,16 +12,19 @@
           getActiveList:{
             method: 'GET',
             params:{status:'Active'},
-            isArray: true
+            isArray: true,
+            transformResponse: transformDataSet
           },
           getInactiveList:{
             method: 'GET',
             params:{status:'Inactive'},
-            isArray: true
+            isArray: true,
+            transformResponse: transformDataSet
           },
-          query:{
+          query:{   
            method: 'GET',
-            isArray: false            
+            isArray: true,
+            transformResponse: transformDataSet            
           }
         });
 

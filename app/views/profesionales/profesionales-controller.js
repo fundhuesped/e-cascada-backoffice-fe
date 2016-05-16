@@ -1,15 +1,38 @@
 (function(){
     'use strict';
+    /* jshint validthis: true */
+    /*jshint latedef: nofunc */
+
+    angular
+        .module('turnos.profesionales')
+        .controller('ProfesionalesCtrl',profesionalesCtrl);
+        
+    profesionalesCtrl.$inject = ['$uibModal',
+                                 'toastr',
+                                 'Profesional'];
 
     function profesionalesCtrl ($uibModal,toastr,Profesional) {
-        this.profesionales = [];
-        this.profesional = null;
+        var vm = this;
+        vm.profesionales = [];
+        vm.profesional = null;
+        vm.detail = detail;
+        vm.modifyProfesional = modifyProfesional;
+        vm.newProfesional = newProfesional;
+        vm.searchName = searchName;
 
-        this.detail = function detail(profesional){
-            this.profesional = profesional;
-        };
+        activate();
+        
+        //Controller initialization
+        function activate(){
+            vm.statusFilter = '1';
+            vm.searchName();
+        }
 
-        this.modifyProfesional = function modifyProfesional(selectedProfesional){
+        function detail(profesional){
+            vm.profesional = profesional;
+        }
+
+        function modifyProfesional(selectedProfesional){
             var modalInstance = $uibModal.open({
                 templateUrl: '/views/profesionales/profesional.html',
                 backdrop:'static',
@@ -22,38 +45,19 @@
                 }
             });
             modalInstance.result.then(function (result) {
-                if(result=='modified'){
+                if(result==='modified'){
                     toastr.success('Profesional modificado');
-                }else if(result=='deleted'){
+                }else if(result==='deleted'){
                     toastr.success('Profesional eliminado');
-                }else if(result=='reactivated'){
+                }else if(result==='reactivated'){
                     toastr.success('Profesional reactivado');
                 }
-                this.searchName();
-            }.bind(this), function () {
+                vm.searchName();
+            }, function () {
             });
-        };
+        }
 
-        this.searchName = function searchName(){
-            this.profesional = null;
-            var currentStatusFilter;
-            if(this.statusFilter==1){
-                currentStatusFilter = 'Active';
-            }else{
-                if(this.statusFilter==3){
-                    currentStatusFilter = 'Inactive';
-                }
-            }
-            if(currentStatusFilter){
-                this.profesionales = Profesional.query({name:this.nameFilter,status:currentStatusFilter});
-
-            }else{
-                this.profesionales = Profesional.query({name:this.nameFilter});
-            }
-
-        };
-
-        this.newProfesional = function newProfesional(){
+        function newProfesional(){
             var modalInstance = $uibModal.open({
                 templateUrl: '/views/profesionales/newprofesional.html',
                 backdrop:'static',
@@ -62,18 +66,28 @@
             });
             modalInstance.result.then(function () {
                 toastr.success('Profesional creado');
-                this.searchName();
-            }.bind(this), function () {
+                vm.searchName();
+            }, function () {
 
             });
-        };
+        }
+        
+        function searchName(){
+            vm.profesional = null;
+            var currentStatusFilter;
+            if(vm.statusFilter==1){
+                currentStatusFilter = 'Active';
+            }else{
+                if(vm.statusFilter==3){
+                    currentStatusFilter = 'Inactive';
+                }
+            }
+            if(currentStatusFilter){
+                vm.profesionales = Profesional.query({name:vm.nameFilter,status:currentStatusFilter});
 
-        //Controller initialization
-        this.init = function init(){
-            this.statusFilter = "1";
-            this.searchName();
-        };
-        this.init();
+            }else{
+                vm.profesionales = Profesional.query({name:vm.nameFilter});
+            }
+        }
     }
-    angular.module('turnos.profesionales').controller('ProfesionalesCtrl',['$uibModal','toastr','Profesional',profesionalesCtrl]);
 })();

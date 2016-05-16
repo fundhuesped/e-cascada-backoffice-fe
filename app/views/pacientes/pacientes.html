@@ -7,8 +7,10 @@
 						<h3 class="panel-title">Pacientes</h3>
 					</div>
 					<div class="col-md-3">
-						<input type="text" class="form-control" placeholder="Nombre" ng-model="PacientesCtrl.nameFilter">
-						<button type="button" class="btn btn-default" ng-click="PacientesCtrl.searchName()">Buscar</button>
+						<div ng-class="{'has-warning':PacientesCtrl.searchPreferencesForm.searchName.$error.minlength}">
+							<input type="text" name="searchName" class="form-control" placeholder="Nombre" ng-model="PacientesCtrl.nameFilter" minlength="3">
+							<button type="button" class="btn btn-default" ng-click="PacientesCtrl.searchName()">Buscar</button>
+						</div>
 					</div>
 					<div class="col-md-2">
 						<select class="form-control" ng-model="PacientesCtrl.statusFilter" ng-change="PacientesCtrl.searchName()">
@@ -36,8 +38,8 @@
 					</tr>
 					</thead>
 					<tbody>
-					<tr ng-repeat="(key, paciente) in PacientesCtrl.pacientes" ng-click="PacientesCtrl.detail(paciente)" ng-class="{active:paciente == PacientesCtrl.paciente}">
-						<th scope="row">{{paciente.id}}</th>
+					<tr ng-repeat="(key, paciente) in PacientesCtrl.pacientes" ng-click="PacientesCtrl.detail(paciente)" ng-class="{'bg-info':paciente.prospect}">
+						<td ng-class="{bold:paciente == PacientesCtrl.paciente}">{{paciente.id}}</td>
 						<td style="max-width:125px; word-wrap:break-word;">{{paciente.firstName}}</td>
 						<td style="max-width:125px; word-wrap:break-word;">{{paciente.fatherSurname}}</td>
 					</tr>
