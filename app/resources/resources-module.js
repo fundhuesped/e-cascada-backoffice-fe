@@ -1,5 +1,8 @@
 (function(){
- 'use strict';
- angular.module('turnos.resources',[])
-	.value('apiBase', 'http://huesapi.herokuapp.com/'); // Azure
-})();
+"use strict";
+
+ angular.module('turnos.resources', [])
+
+.constant('apiBase', 'http://localhost:8000/')
+
+;})();
