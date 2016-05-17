@@ -32,11 +32,13 @@
     vm.newTurno = {};
     vm.openPacienteModal = openPacienteModal;
     vm.paciente = null;
+    vm.prestaciones = [];
+    vm.prestacionChanged = prestacionChanged;
+    vm.profesionalChanged = profesionalChanged;
     vm.renderCalendar = renderCalendar;
     vm.reRedender = reRedender;
     vm.reserveTurno = reserveTurno;
-    vm.searchPrestacionesMedicos = searchPrestacionesMedicos;
-    vm.searchProfesionales = searchProfesionales;
+    vm.especialidadChanged = especialidadChanged;
     vm.selectPaciente = selectPaciente;
     vm.selectedPaciente = null;
     var selectedRepresentation;
@@ -67,6 +69,7 @@
     function activate() {
       vm.documents = Document.getActiveList();
       vm.especialidades = Especialidad.getActiveList();
+      vm.profesionales = Profesional.getActiveList();
     }
 
     function canConfirmTurno(){
@@ -224,18 +227,33 @@
       });
     }    
 
-    function searchPrestacionesMedicos() {
-      vm.prestaciones = [];
+    function especialidadChanged() {
       if (vm.selectedEspecialidad) {
-        vm.prestaciones = Prestacion.query({especialidad: vm.selectedEspecialidad.id, status: 'Active'});
-        vm.profesionales = Profesional.query({especialidad: vm.selectedEspecialidad.id, status: 'Active'});
+        if(angular.isObject(vm.selectedProfesional)){
+          vm.prestaciones = Prestacion.query({especialidad: vm.selectedEspecialidad.id, profesional:vm.selectedProfesional.id , status: 'Active'});
+        }else{
+          vm.prestaciones = Prestacion.query({especialidad: vm.selectedEspecialidad.id, status: 'Active'});
+          vm.profesionales = Profesional.query({especialidad: vm.selectedEspecialidad.id, status: 'Active'});
+        }
       }
     }
 
-    function searchProfesionales() {
-      vm.profesionales = [];
+    function prestacionChanged() {
       if (vm.selectedPrestacion) {
-        vm.profesionales = Profesional.query({prestacion: vm.selectedPrestacion.id, status: 'Active'});
+        if(!angular.isObject(vm.selectedProfesional)){
+          vm.profesionales = Profesional.query({prestacion: vm.selectedPrestacion.id, status: 'Active'});
+        }
+      }
+    }
+
+    function profesionalChanged() {
+      if (vm.selectedProfesional) {
+        if(angular.isObject(vm.selectedEspecialidad)){
+          vm.prestaciones = Prestacion.query({especialidad: vm.selectedEspecialidad.id, profesional:vm.selectedProfesional.id , status: 'Active'});
+        }else{
+          vm.prestaciones = Prestacion.query({profesional: vm.selectedProfesional.id, status: 'Active'});
+          vm.especialidades = Especialidad.query({profesional: vm.selectedProfesional.id, status: 'Active'});
+        }
       }
     }
 
