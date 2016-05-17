@@ -2,9 +2,10 @@
   "name": "turnos",
   "version": "0.0.0",
   "dependencies": {
-    "express": "^4.13.3",
     "bower": "1.6.5",
+    "express": "^4.13.3",
     "grunt": "0.4.1",
+    "grunt-cli": "1.2.0",
     "grunt-ng-constant": "2.0.1"
   },
   "devDependencies": {
