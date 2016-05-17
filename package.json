@@ -59,7 +59,7 @@
     "node": "v4.2.2"
   },
   "scripts": {
-    "postinstall": "bower install ; ./node_modules/grunt-cli/bin/grunt configure",
+    "postinstall": "bower install ; ./node_modules/grunt-cli/bin/grunt configure:production",
     "start": "node web.js"
   }
 }

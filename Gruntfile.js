@@ -368,9 +368,11 @@ module.exports = function (grunt) {
     'usemin'
   ]);
 
-  grunt.registerTask('configure', [
-    'ngconstant:development',
-  ]);
+  grunt.registerTask('configure', function (target) {
+    grunt.task.run([
+    'ngconstant:'+target,
+    ]);
+  });
 
   grunt.registerTask('default', [
     'jshint',
