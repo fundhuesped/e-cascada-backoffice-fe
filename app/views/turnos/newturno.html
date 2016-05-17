@@ -152,7 +152,7 @@ glyphicon glyphicon-remove"></span> Limpiar seleccion de paciente
                   <span><label>Especialidad(*)</label></span>
                   <select class="form-control" ng-model="NewTurnoCtrl.selectedEspecialidad"
                           ng-options="especialidad.name for especialidad in NewTurnoCtrl.especialidades"
-                          ng-change="NewTurnoCtrl.searchPrestacionesMedicos()" required>
+                          ng-change="NewTurnoCtrl.especialidadChanged()" required>
                     <option value="">Todas las especialidades</option>
                   </select>
                 </div>
@@ -161,7 +161,7 @@ glyphicon glyphicon-remove"></span> Limpiar seleccion de paciente
                 <div class="form-group">
                   <span><label>Profesional</label></span>
                   <select class="form-control" ng-model="NewTurnoCtrl.selectedProfesional"
-                          ng-options='profesional as (profesional.fatherSurname + ", " + profesional.firstName) for profesional in NewTurnoCtrl.profesionales track by profesional.id'>
+                          ng-options='profesional as (profesional.fatherSurname + ", " + profesional.firstName) for profesional in NewTurnoCtrl.profesionales track by profesional.id' ng-change="NewTurnoCtrl.profesionalChanged()">
                     <option value="">Todos los médicos</option>
                   </select>
                 </div>
@@ -173,7 +173,7 @@ glyphicon glyphicon-remove"></span> Limpiar seleccion de paciente
                   <span><label>Prestación(*)</label></span>
                   <select class="form-control" ng-model="NewTurnoCtrl.selectedPrestacion"
                           ng-options="prestacion.name for prestacion in NewTurnoCtrl.prestaciones"
-                          ng-change="NewTurnoCtrl.searchProfesionales()" required>
+                          ng-change="NewTurnoCtrl.prestacionChanged()" required>
                     <option value="">Seleccione prestación</option>
                   </select>
                 </div>
