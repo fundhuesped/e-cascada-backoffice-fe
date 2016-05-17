@@ -284,6 +284,31 @@ module.exports = function (grunt) {
         }]
       }
     },
+    ngconstant: {
+      // Options for all targets
+      options: {
+        space: '  ',
+        wrap: '(function(){\n"use strict";\n\n {\%= __ngModule %}})();',
+        name: 'turnos.resources',
+      },
+      // Environment targets
+      production: {
+        options: {
+          dest: '<%= yeoman.app %>/resources/resources-module.js'
+        },
+        constants: {
+          apiBase: process.env.API_BASE
+        }
+      },
+      development: {
+        options: {
+          dest: '<%= yeoman.app %>/resources/resources-module.js'
+        },
+        constants: {
+          apiBase: 'http://localhost:8000/'
+        }
+      },      
+    },
     uglify: {
       dist: {
         files: {
@@ -311,6 +336,7 @@ module.exports = function (grunt) {
 
     grunt.task.run([
       'clean:server',
+      'ngconstant:development',
       'concurrent:server',
       'autoprefixer',
       'connect:livereload',
@@ -328,6 +354,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('build', [
     'clean:dist',
+    'ngconstant:production',
     'useminPrepare',
     'concurrent:dist',
     'autoprefixer',
@@ -339,6 +366,10 @@ module.exports = function (grunt) {
     'uglify',
     'rev',
     'usemin'
+  ]);
+
+  grunt.registerTask('configure', [
+    'ngconstant:development',
   ]);
 
   grunt.registerTask('default', [
