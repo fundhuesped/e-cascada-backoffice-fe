@@ -1,5 +1,7 @@
-(function(){
- 'use strict';
- angular.module('turnos.resources',[])
-    .value('apiBase', 'http://localhost:8000/') // Mock
-})();
+(function(){"use strict";
+
+ angular.module('turnos.resources', [])
+
+.constant('apiBase', 'http://localhost:8000/')
+
+;})();
