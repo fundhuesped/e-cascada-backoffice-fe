@@ -35,7 +35,7 @@
     "node": "v4.2.2"
   },
   "scripts": {
-    "postinstall": "bower install",
+    "postinstall": "bower install && grunt configure",
     "start": "node web.js"
   }
 }
