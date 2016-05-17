@@ -1,5 +1,5 @@
 (function(){
  'use strict';
  angular.module('turnos.resources',[])
-	.value('apiBase', 'http://huesturnos.herokuapp.com/'); // Azure
+	.value('apiBase', 'http://huesapi.herokuapp.com/'); // Azure
 })();
