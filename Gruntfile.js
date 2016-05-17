@@ -369,9 +369,16 @@ module.exports = function (grunt) {
   ]);
 
   grunt.registerTask('configure', function (target) {
-    grunt.task.run([
-    'ngconstant:'+target,
-    ]);
+    if(target)
+    {
+      grunt.task.run([
+      'ngconstant:'+target,
+      ]);
+    }else{
+      grunt.task.run([
+      'ngconstant:development',
+      ]);
+    }
   });
 
   grunt.registerTask('default', [
