@@ -22,7 +22,7 @@
                 },function(){
                     $loading.finish('app');
                     vm.showErrorMessage();
-                }.bind(vm));
+                });
             }else{
                 vm.errorMessage = 'Por favor revise el formulario';
             }

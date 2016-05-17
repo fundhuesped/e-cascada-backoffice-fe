@@ -13,6 +13,7 @@
 
     function profesionalesCtrl ($uibModal,toastr,Profesional) {
         var vm = this;
+        vm.addLeave = addLeave;
         vm.profesionales = [];
         vm.profesional = null;
         vm.detail = detail;
@@ -53,6 +54,26 @@
                     toastr.success('Profesional reactivado');
                 }
                 vm.searchName();
+            }, function () {
+            });
+        }
+
+        function addLeave(selectedProfesional){
+            var modalInstance = $uibModal.open({
+                templateUrl: '/views/profesionales/addleave.html',
+                backdrop:'static',
+                controller: 'AddLeaveCtrl',
+                controllerAs: 'AddLeaveCtrl',
+                resolve: {
+                    profesional: function () {
+                        return selectedProfesional;
+                    }
+                }
+            });
+            modalInstance.result.then(function (result) {
+                if(result==='created'){
+                    toastr.success('Ausencia cargada');
+                }
             }, function () {
             });
         }
