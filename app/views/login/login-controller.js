@@ -1,15 +1,28 @@
 (function(){
     'use strict';
+    /* jshint validthis: true */
+    /*jshint latedef: nofunc */
     
-    function loginCtrl ($state) {
-    	this.login = function login(LoginForm){
-    		if(this.username=='nlgonzalez' && this.password=='huesped'){
-    			$state.transitionTo('home');
-    		}else{
-				LoginForm.$setValidity('username', false);
-				LoginForm.$setValidity('password', false);
-    		}
+    function loginCtrl ($state, SessionService) {
+        var vm = this;
+        vm.errorMessage = null;
+        vm.login = login;
+        vm.rememberMe = true;
+        vm.hideErrorMessage = hideErrorMessage;
+
+        function login(){
+            if(vm.LoginForm.$valid){
+                SessionService.login(vm.username, vm.password, vm.rememberMe, function(data){
+                    $state.transitionTo('home');
+                }, function(){
+                    vm.errorMessage = 'Usuario o password incorrecto';
+
+                });
+            }
     	}
+        function hideErrorMessage() {
+            vm.errorMessage = null;
+        }
     }
-    angular.module('turnos.login').controller('LoginCtrl',['$state',loginCtrl]);
+    angular.module('turnos.login').controller('LoginCtrl',['$state', 'SessionService',loginCtrl]);
 })();

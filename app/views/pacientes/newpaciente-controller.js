@@ -1,103 +1,123 @@
 (function () {
     'use strict';
+    /* jshint validthis: true */
+    /*jshint latedef: nofunc */
 
     function newPacienteCtrl($loading, $uibModalInstance, $filter, Paciente, Document, Sex, Province, District, Location, SocialService, CivilStatus, Education) {
-        this.newPaciente = {
+        var vm = this;
+        vm.locations = null;
+        vm.districts = null;
+        vm.selectedProvince = null;
+        vm.close = close;
+        vm.clearForm = clearForm;
+        vm.searchLocations = searchLocations;
+        vm.hideErrorMessage = hideErrorMessage;
+        vm.showErrorMessage = showErrorMessage;
+        vm.searchDistricts = searchDistricts;
+        vm.confirm = confirm;
+
+        vm.newPaciente = {
             socialService:null,
             civilStatus:null,
             education:null
         };
 
-        this.confirm = function confirm() {
-            if (this.newPacienteForm.$valid) {
-                this.hideErrorMessage();
+        activate();
+        
+        function activate() {
+            vm.documents = Document.getActiveList();
+            vm.sexTypes = Sex.getActiveList();
+            vm.provinces = Province.getActiveList();
+            vm.socialServices = SocialService.getActiveList();
+            vm.civilStatusTypes = CivilStatus.getActiveList();
+            vm.educationTypes = Education.getActiveList();
+        }
+        
+        function confirm() {
+            if (vm.newPacienteForm.$valid) {
+                vm.hideErrorMessage();
                 $loading.start('app');
                 var paciente = new Paciente();
-                paciente.firstName = this.newPaciente.firstName;
-                paciente.otherNames = this.newPaciente.otherNames;
-                paciente.fatherSurname = this.newPaciente.fatherSurname;
-                paciente.motherSurname = this.newPaciente.motherSurname;
-                paciente.documentType = this.newPaciente.documentType;
-                paciente.documentNumber = this.newPaciente.documentNumber;
-                paciente.birthDate = $filter('date')(this.newPaciente.birthDate, "yyyy-MM-dd");
-                paciente.genderAtBirth = this.newPaciente.genderAtBirth;
-                paciente.genderOfChoice = this.newPaciente.genderOfChoice;
-                paciente.email = this.newPaciente.email;
+                paciente.firstName = vm.newPaciente.firstName;
+                paciente.otherNames = vm.newPaciente.otherNames;
+                paciente.fatherSurname = vm.newPaciente.fatherSurname;
+                paciente.motherSurname = vm.newPaciente.motherSurname;
+                paciente.documentType = vm.newPaciente.documentType;
+                paciente.documentNumber = vm.newPaciente.documentNumber;
+                paciente.birthDate = $filter('date')(vm.newPaciente.birthDate, "yyyy-MM-dd");
+                paciente.genderAtBirth = vm.newPaciente.genderAtBirth;
+                paciente.genderOfChoice = vm.newPaciente.genderOfChoice;
+                paciente.email = vm.newPaciente.email;
                 paciente.status = 'Active';
-                paciente.street = this.newPaciente.street;
-                paciente.postal = this.newPaciente.postal;
-                paciente.location = this.newPaciente.location;
-                paciente.primaryPhoneNumber = this.newPaciente.primaryPhoneNumber;
-                paciente.primaryPhoneContact = this.newPaciente.primaryPhoneContact;
-                paciente.primaryPhoneMessage = this.newPaciente.primaryPhoneMessage;
-                paciente.secondPhoneNumber = this.newPaciente.secondPhoneNumber;
-                paciente.secondPhoneContact = this.newPaciente.secondPhoneContact;
-                paciente.secondPhoneMessage = this.newPaciente.secondPhoneMessage;
-                paciente.thirdPhoneNumber = this.newPaciente.thirdPhoneNumber;
-                paciente.thirdPhoneContact = this.newPaciente.thirdPhoneContact;
-                paciente.thirdPhoneMessage = this.newPaciente.thirdPhoneMessage;
-                paciente.occupation = this.newPaciente.occupation;
-                paciente.terms = this.newPaciente.terms;
-                paciente.socialService = this.newPaciente.socialService;
-                paciente.socialServiceNumber = this.newPaciente.socialServiceNumber;
-                paciente.civilStatus = this.newPaciente.civilStatus;
-                paciente.education = this.newPaciente.education;
-                paciente.bornPlace = this.newPaciente.bornPlace;
-                paciente.firstVisit = $filter('date')(this.newPaciente.firstVisit, "yyyy-MM-dd");
-                paciente.notes = this.newPaciente.notes;
+                paciente.street = vm.newPaciente.street;
+                paciente.postal = vm.newPaciente.postal;
+                paciente.location = vm.newPaciente.location;
+                paciente.primaryPhoneNumber = vm.newPaciente.primaryPhoneNumber;
+                paciente.primaryPhoneContact = vm.newPaciente.primaryPhoneContact;
+                paciente.primaryPhoneMessage = vm.newPaciente.primaryPhoneMessage;
+                paciente.secondPhoneNumber = vm.newPaciente.secondPhoneNumber;
+                paciente.secondPhoneContact = vm.newPaciente.secondPhoneContact;
+                paciente.secondPhoneMessage = vm.newPaciente.secondPhoneMessage;
+                paciente.thirdPhoneNumber = vm.newPaciente.thirdPhoneNumber;
+                paciente.thirdPhoneContact = vm.newPaciente.thirdPhoneContact;
+                paciente.thirdPhoneMessage = vm.newPaciente.thirdPhoneMessage;
+                paciente.occupation = vm.newPaciente.occupation;
+                paciente.terms = vm.newPaciente.terms;
+                paciente.socialService = vm.newPaciente.socialService;
+                paciente.socialServiceNumber = vm.newPaciente.socialServiceNumber;
+                paciente.civilStatus = vm.newPaciente.civilStatus;
+                paciente.education = vm.newPaciente.education;
+                paciente.bornPlace = vm.newPaciente.bornPlace;
+                paciente.firstVisit = $filter('date')(vm.newPaciente.firstVisit, "yyyy-MM-dd");
+                paciente.notes = vm.newPaciente.notes;
                 paciente.$save(function () {
                         $loading.finish('app');
                         $uibModalInstance.close('created');
                     }, function (error) {
                         $loading.finish('app');
-                        this.showErrorMessage();
-                    }.bind(this)
+                        vm.showErrorMessage();
+                    }.bind(vm)
                 );
             } else {
-                this.errorMessage = 'Por favor revise el formulario';
+                vm.errorMessage = 'Por favor revise el formulario';
             }
-        };
-        this.close = function close() {
+        }
+        
+        function close() {
             $uibModalInstance.dismiss('cancel');
-        };
-        this.showErrorMessage = function showErrorMessage() {
-            this.errorMessage = 'Ocurio un error en la comunicación';
-        };
-        this.hideErrorMessage = function hideErrorMessage() {
-            this.errorMessage = null;
-        };
-        this.clearForm = function clearForm() {
-            if (this.isModal) {
+        }
+        
+        function showErrorMessage() {
+            vm.errorMessage = 'Ocurio un error en la comunicación';
+        }
+        
+        function hideErrorMessage() {
+            vm.errorMessage = null;
+        }
+
+        function clearForm() {
+            if (vm.isModal) {
 
             } else {
-                this.newPaciente.name = '';
-                this.newPaciente.description = '';
+                vm.newPaciente.name = '';
+                vm.newPaciente.description = '';
             }
-        };
+        }
 
-        this.searchLocations = function searchLocations() {
-            this.locations = [];
-            if (this.selectedDistrict) {
-                this.locations = Location.query({district: this.selectedDistrict.id, status: 'Active'});
+        function searchLocations() {
+            if (vm.selectedDistrict) {
+                vm.locations = Location.query({district: vm.selectedDistrict.id, status: 'Active'});
             }
-        };
+        }
 
-        this.searchDistricts = function searchDistricts() {
-            this.districts = [];
-            if (this.selectedProvince) {
-                this.districts = District.query({province: this.selectedProvince.id, status: 'Active'});
+        function searchDistricts() {
+            vm.locations = null;
+            if (vm.selectedProvince) {
+                vm.districts = District.query({province: vm.selectedProvince.id, status: 'Active'});
             }
-        };
+        }
 
-        this.init = function init() {
-            this.documents = Document.getActiveList();
-            this.sexTypes = Sex.getActiveList();
-            this.provinces = Province.getActiveList();
-            this.socialServices = SocialService.getActiveList();
-            this.civilStatusTypes = CivilStatus.getActiveList();
-            this.educationTypes = Education.getActiveList();
-        };
-        this.init();
+
     }
 
     angular.module('turnos.pacientes').controller('NewPacienteCtrl', ['$loading', '$uibModalInstance', '$filter', 'Paciente', 'Document', 'Sex', 'Province', 'District', 'Location', 'SocialService', 'CivilStatus', 'Education', newPacienteCtrl]);
