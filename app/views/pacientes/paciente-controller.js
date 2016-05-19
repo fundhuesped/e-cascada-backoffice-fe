@@ -12,8 +12,13 @@
         vm.turnos = [];
         vm.confirm = confirm;
         vm.confirmDelete = confirmDelete;
-
-
+        vm.confirmReactivate = confirmReactivate;
+        vm.changeStatus = changeStatus;
+        vm.searchLocations = searchLocations;
+        vm.searchDistricts = searchDistricts;
+        vm.cancel = cancel;
+        
+        vm.confirmStatusChange = confirmStatusChange;
         activate();
 
         function activate(){
@@ -26,11 +31,9 @@
             vm.civilStatusTypes = CivilStatus.getActiveList();
             vm.educationTypes = Education.getActiveList();
             vm.socialServices = SocialService.getActiveList();
-            if(vm.selectedDistrict){
-                vm.selectedDistrict = vm.paciente.location.district;
-                vm.selectedProvince = {id:vm.paciente.location.district.province};
-            }
-            vm.turnos = Turno.query({status:'Active',paciente:vm.paciente.id});
+            vm.selectedDistrict = vm.paciente.location.district;
+            vm.selectedProvince = {id:vm.paciente.location.district.province.id};
+            vm.turnos = Turno.query({status:'Active',paciente:vm.paciente.id, order_field:'day', order_by:'desc'});
         }
 
         function confirm () {
@@ -69,7 +72,7 @@
             vm.errorMessage = null;
         };
 
-        function confirmDelete(pacienteInstance){
+        function confirmStatusChange(pacienteInstance){
             pacienteInstance.status = 'Inactive';
             pacienteInstance.$update(function(){
                 $loading.finish('app');
@@ -79,7 +82,7 @@
                 $uibModalInstance.close('deleted');
             });
         }
-        vm.confirmReactivate = function confirmReactivate(pacienteInstance){
+        function confirmReactivate(pacienteInstance){
             pacienteInstance.status = 'Active';
             pacienteInstance.$update(function(){
                 $loading.finish('app');
@@ -89,8 +92,8 @@
                 $uibModalInstance.close('reactivated');
             });
         }
-
-        vm.confirmStatusChange = function confirmDelete(){
+        //confirmStatusChange
+        function confirmDelete(){
             var pacienteInstance = angular.copy(paciente);
             $loading.start('app');
             if(pacienteInstance.status=='Active'){
@@ -100,29 +103,28 @@
                     vm.confirmReactivate(pacienteInstance);
                 }
             }
-        };
+        }
 
-        vm.changeStatus = function changeStatus() {
+        function changeStatus() {
             vm.showModal();
-        };
+        }
 
-        vm.cancel = function cancel (){
+        function cancel (){
             $uibModalInstance.dismiss('cancel');
-        };
+        }
 
-        vm.searchLocations = function searchLocations() {
-            vm.locations = [];
+        function searchLocations() {
             if (vm.selectedDistrict) {
                 vm.locations = Location.query({district: vm.selectedDistrict.id, status: 'Active'});
             }
-        };
+        }
 
-        vm.searchDistricts = function searchDistricts() {
-            vm.districts = [];
+        function searchDistricts() {
+            vm.locations = null;
             if (vm.selectedProvince) {
                 vm.districts = District.query({province: vm.selectedProvince.id, status: 'Active'});
             }
-        };
+        }
 
 
 
