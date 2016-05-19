@@ -18,7 +18,8 @@ angular.module('turnos.app', [
         'turnos.resources',
         'darthwade.dwLoading',
         'toastr',
-        'date-dropdowns'
+        'date-dropdowns',
+        'LocalStorageModule'
     ])
     .config(function ($stateProvider, $urlRouterProvider, $resourceProvider) {
         $resourceProvider.defaults.stripTrailingSlashes = false;
@@ -40,6 +41,8 @@ angular.module('turnos.app', [
                 views: {
                     'navbar': {
                         templateUrl: 'views/navbar/navbar.html',
+                        controller: 'NavbarCtrl',
+                        controllerAs: 'NavbarCtrl'
                     },
                     'main': {
                         templateUrl: 'views/turnos/turnos.html',
@@ -53,6 +56,8 @@ angular.module('turnos.app', [
                 views: {
                     'navbar': {
                         templateUrl: 'views/navbar/navbar.html',
+                        controller: 'NavbarCtrl',
+                        controllerAs: 'NavbarCtrl'
                     },
                     'main': {
                         templateUrl: 'views/turnos/turnos.html',
@@ -66,6 +71,8 @@ angular.module('turnos.app', [
                 views: {
                     'navbar': {
                         templateUrl: 'views/navbar/navbar.html',
+                        controller: 'NavbarCtrl',
+                        controllerAs: 'NavbarCtrl'
                     },
                     'main': {
                         templateUrl: 'views/turnos/newturno.html',
@@ -79,6 +86,8 @@ angular.module('turnos.app', [
                 views: {
                     'navbar': {
                         templateUrl: 'views/navbar/navbar.html',
+                        controller: 'NavbarCtrl',
+                        controllerAs: 'NavbarCtrl'
                     },
                     'main': {
                         templateUrl: 'views/especialidades/especialidades.html',
@@ -92,6 +101,8 @@ angular.module('turnos.app', [
                 views: {
                     'navbar': {
                         templateUrl: 'views/navbar/navbar.html',
+                        controller: 'NavbarCtrl',
+                        controllerAs: 'NavbarCtrl'
                     },
                     'main': {
                         templateUrl: 'views/especialidades/newespecialidad.html',
@@ -105,6 +116,8 @@ angular.module('turnos.app', [
                 views: {
                     'navbar': {
                         templateUrl: 'views/navbar/navbar.html',
+                        controller: 'NavbarCtrl',
+                        controllerAs: 'NavbarCtrl'
                     },
                     'main': {
                         templateUrl: 'views/especialidades/especialidad.html',
@@ -118,6 +131,8 @@ angular.module('turnos.app', [
                 views: {
                     'navbar': {
                         templateUrl: 'views/navbar/navbar.html',
+                        controller: 'NavbarCtrl',
+                        controllerAs: 'NavbarCtrl'
                     },
                     'main': {
                         templateUrl: 'views/prestaciones/prestaciones.html',
@@ -131,6 +146,8 @@ angular.module('turnos.app', [
                 views: {
                     'navbar': {
                         templateUrl: 'views/navbar/navbar.html',
+                        controller: 'NavbarCtrl',
+                        controllerAs: 'NavbarCtrl'
                     },
                     'main': {
                         templateUrl: 'views/prestaciones/prestacion.html',
@@ -144,6 +161,8 @@ angular.module('turnos.app', [
                 views: {
                     'navbar': {
                         templateUrl: 'views/navbar/navbar.html',
+                        controller: 'NavbarCtrl',
+                        controllerAs: 'NavbarCtrl'
                     },
                     'main': {
                         templateUrl: 'views/pacientes/pacientes.html',
@@ -157,6 +176,8 @@ angular.module('turnos.app', [
                 views: {
                     'navbar': {
                         templateUrl: 'views/navbar/navbar.html',
+                        controller: 'NavbarCtrl',
+                        controllerAs: 'NavbarCtrl'
                     },
                     'main': {
                         templateUrl: 'views/pacientes/newpaciente.html',
@@ -170,6 +191,8 @@ angular.module('turnos.app', [
                 views: {
                     'navbar': {
                         templateUrl: 'views/navbar/navbar.html',
+                        controller: 'NavbarCtrl',
+                        controllerAs: 'NavbarCtrl'
                     },
                     'main': {
                         templateUrl: 'views/pacientes/paciente.html',
@@ -183,6 +206,8 @@ angular.module('turnos.app', [
                 views: {
                     'navbar': {
                         templateUrl: 'views/navbar/navbar.html',
+                        controller: 'NavbarCtrl',
+                        controllerAs: 'NavbarCtrl'
                     },
                     'main': {
                         templateUrl: 'views/profesionales/profesionales.html',
@@ -196,6 +221,8 @@ angular.module('turnos.app', [
                 views: {
                     'navbar': {
                         templateUrl: 'views/navbar/navbar.html',
+                        controller: 'NavbarCtrl',
+                        controllerAs: 'NavbarCtrl'
                     },
                     'main': {
                         templateUrl: 'views/profesionales/newprofesional.html',
@@ -209,6 +236,8 @@ angular.module('turnos.app', [
                 views: {
                     'navbar': {
                         templateUrl: 'views/navbar/navbar.html',
+                        controller: 'NavbarCtrl',
+                        controllerAs: 'NavbarCtrl'
                     },
                     'main': {
                         templateUrl: 'views/profesionales/profesional.html',
@@ -222,6 +251,8 @@ angular.module('turnos.app', [
                 views: {
                     'navbar': {
                         templateUrl: 'views/navbar/navbar.html',
+                        controller: 'NavbarCtrl',
+                        controllerAs: 'NavbarCtrl'
                     },
                     'main': {
                         templateUrl: 'views/agendas/agendas.html',
