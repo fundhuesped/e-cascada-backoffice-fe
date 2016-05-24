@@ -3,9 +3,9 @@
     /* jshint validthis: true */
     /*jshint latedef: nofunc */
 
-    function profesionalCtrl ($loading,$uibModalInstance,$filter,profesional,Document,Sex, Province, District, Location, CivilStatus, Prestacion,Especialidad) {
+    function profesionalCtrl ($loading,$uibModalInstance,$filter,profesional,Document,Sex, Province, District, Location, CivilStatus, Prestacion, Especialidad, Profesional) {
         var vm = this;
-        vm.profesional = angular.copy(profesional);
+        vm.profesional = {};
         vm.editing = true;
         vm.errorMessage = null;
         vm.confirm = confirm;
@@ -15,20 +15,23 @@
         activate();
 
         function activate(){
-            vm.documents = Document.getActiveList();
-            vm.sexTypes = Sex.getActiveList();
-            vm.provinces = Province.getActiveList();
-            vm.districts = District.getActiveList();
-            vm.locations = Location.getActiveList();
-            vm.civilStatusTypes = CivilStatus.getActiveList();
-            vm.selectedDistrict = vm.profesional.location.district;
-            vm.selectedProvince = vm.profesional.location.district.province;
-            vm.profesional.primaryPhoneMessage = (vm.profesional.primaryPhoneMessage?vm.profesional.primaryPhoneMessage:false);
-            if(vm.profesional.prestaciones && vm.profesional.prestaciones.length>0){
-                vm.selectedEspecialidad = vm.profesional.prestaciones[0].especialidad;
-                vm.prestaciones = Prestacion.getActiveList({especialidad:vm.selectedEspecialidad.id});
-            }
-            vm.especialidades = Especialidad.getActiveList();
+            Profesional.get({id:profesional.id}, function(returnedObject){
+                vm.profesional = returnedObject;
+                vm.documents = Document.getActiveList();
+                vm.sexTypes = Sex.getActiveList();
+                vm.provinces = Province.getActiveList();
+                vm.districts = District.getActiveList();
+                vm.locations = Location.getActiveList();
+                vm.civilStatusTypes = CivilStatus.getActiveList();
+                vm.selectedDistrict = vm.profesional.location.district;
+                vm.selectedProvince = vm.profesional.location.district.province;
+                vm.profesional.primaryPhoneMessage = (vm.profesional.primaryPhoneMessage?vm.profesional.primaryPhoneMessage:false);
+                if(vm.profesional.prestaciones && vm.profesional.prestaciones.length>0){
+                    vm.selectedEspecialidad = vm.profesional.prestaciones[0].especialidad;
+                    vm.prestaciones = Prestacion.getActiveList({especialidad:vm.selectedEspecialidad.id});
+                }
+                vm.especialidades = Especialidad.getActiveList();
+            });
         }
 
 
@@ -135,5 +138,5 @@
 
 
     }
-    angular.module('turnos.profesionales').controller('ProfesionalCtrl',['$loading','$uibModalInstance','$filter','profesional','Document','Sex', 'Province', 'District', 'Location', 'CivilStatus', 'Prestacion', 'Especialidad', profesionalCtrl]);
+    angular.module('turnos.profesionales').controller('ProfesionalCtrl',['$loading','$uibModalInstance','$filter','profesional','Document','Sex', 'Province', 'District', 'Location', 'CivilStatus', 'Prestacion', 'Especialidad', 'Profesional', profesionalCtrl]);
 })();

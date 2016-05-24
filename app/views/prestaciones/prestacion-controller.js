@@ -1,91 +1,99 @@
 (function(){
     'use strict';
-    
-    function prestacionCtrl ($loading,$uibModalInstance,Especialidad,prestacion) {
-        this.prestacion = angular.copy(prestacion);
-        this.errorMessage = null;
+    /* jshint validthis: true */
+    /*jshint latedef: nofunc */
 
-        this.confirm = function confirm () {
-            if(this.prestacionForm.$valid){
-                this.hideErrorMessage();
+    function prestacionCtrl ($loading,$uibModalInstance,Especialidad,prestacion, Prestacion) {
+        var vm = this;
+        vm.prestacion = {};
+        vm.errorMessage = null;
+        
+        activate();
+        function activate(){
+            Prestacion.get({id:prestacion.id}, function(returnedObject){
+                vm.prestacion = returnedObject;
+            });
+            vm.especialidades = Especialidad.getActiveList();
+        }
+
+        vm.confirm = function confirm () {
+            if(vm.prestacionForm.$valid){
+                vm.hideErrorMessage();
                 $loading.start('app');
-                this.prestacion.$update(function(){
+                vm.prestacion.$update(function(){
                     $loading.finish('app');
                     $uibModalInstance.close('modified'); 
                 },function(){
                     $loading.finish('app');
-                    this.showErrorMessage();
-                }.bind(this));
+                    vm.showErrorMessage();
+                }.bind(vm));
             }else{
-                this.errorMessage = 'Por favor revise el formulario';
+                vm.errorMessage = 'Por favor revise el formulario';
             }
         };
 
         //Confirm delete modal
-        this.showModal = function showModal(){
-            this.modalStyle = {display:'block'};
+        vm.showModal = function showModal(){
+            vm.modalStyle = {display:'block'};
         };
 
-        this.confirmModal = function confirmModal(){
-            this.confirmStatusChange();
+        vm.confirmModal = function confirmModal(){
+            vm.confirmStatusChange();
         };
                 
-        this.dismissModal = function showModal(){
-            this.modalStyle = {};
+        vm.dismissModal = function showModal(){
+            vm.modalStyle = {};
         };
 
-        this.confirmDelete = function confirmDelete(prestacionInstance){
+        vm.confirmDelete = function confirmDelete(prestacionInstance){
             prestacionInstance.status = 'Inactive';
             prestacionInstance.$update(function(){
                 $loading.finish('app');
                 $uibModalInstance.close('deleted');
             },function(){
                 $loading.finish('app');
-                this.showErrorMessage();
-            }.bind(this));
+                vm.showErrorMessage();
+            }.bind(vm));
         };
 
-        this.confirmReactivate = function confirmReactivate(prestacionInstance){
+        vm.confirmReactivate = function confirmReactivate(prestacionInstance){
             prestacionInstance.status = 'Active';
             prestacionInstance.$update(function(){
                 $loading.finish('app');
                 $uibModalInstance.close('reactivated');
             },function(){
                 $loading.finish('app');
-                this.showErrorMessage();
-            }.bind(this));
+                vm.showErrorMessage();
+            }.bind(vm));
         };
 
-        this.showErrorMessage = function showErrorMessage(){
-            this.errorMessage = 'Ocurio un error en la comunicación';
+        vm.showErrorMessage = function showErrorMessage(){
+            vm.errorMessage = 'Ocurio un error en la comunicación';
         };
-        this.hideErrorMessage = function hideErrorMessage(){
-            this.errorMessage = null;
+        vm.hideErrorMessage = function hideErrorMessage(){
+            vm.errorMessage = null;
         };
 
-        this.confirmStatusChange = function confirmDelete(){
+        vm.confirmStatusChange = function confirmDelete(){
             var prestacionInstance = angular.copy(prestacion);
             $loading.start('app');
             if(prestacionInstance.status=='Active'){
-                this.confirmDelete(prestacionInstance);
+                vm.confirmDelete(prestacionInstance);
             }
             if(prestacionInstance.status=='Inactive'){
-                this.confirmReactivate(prestacionInstance);
+                vm.confirmReactivate(prestacionInstance);
             }
         };
 
-        this.changeStatus = function changeStatus() {
-            this.showModal();
+        vm.changeStatus = function changeStatus() {
+            vm.showModal();
         }; 
 
-        this.cancel = function cancel (){
+        vm.cancel = function cancel (){
             $uibModalInstance.dismiss('cancel');
         };
 
-        this.init = function init(){
-            this.especialidades = Especialidad.getActiveList();
-        }
-        this.init();
+
     }
-    angular.module('turnos.prestaciones').controller('PrestacionCtrl',['$loading','$uibModalInstance','Especialidad','prestacion',prestacionCtrl]);
+    angular.module('turnos.prestaciones').controller('PrestacionCtrl',['$loading','$uibModalInstance','Especialidad','prestacion', 'Prestacion', prestacionCtrl]);
 })();

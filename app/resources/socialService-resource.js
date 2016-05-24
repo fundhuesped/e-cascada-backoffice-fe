@@ -5,7 +5,7 @@
             function transformDataSet(data){ 
                 return angular.fromJson(data).results;
             }            
-            var SocialService = $resource(apiBase + 'comun/socialService/:socialServiceId/', {socialServiceId: '@id'}, {
+            var SocialService = $resource(apiBase + 'comun/socialService/:id/', {id: '@id'}, {
                 update: {
                     method: 'PUT'
                 },

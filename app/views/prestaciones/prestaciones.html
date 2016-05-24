@@ -3,8 +3,12 @@
         <div class="panel-heading">
         	<div class="row">
         		<form class="form-inline" name="PrestacionesCtrl.searchPreferencesForm"> 
-	        		<div class="col-md-5">    
+	        		<div class="col-md-3">    
 	  		          	<h3 class="panel-title">Prestaciones</h3>
+		            </div>
+					<div class="col-md-2">
+						<label>Mostrar</label>
+			            <input type="number" name="pageSize" class="form-control" ng-model="PrestacionesCtrl.pageSize" ng-change="PrestacionesCtrl.searchName()" style="width: 64px;" ng-model-options="{ debounce: 500 }" >
 		            </div>
 	        		<div class="col-md-3">    
 		                	<input type="text" class="form-control" placeholder="Nombre" ng-model="PrestacionesCtrl.nameFilter">
@@ -27,24 +31,29 @@
         </div>
         <div class="panel-body">
 		   	<div class="col-md-4" style="border-right: 1px solid;">
-				<table class="table table-hover"> 
-					<thead> 
-						<tr> 
-							<th>#</th> 
-							<th>Nombre</th> 
-							<th>Descripción</th> 
-							<th>Duración</th> 
-						</tr> 
-					</thead> 
-					<tbody> 
-						<tr ng-repeat="(key, prestacion) in PrestacionesCtrl.prestaciones" ng-click="PrestacionesCtrl.detail(prestacion)" ng-class="{active:prestacion == PrestacionesCtrl.prestacion}"> 
-							<th scope="row">{{prestacion.id}}</th> 
-							<td style="max-width:125px; word-wrap:break-word;">{{prestacion.name}}</td>
-							<td style="max-width:125px; word-wrap:break-word;">{{prestacion.description}}</td>
-							<td>{{prestacion.durationHours}}h {{prestacion.durationMinutes}}m </td>
-						</tr> 
-					</tbody> 
-				</table>
+				<div class="row">
+			    	<uib-pagination total-items="PrestacionesCtrl.totalItems" ng-model="PrestacionesCtrl.currentPage" items-per-page="PrestacionesCtrl.pageSize" class="pagination-sm" boundary-link-numbers="true" ng-change="PrestacionesCtrl.searchName()"></uib-pagination>
+				</div>
+				<div class="row">
+					<table class="table table-hover"> 
+						<thead> 
+							<tr> 
+								<th>#</th> 
+								<th>Nombre</th> 
+								<th>Descripción</th> 
+								<th>Duración</th> 
+							</tr> 
+						</thead> 
+						<tbody> 
+							<tr ng-repeat="(key, prestacion) in PrestacionesCtrl.prestaciones" ng-click="PrestacionesCtrl.detail(prestacion)" ng-class="{active:prestacion == PrestacionesCtrl.prestacion}"> 
+								<th scope="row">{{prestacion.id}}</th> 
+								<td style="max-width:125px; word-wrap:break-word;">{{prestacion.name}}</td>
+								<td style="max-width:125px; word-wrap:break-word;">{{prestacion.description}}</td>
+								<td>{{prestacion.durationHours}}h {{prestacion.durationMinutes}}m </td>
+							</tr> 
+						</tbody> 
+					</table>
+				</div>
 			</div>	
 			<div class="col-md-8" ng-show="PrestacionesCtrl.prestacion">
 				<div class="row">

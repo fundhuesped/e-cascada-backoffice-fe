@@ -5,7 +5,7 @@
         function transformDataSet(data){ 
                   return angular.fromJson(data).results;
         }
-        var Especialidad = $resource(apiBase + 'practicas/especialidad/:especialidadId/',{especialidadId:'@id'},{
+        var Especialidad = $resource(apiBase + 'practicas/especialidad/:id/',{id:'@id'},{
           update: {
             method:'PUT'
           },

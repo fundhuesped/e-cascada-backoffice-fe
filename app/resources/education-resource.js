@@ -5,7 +5,7 @@
             function transformDataSet(data){ 
                       return angular.fromJson(data).results;
             }
-            var Education = $resource(apiBase + 'comun/educationType/:educationTypeId/', {educationTypeId: '@id'}, {
+            var Education = $resource(apiBase + 'comun/educationType/:id/', {id: '@id'}, {
                 update: {
                     method: 'PUT'
                 },

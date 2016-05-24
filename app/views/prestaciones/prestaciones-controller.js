@@ -11,16 +11,25 @@
         var vm = this;
         vm.prestaciones = [];
         vm.prestacion = null;
+        vm.pageSize = 20;
+        vm.totalItems = null;
+        vm.currentPage = 1;
+        vm.searchName = searchName;
 
         activate();
 
         //Controller initialization
         function activate(){
             vm.statusFilter = '1'; 
-            vm.prestaciones = Prestacion.getActiveList();
+            Prestacion.getPaginatedActiveList({page_size:vm.pageSize,order_field:'name',
+                order_by:'asc'}, function(paginatedResult){
+                vm.prestaciones = paginatedResult.results;
+                vm.totalItems = paginatedResult.count;
+            });
         }
 
-        vm.searchName = function searchName(){
+
+        function searchName(){
             vm.prestacion = null;
             var currentStatusFilter;
             if(vm.statusFilter==1){
@@ -30,13 +39,22 @@
                     currentStatusFilter = 'Inactive';
                 }
             }
+            var searchObject = {
+                page_size:vm.pageSize,
+                page:vm.currentPage,
+                order_field:'name',
+                order_by:'asc',
+                name:vm.nameFilter
+            };
             if(currentStatusFilter){
-                vm.prestacionesDataSet = Prestacion.query({name:vm.nameFilter,status:currentStatusFilter});
-
-            }else{
-                vm.prestacionesDataSet = Prestacion.query({name:vm.nameFilter});
+                searchObject.status = currentStatusFilter;
             }
-        };
+            Prestacion.queryPaginated(searchObject,
+                function (paginatedResult){
+                    vm.prestaciones = paginatedResult.results;
+                    vm.totalItems = paginatedResult.count;
+            });
+        }
 
     	vm.detail = function detail(prestacion){
     		vm.prestacion = prestacion;

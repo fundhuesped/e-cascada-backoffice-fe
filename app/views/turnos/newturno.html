@@ -97,8 +97,8 @@
           </div>
           <div class="col-md-6 right-column">
             <div class="row">
-              <div ng-show="!NewTurnoCtrl.shouldLookForPacient()" style="font-size: 20px;padding: 80px;">
-                Por favor comience a completar el formulario para buscar pacientes
+              <div ng-show="NewTurnoCtrl.recomendationsPanel.message" style="font-size: 20px;padding: 80px;">
+                {{NewTurnoCtrl.recomendationsPanel.message}}
               </div>
               <table class="table" dw-loading="recomendations">
                 <tbody>
@@ -241,7 +241,7 @@ glyphicon glyphicon-remove"></span> Limpiar seleccion de paciente
                       </tr>
                       </thead>
                       <tbody ng-show="NewTurnoCtrl.showTurnos">
-                      <tr ng-repeat="(key, turno) in NewTurnoCtrl.turnos | orderBy : 'day'" ng-class="{'bg-success':turno.selected}"
+                      <tr ng-repeat="(key, turno) in NewTurnoCtrl.turnos" ng-class="{'bg-success':turno.selected}"
                           ng-click="NewTurnoCtrl.updateSelectionRow(turno.id,NewTurnoCtrl.turnos)">
                         <td><input type="checkbox" ng-checked="turno.selected"></td>
                         <td>{{turno.day | date : 'dd-MM-yyyy'}}</td>
@@ -281,20 +281,26 @@ glyphicon glyphicon-remove"></span> Limpiar seleccion de paciente
           </div>
           <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-              <div class="form-group">
-                <div
-                  class="col-xs-2 col-xs-offset-7 col-sm-2 col-sm-offset-7 col-md-2 col-md-offset-7 col-lg-2 col-lg-offset-7">
-                  <button id="btn-cancel" type="button" class="btn btn-default">Cancelar</button>
-                </div>
-                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                  <button id="btn-confirm" type="button" class="btn btn-success"
-                          ng-disabled="!NewTurnoCtrl.canConfirmTurno()"
-                          ng-click="NewTurnoCtrl.confirmTurno()">Confirmar
-                  </button>
+              <div class="row">
+                <div class="form-group">
+                  <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
+                    <uib-pagination total-items="NewTurnoCtrl.totalItems" ng-model="NewTurnoCtrl.currentPage" items-per-page="NewTurnoCtrl.pageSize" class="pagination" boundary-link-numbers="true" ng-change="NewTurnoCtrl.lookForTurnos()"></uib-pagination>
+                  </div>
+                  <div
+                    class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                    <button id="btn-cancel" type="button" class="btn btn-default">Cancelar</button>
+                  </div>
+                  <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                    <button id="btn-confirm" type="button" class="btn btn-success"
+                            ng-disabled="!NewTurnoCtrl.canConfirmTurno()"
+                            ng-click="NewTurnoCtrl.confirmTurno()">Confirmar
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
+        </div>
       </form>
     </div>
   </div>

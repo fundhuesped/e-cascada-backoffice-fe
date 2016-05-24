@@ -5,7 +5,7 @@
         function transformDataSet(data){ 
                   return angular.fromJson(data).results;
         }
-        var Profesional = $resource(apiBase + 'practicas/profesional/:profesionalId/',{profesionalId:'@id'},{
+        var Profesional = $resource(apiBase + 'practicas/profesional/:id/',{id:'@id'},{
           update: {
             method:'PUT'
           },
@@ -25,6 +25,14 @@
             method: 'GET',
             isArray: true,            
             transformResponse: transformDataSet
+          },
+          queryPaginated:{
+           method: 'GET',
+           isArray: false
+          },
+          getPaginatedActiveList:{
+           method: 'GET',
+           isArray: false
           }
         });
 

@@ -1,47 +1,62 @@
 (function(){
     'use strict';
-    
-    function especialidadCtrl ($loading,$uibModalInstance,especialidad) {
-    	this.especialidad = angular.copy(especialidad);
-        this.editing = true;
-        this.errorMessage = null;
+    /* jshint validthis: true */
+    /*jshint latedef: nofunc */
 
-        this.confirm = function confirm () {
-            if(this.especialidadForm.$valid){
-                this.hideErrorMessage();
+    function especialidadCtrl ( $loading, $uibModalInstance, especialidad, Especialidad) {
+    	var vm = this;
+        vm.confirm = confirm;
+        vm.confirmDelete = confirmDelete;
+        vm.confirmReactivate = confirmReactivate;
+        vm.confirmStatusChange = confirmStatusChange; 
+        vm.editing = true;
+        vm.errorMessage = null;
+        vm.especialidad = {};
+        
+        activate();
+
+        function activate(){
+            Especialidad.get({id:especialidad.id}, function(returnedObject){
+                vm.especialidad = returnedObject;
+            });
+        }
+
+        function confirm () {
+            if(vm.especialidadForm.$valid){
+                vm.hideErrorMessage();
                 $loading.start('app');
-                this.especialidad.$update(function(){
+                vm.especialidad.$update(function(){
                     $loading.finish('app');
                     $uibModalInstance.close('modified'); 
                 },function(){
                     $loading.finish('app');
-                    this.showErrorMessage();
-                }.bind(this));
+                    vm.showErrorMessage();
+                }.bind(vm));
             }else{
-                this.errorMessage = 'Por favor revise el formulario';                
+                vm.errorMessage = 'Por favor revise el formulario';                
             }
-        };
+        }
 
         //Confirm delete modal
-        this.showModal = function showModal(){
-            this.modalStyle = {display:'block'};
+        vm.showModal = function showModal(){
+            vm.modalStyle = {display:'block'};
         };
 
-        this.confirmModal = function confirmModal(){
-            this.confirmStatusChange();
+        vm.confirmModal = function confirmModal(){
+            vm.confirmStatusChange();
         };
                 
-        this.dismissModal = function showModal(){
-            this.modalStyle = {};
+        vm.dismissModal = function showModal(){
+            vm.modalStyle = {};
         };
-        this.showErrorMessage = function showErrorMessage(){
-            this.errorMessage = 'Ocurio un error en la comunicación';
+        vm.showErrorMessage = function showErrorMessage(){
+            vm.errorMessage = 'Ocurio un error en la comunicación';
         };
-        this.hideErrorMessage = function hideErrorMessage(){
-            this.errorMessage = null;
+        vm.hideErrorMessage = function hideErrorMessage(){
+            vm.errorMessage = null;
         };
 
-        this.confirmDelete = function confirmDelete(especialidadInstance){
+        function confirmDelete(especialidadInstance){
             especialidadInstance.status = 'Inactive';
             especialidadInstance.$update(function(){
                 $loading.finish('app');
@@ -51,7 +66,7 @@
                 $uibModalInstance.close('deleted');                    
             });
         }
-        this.confirmReactivate = function confirmReactivate(especialidadInstance){
+        function confirmReactivate(especialidadInstance){
             especialidadInstance.status = 'Active';
             especialidadInstance.$update(function(){
                 $loading.finish('app');
@@ -62,26 +77,26 @@
             });
         }
 
-        this.confirmStatusChange = function confirmDelete(){
+        function confirmStatusChange(){
             var especialidadInstance = angular.copy(especialidad);
             $loading.start('app');
-            if(especialidadInstance.status=='Active'){
-                this.confirmDelete(especialidadInstance);
+            if(especialidadInstance.status==='Active'){
+                vm.confirmDelete(especialidadInstance);
             }else{
-                if(especialidadInstance.status=='Inactive'){
-                    this.confirmReactivate(especialidadInstance);
+                if(especialidadInstance.status==='Inactive'){
+                    vm.confirmReactivate(especialidadInstance);
                 }
             }
-        };
+        }
 
-        this.changeStatus = function changeStatus() {
-            this.showModal();
+        vm.changeStatus = function changeStatus() {
+            vm.showModal();
         }; 
 
-        this.cancel = function cancel (){
+        vm.cancel = function cancel (){
             $uibModalInstance.dismiss('cancel');
         };
 
     }
-    angular.module('turnos.especialidades').controller('EspecialidadCtrl',['$loading','$uibModalInstance','especialidad',especialidadCtrl]);
+    angular.module('turnos.especialidades').controller('EspecialidadCtrl',['$loading','$uibModalInstance','especialidad', 'Especialidad',especialidadCtrl]);
 })();

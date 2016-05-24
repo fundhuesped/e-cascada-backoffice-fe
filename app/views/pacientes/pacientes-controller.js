@@ -19,6 +19,9 @@
         vm.pacientes = [];
         vm.paciente = null;
         vm.pacientesDataSet = null;
+        vm.pageSize = 20;
+        vm.totalItems = null;
+        vm.currentPage = 1;
         vm.searchName = searchName;
 
         activate();
@@ -26,7 +29,11 @@
         //Controller initialization
         function activate(){
             vm.statusFilter = '1';
-            vm.pacientes = Paciente.getActiveList();
+            Paciente.getPaginatedActiveList({page_size:vm.pageSize,order_field:'firstName',
+                order_by:'asc'}, function(paginatedResult){
+                vm.pacientes = paginatedResult.results;
+                vm.totalItems = paginatedResult.count;
+            });
         }
 
         function detail(paciente){
@@ -63,12 +70,22 @@
             vm.paciente = null;
             var currentStatusFilter;
             if(vm.searchPreferencesForm.searchName && vm.searchPreferencesForm.$valid){
+                var searchObject = {
+                    page_size:vm.pageSize,
+                    page:vm.currentPage,
+                    order_field:'firstName',
+                    order_by:'asc',
+                    firstName:vm.nameFilter
+                };
                 currentStatusFilter = getStatusFilter();
                 if(currentStatusFilter){
-                    vm.pacientes = Paciente.query({firstName:vm.nameFilter,status:currentStatusFilter});
-                }else{
-                    vm.pacientes = Paciente.query({firstName:vm.nameFilter});
+                    searchObject.status = currentStatusFilter;
                 }
+                Paciente.queryPaginated(searchObject,
+                    function (paginatedResult){
+                        vm.pacientes = paginatedResult.results;
+                        vm.totalItems = paginatedResult.count;
+                });
             }else{
                 toastr.warning('Ingrese almenos 3 caracteres para buscar');
             }
