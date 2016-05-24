@@ -5,7 +5,7 @@
             function transformDataSet(data){ 
                       return angular.fromJson(data).results;
             }
-            var District = $resource(apiBase + 'comun/district/:districtId/', {districtId: '@id'}, {
+            var District = $resource(apiBase + 'comun/district/:id/', {id: '@id'}, {
                 update: {
                     method: 'PUT'
                 },

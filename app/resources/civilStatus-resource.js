@@ -5,7 +5,7 @@
             function transformDataSet(data){ 
                       return angular.fromJson(data).results;
             }
-            var CivilStatus = $resource(apiBase + 'comun/civilStatusType/:civilStatusTypeId/', {civilStatusTypeId: '@id'}, {
+            var CivilStatus = $resource(apiBase + 'comun/civilStatusType/:id/', {id: '@id'}, {
                 update: {
                     method: 'PUT'
                 },

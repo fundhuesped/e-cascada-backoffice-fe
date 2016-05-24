@@ -35,6 +35,7 @@
     vm.prestaciones = [];
     vm.prestacionChanged = prestacionChanged;
     vm.profesionalChanged = profesionalChanged;
+    vm.recomendationsPanel = {};
     vm.renderCalendar = renderCalendar;
     vm.reRedender = reRedender;
     vm.reserveTurno = reserveTurno;
@@ -43,6 +44,10 @@
     vm.selectedPaciente = null;
     var selectedRepresentation;
     vm.shouldLookForPacient = shouldLookForPacient;
+    vm.pageSize = 20;
+    vm.totalItems = null;
+    vm.currentPage = 1;
+
     //Calendar
     var turnosSource = [];
     vm.updateSelectionRow = updateSelectionRow;
@@ -70,6 +75,7 @@
       vm.documents = Document.getActiveList();
       vm.especialidades = Especialidad.getActiveList();
       vm.profesionales = Profesional.getActiveList();
+      vm.recomendationsPanel.message = 'Por favor comience a completar el formulario para buscar pacientes';
     }
 
     function canConfirmTurno(){
@@ -126,14 +132,35 @@
     function lookForPacientes() {
       if (vm.shouldLookForPacient()) {
         $loading.start('recomendations');
-        vm.recomendations = Paciente.getActiveList(function(recomendations){
+        vm.recomendationsPanel.message = null;
+
+        var searchObject = {};
+        if(vm.paciente.documentType){
+          searchObject.documentType = vm.paciente.documentType.id;
+        }
+        if(vm.paciente.documentNumber){
+          searchObject.documentNumber = vm.paciente.documentNumber;
+        }
+        if(vm.paciente.firstName){
+          searchObject.firstName = vm.paciente.firstName;
+        }
+        if(vm.paciente.fatherSurname){
+          searchObject.fatherSurname = vm.paciente.fatherSurname;
+        }
+
+        Paciente.getActiveList(searchObject,
+           function(recomendations){
           $loading.finish('recomendations');
+          if(recomendations.length === 0){
+            vm.recomendationsPanel.message = 'No se encontraron pacientes con los criterios de busqueda';
+            return;
+          }
           vm.copyPaciente = angular.copy(vm.paciente);
           vm.copyPaciente.birthDate = $filter('date')(vm.copyPaciente.birthDate, "yyyy-MM-dd");
           vm.recomendationList = $filter('filter')(recomendations, vm.copyPaciente);
           }.bind(vm), function(){
             $loading.finish('recomendations');
-            console.log('Failed get activePacientes');
+            console.log('Failed to get activePacientes');
           }
         );
         }
@@ -143,17 +170,27 @@
       $loading.start('app');
       vm.showTurnos = true;
       vm.turnos = [];
-      var turnoDate;
+
+      var searchObject = {
+        taken: false,
+        prestacion: vm.selectedPrestacion.id,
+        order_by:'asc',
+        order_field:'day',
+        page:vm.currentPage,
+        page_size:vm.pageSize
+      };
+
       if (vm.selectedDate) {
-        turnoDate = $filter('date')(vm.selectedDate, 'yyyy-MM-dd');
+        searchObject.day = $filter('date')(vm.selectedDate, 'yyyy-MM-dd');
       }
-      var turnoProf;
       if (vm.selectedProfesional) {
-        turnoProf = vm.selectedProfesional.id;
+        searchObject.profesional = vm.selectedProfesional.id;
       }
-      Turno.query({prestacion: vm.selectedPrestacion.id, profesional: turnoProf, day: turnoDate, taken: false}).$promise.then(function (results) {
+
+      Turno.getPaginatedActiveList(searchObject).$promise.then(function (paginatedResult) {
         turnosSource =[];
-        angular.forEach(results, function (turno) {
+        vm.totalItems = paginatedResult.count;
+        angular.forEach(paginatedResult.results, function (turno) {
           vm.turnos.push(turno);
           var startTime = new Date(turno.day + 'T' + turno.start);
           var endTime = new Date(turno.day + 'T' + turno.end);

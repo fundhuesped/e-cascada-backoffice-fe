@@ -3,10 +3,10 @@
     /* jshint validthis: true */
     /*jshint latedef: nofunc */
 
-    function pacienteCtrl ($loading,$uibModalInstance,$filter,paciente,Document,Turno,Sex, Province, District, Location, SocialService, CivilStatus, Education) {
+    function pacienteCtrl ($loading,$uibModalInstance,$filter,paciente,Document,Turno,Sex, Province, District, Location, SocialService, CivilStatus, Education, Paciente) {
         var vm = this;
 
-        vm.paciente = angular.copy(paciente);
+        vm.paciente = {};
         vm.editing = true;
         vm.errorMessage = null;
         vm.turnos = [];
@@ -23,18 +23,21 @@
 
         function activate(){
             //TODO: Make sure everything is set to callback
-            vm.documents = Document.getActiveList();
-            vm.sexTypes = Sex.getActiveList();
-            vm.provinces = Province.getActiveList();
-            vm.districts = District.getActiveList();
-            vm.locations = Location.getActiveList();
-            vm.civilStatusTypes = CivilStatus.getActiveList();
-            vm.educationTypes = Education.getActiveList();
-            vm.socialServices = SocialService.getActiveList();
-            vm.paciente.primaryPhoneMessage = (vm.paciente.primaryPhoneMessage?vm.paciente.primaryPhoneMessage:false);
-            vm.selectedDistrict = (vm.paciente.location?vm.paciente.location.district:null);
-            vm.selectedProvince = (vm.paciente.location?{id:vm.paciente.location.district.province.id}:null);
-            vm.turnos = Turno.getActiveList({paciente:vm.paciente.id, order_field:'day', order_by:'desc'});
+            Paciente.get({id:paciente.id}, function(returnedObject){
+                vm.paciente = returnedObject;
+                vm.documents = Document.getActiveList();
+                vm.sexTypes = Sex.getActiveList();
+                vm.provinces = Province.getActiveList();
+                vm.districts = District.getActiveList();
+                vm.locations = Location.getActiveList();
+                vm.civilStatusTypes = CivilStatus.getActiveList();
+                vm.educationTypes = Education.getActiveList();
+                vm.socialServices = SocialService.getActiveList();
+                vm.paciente.primaryPhoneMessage = (vm.paciente.primaryPhoneMessage?vm.paciente.primaryPhoneMessage:false);
+                vm.selectedDistrict = (vm.paciente.location?vm.paciente.location.district:null);
+                vm.selectedProvince = (vm.paciente.location?{id:vm.paciente.location.district.province.id}:null);
+                vm.turnos = Turno.getActiveList({paciente:vm.paciente.id, order_field:'day', order_by:'desc'});                
+            });
         }
 
         function confirm () {
@@ -137,5 +140,5 @@
 
 
     }
-    angular.module('turnos.pacientes').controller('PacienteCtrl',['$loading','$uibModalInstance','$filter','paciente','Document','Turno','Sex', 'Province', 'District', 'Location', 'SocialService', 'CivilStatus', 'Education', pacienteCtrl]);
+    angular.module('turnos.pacientes').controller('PacienteCtrl',['$loading','$uibModalInstance','$filter','paciente','Document','Turno','Sex', 'Province', 'District', 'Location', 'SocialService', 'CivilStatus', 'Education', 'Paciente', pacienteCtrl]);
 })();

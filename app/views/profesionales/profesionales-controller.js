@@ -20,6 +20,9 @@
         vm.modifyProfesional = modifyProfesional;
         vm.newProfesional = newProfesional;
         vm.searchName = searchName;
+        vm.pageSize = 20;
+        vm.totalItems = null;
+        vm.currentPage = 1;
 
         activate();
         
@@ -103,12 +106,22 @@
                     currentStatusFilter = 'Inactive';
                 }
             }
-            if(currentStatusFilter){
-                vm.profesionales = Profesional.query({name:vm.nameFilter,status:currentStatusFilter});
 
-            }else{
-                vm.profesionales = Profesional.query({name:vm.nameFilter});
+            var searchObject = {
+                page_size:vm.pageSize,
+                page:vm.currentPage,
+                order_field:'firstName',
+                order_by:'asc',
+                firstName:vm.nameFilter
+            };
+            if(currentStatusFilter){
+                searchObject.status = currentStatusFilter;
             }
+            Profesional.queryPaginated(searchObject,
+                function (paginatedResult){
+                    vm.profesionales = paginatedResult.results;
+                    vm.totalItems = paginatedResult.count;
+            });
         }
     }
 })();

@@ -5,7 +5,7 @@
         function transformDataSet(data){ 
                   return angular.fromJson(data).results;
         }
-        var Document = $resource(apiBase + 'comun/documentType/:documentTypeId/',{documentTypeId:'@id'},{
+        var Document = $resource(apiBase + 'comun/documentType/:id/',{id:'@id'},{
           update: {
             method:'PUT'
           },

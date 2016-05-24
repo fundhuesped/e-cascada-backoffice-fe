@@ -5,7 +5,7 @@
         function transformDataSet(data){ 
                   return angular.fromJson(data).results;
         }
-        var Leave = $resource(apiBase + 'practicas/ausencia/:leaveId/', {leaveId: '@id'}, {
+        var Leave = $resource(apiBase + 'practicas/ausencia/:id/', {id: '@id'}, {
         update: {
           method: 'PUT'
         },

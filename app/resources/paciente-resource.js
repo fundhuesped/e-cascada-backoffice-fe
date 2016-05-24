@@ -5,7 +5,7 @@
         function transformDataSet(data){ 
                   return angular.fromJson(data).results;
         }
-        var Paciente = $resource(apiBase + 'pacientes/paciente/:pacienteId/',{pacienteId:'@id'},{
+        var Paciente = $resource(apiBase + 'pacientes/paciente/:id/',{id:'@id'},{
           update: {
             method:'PUT'
           },
@@ -25,6 +25,14 @@
             method: 'GET',
             isArray: true,
             transformResponse: transformDataSet
+          },
+          queryPaginated:{
+           method: 'GET',
+           isArray: false
+          },
+          getPaginatedActiveList:{
+           method: 'GET',
+           isArray: false
           }
         });
 

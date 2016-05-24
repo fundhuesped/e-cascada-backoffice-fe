@@ -7,7 +7,7 @@
     	var vm = this;
         vm.especialidades = [];
         vm.especialidad = null;
-    	vm.pageSize = 5;
+    	vm.pageSize = 20;
         vm.totalItems = null;
         vm.currentPage = 1;
 
@@ -16,9 +16,10 @@
         //Controller initialization
         function activate(){
             vm.statusFilter = '1'; 
-            Especialidad.getPaginatedActiveList({page_size:vm.page_size}, function(paginatedEspecialidades){
-                vm.especialidades = paginatedEspecialidades.results;
-                vm.totalItems = paginatedEspecialidades.count;
+            Especialidad.getPaginatedActiveList({page_size:vm.pageSize,order_field:'name',
+                order_by:'asc'}, function(paginatedResult){
+                vm.especialidades = paginatedResult.results;
+                vm.totalItems = paginatedResult.count;
             });
         }
 
@@ -64,17 +65,20 @@
             }
             var searchObject = {
                 page_size:vm.pageSize,
-                page:vm.currentPage
+                page:vm.currentPage,
+                order_field:'name',
+                order_by:'asc',
+                name: vm.nameFilter
             };
-            searchObject.name = vm.nameFilter;
+
             if(currentStatusFilter){
                 searchObject.status = currentStatusFilter;
             }
 
             Especialidad.queryPaginated(searchObject,
-                    function (paginatedEspecialidades){
-                        vm.especialidades = paginatedEspecialidades.results;
-                        vm.totalItems = paginatedEspecialidades.count;
+                    function (paginatedResult){
+                        vm.especialidades = paginatedResult.results;
+                        vm.totalItems = paginatedResult.count;
                 });
 
         };

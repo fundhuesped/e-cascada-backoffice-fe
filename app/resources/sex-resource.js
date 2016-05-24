@@ -5,7 +5,7 @@
         function transformDataSet(data){ 
           return angular.fromJson(data).results;
         }        
-        var Sex = $resource(apiBase + 'comun/sexType/:sexTypeId/',{sexTypeId:'@id'},{
+        var Sex = $resource(apiBase + 'comun/sexType/:id/',{id:'@id'},{
           update: {
             method:'PUT'
           },
