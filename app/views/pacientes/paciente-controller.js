@@ -31,15 +31,23 @@
             vm.civilStatusTypes = CivilStatus.getActiveList();
             vm.educationTypes = Education.getActiveList();
             vm.socialServices = SocialService.getActiveList();
+            vm.paciente.primaryPhoneMessage = (vm.paciente.primaryPhoneMessage?vm.paciente.primaryPhoneMessage:false);
             vm.selectedDistrict = (vm.paciente.location?vm.paciente.location.district:null);
             vm.selectedProvince = (vm.paciente.location?{id:vm.paciente.location.district.province.id}:null);
             vm.turnos = Turno.getActiveList({paciente:vm.paciente.id, order_field:'day', order_by:'desc'});
         }
 
         function confirm () {
+            if(vm.paciente.birthDate){
+                vm.pacienteForm.birthDate.$setValidity('required', true);
+            }else{
+                vm.pacienteForm.birthDate.$setValidity('required', false);
+            }
+
             if(vm.pacienteForm.$valid){
                 vm.hideErrorMessage();
                 $loading.start('app');
+                vm.paciente.prospect = false;
                 vm.paciente.birthDate = $filter('date')(vm.paciente.birthDate, 'yyyy-MM-dd');
                 vm.paciente.firstVisit = $filter('date')(vm.paciente.firstVisit, 'yyyy-MM-dd');
                 vm.paciente.$update(function(){
