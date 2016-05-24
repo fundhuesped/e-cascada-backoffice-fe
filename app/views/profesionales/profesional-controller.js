@@ -3,13 +3,38 @@
     /* jshint validthis: true */
     /*jshint latedef: nofunc */
 
-    function profesionalCtrl ($loading,$uibModalInstance,$filter,profesional,Document,Sex, Province, District, Location, CivilStatus, Prestacion) {
+    function profesionalCtrl ($loading,$uibModalInstance,$filter,profesional,Document,Sex, Province, District, Location, CivilStatus, Prestacion,Especialidad) {
         var vm = this;
         vm.profesional = angular.copy(profesional);
         vm.editing = true;
         vm.errorMessage = null;
         vm.confirm = confirm;
         vm.showModal = showModal;
+        vm.searchPrestacionesForEspecialidad = searchPrestacionesForEspecialidad;
+
+        activate();
+
+        function activate(){
+            vm.documents = Document.getActiveList();
+            vm.sexTypes = Sex.getActiveList();
+            vm.provinces = Province.getActiveList();
+            vm.districts = District.getActiveList();
+            vm.locations = Location.getActiveList();
+            vm.civilStatusTypes = CivilStatus.getActiveList();
+            vm.selectedDistrict = vm.profesional.location.district;
+            vm.selectedProvince = vm.profesional.location.district.province;
+
+            if(vm.profesional.prestaciones && vm.profesional.prestaciones.length>0){
+                vm.selectedEspecialidad = vm.profesional.prestaciones[0].especialidad;
+                vm.prestaciones = Prestacion.getActiveList({especialidad:vm.selectedEspecialidad.id});
+            }
+            vm.especialidades = Especialidad.getActiveList();
+        }
+
+
+        function searchPrestacionesForEspecialidad(){
+            vm.prestaciones = Prestacion.getActiveList({especialidad: vm.selectedEspecialidad.id});
+        }
         
         function confirm () {
             if(vm.profesionalForm.$valid){
@@ -102,19 +127,8 @@
             }
         };
 
-        vm.init = function init(){
-            vm.documents = Document.getActiveList();
-            vm.sexTypes = Sex.getActiveList();
-            vm.provinces = Province.getActiveList();
-            vm.districts = District.getActiveList();
-            vm.locations = Location.getActiveList();
-            vm.civilStatusTypes = CivilStatus.getActiveList();
-            vm.selectedDistrict = vm.profesional.location.district;
-            vm.selectedProvince = vm.profesional.location.district.province;
-            vm.prestaciones = Prestacion.getActiveList();
-        };
-        vm.init();
+
 
     }
-    angular.module('turnos.profesionales').controller('ProfesionalCtrl',['$loading','$uibModalInstance','$filter','profesional','Document','Sex', 'Province', 'District', 'Location', 'CivilStatus', 'Prestacion', profesionalCtrl]);
+    angular.module('turnos.profesionales').controller('ProfesionalCtrl',['$loading','$uibModalInstance','$filter','profesional','Document','Sex', 'Province', 'District', 'Location', 'CivilStatus', 'Prestacion', 'Especialidad', profesionalCtrl]);
 })();

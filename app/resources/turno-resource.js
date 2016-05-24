@@ -1,5 +1,12 @@
 (function () {
   'use strict';
+    /* jshint validthis: true */
+    /*jshint latedef: nofunc */
+
+    angular
+      .module('turnos.resources')
+      .provider('Turno', TurnoProvider);
+
   function TurnoProvider() {
     function TurnoResource($resource, apiBase) {
         function transformDataSet(data){ 
@@ -38,5 +45,4 @@
     this.$get = ['$resource', 'apiBase', TurnoResource];
   }
 
-  angular.module('turnos.resources').provider('Turno', TurnoProvider);
 })();

@@ -49,7 +49,6 @@
                 paciente.genderAtBirth = vm.newPaciente.genderAtBirth;
                 paciente.genderOfChoice = vm.newPaciente.genderOfChoice;
                 paciente.email = vm.newPaciente.email;
-                paciente.status = 'Active';
                 paciente.street = vm.newPaciente.street;
                 paciente.postal = vm.newPaciente.postal;
                 paciente.location = vm.newPaciente.location;
