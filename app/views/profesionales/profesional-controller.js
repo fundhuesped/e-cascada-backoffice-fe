@@ -23,7 +23,7 @@
             vm.civilStatusTypes = CivilStatus.getActiveList();
             vm.selectedDistrict = vm.profesional.location.district;
             vm.selectedProvince = vm.profesional.location.district.province;
-
+            vm.profesional.primaryPhoneMessage = (vm.profesional.primaryPhoneMessage?vm.profesional.primaryPhoneMessage:false);
             if(vm.profesional.prestaciones && vm.profesional.prestaciones.length>0){
                 vm.selectedEspecialidad = vm.profesional.prestaciones[0].especialidad;
                 vm.prestaciones = Prestacion.getActiveList({especialidad:vm.selectedEspecialidad.id});

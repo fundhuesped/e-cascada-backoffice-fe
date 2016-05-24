@@ -28,7 +28,8 @@
             socialService:null,
             civilStatus:null,
             education:null,
-            prestaciones:null
+            prestaciones:null,
+            primaryPhoneMessage:false
         };
 
         activate();
@@ -51,7 +52,7 @@
             }else{
                 vm.newProfesionalForm.birthDate.$setValidity('required', false);
             }
-            
+
             if (vm.newProfesionalForm.$valid) {
                 vm.hideErrorMessage();
                 $loading.start('app');
