@@ -31,9 +31,9 @@
             vm.civilStatusTypes = CivilStatus.getActiveList();
             vm.educationTypes = Education.getActiveList();
             vm.socialServices = SocialService.getActiveList();
-            vm.selectedDistrict = vm.paciente.location.district;
-            vm.selectedProvince = {id:vm.paciente.location.district.province.id};
-            vm.turnos = Turno.query({status:'Active',paciente:vm.paciente.id, order_field:'day', order_by:'desc'});
+            vm.selectedDistrict = (vm.paciente.location?vm.paciente.location.district:null);
+            vm.selectedProvince = (vm.paciente.location?{id:vm.paciente.location.district.province.id}:null);
+            vm.turnos = Turno.getActiveList({paciente:vm.paciente.id, order_field:'day', order_by:'desc'});
         }
 
         function confirm () {
