@@ -37,6 +37,11 @@
         }
         
         function confirm () {
+          if(vm.profesional.birthDate){
+                vm.profesionalForm.birthDate.$setValidity('required', true);
+            }else{
+                vm.profesionalForm.birthDate.$setValidity('required', false);
+            }
             if(vm.profesionalForm.$valid){
                 vm.hideErrorMessage();
                 $loading.start('app');

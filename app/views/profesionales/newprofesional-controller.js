@@ -46,6 +46,12 @@
         }
 
         vm.confirm = function confirm() {
+            if(vm.newProfesional.birthDate){
+                vm.newProfesionalForm.birthDate.$setValidity('required', true);
+            }else{
+                vm.newProfesionalForm.birthDate.$setValidity('required', false);
+            }
+            
             if (vm.newProfesionalForm.$valid) {
                 vm.hideErrorMessage();
                 $loading.start('app');

@@ -35,6 +35,13 @@
         }
 
         function confirm() {
+
+            if(vm.newPaciente.birthDate){
+                vm.newPacienteForm.birthDate.$setValidity('required', true);
+            }else{
+                vm.newPacienteForm.birthDate.$setValidity('required', false);
+            }
+
             if (vm.newPacienteForm.$valid) {
                 vm.hideErrorMessage();
                 $loading.start('app');
