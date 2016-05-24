@@ -25,6 +25,14 @@
            method: 'GET',
             isArray: true,
             transformResponse: transformDataSet            
+          },
+          queryPaginated:{
+           method: 'GET',
+           isArray: false
+          },
+          getPaginatedActiveList:{
+           method: 'GET',
+           isArray: false
           }
         });
 
