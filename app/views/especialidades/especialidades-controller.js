@@ -7,14 +7,19 @@
     	var vm = this;
         vm.especialidades = [];
         vm.especialidad = null;
-    	
+    	vm.pageSize = 5;
+        vm.totalItems = null;
+        vm.currentPage = 1;
 
         activate();
 
         //Controller initialization
         function activate(){
             vm.statusFilter = '1'; 
-            vm.especialidades = Especialidad.getActiveList();
+            Especialidad.getPaginatedActiveList({page_size:vm.page_size}, function(paginatedEspecialidades){
+                vm.especialidades = paginatedEspecialidades.results;
+                vm.totalItems = paginatedEspecialidades.count;
+            });
         }
 
 
@@ -57,12 +62,20 @@
                     currentStatusFilter = 'Inactive';
                 }
             }
+            var searchObject = {
+                page_size:vm.pageSize,
+                page:vm.currentPage
+            };
+            searchObject.name = vm.nameFilter;
             if(currentStatusFilter){
-                vm.especialidades = Especialidad.query({name:vm.nameFilter,status:currentStatusFilter});
+                searchObject.status = currentStatusFilter;
+            }
 
-           }else{
-               vm.especialidades = Especialidad.query({name:vm.nameFilter});
-           }
+            Especialidad.queryPaginated(searchObject,
+                    function (paginatedEspecialidades){
+                        vm.especialidades = paginatedEspecialidades.results;
+                        vm.totalItems = paginatedEspecialidades.count;
+                });
 
         };
 
