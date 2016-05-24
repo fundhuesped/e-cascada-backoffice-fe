@@ -38,6 +38,7 @@
                     leave.end_day = $filter('date')(vm.newLeave.toDate, 'yyyy-MM-dd');
                     leave.profesional = vm.profesional;
                     leave.notes = vm.newLeave.notes;
+                    leave.reason = vm.newLeave.reason;
                     leave.$save(function(){
                         $loading.finish('app');
                         $uibModalInstance.close('modified');
