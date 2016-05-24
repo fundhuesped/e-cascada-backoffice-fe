@@ -19,11 +19,12 @@
         vm.newPaciente = {
             socialService:null,
             civilStatus:null,
-            education:null
+            education:null,
+            primaryPhoneMessage:false
         };
 
         activate();
-        
+
         function activate() {
             vm.documents = Document.getActiveList();
             vm.sexTypes = Sex.getActiveList();
@@ -32,7 +33,7 @@
             vm.civilStatusTypes = CivilStatus.getActiveList();
             vm.educationTypes = Education.getActiveList();
         }
-        
+
         function confirm() {
             if (vm.newPacienteForm.$valid) {
                 vm.hideErrorMessage();
@@ -81,15 +82,15 @@
                 vm.errorMessage = 'Por favor revise el formulario';
             }
         }
-        
+
         function close() {
             $uibModalInstance.dismiss('cancel');
         }
-        
+
         function showErrorMessage() {
             vm.errorMessage = 'Ocurio un error en la comunicación';
         }
-        
+
         function hideErrorMessage() {
             vm.errorMessage = null;
         }
