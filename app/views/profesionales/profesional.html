@@ -198,6 +198,16 @@
                     <div class="row">
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                             <br>
+                            <span><label>Especialidad</label></span>
+                            <div class="form-group">
+                                <select name="especialidades" ng-model="ProfesionalCtrl.selectedEspecialidad" ng-options='especialidad as (especialidad.name) for especialidad in ProfesionalCtrl.especialidades track by especialidad.id' ng-change="ProfesionalCtrl.searchPrestacionesForEspecialidad()">
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <br>
                             <span><label>Prestaciones</label></span>
                             <div class="form-group">
                                 <select name="selectedPrestaciones" ng-model="ProfesionalCtrl.profesional.prestaciones" ng-options='prestacion as (prestacion.name + " - " + prestacion.especialidad.name) for prestacion in ProfesionalCtrl.prestaciones track by prestacion.id' multiple>
