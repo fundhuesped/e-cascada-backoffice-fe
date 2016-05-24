@@ -8,21 +8,25 @@
         srv.login = login;
         srv.logout = logout;
         srv.currentUser = null;
-        srv.token = null;
+        srv.currentToken = null;
 
         activate();
 
         function activate(){
             if(localStorageService.get('currentUser')){
                 srv.currentUser = localStorageService.get('currentUser');
+                srv.currentToken = localStorageService.get('currentToken');
             }
         }
 
         function login(username, password, rememberMe, callOK, callNOK){
             Token.login(username, password).then(function(response){
                 srv.currentUser = response.data;
+                var headers = response.headers();
+                srv.currentToken = headers['auth-token'];
                 if(rememberMe){
                     localStorageService.set('currentUser', srv.currentUser);
+                    localStorageService.set('currentToken', srv.currentToken);
                 }
                 callOK(response.data);   
             },function(error){
