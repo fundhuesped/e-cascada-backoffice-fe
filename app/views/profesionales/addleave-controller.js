@@ -8,17 +8,18 @@
         
     addLeaveController.$inject = ['$loading',
                                   '$uibModalInstance',
+                                  '$filter',
                                   'profesional',
                                   'Leave'];
 
-    function addLeaveController($loading, $uibModalInstance, profesional, Leave) {
+    function addLeaveController($loading, $uibModalInstance, $filter, profesional, Leave) {
         var vm = this;
         vm.cancel = cancel;
         vm.confirm = confirm;
         vm.errorMessage = null;
         vm.hideErrorMessage = hideErrorMessage;
         vm.leaveForm;
-        vm.newLeave = new Leave();
+        vm.newLeave = {};
         vm.profesional = angular.copy(profesional);
         vm.showErrorMessage = showErrorMessage;
 
@@ -32,7 +33,12 @@
                 if(vm.newLeave.fromDate && vm.newLeave.toDate && vm.newLeave.fromDate <= vm.newLeave.toDate){
                     vm.hideErrorMessage();
                     $loading.start('app');
-                    vm.newLeave.$save(function(){
+                    var leave = new Leave();
+                    leave.start_day = $filter('date')(vm.newLeave.fromDate, 'yyyy-MM-dd');
+                    leave.end_day = $filter('date')(vm.newLeave.toDate, 'yyyy-MM-dd');
+                    leave.profesional = vm.profesional;
+                    leave.notes = vm.newLeave.notes;
+                    leave.$save(function(){
                         $loading.finish('app');
                         $uibModalInstance.close('modified');
                     },function(){
