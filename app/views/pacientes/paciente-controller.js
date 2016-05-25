@@ -83,7 +83,7 @@
             vm.errorMessage = null;
         };
 
-        function confirmStatusChange(pacienteInstance){
+        function confirmDelete(pacienteInstance){
             pacienteInstance.status = 'Inactive';
             pacienteInstance.$update(function(){
                 $loading.finish('app');
@@ -103,14 +103,14 @@
                 $uibModalInstance.close('reactivated');
             });
         }
-        //confirmStatusChange
-        function confirmDelete(){
-            var pacienteInstance = angular.copy(paciente);
+
+        function confirmStatusChange(){
+            var pacienteInstance = angular.copy(vm.paciente);
             $loading.start('app');
-            if(pacienteInstance.status=='Active'){
+            if(pacienteInstance.status==='Active'){
                 vm.confirmDelete(pacienteInstance);
             }else{
-                if(pacienteInstance.status=='Inactive'){
+                if(pacienteInstance.status==='Inactive'){
                     vm.confirmReactivate(pacienteInstance);
                 }
             }
@@ -126,19 +126,17 @@
 
         function searchLocations() {
             if (vm.selectedDistrict) {
-                vm.locations = Location.query({district: vm.selectedDistrict.id, status: 'Active'});
+                vm.locations = Location.getActiveList({district: vm.selectedDistrict.id});
             }
         }
 
         function searchDistricts() {
             vm.locations = null;
             if (vm.selectedProvince) {
-                vm.districts = District.query({province: vm.selectedProvince.id, status: 'Active'});
+                vm.districts = District.getActiveList({province: vm.selectedProvince.id});
             }
         }
-
-
-
+        
     }
     angular.module('turnos.pacientes').controller('PacienteCtrl',['$loading','$uibModalInstance','$filter','paciente','Document','Turno','Sex', 'Province', 'District', 'Location', 'SocialService', 'CivilStatus', 'Education', 'Paciente', pacienteCtrl]);
 })();

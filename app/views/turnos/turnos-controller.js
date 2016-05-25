@@ -42,12 +42,12 @@
 	    activate();
 
 	    function activate(){
-	        vm.profesionales = Profesional.query({status: 'Active'});
+	        vm.profesionales = Profesional.getActiveList();
 	    }
 
 		function searchProfesional(){
 			if(vm.searchProfesional.firstname.length>0){
-		        vm.profesionales = Profesional.query({firstName: vm.searchProfesional.firstname, status: 'Active'});
+		        vm.profesionales = Profesional.getActiveList({firstName: vm.searchProfesional.firstname});
 
 			}
 		}

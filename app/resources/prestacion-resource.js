@@ -11,13 +11,13 @@
           },
           getActiveList:{
             method: 'GET',
-            params:{status:'Active'},
+            params:{status:'Active',page_size:99},
             isArray: true,
             transformResponse: transformDataSet
           },
           getInactiveList:{
             method: 'GET',
-            params:{status:'Inactive'},
+            params:{status:'Inactive',page_size:99},
             isArray: true,
             transformResponse: transformDataSet
           },
@@ -31,8 +31,9 @@
            isArray: false
           },
           getPaginatedActiveList:{
-           method: 'GET',
-           isArray: false
+            method: 'GET',
+            params:{status:'Active'},
+            isArray: false
           }
         });
 
@@ -61,8 +62,6 @@
             }
         });
         return Prestacion;
-
-
         
     	}
       this.$get = ['$resource','apiBase',PrestacionResource];

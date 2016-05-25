@@ -24,6 +24,13 @@
         vm.searchPrestacionesForEspecialidad = searchPrestacionesForEspecialidad;
         vm.especialidades = [];
         vm.selectedEspecialidad = {};
+        vm.searchDistricts = searchDistricts;
+        vm.searchLocations = searchLocations;
+        vm.close = close;
+        vm.showErrorMessage = showErrorMessage;
+        vm.hideErrorMessage = hideErrorMessage;
+        vm.confirm = confirm;
+
         vm.newProfesional = {
             socialService:null,
             civilStatus:null,
@@ -46,7 +53,7 @@
             vm.prestaciones = Prestacion.getActiveList({especialidad: vm.selectedEspecialidad.id});
         }
 
-        vm.confirm = function confirm() {
+        function confirm() {
             if(vm.newProfesional.birthDate){
                 vm.newProfesionalForm.birthDate.$setValidity('required', true);
             }else{
@@ -90,37 +97,31 @@
                 vm.errorMessage = 'Por favor revise el formulario';
             }
         };
-        vm.close = function close() {
+        
+        function close() {
             $uibModalInstance.dismiss('cancel');
-        };
-        vm.showErrorMessage = function showErrorMessage() {
+        }
+        
+        function showErrorMessage() {
             vm.errorMessage = 'Ocurio un error en la comunicación';
-        };
-        vm.hideErrorMessage = function hideErrorMessage() {
+        }
+
+        function hideErrorMessage() {
             vm.errorMessage = null;
-        };
-        vm.clearForm = function clearForm() {
-            if (vm.isModal) {
+        }
 
-            } else {
-                vm.newProfesional.name = '';
-                vm.newProfesional.description = '';
-            }
-        };
-
-        vm.searchLocations = function searchLocations() {
-            vm.locations = [];
+        function searchLocations() {
             if (vm.selectedDistrict) {
-                vm.locations = Location.query({district: vm.selectedDistrict.id, status: 'Active'});
+                vm.locations = Location.getActiveList({district: vm.selectedDistrict.id});
             }
-        };
+        }
 
-        vm.searchDistricts = function searchDistricts() {
-            vm.districts = [];
+        function searchDistricts() {
+            vm.locations = [];
             if (vm.selectedProvince) {
-                vm.districts = District.query({province: vm.selectedProvince.id, status: 'Active'});
+                vm.districts = District.getActiveList({province: vm.selectedProvince.id});
             }
-        };
+        }
         
 
     }

@@ -11,6 +11,12 @@
         vm.confirm = confirm;
         vm.showModal = showModal;
         vm.searchPrestacionesForEspecialidad = searchPrestacionesForEspecialidad;
+        vm.confirmReactivate = confirmReactivate;
+        vm.confirmStatusChange = confirmStatusChange;
+        vm.confirmDelete = confirmDelete;   
+        vm.changeStatus =  changeStatus;
+        vm.cancel = cancel;
+
 
         activate();
 
@@ -80,7 +86,7 @@
             vm.errorMessage = null;
         };
 
-        vm.confirmDelete = function confirmDelete(profesionalInstance){
+        function confirmDelete(profesionalInstance){
             profesionalInstance.status = 'Inactive';
             profesionalInstance.$update(function(){
                 $loading.finish('app');
@@ -90,7 +96,7 @@
                 $uibModalInstance.close('deleted');
             });
         }
-        vm.confirmReactivate = function confirmReactivate(profesionalInstance){
+        function confirmReactivate(profesionalInstance){
             profesionalInstance.status = 'Active';
             profesionalInstance.$update(function(){
                 $loading.finish('app');
@@ -101,37 +107,36 @@
             });
         }
 
-        vm.confirmStatusChange = function confirmDelete(){
-            var profesionalInstance = angular.copy(profesional);
+        function confirmStatusChange(){
+            var profesionalInstance = angular.copy(vm.profesional);
             $loading.start('app');
-            if(profesionalInstance.status=='Active'){
+            if(profesionalInstance.status==='Active'){
                 vm.confirmDelete(profesionalInstance);
             }else{
-                if(profesionalInstance.status=='Inactive'){
+                if(profesionalInstance.status==='Inactive'){
                     vm.confirmReactivate(profesionalInstance);
                 }
             }
-        };
+        }
 
-        vm.changeStatus = function changeStatus() {
+        function changeStatus() {
             vm.showModal();
-        };
+        }
 
-        vm.cancel = function cancel (){
+        function cancel (){
             $uibModalInstance.dismiss('cancel');
-        };
+        }
 
         vm.searchLocations = function searchLocations() {
-            vm.locations = [];
             if (vm.selectedDistrict) {
-                vm.locations = Location.query({district: vm.selectedDistrict.id, status: 'Active'});
+                vm.locations = Location.getActiveList({district: vm.selectedDistrict.id});
             }
         };
 
         vm.searchDistricts = function searchDistricts() {
-            vm.districts = [];
+            vm.locations = [];
             if (vm.selectedProvince) {
-                vm.districts = District.query({province: vm.selectedProvince.id, status: 'Active'});
+                vm.districts = District.getActiveList({province: vm.selectedProvince.id});
             }
         };
 

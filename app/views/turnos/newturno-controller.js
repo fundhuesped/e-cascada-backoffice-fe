@@ -99,7 +99,7 @@
     }
 
     function confirmTurno() {
-      $loading.start('app');
+      $loading.start('app');      
       if(vm.selectedPaciente){
         vm.selectedTurno.paciente = vm.selectedPaciente;
           vm.reserveTurno();
@@ -181,7 +181,7 @@
       };
 
       if (vm.selectedDate) {
-        searchObject.day = $filter('date')(vm.selectedDate, 'yyyy-MM-dd');
+        searchObject.day__gte = $filter('date')(vm.selectedDate, 'yyyy-MM-dd');
       }
       if (vm.selectedProfesional) {
         searchObject.profesional = vm.selectedProfesional.id;
@@ -194,7 +194,6 @@
           vm.turnos.push(turno);
           var startTime = new Date(turno.day + 'T' + turno.start);
           var endTime = new Date(turno.day + 'T' + turno.end);
-          console.log(startTime);
           var event = {
             id: turno.id,
             title: turno.profesional.fatherSurname,
@@ -208,7 +207,6 @@
           turno.calendarRepresentation = event;
         });
         vm.eventSources.push(turnosSource);
-        console.log(vm.eventSources);
         vm.renderCalendar();
         $loading.finish('app');
         });
@@ -249,8 +247,15 @@
     }
 
     function reserveTurno(){
-      vm.selectedTurno.taken = true;
-      vm.selectedTurno.$update(function(){
+      var turno = new Turno();
+      turno.taken = true;
+      turno.id = vm.selectedTurno.id;
+      turno.paciente = vm.selectedTurno.paciente;
+      turno.day = vm.selectedTurno.day;
+      turno.prestacion = vm.selectedTurno.prestacion;
+      turno.profesional = vm.selectedTurno.profesional;
+      
+      turno.$update(function(){
         $loading.finish('app');
         toastr.success('Turno creado con éxito');
         vm.limpiarBusquedaTurno();
@@ -258,7 +263,7 @@
         vm.newPaciente = null;
         vm.selectedTurno = null;
         vm.clearPacienteSelection();
-      }.bind(vm),function(error){
+      },function(error){
         $loading.finish('app');
         console.log('Error creando turno');
       });
@@ -267,10 +272,10 @@
     function especialidadChanged() {
       if (vm.selectedEspecialidad) {
         if(angular.isObject(vm.selectedProfesional)){
-          vm.prestaciones = Prestacion.query({especialidad: vm.selectedEspecialidad.id, profesional:vm.selectedProfesional.id , status: 'Active'});
+          vm.prestaciones = Prestacion.getActiveList({especialidad: vm.selectedEspecialidad.id, profesional:vm.selectedProfesional.id});
         }else{
-          vm.prestaciones = Prestacion.query({especialidad: vm.selectedEspecialidad.id, status: 'Active'});
-          vm.profesionales = Profesional.query({especialidad: vm.selectedEspecialidad.id, status: 'Active'});
+          vm.prestaciones = Prestacion.getActiveList({especialidad: vm.selectedEspecialidad.id});
+          vm.profesionales = Profesional.getActiveList({especialidad: vm.selectedEspecialidad.id});
         }
       }
     }
@@ -278,7 +283,7 @@
     function prestacionChanged() {
       if (vm.selectedPrestacion) {
         if(!angular.isObject(vm.selectedProfesional)){
-          vm.profesionales = Profesional.query({prestacion: vm.selectedPrestacion.id, status: 'Active'});
+          vm.profesionales = Profesional.getActiveList({prestacion: vm.selectedPrestacion.id});
         }
       }
     }
@@ -286,10 +291,10 @@
     function profesionalChanged() {
       if (vm.selectedProfesional) {
         if(angular.isObject(vm.selectedEspecialidad)){
-          vm.prestaciones = Prestacion.query({especialidad: vm.selectedEspecialidad.id, profesional:vm.selectedProfesional.id , status: 'Active'});
+          vm.prestaciones = Prestacion.getActiveList({especialidad: vm.selectedEspecialidad.id, profesional:vm.selectedProfesional.id});
         }else{
-          vm.prestaciones = Prestacion.query({profesional: vm.selectedProfesional.id, status: 'Active'});
-          vm.especialidades = Especialidad.query({profesional: vm.selectedProfesional.id, status: 'Active'});
+          vm.prestaciones = Prestacion.getActiveList({profesional: vm.selectedProfesional.id});
+          vm.especialidades = Especialidad.getActiveList({profesional: vm.selectedProfesional.id});
         }
       }
     }
@@ -415,7 +420,7 @@
             vm.newTurno.end = turno.end;
           }
         }
-      }.bind(vm));
+      });
       uiCalendarConfig.calendars.newTurnosCalendar.fullCalendar( 'rerenderEvents' );
     }
   }

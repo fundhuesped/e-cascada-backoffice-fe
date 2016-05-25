@@ -36,21 +36,17 @@
         queryPaginated:{
            method: 'GET',
            isArray: false
-          },
-          getPaginatedActiveList:{
-           method: 'GET',
-           isArray: false
-          }
+        },
+        getPaginatedActiveList:{
+          method: 'GET',
+          params: {status: 'Active'},
+          isArray: false
+        }
       });
-
-      Turno.getUrlForObjectId = function getUrlForObjectId(id) {
-        return apiBase + 'practicas/turno/' + id + '/';
-      };
 
       return Turno;
     }
 
     this.$get = ['$resource', 'apiBase', TurnoResource];
   }
-
 })();

@@ -75,13 +75,14 @@
         };
 
         vm.confirmStatusChange = function confirmDelete(){
-            var prestacionInstance = angular.copy(prestacion);
+            var prestacionInstance = angular.copy(vm.prestacion);
             $loading.start('app');
-            if(prestacionInstance.status=='Active'){
+            if(prestacionInstance.status==='Active'){
                 vm.confirmDelete(prestacionInstance);
-            }
-            if(prestacionInstance.status=='Inactive'){
-                vm.confirmReactivate(prestacionInstance);
+            }else{
+                if(prestacionInstance.status==='Inactive'){
+                    vm.confirmReactivate(prestacionInstance);
+                }
             }
         };
 

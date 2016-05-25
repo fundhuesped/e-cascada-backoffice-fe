@@ -2,8 +2,17 @@
   'use strict';
   /* jshint validthis: true */
   /*jshint latedef: nofunc */
+
   function newAgendaCtrl($loading, $uibModalInstance, $filter, Agenda, Profesional, Especialidad, Prestacion) {
     var vm = this;
+    vm.close = close;
+
+    activate();
+
+    function activate() {
+      this.profesionales = Profesional.getActiveList();
+    }
+
 
     this.daysStr = [{
       'index': 0,
@@ -64,8 +73,8 @@
         var agenda = new Agenda();
         agenda.profesional = this.selectedProfesional;
         agenda.prestacion = this.selectedPrestacion;
-        agenda.start = this.hoursFrom + ':' + this.minutesFrom
-        agenda.end = this.hoursTo + ':' + this.minutesTo
+        agenda.start = this.hoursFrom + ':' + this.minutesFrom;
+        agenda.end = this.hoursTo + ':' + this.minutesTo;
         agenda.validFrom = $filter('date')(this.agenda.validFrom, 'yyyy-MM-dd');
         agenda.validTo = $filter('date')(this.agenda.validTo, 'yyyy-MM-dd');
         agenda.start = this.agenda.start;
@@ -85,9 +94,9 @@
       }
     };
 
-    this.close = function close() {
+    function close() {
       $uibModalInstance.dismiss('cancel');
-    };
+    }
 
     this.loadAgenda = function loadAgenda() {
       this.hideErrorMessage();
@@ -161,45 +170,15 @@
     };
 
     this.searchPrestaciones = function searchPrestaciones() {
-      this.prestaciones = [];
-
       if (this.selectedEspecialidad && this.selectedProfesional) {
-        vm.prestaciones = Prestacion.query({especialidad: vm.selectedEspecialidad.id,profesional: vm.selectedProfesional.id, status: 'Active'});
-  /*      var i, j, exist;
-        for (i = 0; i < this.selectedProfesional.prestaciones.length; i++) {
-          if (this.selectedProfesional.prestaciones[i].especialidad.id === this.selectedEspecialidad.id) {
-            exist = false;
-            for (j = 0; j < this.prestaciones.length; j++) {
-              if (this.prestaciones[j].id === this.selectedProfesional.prestaciones[i].id) {
-                exist = true;
-                break;
-              }
-            }
-            if (!exist) {
-              this.prestaciones.push(this.selectedProfesional.prestaciones[i]);
-            }
-          }
-        }*/
+        vm.prestaciones = Prestacion.getActiveList({especialidad: vm.selectedEspecialidad.id,profesional: vm.selectedProfesional.id});
       }
     };
 
     this.searchEspecialidades = function searchEspecialidades() {
-      this.especialidades = [];
+      this.prestaciones = [];
       if (this.selectedProfesional) {
-        vm.especialidades = Especialidad.query({profesional: vm.selectedProfesional.id, status: 'Active'});
-/*        var i, j, exist;
-        for (i = 0; i < this.selectedProfesional.prestaciones.length; i++) {
-          exist = false;
-          for (j = 0; j < this.especialidades.length; j++) {
-            if (this.especialidades[j].id === this.selectedProfesional.prestaciones[i].especialidad.id) {
-              exist = true;
-              break;
-            }
-          }
-          if (!exist) {
-            this.especialidades.push(this.selectedProfesional.prestaciones[i].especialidad);
-          }
-        }*/
+        vm.especialidades = Especialidad.getActiveList({profesional: vm.selectedProfesional.id});
       }
     };
 
@@ -239,11 +218,7 @@
       }
     };
 
-    this.init = function init() {
-      this.profesionales = Profesional.getActiveList();
-    };
 
-    this.init();
   }
 
   angular.module('turnos.agendas').controller('NewAgendaCtrl', ['$loading', '$uibModalInstance', '$filter', 'Agenda', 'Profesional', 'Especialidad', 'Prestacion', newAgendaCtrl]);

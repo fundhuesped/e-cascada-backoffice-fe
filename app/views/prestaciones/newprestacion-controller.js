@@ -1,62 +1,66 @@
 (function(){
     'use strict';
-    
+    /* jshint validthis: true */
+    /*jshint latedef: nofunc */
+
     function newprestacionCtrl ($loading,$uibModalInstance,Prestacion,Especialidad) {
+        var vm = this;
         
-        this.newPrestacion = {
+        activate();
+
+        function activate(){
+            vm.especialidades = Especialidad.getActiveList();
+        }
+
+        vm.newPrestacion = {
             duration:{}
         };
 
-        this.confirm = function confirm () {
-            if(this.newPrestacionForm.$valid){
-                this.hideErrorMessage();
+        vm.confirm = function confirm () {
+            if(vm.newPrestacionForm.$valid){
+                vm.hideErrorMessage();
                 $loading.start('app');
                 var prestacion = new Prestacion();
-                prestacion.name = this.newPrestacion.name;
-                prestacion.description = this.newPrestacion.description;
-                prestacion.notes = this.newPrestacion.notes;
+                prestacion.name = vm.newPrestacion.name;
+                prestacion.description = vm.newPrestacion.description;
+                prestacion.notes = vm.newPrestacion.notes;
                 prestacion.status = 'Active';
-                prestacion.durationHours = this.newPrestacion.duration.hours;
-                prestacion.durationMinutes = this.newPrestacion.duration.minutes;
-                prestacion.especialidad = this.newPrestacion.especialidad;
+                prestacion.durationHours = vm.newPrestacion.duration.hours;
+                prestacion.durationMinutes = vm.newPrestacion.duration.minutes;
+                prestacion.especialidad = vm.newPrestacion.especialidad;
                 prestacion.$save(function(){
                     $loading.finish('app');
                     $uibModalInstance.close('created');
                 },function(error){
                     $loading.finish('app');
-                    this.showErrorMessage();
-                }.bind(this));
+                    vm.showErrorMessage();
+                }.bind(vm));
             }else{
-                this.errorMessage = 'Por favor revise el formulario';
+                vm.errorMessage = 'Por favor revise el formulario';
             }
         };
 
-        this.showErrorMessage = function showErrorMessage(){
-            this.errorMessage = 'Ocurio un error en la comunicación';
+        vm.showErrorMessage = function showErrorMessage(){
+            vm.errorMessage = 'Ocurio un error en la comunicación';
         };
-        this.hideErrorMessage = function hideErrorMessage(){
-            this.errorMessage = null;
+        vm.hideErrorMessage = function hideErrorMessage(){
+            vm.errorMessage = null;
         };
         
-        this.close = function close (){
+        vm.close = function close (){
             $uibModalInstance.dismiss('cancel');
         };
 
-        this.clearForm = function clearForm () {
-            if(this.isModal){
+        vm.clearForm = function clearForm () {
+            if(vm.isModal){
 
             }else{
-                this.newPrestacion.name = '';
-                this.newPrestacion.description = '';
-                this.newPrestacion.hours = 0;
-                this.newPrestacion.minutes = 0;
+                vm.newPrestacion.name = '';
+                vm.newPrestacion.description = '';
+                vm.newPrestacion.hours = 0;
+                vm.newPrestacion.minutes = 0;
             }
         };
-
-        this.init = function init(){
-            this.especialidades = Especialidad.getActiveList();
-        };
-        this.init();
     }
     angular.module('turnos.prestaciones').controller('NewPrestacionCtrl',['$loading','$uibModalInstance','Prestacion','Especialidad',newprestacionCtrl]);
 })();

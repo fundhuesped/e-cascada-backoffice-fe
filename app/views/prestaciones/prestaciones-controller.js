@@ -81,7 +81,7 @@
                    toastr.success('Prestación reactivada');                      
                 }
                 vm.searchName();     
-            }.bind(vm), function () {
+            }, function () {
             });
         };
 
@@ -95,7 +95,7 @@
             modalInstance.result.then(function () {
                 toastr.success('Prestación creada');
                 vm.searchName();     
-            }.bind(vm), function () {         
+            }, function () {         
             });
         };
     }

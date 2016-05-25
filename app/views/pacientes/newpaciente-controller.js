@@ -113,18 +113,16 @@
 
         function searchLocations() {
             if (vm.selectedDistrict) {
-                vm.locations = Location.query({district: vm.selectedDistrict.id, status: 'Active'});
+                vm.locations = Location.getActiveList({district: vm.selectedDistrict.id});
             }
         }
 
         function searchDistricts() {
             vm.locations = null;
             if (vm.selectedProvince) {
-                vm.districts = District.query({province: vm.selectedProvince.id, status: 'Active'});
+                vm.districts = District.getActiveList({province: vm.selectedProvince.id});
             }
         }
-
-
     }
 
     angular.module('turnos.pacientes').controller('NewPacienteCtrl', ['$loading', '$uibModalInstance', '$filter', 'Paciente', 'Document', 'Sex', 'Province', 'District', 'Location', 'SocialService', 'CivilStatus', 'Education', newPacienteCtrl]);

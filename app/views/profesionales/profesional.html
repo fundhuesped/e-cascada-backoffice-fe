@@ -44,19 +44,20 @@
                             </div>
                         </div>
                         <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
-                            <div class="form-group">
-                                <span><label>Otro nombre</label></span>
-                                <input type="text" name="otherNames" maxlength="70" class="form-control" ng-model="ProfesionalCtrl.profesional.otherNames">
+                            <div class="form-group" ng-class="{'has-error':ProfesionalCtrl.profesionalForm.fatherSurname.$error.required}">
+                                <span><label>Apellido paterno*</label></span>
+                                <input type="text" name="fatherSurname" maxlength="70" class="form-control" ng-model="ProfesionalCtrl.profesional.fatherSurname" required>
                                 <span><label>(máximo 70 caracteres)</label></span>
                             </div>
                         </div>
                     </div>
 
                     <div class="row">
+
                         <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
-                            <div class="form-group" ng-class="{'has-error':ProfesionalCtrl.profesionalForm.fatherSurname.$error.required}">
-                                <span><label>Apellido paterno*</label></span>
-                                <input type="text" name="fatherSurname" maxlength="70" class="form-control" ng-model="ProfesionalCtrl.profesional.fatherSurname" required>
+                            <div class="form-group">
+                                <span><label>Otro nombre</label></span>
+                                <input type="text" name="otherNames" maxlength="70" class="form-control" ng-model="ProfesionalCtrl.profesional.otherNames">
                                 <span><label>(máximo 70 caracteres)</label></span>
                             </div>
                         </div>
@@ -200,7 +201,7 @@
                             <br>
                             <span><label>Especialidad</label></span>
                             <div class="form-group">
-                                <select name="especialidades" ng-model="ProfesionalCtrl.selectedEspecialidad" ng-options='especialidad as (especialidad.name) for especialidad in ProfesionalCtrl.especialidades track by especialidad.id' ng-change="ProfesionalCtrl.searchPrestacionesForEspecialidad()">
+                                <select name="especialidades" class="form-control" ng-model="ProfesionalCtrl.selectedEspecialidad" ng-options='especialidad as (especialidad.name) for especialidad in ProfesionalCtrl.especialidades track by especialidad.id' ng-change="ProfesionalCtrl.searchPrestacionesForEspecialidad()">
                                 </select>
                             </div>
                         </div>
@@ -210,7 +211,7 @@
                             <br>
                             <span><label>Prestaciones</label></span>
                             <div class="form-group">
-                                <select name="selectedPrestaciones" ng-model="ProfesionalCtrl.profesional.prestaciones" ng-options='prestacion as (prestacion.name + " - " + prestacion.especialidad.name) for prestacion in ProfesionalCtrl.prestaciones track by prestacion.id' multiple>
+                                <select name="selectedPrestaciones" class="form-control" ng-model="ProfesionalCtrl.profesional.prestaciones" ng-options='prestacion as (prestacion.name + " - " + prestacion.especialidad.name) for prestacion in ProfesionalCtrl.prestaciones track by prestacion.id' multiple>
                                 </select>
                             </div>
                         </div>
