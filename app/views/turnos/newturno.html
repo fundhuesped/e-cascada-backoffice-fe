@@ -180,11 +180,15 @@ glyphicon glyphicon-remove"></span> Limpiar seleccion de paciente
               </div>
             </div>
             <div class="row">
-              <div class="col-xs-11">
+              <div class="col-xs-12 col-md-6">
                 <div class="form-group">
-                  <span><label>Fecha</label></span>
-                  <input rsmdatedropdowns ng-model="NewTurnoCtrl.selectedDate"
-                         ng-model-options="{ debounce: { 'default': 500 } }">
+                  <span><label>A partir del día</label></span>
+                  <p class="input-group">
+                  <input type="text" class="form-control" uib-datepicker-popup="dd/MM/yyyy" ng-model="NewTurnoCtrl.selectedDate" is-open="NewTurnoCtrl.calendarPopup.opened" datepicker-options="dateOptions" ng-required="true" close-text="Cerrar" alt-input-formats="NewTurnoCtrl.calendarPopup.altInputFormats" current-text="Hoy" clear-text="Limpiar" />
+                  <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" ng-click="NewTurnoCtrl.openCalendar()"><i class="glyphicon glyphicon-calendar"></i></button>
+                  </span>
+                </p>
                 </div>
               </div>
             </div>

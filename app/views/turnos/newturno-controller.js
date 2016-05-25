@@ -18,8 +18,8 @@
                             'Document', 
                             'Profesional', 
                             'Turno'];
-  function newTurnoCtrl($uibModal, uiCalendarConfig, toastr, $loading, $filter, Especialidad, Prestacion, Paciente, Document, Profesional, Turno) {
 
+  function newTurnoCtrl($uibModal, uiCalendarConfig, toastr, $loading, $filter, Especialidad, Prestacion, Paciente, Document, Profesional, Turno) {
     var vm = this;
     vm.canConfirmTurno = canConfirmTurno;
     vm.clearPacienteSelection = clearPacienteSelection;
@@ -42,15 +42,22 @@
     vm.especialidadChanged = especialidadChanged;
     vm.selectPaciente = selectPaciente;
     vm.selectedPaciente = null;
-    var selectedRepresentation;
     vm.shouldLookForPacient = shouldLookForPacient;
     vm.pageSize = 20;
     vm.totalItems = null;
     vm.currentPage = 1;
+    vm.updateSelectionRow = updateSelectionRow;
+    vm.calendarPopup = {
+      opened: false,
+      altInputFormats: ['d!/M!/yyyy','dd-MM-yyyy']
+    };
+
+
+    vm.openCalendar = openCalendar;
 
     //Calendar
     var turnosSource = [];
-    vm.updateSelectionRow = updateSelectionRow;
+    var selectedRepresentation;
 
     activate();
 
@@ -117,6 +124,10 @@
         }
         );
       }
+    }
+
+    function openCalendar() {
+      vm.calendarPopup.opened = true;
     }
 
     function limpiarBusquedaTurno() {
@@ -254,7 +265,7 @@
       turno.day = vm.selectedTurno.day;
       turno.prestacion = vm.selectedTurno.prestacion;
       turno.profesional = vm.selectedTurno.profesional;
-      
+
       turno.$update(function(){
         $loading.finish('app');
         toastr.success('Turno creado con éxito');
