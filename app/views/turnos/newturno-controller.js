@@ -49,7 +49,10 @@
     vm.updateSelectionRow = updateSelectionRow;
     vm.calendarPopup = {
       opened: false,
-      altInputFormats: ['d!/M!/yyyy','dd-MM-yyyy']
+      altInputFormats: ['d!/M!/yyyy','dd-MM-yyyy'],
+      options: {
+        minDate: new Date(),
+      }
     };
 
 

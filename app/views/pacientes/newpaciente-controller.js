@@ -15,6 +15,24 @@
         vm.showErrorMessage = showErrorMessage;
         vm.searchDistricts = searchDistricts;
         vm.confirm = confirm;
+        vm.birthDateCalendarPopup = {
+            opened: false,
+            altInputFormats: ['d!/M!/yyyy','dd-MM-yyyy'],
+            options: {
+            maxDate: new Date(),
+          }
+        };
+        vm.firstTimeCalendarPopup = {
+            opened: false,
+            altInputFormats: ['d!/M!/yyyy','dd-MM-yyyy'],
+            options: {
+            maxDate: new Date(),
+          }
+        };
+
+
+        vm.openBirthDateCalendar = openBirthDateCalendar;
+        vm.openFirstTimeCalendar = openFirstTimeCalendar;
 
         vm.newPaciente = {
             socialService:null,
@@ -109,6 +127,14 @@
                 vm.newPaciente.name = '';
                 vm.newPaciente.description = '';
             }
+        }
+        
+        function openFirstTimeCalendar() {
+            vm.firstTimeCalendarPopup.opened = true;
+        }
+
+        function openBirthDateCalendar() {
+          vm.birthDateCalendarPopup.opened = true;
         }
 
         function searchLocations() {

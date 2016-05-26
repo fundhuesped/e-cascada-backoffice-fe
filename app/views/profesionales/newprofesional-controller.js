@@ -30,13 +30,20 @@
         vm.showErrorMessage = showErrorMessage;
         vm.hideErrorMessage = hideErrorMessage;
         vm.confirm = confirm;
-
+        vm.openBirthDateCalendar = openBirthDateCalendar;
         vm.newProfesional = {
             socialService:null,
             civilStatus:null,
             education:null,
             prestaciones:null,
             primaryPhoneMessage:false
+        };
+        vm.birthDateCalendarPopup = {
+          opened: false,
+          altInputFormats: ['d!/M!/yyyy','dd-MM-yyyy'],
+          options: {
+            maxDate: new Date(),
+          }
         };
 
         activate();
@@ -116,6 +123,10 @@
             }
         }
 
+        function openBirthDateCalendar() {
+          vm.birthDateCalendarPopup.opened = true;
+        }
+        
         function searchDistricts() {
             vm.locations = [];
             if (vm.selectedProvince) {

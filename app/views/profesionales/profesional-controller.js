@@ -16,6 +16,14 @@
         vm.confirmDelete = confirmDelete;   
         vm.changeStatus =  changeStatus;
         vm.cancel = cancel;
+        vm.openBirthDateCalendar = openBirthDateCalendar;
+        vm.birthDateCalendarPopup = {
+          opened: false,
+          altInputFormats: ['d!/M!/yyyy','dd-MM-yyyy'],
+          options: {
+            maxDate: new Date(),
+          }
+        };
 
 
         activate();
@@ -23,6 +31,8 @@
         function activate(){
             Profesional.get({id:profesional.id}, function(returnedObject){
                 vm.profesional = returnedObject;
+                vm.profesional.birthDate = (vm.profesional.birthDate?new Date(vm.profesional.birthDate + 'T03:00:00'):null);
+
                 vm.documents = Document.getActiveList();
                 vm.sexTypes = Sex.getActiveList();
                 vm.provinces = Province.getActiveList();
@@ -132,6 +142,10 @@
                 vm.locations = Location.getActiveList({district: vm.selectedDistrict.id});
             }
         };
+
+        function openBirthDateCalendar() {
+          vm.birthDateCalendarPopup.opened = true;
+        }
 
         vm.searchDistricts = function searchDistricts() {
             vm.locations = [];

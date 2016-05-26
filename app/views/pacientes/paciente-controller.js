@@ -17,14 +17,36 @@
         vm.searchLocations = searchLocations;
         vm.searchDistricts = searchDistricts;
         vm.cancel = cancel;
-        
         vm.confirmStatusChange = confirmStatusChange;
+        vm.birthDateCalendarPopup = {
+          opened: false,
+          altInputFormats: ['d!/M!/yyyy','dd-MM-yyyy'],
+          options: {
+            maxDate: new Date(),
+          }
+        };
+        vm.firstTimeCalendarPopup = {
+          opened: false,
+          altInputFormats: ['d!/M!/yyyy','dd-MM-yyyy'],
+          options: {
+            maxDate: new Date(),
+          }
+        };
+
+
+        vm.openBirthDateCalendar = openBirthDateCalendar;
+        vm.openFirstTimeCalendar = openFirstTimeCalendar;
+
+
         activate();
 
         function activate(){
             //TODO: Make sure everything is set to callback
             Paciente.get({id:paciente.id}, function(returnedObject){
                 vm.paciente = returnedObject;
+                vm.paciente.birthDate = (vm.paciente.birthDate?new Date(vm.paciente.birthDate + 'T03:00:00'):null);
+                vm.paciente.firstVisit = (vm.paciente.firstVisit?new Date(vm.paciente.firstVisit):null);
+
                 vm.documents = Document.getActiveList();
                 vm.sexTypes = Sex.getActiveList();
                 vm.provinces = Province.getActiveList();
@@ -122,6 +144,14 @@
 
         function cancel (){
             $uibModalInstance.dismiss('cancel');
+        }
+
+        function openFirstTimeCalendar() {
+            vm.firstTimeCalendarPopup.opened = true;
+        }
+
+        function openBirthDateCalendar() {
+          vm.birthDateCalendarPopup.opened = true;
         }
 
         function searchLocations() {
