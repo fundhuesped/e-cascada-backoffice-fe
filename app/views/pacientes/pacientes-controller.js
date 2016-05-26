@@ -23,7 +23,8 @@
         vm.totalItems = null;
         vm.currentPage = 1;
         vm.searchName = searchName;
-
+        vm.changeSearchParameter = changeSearchParameter;
+        
         activate();
         
         //Controller initialization
@@ -89,6 +90,12 @@
             }else{
                 toastr.warning('Ingrese almenos 3 caracteres para buscar');
             }
+        }
+
+
+        function changeSearchParameter(){
+            vm.currentPage = 1;
+            vm.searchName();
         }
 
         function getStatusFilter(){

@@ -11,7 +11,9 @@
     vm.modifyAgenda = modifyAgenda;
     vm.newAgenda = newAgenda;
     vm.searchName = searchName;
-
+    vm.changeSearchParameter = changeSearchParameter;
+    vm.currentPage = 1;
+    
     activate();
 
     //Controller initialization
@@ -67,6 +69,11 @@
       } else {
         vm.agendas = Agenda.query({name: vm.nameFilter});
       }
+    }
+
+    function changeSearchParameter(){
+      vm.currentPage = 1;
+      vm.searchName();
     }
 
     function newAgenda() {

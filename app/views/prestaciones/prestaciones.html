@@ -8,14 +8,14 @@
 		            </div>
 					<div class="col-md-2">
 						<label>Mostrar</label>
-			            <input type="number" name="pageSize" class="form-control" ng-model="PrestacionesCtrl.pageSize" ng-change="PrestacionesCtrl.searchName()" style="width: 64px;" ng-model-options="{ debounce: 500 }" >
+			            <input type="number" name="pageSize" class="form-control" ng-model="PrestacionesCtrl.pageSize" ng-change="PrestacionesCtrl.changeSearchParameter()" style="width: 64px;" ng-model-options="{ debounce: 500 }" >
 		            </div>
 	        		<div class="col-md-3">    
 		                	<input type="text" class="form-control" placeholder="Nombre" ng-model="PrestacionesCtrl.nameFilter">
-			              	<button type="button" class="btn btn-default" ng-click="PrestacionesCtrl.searchName()">Buscar</button>
+			              	<button type="button" class="btn btn-default" ng-click="PrestacionesCtrl.changeSearchParameter()">Buscar</button>
 		            </div>
 		            <div class="col-md-2">
-			            <select class="form-control" ng-model="PrestacionesCtrl.statusFilter" ng-change="PrestacionesCtrl.searchName()">
+			            <select class="form-control" ng-model="PrestacionesCtrl.statusFilter" ng-change="PrestacionesCtrl.changeSearchParameter()">
 			            	<option value="1">Activos</option>
 			            	<option value="2">Activos e inactivos</option>
 			            	<option value="3">Inactivos</option>
