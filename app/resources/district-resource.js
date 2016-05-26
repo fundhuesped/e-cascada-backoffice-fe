@@ -11,13 +11,13 @@
                 },
                 getActiveList:{
                     method: 'GET',
-                    params:{status:'Active'},
+                    params:{status:'Active',page_size:99},
                     isArray: true,
                     transformResponse: transformDataSet
                   },
                 getInactiveList:{
                     method: 'GET',
-                    params:{status:'Inactive'},
+                    params:{status:'Inactive',page_size:99},
                     isArray: true,
                     transformResponse: transformDataSet
                 },
@@ -27,24 +27,6 @@
                     transformResponse: transformDataSet
                 }
             });
-            District._getActiveList = District.getActiveList;
-            District.getActiveList = function(callbackOK,callbackNOK){
-              var promise = this._getActiveList(function(data){
-                promise = data.results;
-                if(callbackOK){
-                  callbackOK(data.results);
-                }
-              },function(error){
-                if(callbackNOK){
-                  callbackNOK(error);
-                }
-              });
-              return promise;
-            };
-
-            District.getUrlForObjectId = function getUrlForObjectId(id) {
-                return apiBase + 'comun/district/' + id + '/';
-            };
 
             return District;
         }

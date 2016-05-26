@@ -17,14 +17,36 @@
         vm.searchLocations = searchLocations;
         vm.searchDistricts = searchDistricts;
         vm.cancel = cancel;
-        
         vm.confirmStatusChange = confirmStatusChange;
+        vm.birthDateCalendarPopup = {
+          opened: false,
+          altInputFormats: ['d!/M!/yyyy','dd-MM-yyyy'],
+          options: {
+            maxDate: new Date(),
+          }
+        };
+        vm.firstTimeCalendarPopup = {
+          opened: false,
+          altInputFormats: ['d!/M!/yyyy','dd-MM-yyyy'],
+          options: {
+            maxDate: new Date(),
+          }
+        };
+
+
+        vm.openBirthDateCalendar = openBirthDateCalendar;
+        vm.openFirstTimeCalendar = openFirstTimeCalendar;
+
+
         activate();
 
         function activate(){
             //TODO: Make sure everything is set to callback
             Paciente.get({id:paciente.id}, function(returnedObject){
                 vm.paciente = returnedObject;
+                vm.paciente.birthDate = (vm.paciente.birthDate?new Date(vm.paciente.birthDate + 'T03:00:00'):null);
+                vm.paciente.firstVisit = (vm.paciente.firstVisit?new Date(vm.paciente.firstVisit):null);
+
                 vm.documents = Document.getActiveList();
                 vm.sexTypes = Sex.getActiveList();
                 vm.provinces = Province.getActiveList();
@@ -83,7 +105,7 @@
             vm.errorMessage = null;
         };
 
-        function confirmStatusChange(pacienteInstance){
+        function confirmDelete(pacienteInstance){
             pacienteInstance.status = 'Inactive';
             pacienteInstance.$update(function(){
                 $loading.finish('app');
@@ -103,14 +125,14 @@
                 $uibModalInstance.close('reactivated');
             });
         }
-        //confirmStatusChange
-        function confirmDelete(){
-            var pacienteInstance = angular.copy(paciente);
+
+        function confirmStatusChange(){
+            var pacienteInstance = angular.copy(vm.paciente);
             $loading.start('app');
-            if(pacienteInstance.status=='Active'){
+            if(pacienteInstance.status==='Active'){
                 vm.confirmDelete(pacienteInstance);
             }else{
-                if(pacienteInstance.status=='Inactive'){
+                if(pacienteInstance.status==='Inactive'){
                     vm.confirmReactivate(pacienteInstance);
                 }
             }
@@ -124,21 +146,27 @@
             $uibModalInstance.dismiss('cancel');
         }
 
+        function openFirstTimeCalendar() {
+            vm.firstTimeCalendarPopup.opened = true;
+        }
+
+        function openBirthDateCalendar() {
+          vm.birthDateCalendarPopup.opened = true;
+        }
+
         function searchLocations() {
             if (vm.selectedDistrict) {
-                vm.locations = Location.query({district: vm.selectedDistrict.id, status: 'Active'});
+                vm.locations = Location.getActiveList({district: vm.selectedDistrict.id});
             }
         }
 
         function searchDistricts() {
             vm.locations = null;
             if (vm.selectedProvince) {
-                vm.districts = District.query({province: vm.selectedProvince.id, status: 'Active'});
+                vm.districts = District.getActiveList({province: vm.selectedProvince.id});
             }
         }
-
-
-
+        
     }
     angular.module('turnos.pacientes').controller('PacienteCtrl',['$loading','$uibModalInstance','$filter','paciente','Document','Turno','Sex', 'Province', 'District', 'Location', 'SocialService', 'CivilStatus', 'Education', 'Paciente', pacienteCtrl]);
 })();

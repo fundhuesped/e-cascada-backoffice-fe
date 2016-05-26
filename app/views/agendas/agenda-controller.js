@@ -1,11 +1,16 @@
 (function () {
   'use strict';
+  /* jshint validthis: true */
+  /*jshint latedef: nofunc */
 
   function agendaCtrl($loading, $uibModalInstance, $filter, agenda) {
-    this.agenda = angular.copy(agenda);
-    this.editing = true;
-    this.errorMessage = null;
-    this.daysStr = [{
+    var vm = this;
+
+    vm.agenda = angular.copy(agenda);
+    vm.cancel = cancel;
+    vm.editing = true;
+    vm.errorMessage = null;
+    vm.daysStr = [{
       'id': 1,
       'name': 'Lu',
       'selected': false
@@ -42,43 +47,55 @@
       }
     ];
 
-    this.confirm = function confirm() {
-      if (this.agendaForm.$valid) {
-        this.hideErrorMessage();
+    activate();
+
+    function activate() {
+      vm.selectedProfesionalName = vm.agenda.profesional.fatherSurname + ', ' + vm.agenda.profesional.firstName;
+      vm.selectedEspecialidadName = vm.agenda.prestacion.especialidad.name;
+      vm.selectedPrestacionName = vm.agenda.prestacion.name;
+      vm.hoursFrom = parseInt(vm.agenda.start.substr(0, 2), 10);
+      vm.minutesFrom = parseInt(vm.agenda.start.substr(3, 2), 10);
+      vm.hoursTo = parseInt(vm.agenda.end.substr(0, 2), 10);
+      vm.minutesTo = parseInt(vm.agenda.end.substr(3, 2), 10);
+    }
+
+    vm.confirm = function confirm() {
+      if (vm.agendaForm.$valid) {
+        vm.hideErrorMessage();
         $loading.start('app');
-        this.agenda.birthDate = $filter('date')(this.agenda.birthDate, 'yyyy-MM-dd');
-        this.agenda.$update(function () {
+        vm.agenda.birthDate = $filter('date')(vm.agenda.birthDate, 'yyyy-MM-dd');
+        vm.agenda.$update(function () {
           $loading.finish('app');
           $uibModalInstance.close('modified');
         }, function () {
           $loading.finish('app');
-          this.showErrorMessage();
-        }.bind(this));
+          vm.showErrorMessage();
+        }.bind(vm));
       } else {
-        this.errorMessage = 'Por favor revise el formulario';
+        vm.errorMessage = 'Por favor revise el formulario';
       }
     };
 
     //Confirm delete modal
-    this.showModal = function showModal() {
-      this.modalStyle = {display: 'block'};
+    vm.showModal = function showModal() {
+      vm.modalStyle = {display: 'block'};
     };
 
-    this.confirmModal = function confirmModal() {
-      this.confirmStatusChange();
+    vm.confirmModal = function confirmModal() {
+      vm.confirmStatusChange();
     };
 
-    this.dismissModal = function showModal() {
-      this.modalStyle = {};
+    vm.dismissModal = function showModal() {
+      vm.modalStyle = {};
     };
-    this.showErrorMessage = function showErrorMessage() {
-      this.errorMessage = 'Ocurio un error en la comunicación';
+    vm.showErrorMessage = function showErrorMessage() {
+      vm.errorMessage = 'Ocurio un error en la comunicación';
     };
-    this.hideErrorMessage = function hideErrorMessage() {
-      this.errorMessage = null;
+    vm.hideErrorMessage = function hideErrorMessage() {
+      vm.errorMessage = null;
     };
 
-    this.confirmDelete = function confirmDelete(agendaInstance) {
+    vm.confirmDelete = function confirmDelete(agendaInstance) {
       agendaInstance.status = 'Inactive';
       agendaInstance.$update(function () {
         $loading.finish('app');
@@ -89,7 +106,7 @@
       });
     };
 
-    this.confirmReactivate = function confirmReactivate(agendaInstance) {
+    vm.confirmReactivate = function confirmReactivate(agendaInstance) {
       agendaInstance.status = 'Active';
       agendaInstance.$update(function () {
         $loading.finish('app');
@@ -100,43 +117,43 @@
       });
     };
 
-    this.confirmStatusChange = function confirmDelete() {
+    vm.confirmStatusChange = function confirmDelete() {
       var agendaInstance = angular.copy(agenda);
       $loading.start('app');
       if (agendaInstance.status === 'Active') {
-        this.confirmDelete(agendaInstance);
+        vm.confirmDelete(agendaInstance);
       } else {
         if (agendaInstance.status === 'Inactive') {
-          this.confirmReactivate(agendaInstance);
+          vm.confirmReactivate(agendaInstance);
         }
       }
     };
 
-    this.changeStatus = function changeStatus() {
-      this.showModal();
+    vm.changeStatus = function changeStatus() {
+      vm.showModal();
     };
 
-    this.cancel = function cancel() {
+    function cancel() {
       $uibModalInstance.dismiss('cancel');
-    };
+    }
 
-    this.checkAllRow = function checkAllRow(period) {
+    vm.checkAllRow = function checkAllRow(period) {
       var i, j, selection;
-      for (i = 0; i < this.agenda.periods.length; i++) {
-        selection = this.agenda.periods[i];
+      for (i = 0; i < vm.agenda.periods.length; i++) {
+        selection = vm.agenda.periods[i];
         if (selection.id === period.id) {
-          for (j = 0; j < this.agenda.periods[i].daysOfWeek.length; j++) {
-            this.agenda.periods[i].daysOfWeek[j].selected = this.agenda.periods[i].selected;
+          for (j = 0; j < vm.agenda.periods[i].daysOfWeek.length; j++) {
+            vm.agenda.periods[i].daysOfWeek[j].selected = vm.agenda.periods[i].selected;
           }
         }
       }
     };
 
-    this.checkAllColumn = function checkAllColumn(day) {
+    vm.checkAllColumn = function checkAllColumn(day) {
       var i, j, selection;
-      for (i = 0; i < this.agenda.periods.length; i++) {
-        for (j = 0; j < this.agenda.periods[i].daysOfWeek.length; j++) {
-          selection = this.agenda.periods[i].daysOfWeek[j];
+      for (i = 0; i < vm.agenda.periods.length; i++) {
+        for (j = 0; j < vm.agenda.periods[i].daysOfWeek.length; j++) {
+          selection = vm.agenda.periods[i].daysOfWeek[j];
           if (selection.name.indexOf(day.name) === 0) {
             selection.selected = day.selected;
           }
@@ -144,11 +161,11 @@
       }
     };
 
-    this.changeState = function changeState(day, period) {
+    vm.changeState = function changeState(day, period) {
       period.selected = false;
       var i, selection;
-      for (i = 0; i < this.daysStr.length; i++) {
-        selection = this.daysStr[i];
+      for (i = 0; i < vm.daysStr.length; i++) {
+        selection = vm.daysStr[i];
         if (selection.name.indexOf(day.day) === 0) {
           selection.selected = false;
           break;
@@ -156,17 +173,6 @@
       }
     };
 
-    this.init = function init() {
-      this.selectedProfesionalName = this.agenda.profesional.fatherSurname + ', ' + this.agenda.profesional.firstName;
-      this.selectedEspecialidadName = this.agenda.prestacion.especialidad.name;
-      this.selectedPrestacionName = this.agenda.prestacion.name;
-      this.hoursFrom = parseInt(this.agenda.start.substr(0, 2), 10);
-      this.minutesFrom = parseInt(this.agenda.start.substr(3, 2), 10);
-      this.hoursTo = parseInt(this.agenda.end.substr(0, 2), 10);
-      this.minutesTo = parseInt(this.agenda.end.substr(3, 2), 10);
-    };
-
-    this.init();
   }
 
   angular.module('turnos.agendas').controller('AgendaCtrl', ['$loading', '$uibModalInstance', '$filter', 'agenda', agendaCtrl]);

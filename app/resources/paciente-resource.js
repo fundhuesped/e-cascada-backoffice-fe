@@ -31,15 +31,12 @@
            isArray: false
           },
           getPaginatedActiveList:{
-           method: 'GET',
-           isArray: false
+            method: 'GET',
+            params:{status:'Active'},
+            isArray: false
           }
         });
-
-        Paciente.getUrlForObjectId = function getUrlForObjectId(id){
-          return apiBase + 'pacientes/paciente/' + id + '/';
-        };
-
+        
         return Paciente;
     	}
       this.$get = ['$resource','apiBase',PacienteResource];

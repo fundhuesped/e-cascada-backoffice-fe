@@ -11,13 +11,13 @@
           },
           getActiveList:{
             method: 'GET',
-            params:{status:'Active'},
+            params:{status:'Active', page_size:99},
             isArray: true,
             transformResponse: transformDataSet
           },
           getInactiveList:{
             method: 'GET',
-            params:{status:'Inactive'},
+            params:{status:'Inactive', page_size:99},
             isArray: true,
             transformResponse: transformDataSet
           },
@@ -27,18 +27,15 @@
             transformResponse: transformDataSet            
           },
           queryPaginated:{
-           method: 'GET',
-           isArray: false
+            method: 'GET',
+            isArray: false
           },
           getPaginatedActiveList:{
-           method: 'GET',
-           isArray: false
+            method: 'GET',
+            params:{status:'Active'},
+            isArray: false
           }
         });
-
-        Especialidad.getUrlForObjectId = function getUrlForObjectId(id){
-          return apiBase + 'practicas/especialidad/' + id + '/';
-        };
 
         return Especialidad;
     	}

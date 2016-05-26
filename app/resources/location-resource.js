@@ -11,13 +11,13 @@
                 },
                 getActiveList: {
                     method: 'GET',
-                    params: {status: 'Active'},
+                    params: {status: 'Active', page_size:99},
                     isArray: true,
                     transformResponse: transformDataSet
                 },
                 getInactiveList: {
                     method: 'GET',
-                    params: {status: 'Inactive'},
+                    params: {status: 'Inactive', page_size:99},
                     isArray: true,
                     transformResponse: transformDataSet
                 },
@@ -27,10 +27,6 @@
                     transformResponse: transformDataSet
                 }
             });
-
-            Location.getUrlForObjectId = function getUrlForObjectId(id) {
-                return apiBase + 'comun/location/' + id + '/';
-            };
 
             return Location;
         }

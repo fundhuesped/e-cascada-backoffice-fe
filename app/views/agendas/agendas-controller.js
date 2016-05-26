@@ -7,6 +7,10 @@
     var vm = this;
     vm.agendas = [];
     vm.agenda = null;
+    vm.detail = detail;
+    vm.modifyAgenda = modifyAgenda;
+    vm.newAgenda = newAgenda;
+    vm.searchName = searchName;
 
     activate();
 
@@ -16,13 +20,13 @@
       vm.agendas = Agenda.getActiveList();
     }
 
-    vm.detail = function detail(agenda) {
+    function detail(agenda) {
       vm.agenda = agenda;
       vm.startTime = vm.agenda.start.substr(0, 5);
       vm.endTime = vm.agenda.end.substr(0, 5);
-    };
+    }
 
-    vm.modifyAgenda = function modifyAgenda(selectedAgenda) {
+    function modifyAgenda(selectedAgenda) {
       var modalInstance = $uibModal.open({
         templateUrl: '/views/agendas/agenda.html',
         backdrop: 'static',
@@ -36,19 +40,19 @@
         }
       });
       modalInstance.result.then(function (result) {
-        if (result == 'modified') {
+        if (result === 'modified') {
           toastr.success('Agenda modificada');
-        } else if (result == 'deleted') {
+        } else if (result === 'deleted') {
           toastr.success('Agenda eliminada');
-        } else if (result == 'reactivated') {
+        } else if (result === 'reactivated') {
           toastr.success('Agenda reactivada');
         }
         vm.searchName();
-      }.bind(vm), function () {
+      }, function () {
       });
-    };
+    }
 
-    vm.searchName = function searchName() {
+    function searchName() {
       vm.agenda = null;
       var currentStatusFilter;
       if (vm.statusFilter == 1) {
@@ -63,10 +67,9 @@
       } else {
         vm.agendas = Agenda.query({name: vm.nameFilter});
       }
+    }
 
-    };
-
-    vm.newAgenda = function newAgenda() {
+    function newAgenda() {
       var modalInstance = $uibModal.open({
         templateUrl: '/views/agendas/newagenda.html',
         backdrop: 'static',
@@ -80,9 +83,7 @@
       }, function () {
 
       });
-    };
-
-
+    }
 
   }
 

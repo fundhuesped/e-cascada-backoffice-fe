@@ -29,7 +29,11 @@
         //Controller initialization
         function activate(){
             vm.statusFilter = '1';
-            vm.searchName();
+            Profesional.getPaginatedActiveList({page_size:vm.pageSize,order_field:'firstName',
+                order_by:'asc'}, function(paginatedResult){
+                vm.profesionales = paginatedResult.results;
+                vm.totalItems = paginatedResult.count;
+            });
         }
 
         function detail(profesional){

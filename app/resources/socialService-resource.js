@@ -27,23 +27,6 @@
                     transformResponse: transformDataSet
                 }
             });
-            SocialService._getActiveList = SocialService.getActiveList;
-            SocialService.getActiveList = function(callbackOK,callbackNOK){
-              var promise = this._getActiveList(function(data){
-                promise = data.results;
-                if(callbackOK){
-                  callbackOK(data.results);
-                }
-              },function(error){
-                if(callbackNOK){
-                  callbackNOK(error);
-                }
-              });
-              return promise;
-            };
-            SocialService.getUrlForObjectId = function getUrlForObjectId(id) {
-                return apiBase + 'comun/socialService/' + id + '/';
-            };
 
             return SocialService;
         }

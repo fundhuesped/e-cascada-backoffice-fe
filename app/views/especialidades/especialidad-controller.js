@@ -78,7 +78,7 @@
         }
 
         function confirmStatusChange(){
-            var especialidadInstance = angular.copy(especialidad);
+            var especialidadInstance = angular.copy(vm.especialidad);
             $loading.start('app');
             if(especialidadInstance.status==='Active'){
                 vm.confirmDelete(especialidadInstance);

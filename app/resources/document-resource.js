@@ -27,11 +27,7 @@
             transformResponse: transformDataSet
           }
         });
-
-        Document.getUrlForObjectId = function getUrlForObjectId(id){
-          return apiBase + 'comun/documentType/' + id + '/';
-        };
-
+        
         return Document;
     	}
       this.$get = ['$resource','apiBase',DocumentResource];

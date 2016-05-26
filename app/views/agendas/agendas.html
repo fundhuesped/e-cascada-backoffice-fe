@@ -44,18 +44,6 @@
             <td style="max-width:150px; word-wrap:break-word;">{{agenda.profesional.fatherSurname}}</td>
             <td style="max-width:150px; word-wrap:break-word;">{{agenda.prestacion.especialidad.name}}</td>
             <td style="max-width:150px; word-wrap:break-word;">{{agenda.prestacion.name}}</td>
-            <td hidden="hidden">
-              <a ng-href="#agenda/{{agenda.id}}">
-                <button class="btn btn-default">
-						            	<span class="glyphicon glyphicon-pencil">
-						            	</span>
-                </button>
-              </a>
-              <button class="btn btn-default" ng-click="AgendasCtrl.delete(agenda.id)">
-					            	<span class="glyphicon glyphicon-remove">
-					            	</span>
-              </button>
-            </td>
           </tr>
           </tbody>
         </table>

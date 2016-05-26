@@ -15,6 +15,24 @@
         vm.showErrorMessage = showErrorMessage;
         vm.searchDistricts = searchDistricts;
         vm.confirm = confirm;
+        vm.birthDateCalendarPopup = {
+            opened: false,
+            altInputFormats: ['d!/M!/yyyy','dd-MM-yyyy'],
+            options: {
+            maxDate: new Date(),
+          }
+        };
+        vm.firstTimeCalendarPopup = {
+            opened: false,
+            altInputFormats: ['d!/M!/yyyy','dd-MM-yyyy'],
+            options: {
+            maxDate: new Date(),
+          }
+        };
+
+
+        vm.openBirthDateCalendar = openBirthDateCalendar;
+        vm.openFirstTimeCalendar = openFirstTimeCalendar;
 
         vm.newPaciente = {
             socialService:null,
@@ -110,21 +128,27 @@
                 vm.newPaciente.description = '';
             }
         }
+        
+        function openFirstTimeCalendar() {
+            vm.firstTimeCalendarPopup.opened = true;
+        }
+
+        function openBirthDateCalendar() {
+          vm.birthDateCalendarPopup.opened = true;
+        }
 
         function searchLocations() {
             if (vm.selectedDistrict) {
-                vm.locations = Location.query({district: vm.selectedDistrict.id, status: 'Active'});
+                vm.locations = Location.getActiveList({district: vm.selectedDistrict.id});
             }
         }
 
         function searchDistricts() {
             vm.locations = null;
             if (vm.selectedProvince) {
-                vm.districts = District.query({province: vm.selectedProvince.id, status: 'Active'});
+                vm.districts = District.getActiveList({province: vm.selectedProvince.id});
             }
         }
-
-
     }
 
     angular.module('turnos.pacientes').controller('NewPacienteCtrl', ['$loading', '$uibModalInstance', '$filter', 'Paciente', 'Document', 'Sex', 'Province', 'District', 'Location', 'SocialService', 'CivilStatus', 'Education', newPacienteCtrl]);

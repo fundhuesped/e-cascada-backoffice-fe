@@ -27,23 +27,6 @@
               transformResponse: transformDataSet
           }
         });
-        Sex._getActiveList = Sex.getActiveList;
-        Sex.getActiveList = function(callbackOK,callbackNOK){
-          var promise = this._getActiveList(function(data){
-            promise = data.results;
-            if(callbackOK){
-              callbackOK(data.results);
-            }
-          },function(error){
-            if(callbackNOK){
-              callbackNOK(error);
-            }
-          });
-          return promise;
-        };
-        Sex.getUrlForObjectId = function getUrlForObjectId(id){
-          return apiBase + 'comun/sexType/' + id + '/';
-        };
 
         return Sex;
     	}
