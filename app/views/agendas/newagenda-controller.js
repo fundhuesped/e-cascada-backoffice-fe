@@ -6,13 +6,13 @@
   function newAgendaCtrl($loading, $uibModalInstance, $filter, Agenda, Profesional, Especialidad, Prestacion) {
     var vm = this;
     vm.close = close;
+    vm.profesionales = [];
 
     activate();
 
     function activate() {
-      this.profesionales = Profesional.getActiveList();
+      vm.profesionales = Profesional.getActiveList();
     }
-
 
     this.daysStr = [{
       'index': 0,
@@ -51,7 +51,6 @@
       }
     ];
     this.showTable = false;
-    this.profesionales = null;
     this.currentDate = new Date();
     this.endMonth = new Date();
     this.endMonth.setDate(1);
