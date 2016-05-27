@@ -49,7 +49,7 @@
         } else if (result === 'reactivated') {
           toastr.success('Agenda reactivada');
         }
-        vm.searchName();
+        vm.changeSearchParameter();
       }, function () {
       });
     }
@@ -86,7 +86,7 @@
       });
       modalInstance.result.then(function () {
         toastr.success('Agenda creada');
-        vm.searchName();
+        vm.changeSearchParameter();
       }, function () {
 
       });
