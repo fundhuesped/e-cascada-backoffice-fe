@@ -72,7 +72,7 @@
       weekends: false,
       defaultView: 'agendaWeek',
       header: {
-        left: 'agendaWeek month agendaDay',
+        left: 'agendaWeek agendaDay',
         center: 'title',
         right: 'today prev,next'
       },

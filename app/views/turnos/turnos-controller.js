@@ -28,7 +28,7 @@
 	        weekends: false,
 	        defaultView: 'agendaWeek',
 	        header:{
-	          left: 'month agendaWeek agendaDay',
+	          left: 'agendaWeek agendaDay',
 	          center: 'title',
 	          right: 'today prev,next'
 	        },
@@ -67,7 +67,7 @@
 	    	var date = new Date();
 	      	vm.turnos.length = 0;
 	      	var formatedDate = $filter('date')(date, 'yyyy-MM-dd');
-	      	Turno.query({profesional: idProfesional, day__gte: formatedDate})
+	      	Turno.query({profesional: idProfesional, day__gte: formatedDate, page_size:99})
 	      	   .$promise
 	      	   .then(function (results) {
 			        var turnosSource =[];
@@ -82,8 +82,8 @@
 	      }
 
       	function createCalendarTurnoEvent(turno){
-	        var startTime = new Date(turno.day + 'T' + turno.start);
-	        var endTime = new Date(turno.day + 'T' + turno.end);
+	        var startTime = new Date(turno.day + 'T' + turno.start + '-03:00');
+	        var endTime = new Date(turno.day + 'T' + turno.end+ '-03:00');
 	        var title = '';
 	        var color = '#FFFFFF';
 	        if(turno.taken){
