@@ -9,7 +9,7 @@
           <div class="col-md-3">
           </div>
           <div class="col-md-2">
-            <select class="form-control" ng-model="AgendasCtrl.statusFilter" ng-change="AgendasCtrl.searchName()">
+            <select class="form-control" ng-model="AgendasCtrl.statusFilter" ng-change="AgendasCtrl.changeSearchParameter()">
               <option value="1">Activos</option>
               <option value="2">Activos e inactivos</option>
               <option value="3">Inactivos</option>
@@ -30,20 +30,17 @@
         <table class="table table-hover">
           <thead>
           <tr>
-            <th>#</th>
             <th>Profesional</th>
-            <th>Especialidad</th>
             <th>Prestacion</th>
-            <th hidden="hidden">Acciones</th>
+            <th>Vigencia</th>
           </tr>
           </thead>
           <tbody>
           <tr ng-repeat="(key, agenda) in AgendasCtrl.agendas" ng-click="AgendasCtrl.detail(agenda)"
               ng-class="{active:agenda == AgendasCtrl.agenda}">
-            <th scope="row">{{agenda.id}}</th>
             <td style="max-width:150px; word-wrap:break-word;">{{agenda.profesional.fatherSurname}}</td>
-            <td style="max-width:150px; word-wrap:break-word;">{{agenda.prestacion.especialidad.name}}</td>
             <td style="max-width:150px; word-wrap:break-word;">{{agenda.prestacion.name}}</td>
+            <td style="max-width:150px; word-wrap:break-word;">{{agenda.validFrom | date : 'dd-MM-yyyy'}} a {{agenda.validTo | date : 'dd-MM-yyyy'}}</td>
           </tr>
           </tbody>
         </table>

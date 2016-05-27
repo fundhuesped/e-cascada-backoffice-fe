@@ -11,7 +11,9 @@
     vm.modifyAgenda = modifyAgenda;
     vm.newAgenda = newAgenda;
     vm.searchName = searchName;
-
+    vm.changeSearchParameter = changeSearchParameter;
+    vm.currentPage = 1;
+    
     activate();
 
     //Controller initialization
@@ -47,7 +49,7 @@
         } else if (result === 'reactivated') {
           toastr.success('Agenda reactivada');
         }
-        vm.searchName();
+        vm.changeSearchParameter();
       }, function () {
       });
     }
@@ -69,6 +71,11 @@
       }
     }
 
+    function changeSearchParameter(){
+      vm.currentPage = 1;
+      vm.searchName();
+    }
+
     function newAgenda() {
       var modalInstance = $uibModal.open({
         templateUrl: '/views/agendas/newagenda.html',
@@ -79,7 +86,7 @@
       });
       modalInstance.result.then(function () {
         toastr.success('Agenda creada');
-        vm.searchName();
+        vm.changeSearchParameter();
       }, function () {
 
       });

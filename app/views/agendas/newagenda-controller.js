@@ -6,15 +6,30 @@
   function newAgendaCtrl($loading, $uibModalInstance, $filter, Agenda, Profesional, Especialidad, Prestacion) {
     var vm = this;
     vm.close = close;
+    vm.profesionales = [];
+    vm.selectPrestacion = selectPrestacion;
+    vm.openFromDateCalendar = openFromDateCalendar;
+    vm.openToDateCalendar = openToDateCalendar;
 
+    vm.fromDateCalendarPopup = {
+      opened: false,
+      altInputFormats: ['d!/M!/yyyy','dd-MM-yyyy'],
+      options: {
+      }
+    };        
+    vm.toDateCalendarPopup = {
+      opened: false,
+      altInputFormats: ['d!/M!/yyyy','dd-MM-yyyy'],
+      options: {
+      }
+    };
     activate();
 
     function activate() {
-      this.profesionales = Profesional.getActiveList();
+      vm.profesionales = Profesional.getActiveList();
     }
 
-
-    this.daysStr = [{
+    vm.daysStr = [{
       'index': 0,
       'name': 'Lu',
       'selected': false
@@ -50,47 +65,38 @@
         'selected': false
       }
     ];
-    this.showTable = false;
-    this.profesionales = null;
-    this.currentDate = new Date();
-    this.endMonth = new Date();
-    this.endMonth.setDate(1);
-    this.endMonth.setMonth(this.currentDate.getMonth() + 2);
-    this.endMonth = new Date(this.endMonth.getTime() - 86400000);
-    this.hoursFrom = 8;
-    this.minutesFrom = 0;
-    this.hoursTo = 17;
-    this.minutesTo = 0;
-    this.agenda = {
-      validFrom: this.currentDate,
-      validTo: this.endMonth
-    };
+    vm.showTable = false;
 
-    this.confirm = function confirm() {
-      if (this.newAgendaForm.$valid) {
-        this.hideErrorMessage();
+    vm.hoursFrom = 8;
+    vm.minutesFrom = 0;
+    vm.hoursTo = 17;
+    vm.minutesTo = 0;
+
+    vm.confirm = function confirm() {
+      if (vm.newAgendaForm.$valid) {
+        vm.hideErrorMessage();
         $loading.start('app');
         var agenda = new Agenda();
-        agenda.profesional = this.selectedProfesional;
-        agenda.prestacion = this.selectedPrestacion;
-        agenda.start = this.hoursFrom + ':' + this.minutesFrom;
-        agenda.end = this.hoursTo + ':' + this.minutesTo;
-        agenda.validFrom = $filter('date')(this.agenda.validFrom, 'yyyy-MM-dd');
-        agenda.validTo = $filter('date')(this.agenda.validTo, 'yyyy-MM-dd');
-        agenda.start = this.agenda.start;
-        agenda.end = this.agenda.end;
-        agenda.periods = this.agenda.periods;
+        agenda.profesional = vm.selectedProfesional;
+        agenda.prestacion = vm.selectedPrestacion;
+        agenda.start = vm.hoursFrom + ':' + vm.minutesFrom;
+        agenda.end = vm.hoursTo + ':' + vm.minutesTo;
+        agenda.validFrom = $filter('date')(vm.agenda.validFrom, 'yyyy-MM-dd');
+        agenda.validTo = $filter('date')(vm.agenda.validTo, 'yyyy-MM-dd');
+        agenda.start = vm.agenda.start;
+        agenda.end = vm.agenda.end;
+        agenda.periods = vm.agenda.periods;
         agenda.status = 'Active';
         agenda.$save(function () {
             $loading.finish('app');
             $uibModalInstance.close('created');
           }, function (error) {
             $loading.finish('app');
-            this.errorMessage = error.status + ' - ' + error.statusText;
-          }.bind(this)
+            vm.errorMessage = error.status + ' - ' + error.statusText;
+          }.bind(vm)
         );
       } else {
-        this.errorMessage = 'Por favor revise el formulario';
+        vm.errorMessage = 'Por favor revise el formulario';
       }
     };
 
@@ -98,42 +104,42 @@
       $uibModalInstance.dismiss('cancel');
     }
 
-    this.loadAgenda = function loadAgenda() {
-      this.hideErrorMessage();
-      if (this.newAgendaForm.$valid) {
+    vm.loadAgenda = function loadAgenda() {
+      vm.hideErrorMessage();
+      if (vm.newAgendaForm.$valid) {
         var periodFrom = new Date();
         var periodTo = new Date();
 
-        periodFrom.setHours(this.hoursFrom);
-        periodFrom.setMinutes(this.minutesFrom);
+        periodFrom.setHours(vm.hoursFrom);
+        periodFrom.setMinutes(vm.minutesFrom);
 
-        periodTo.setHours(this.hoursTo);
-        periodTo.setMinutes(this.minutesTo);
+        periodTo.setHours(vm.hoursTo);
+        periodTo.setMinutes(vm.minutesTo);
 
         if (periodFrom >= periodTo) {
-          this.errorMessage = 'Hora desde debe ser inferior a hora hasta';
+          vm.errorMessage = 'Hora desde debe ser inferior a hora hasta';
           return;
         }
 
         var diffMillis = periodTo - periodFrom;
-        var durationMillis = this.selectedPrestacion.duration * 60000;
+        var durationMillis = vm.selectedPrestacion.duration * 60000;
         var countPeriods = diffMillis / durationMillis;
 
         var i, varTo;
         var varFrom = periodFrom;
         var period, periods = [];
         for (i = 0; i < countPeriods; i++) {
-          varTo = new Date(varFrom.getTime() + this.selectedPrestacion.duration * 60000);
+          varTo = new Date(varFrom.getTime() + vm.selectedPrestacion.duration * 60000);
           if (varTo > periodTo) {
             break;
           }
           var index = i + 1;
           var daysArray = [], day, j;
-          for (j = 0; j < this.daysStr.length; j++) {
+          for (j = 0; j < vm.daysStr.length; j++) {
             day = {
               'id': j+1,
               'index': j,
-              'name': this.daysStr[j].name,
+              'name': vm.daysStr[j].name,
               'selected': false
             };
             daysArray.push(day);
@@ -149,56 +155,102 @@
           varFrom = varTo;
         }
 
-        this.agenda.start = $filter('date')(periodFrom, 'HH:mm');
-        this.agenda.end = $filter('date')(periodTo, 'HH:mm');
-        this.agenda.periods = periods;
+        vm.agenda.start = $filter('date')(periodFrom, 'HH:mm');
+        vm.agenda.end = $filter('date')(periodTo, 'HH:mm');
+        vm.agenda.periods = periods;
 
         if (periods.length > 0) {
-          this.showTable = true;
+          vm.showTable = true;
         } else {
-          this.errorMessage = 'La combinación de horarios para la prestación seleccionada no posee rangos validos';
+          vm.errorMessage = 'La combinación de horarios para la prestación seleccionada no posee rangos validos';
         }
       }
     };
 
-    this.showErrorMessage = function showErrorMessage() {
-      this.errorMessage = 'Ocurio un error en la comunicación';
+
+    function selectPrestacion(){
+      Agenda.getActiveList({page_size:1,order_field:'validTo',
+        order_by:'desc', profesional:vm.selectedProfesional.id, prestacion:vm.selectedPrestacion.id}, function(list){
+        if(list.length>0){
+            vm.lastAgendaFinishDate = new Date(list[0].validTo + 'T03:00:00');
+            if(vm.lastAgendaFinishDate <= new Date()){
+              vm.currentDate = new Date();
+              vm.tomorrow = new Date(vm.currentDate);
+              vm.tomorrow.setDate(vm.currentDate.getDate()+1);
+
+              vm.endMonth = new Date();
+              vm.endMonth.setDate(1);
+              vm.endMonth.setMonth(vm.currentDate.getMonth() + 2);
+              vm.endMonth = new Date(vm.endMonth.getTime() - 86400000);
+            }else{
+              vm.tomorrow = new Date(vm.lastAgendaFinishDate);
+              vm.tomorrow.setDate(vm.lastAgendaFinishDate.getDate()+1);
+
+              vm.endMonth = new Date();
+              vm.endMonth.setDate(1);
+              vm.endMonth.setMonth(vm.lastAgendaFinishDate.getMonth() + 2);              
+              vm.endMonth = new Date(vm.endMonth.getTime() - 86400000);
+            }
+            vm.fromDateCalendarPopup.options.minDate = vm.lastAgendaFinishDate;
+            vm.toDateCalendarPopup.options.maxDate = vm.lastAgendaFinishDate;
+        }else{      
+          vm.currentDate = new Date();
+          vm.tomorrow = new Date(vm.currentDate);
+          vm.tomorrow.setDate(vm.currentDate.getDate()+1);
+          vm.endMonth = new Date();
+          vm.endMonth.setDate(1);
+          vm.endMonth.setMonth(vm.currentDate.getMonth() + 2);
+          vm.endMonth = new Date(vm.endMonth.getTime() - 86400000);
+
+//        vm.fromDateCalendarPopup.options.minDate = vm.lastAgendaFinishDate;
+//        vm.toDateCalendarPopup.options.maxDate = vm.lastAgendaFinishDate;
+        }
+        vm.agenda = {
+          validFrom: vm.tomorrow,
+          validTo: vm.endMonth
+        };
+      });
+    }
+
+    vm.showErrorMessage = function showErrorMessage() {
+      vm.errorMessage = 'Ocurio un error en la comunicación';
     };
 
-    this.hideErrorMessage = function hideErrorMessage() {
-      this.errorMessage = null;
+    vm.hideErrorMessage = function hideErrorMessage() {
+      vm.errorMessage = null;
     };
 
-    this.searchPrestaciones = function searchPrestaciones() {
-      if (this.selectedEspecialidad && this.selectedProfesional) {
+    vm.searchPrestaciones = function searchPrestaciones() {
+      if (vm.selectedEspecialidad && vm.selectedProfesional) {
         vm.prestaciones = Prestacion.getActiveList({especialidad: vm.selectedEspecialidad.id,profesional: vm.selectedProfesional.id});
       }
     };
 
-    this.searchEspecialidades = function searchEspecialidades() {
-      this.prestaciones = [];
-      if (this.selectedProfesional) {
+    vm.searchEspecialidades = function searchEspecialidades() {
+      vm.prestaciones = [];
+      if (vm.selectedProfesional) {
         vm.especialidades = Especialidad.getActiveList({profesional: vm.selectedProfesional.id});
       }
     };
 
-    this.checkAllRow = function checkAllRow(period) {
+
+    vm.checkAllRow = function checkAllRow(period) {
       var i, j, selection;
-      for (i = 0; i < this.agenda.periods.length; i++) {
-        selection = this.agenda.periods[i];
+      for (i = 0; i < vm.agenda.periods.length; i++) {
+        selection = vm.agenda.periods[i];
         if (selection.id === period.id) {
-          for (j = 0; j < this.agenda.periods[i].daysOfWeek.length; j++) {
-            this.agenda.periods[i].daysOfWeek[j].selected = this.agenda.periods[i].selected;
+          for (j = 0; j < vm.agenda.periods[i].daysOfWeek.length; j++) {
+            vm.agenda.periods[i].daysOfWeek[j].selected = vm.agenda.periods[i].selected;
           }
         }
       }
     };
 
-    this.checkAllColumn = function checkAllColumn(day) {
+    vm.checkAllColumn = function checkAllColumn(day) {
       var i, j, selection;
-      for (i = 0; i < this.agenda.periods.length; i++) {
-        for (j = 0; j < this.agenda.periods[i].daysOfWeek.length; j++) {
-          selection = this.agenda.periods[i].daysOfWeek[j];
+      for (i = 0; i < vm.agenda.periods.length; i++) {
+        for (j = 0; j < vm.agenda.periods[i].daysOfWeek.length; j++) {
+          selection = vm.agenda.periods[i].daysOfWeek[j];
           if (selection.name.indexOf(day.name) == 0) {
             selection.selected = day.selected;
           }
@@ -206,11 +258,19 @@
       }
     };
 
-    this.changeState = function changeState(day, period) {
+    function openFromDateCalendar() {
+      vm.fromDateCalendarPopup.opened = true;
+    }
+
+    function openToDateCalendar() {
+      vm.toDateCalendarPopup.opened = true;
+    }
+
+    vm.changeState = function changeState(day, period) {
       period.selected = false;
       var i, selection;
-      for (i = 0; i < this.daysStr.length; i++) {
-        selection = this.daysStr[i];
+      for (i = 0; i < vm.daysStr.length; i++) {
+        selection = vm.daysStr[i];
         if (selection.name.indexOf(day.day) == 0) {
           selection.selected = false;
           break;

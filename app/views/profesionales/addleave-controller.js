@@ -10,9 +10,10 @@
                                   '$uibModalInstance',
                                   '$filter',
                                   'profesional',
-                                  'Leave'];
+                                  'Leave',
+                                  'Agenda'];
 
-    function addLeaveController($loading, $uibModalInstance, $filter, profesional, Leave) {
+    function addLeaveController($loading, $uibModalInstance, $filter, profesional, Leave, Agenda) {
         var vm = this;
         vm.cancel = cancel;
         vm.confirm = confirm;
@@ -22,15 +23,51 @@
         vm.newLeave = {};
         vm.profesional = angular.copy(profesional);
         vm.showErrorMessage = showErrorMessage;
+        vm.openFromDateCalendar = openFromDateCalendar;
+        vm.openToDateCalendar = openToDateCalendar;
+        vm.lastAgendaFinishDate = null;
+        vm.calculateToDate = calculateToDate;
+        vm.disabledForm = false;
 
+        vm.fromDateCalendarPopup = {
+          opened: false,
+          altInputFormats: ['d!/M!/yyyy','dd-MM-yyyy'],
+          options: {
+            minDate: new Date(),
+            maxDate: vm.lastAgendaFinishDate
+          }
+        };        
+        vm.toDateCalendarPopup = {
+          opened: false,
+          altInputFormats: ['d!/M!/yyyy','dd-MM-yyyy'],
+          options: {
+            minDate: new Date(),
+            maxDate: vm.lastAgendaFinishDate
+          }
+        };
         activate();
 
         function activate() {
+            Agenda.getActiveList({page_size:1,order_field:'validTo',
+                order_by:'desc', profesional:profesional.id}, function(list){
+                if(list.length>0){
+                    vm.lastAgendaFinishDate = new Date(list[0].validTo);
+                    vm.fromDateCalendarPopup.options.maxDate = vm.lastAgendaFinishDate;
+                    vm.toDateCalendarPopup.options.maxDate = vm.lastAgendaFinishDate;
+                }else{      
+                    vm.disabledForm = true;
+                    vm.errorMessage = 'El profesional no posee agendas activas';
+                }
+            });
+        }
+
+        function calculateToDate(){
+            vm.toDateCalendarPopup.options.minDate = vm.newLeave.fromDate || new Date();
         }
 
         function confirm() {
             if(vm.leaveForm.$valid){
-                if(vm.newLeave.fromDate && vm.newLeave.toDate && vm.newLeave.fromDate <= vm.newLeave.toDate){
+                if(vm.newLeave.fromDate && vm.newLeave.toDate && (vm.newLeave.fromDate <= vm.newLeave.toDate) && vm.newLeave.fromDate >= new Date() && vm.newLeave.toDate <=vm.lastAgendaFinishDate){
                     vm.hideErrorMessage();
                     $loading.start('app');
                     var leave = new Leave();
@@ -47,7 +84,7 @@
                         vm.showErrorMessage();
                     });
                 }else{
-                    vm.errorMessage = 'Por favor revise el formulario';
+                    vm.errorMessage = 'Por favor revise el formulario.';
                 }
             }else{
                 vm.errorMessage = 'Por favor revise el formulario';
@@ -57,11 +94,24 @@
         function cancel() {
             $uibModalInstance.dismiss('cancel');
         }
+
+        function checkLeaveDates(){
+
+        }
         
         function showErrorMessage() {
             vm.errorMessage = 'Ocurio un error en la comunicación';
         }
         
+        function openFromDateCalendar() {
+          vm.fromDateCalendarPopup.opened = true;
+        }
+
+        function openToDateCalendar() {
+          vm.toDateCalendarPopup.opened = true;
+        }
+
+
         function hideErrorMessage() {
             vm.errorMessage = null;
         }

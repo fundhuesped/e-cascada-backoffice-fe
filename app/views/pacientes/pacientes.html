@@ -8,16 +8,16 @@
 					</div>
 					<div class="col-md-2">
 						<label>Mostrar</label>
-			            <input type="number" name="pageSize" class="form-control" ng-model="PacientesCtrl.pageSize" ng-change="PacientesCtrl.searchName()" style="width: 64px;" ng-model-options="{ debounce: 500 }" >
+			            <input type="number" name="pageSize" class="form-control" ng-model="PacientesCtrl.pageSize" ng-change="PacientesCtrl.changeSearchParameter()" style="width: 64px;" ng-model-options="{ debounce: 500 }" >
 		            </div>
 					<div class="col-md-3">
 						<div ng-class="{'has-warning':PacientesCtrl.searchPreferencesForm.searchName.$error.minlength}">
 							<input type="text" name="searchName" class="form-control" placeholder="Nombre" ng-model="PacientesCtrl.nameFilter" minlength="3">
-							<button type="button" class="btn btn-default" ng-click="PacientesCtrl.searchName()">Buscar</button>
+							<button type="button" class="btn btn-default" ng-click="PacientesCtrl.changeSearchParameter()">Buscar</button>
 						</div>
 					</div>
 					<div class="col-md-2">
-						<select class="form-control" ng-model="PacientesCtrl.statusFilter" ng-change="PacientesCtrl.searchName()">
+						<select class="form-control" ng-model="PacientesCtrl.statusFilter" ng-change="PacientesCtrl.changeSearchParameter()">
 							<option value="1">Activos</option>
 							<option value="2">Activos e inactivos</option>
 							<option value="3">Inactivos</option>

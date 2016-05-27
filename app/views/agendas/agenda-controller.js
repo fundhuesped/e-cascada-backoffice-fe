@@ -10,6 +10,24 @@
     vm.cancel = cancel;
     vm.editing = true;
     vm.errorMessage = null;
+    vm.openFromDateCalendar = openFromDateCalendar;
+    vm.openToDateCalendar = openToDateCalendar;
+    vm.disabledForm = false;
+
+    vm.fromDateCalendarPopup = {
+      opened: false,
+      altInputFormats: ['d!/M!/yyyy','dd-MM-yyyy'],
+      options: {
+      }
+    };        
+    vm.toDateCalendarPopup = {
+      opened: false,
+      altInputFormats: ['d!/M!/yyyy','dd-MM-yyyy'],
+      options: {
+      }
+    };
+
+
     vm.daysStr = [{
       'id': 1,
       'name': 'Lu',
@@ -50,6 +68,8 @@
     activate();
 
     function activate() {
+      vm.agenda.validFrom = new Date(vm.agenda.validFrom + 'T03:00:00');
+      vm.agenda.validTo = new Date(vm.agenda.validTo + 'T03:00:00');
       vm.selectedProfesionalName = vm.agenda.profesional.fatherSurname + ', ' + vm.agenda.profesional.firstName;
       vm.selectedEspecialidadName = vm.agenda.prestacion.especialidad.name;
       vm.selectedPrestacionName = vm.agenda.prestacion.name;
@@ -63,8 +83,9 @@
       if (vm.agendaForm.$valid) {
         vm.hideErrorMessage();
         $loading.start('app');
-        vm.agenda.birthDate = $filter('date')(vm.agenda.birthDate, 'yyyy-MM-dd');
-        vm.agenda.$update(function () {
+          vm.agenda.validFrom = $filter('date')(vm.agenda.validFrom, 'yyyy-MM-dd');
+          vm.agenda.validTo = $filter('date')(vm.agenda.validTo, 'yyyy-MM-dd');
+          vm.agenda.$update(function () {
           $loading.finish('app');
           $uibModalInstance.close('modified');
         }, function () {
@@ -160,6 +181,14 @@
         }
       }
     };
+
+    function openFromDateCalendar() {
+      vm.fromDateCalendarPopup.opened = true;
+    }
+
+    function openToDateCalendar() {
+      vm.toDateCalendarPopup.opened = true;
+    }
 
     vm.changeState = function changeState(day, period) {
       period.selected = false;

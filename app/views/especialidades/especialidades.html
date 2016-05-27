@@ -9,14 +9,14 @@
 		            </div>
 					<div class="col-md-2">
 						<label>Mostrar</label>
-			            <input type="number" name="pageSize" class="form-control" ng-model="EspecialidadesCtrl.pageSize" ng-change="EspecialidadesCtrl.searchName()" style="width: 64px;" ng-model-options="{ debounce: 500 }" >
+			            <input type="number" name="pageSize" class="form-control" ng-model="EspecialidadesCtrl.pageSize" ng-change="EspecialidadesCtrl.changeSearchParameter()" style="width: 64px;" ng-model-options="{ debounce: 500 }" >
 		            </div>
 	    			<div class="col-md-3">    
 	                	<input type="text" name="nameFilter" class="form-control" placeholder="Nombre" ng-model="EspecialidadesCtrl.nameFilter">
-		              	<button type="button" class="btn btn-default" ng-click="EspecialidadesCtrl.searchName()">Buscar</button>
+		              	<button type="button" class="btn btn-default" ng-click="EspecialidadesCtrl.changeSearchParameter()">Buscar</button>
 		            </div>   
 	            	<div class="col-md-2">
-			            <select class="form-control" ng-model="EspecialidadesCtrl.statusFilter" ng-change="EspecialidadesCtrl.searchName()">
+			            <select class="form-control" ng-model="EspecialidadesCtrl.statusFilter" ng-change="EspecialidadesCtrl.changeSearchParameter()">
 			            	<option value="1">Activos</option>
 			            	<option value="2">Activos e inactivos</option>
 			            	<option value="3">Inactivos</option>

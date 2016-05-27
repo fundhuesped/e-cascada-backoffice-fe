@@ -10,7 +10,7 @@
     	vm.pageSize = 20;
         vm.totalItems = null;
         vm.currentPage = 1;
-
+        vm.changeSearchParameter = changeSearchParameter;
         activate();
 
         //Controller initialization
@@ -82,6 +82,11 @@
                 });
 
         };
+
+        function changeSearchParameter(){
+            vm.currentPage = 1;
+            vm.searchName();
+        }
 
         vm.newEspecialidad = function newEspecialidad(){
             var modalInstance = $uibModal.open({
