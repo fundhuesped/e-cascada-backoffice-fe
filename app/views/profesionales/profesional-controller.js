@@ -16,6 +16,7 @@
         vm.confirmDelete = confirmDelete;   
         vm.changeStatus =  changeStatus;
         vm.cancel = cancel;
+        vm.originalProfesional = {};
         vm.openBirthDateCalendar = openBirthDateCalendar;
         vm.birthDateCalendarPopup = {
           opened: false,
@@ -30,6 +31,7 @@
 
         function activate(){
             Profesional.get({id:profesional.id}, function(returnedObject){
+                vm.originalProfesional = angular.copy(returnedObject);
                 vm.profesional = returnedObject;
                 vm.profesional.birthDate = (vm.profesional.birthDate?new Date(vm.profesional.birthDate + 'T03:00:00'):null);
 
@@ -118,7 +120,9 @@
         }
 
         function confirmStatusChange(){
-            var profesionalInstance = angular.copy(vm.profesional);
+            var profesionalInstance = angular.copy(vm.originalProfesional);
+            profesionalInstance.birthDate = $filter('date')(profesionalInstance.birthDate, 'yyyy-MM-dd');
+
             $loading.start('app');
             if(profesionalInstance.status==='Active'){
                 vm.confirmDelete(profesionalInstance);

@@ -184,7 +184,7 @@
       $loading.start('app');
       vm.showTurnos = true;
       vm.turnos = [];
-
+      vm.selectedTurno = null;
       var searchObject = {
         taken: false,
         prestacion: vm.selectedPrestacion.id,
@@ -277,6 +277,7 @@
         vm.newPaciente = null;
         vm.selectedTurno = null;
         vm.clearPacienteSelection();
+        vm.totalItems = null;
       },function(error){
         $loading.finish('app');
         console.log('Error creando turno');

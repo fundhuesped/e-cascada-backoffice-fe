@@ -12,11 +12,12 @@
         vm.editing = true;
         vm.errorMessage = null;
         vm.especialidad = {};
-        
+        vm.originalEspecialidad = {};
         activate();
 
         function activate(){
             Especialidad.get({id:especialidad.id}, function(returnedObject){
+                vm.originalEspecialidad = angular.copy(returnedObject);
                 vm.especialidad = returnedObject;
             });
         }
@@ -78,7 +79,7 @@
         }
 
         function confirmStatusChange(){
-            var especialidadInstance = angular.copy(vm.especialidad);
+            var especialidadInstance = angular.copy(vm.originalEspecialidad);
             $loading.start('app');
             if(especialidadInstance.status==='Active'){
                 vm.confirmDelete(especialidadInstance);

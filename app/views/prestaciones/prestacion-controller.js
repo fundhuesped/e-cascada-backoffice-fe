@@ -7,10 +7,12 @@
         var vm = this;
         vm.prestacion = {};
         vm.errorMessage = null;
-        
+        vm.originalPrestacion = {};
+
         activate();
         function activate(){
             Prestacion.get({id:prestacion.id}, function(returnedObject){
+                vm.originalPrestacion = angular.copy(returnedObject);
                 vm.prestacion = returnedObject;
             });
             vm.especialidades = Especialidad.getActiveList();
@@ -75,7 +77,7 @@
         };
 
         vm.confirmStatusChange = function confirmDelete(){
-            var prestacionInstance = angular.copy(vm.prestacion);
+            var prestacionInstance = angular.copy(vm.originalPrestacion);
             $loading.start('app');
             if(prestacionInstance.status==='Active'){
                 vm.confirmDelete(prestacionInstance);

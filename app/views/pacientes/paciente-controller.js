@@ -17,6 +17,7 @@
         vm.searchLocations = searchLocations;
         vm.searchDistricts = searchDistricts;
         vm.cancel = cancel;
+        vm.originalPaciente = {};
         vm.confirmStatusChange = confirmStatusChange;
         vm.birthDateCalendarPopup = {
           opened: false,
@@ -43,6 +44,7 @@
         function activate(){
             //TODO: Make sure everything is set to callback
             Paciente.get({id:paciente.id}, function(returnedObject){
+                vm.originalPaciente = angular.copy(returnedObject);
                 vm.paciente = returnedObject;
                 vm.paciente.birthDate = (vm.paciente.birthDate?new Date(vm.paciente.birthDate + 'T03:00:00'):null);
                 vm.paciente.firstVisit = (vm.paciente.firstVisit?new Date(vm.paciente.firstVisit):null);
@@ -127,7 +129,10 @@
         }
 
         function confirmStatusChange(){
-            var pacienteInstance = angular.copy(vm.paciente);
+            var pacienteInstance = angular.copy(vm.originalPaciente);
+            pacienteInstance.birthDate = $filter('date')(pacienteInstance.birthDate, 'yyyy-MM-dd');
+            pacienteInstance.firstVisit = $filter('date')(pacienteInstance.firstVisit, 'yyyy-MM-dd');
+
             $loading.start('app');
             if(pacienteInstance.status==='Active'){
                 vm.confirmDelete(pacienteInstance);
