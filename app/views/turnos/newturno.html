@@ -86,9 +86,12 @@
                   <div class="col-lg-10 col-lg-10 col-lg-10 col-lg-10">
                     <div class="form-group">
                       <span><label>Fecha de nacimiento</label></span>
-                      <input rsmdatedropdowns ng-model="NewTurnoCtrl.paciente.birthDate"
-                             ng-disabled="NewTurnoCtrl.paciente.id" ng-model-options="{ debounce: { 'default': 500 } }"
-                             ng-change="NewTurnoCtrl.lookForPacientes()">
+                      <p class="input-group">
+                        <input type="text" class="form-control" uib-datepicker-popup="dd/MM/yyyy" name="birthDate" ng-model="NewTurnoCtrl.paciente.birthDate" is-open="NewTurnoCtrl.birthDateCalendarPopup.opened" datepicker-options="NewTurnoCtrl.birthDateCalendarPopup.options" close-text="Cerrar" alt-input-formats="NewTurnoCtrl.birthDateCalendarPopup.altInputFormats" current-text="Hoy" clear-text="Limpiar" ng-disabled="NewTurnoCtrl.paciente.id" ng-model-options="{ debounce: { 'default': 500 } }" ng-change="NewTurnoCtrl.lookForPacientes()"/>
+                        <span class="input-group-btn">
+                          <button type="button" class="btn btn-default" ng-click="NewTurnoCtrl.openBirthDateCalendar()"><i class="glyphicon glyphicon-calendar"></i></button>
+                        </span>
+                      </p>
                     </div>
                   </div>
                 </div>

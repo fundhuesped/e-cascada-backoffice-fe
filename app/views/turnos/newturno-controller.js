@@ -54,9 +54,17 @@
         minDate: new Date(),
       }
     };
+    vm.birthDateCalendarPopup = {
+      opened: false,
+      altInputFormats: ['d!/M!/yyyy','dd-MM-yyyy'],
+      options: {
+        maxDate: new Date(),
+      }
+    };
 
 
     vm.openCalendar = openCalendar;
+    vm.openBirthDateCalendar = openBirthDateCalendar;
 
     //Calendar
     var turnosSource = [];
@@ -119,6 +127,10 @@
         paciente.fatherSurname = vm.paciente.fatherSurname;
         paciente.primaryPhoneNumber = vm.paciente.primaryPhoneNumber;
         paciente.prospect = true;
+        paciente.birthDate = (vm.paciente.birthDate?$filter('date')(vm.paciente.birthDate, 'yyyy-MM-dd'):null);
+//        paciente.documentType = vm.paciente.documentType.id;
+        paciente.email = vm.paciente.email;
+//        paciente.documentNumber = vm.paciente.documentNumber;
         paciente.$save(function(createdPaciente){
           vm.selectedTurno.paciente = createdPaciente;
           vm.reserveTurno();
@@ -132,6 +144,10 @@
     function openCalendar() {
       vm.calendarPopup.opened = true;
     }
+    function openBirthDateCalendar() {
+      vm.birthDateCalendarPopup.opened = true;
+    }
+
 
     function limpiarBusquedaTurno() {
       vm.showTurnos = false;
