@@ -277,6 +277,7 @@
         vm.newPaciente = null;
         vm.selectedTurno = null;
         vm.clearPacienteSelection();
+        vm.totalItems = null;
       },function(error){
         $loading.finish('app');
         console.log('Error creando turno');
