@@ -3,17 +3,16 @@
   /* jshint validthis: true */
   /*jshint latedef: nofunc */
 
-  function agendaCtrl($loading, $uibModalInstance, $filter, agenda) {
+  function agendaCtrl($loading, $uibModalInstance, $filter, Agenda, agenda) {
     var vm = this;
 
-    vm.agenda = angular.copy(agenda);
     vm.cancel = cancel;
     vm.editing = true;
     vm.errorMessage = null;
     vm.openFromDateCalendar = openFromDateCalendar;
     vm.openToDateCalendar = openToDateCalendar;
     vm.disabledForm = false;
-
+    vm.originalAgenda = {};
     vm.fromDateCalendarPopup = {
       opened: false,
       altInputFormats: ['d!/M!/yyyy','dd-MM-yyyy'],
@@ -68,15 +67,19 @@
     activate();
 
     function activate() {
-      vm.agenda.validFrom = new Date(vm.agenda.validFrom + 'T03:00:00');
-      vm.agenda.validTo = new Date(vm.agenda.validTo + 'T03:00:00');
-      vm.selectedProfesionalName = vm.agenda.profesional.fatherSurname + ', ' + vm.agenda.profesional.firstName;
-      vm.selectedEspecialidadName = vm.agenda.prestacion.especialidad.name;
-      vm.selectedPrestacionName = vm.agenda.prestacion.name;
-      vm.hoursFrom = parseInt(vm.agenda.start.substr(0, 2), 10);
-      vm.minutesFrom = parseInt(vm.agenda.start.substr(3, 2), 10);
-      vm.hoursTo = parseInt(vm.agenda.end.substr(0, 2), 10);
-      vm.minutesTo = parseInt(vm.agenda.end.substr(3, 2), 10);
+      Agenda.get({id:agenda.id}, function(returnedObject){
+        vm.originalAgenda = angular.copy(returnedObject);
+        vm.agenda = returnedObject;
+        vm.agenda.validFrom = new Date(vm.agenda.validFrom + 'T03:00:00');
+        vm.agenda.validTo = new Date(vm.agenda.validTo + 'T03:00:00');
+        vm.selectedProfesionalName = vm.agenda.profesional.fatherSurname + ', ' + vm.agenda.profesional.firstName;
+        vm.selectedEspecialidadName = vm.agenda.prestacion.especialidad.name;
+        vm.selectedPrestacionName = vm.agenda.prestacion.name;
+        vm.hoursFrom = parseInt(vm.agenda.start.substr(0, 2), 10);
+        vm.minutesFrom = parseInt(vm.agenda.start.substr(3, 2), 10);
+        vm.hoursTo = parseInt(vm.agenda.end.substr(0, 2), 10);
+        vm.minutesTo = parseInt(vm.agenda.end.substr(3, 2), 10);
+      });
     }
 
     vm.confirm = function confirm() {
@@ -139,7 +142,9 @@
     };
 
     vm.confirmStatusChange = function confirmDelete() {
-      var agendaInstance = angular.copy(agenda);
+      var agendaInstance = angular.copy(vm.originalAgenda);
+      agendaInstance.validFrom = $filter('date')(agendaInstance.validFrom, 'yyyy-MM-dd');
+      agendaInstance.validTo = $filter('date')(agendaInstance.validTo, 'yyyy-MM-dd');
       $loading.start('app');
       if (agendaInstance.status === 'Active') {
         vm.confirmDelete(agendaInstance);
@@ -204,5 +209,5 @@
 
   }
 
-  angular.module('turnos.agendas').controller('AgendaCtrl', ['$loading', '$uibModalInstance', '$filter', 'agenda', agendaCtrl]);
+  angular.module('turnos.agendas').controller('AgendaCtrl', ['$loading', '$uibModalInstance', '$filter', 'Agenda',  'agenda', agendaCtrl]);
 })();

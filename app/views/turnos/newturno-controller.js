@@ -184,7 +184,7 @@
       $loading.start('app');
       vm.showTurnos = true;
       vm.turnos = [];
-
+      vm.selectedTurno = null;
       var searchObject = {
         taken: false,
         prestacion: vm.selectedPrestacion.id,

@@ -3,10 +3,19 @@
     <div class="panel-heading">
       <div class="row">
         <form class="form-inline" name="AgendasCtrl.searchPreferencesForm">
-          <div class="col-md-5">
+          <div class="col-md-3">
             <h3 class="panel-title">Agendas</h3>
           </div>
+          <div class="col-md-2">
+            <label>Mostrar</label>
+            <input type="number" name="pageSize" class="form-control" ng-model="AgendasCtrl.pageSize" ng-change="AgendasCtrl.changeSearchParameter()" style="width: 64px;" ng-model-options="{ debounce: 500 }" >
+          </div>
+
           <div class="col-md-3">
+            <div ng-class="{'has-warning':AgendasCtrl.searchPreferencesForm.searchName.$error.minlength}">
+              <input type="text" name="searchName" class="form-control" placeholder="Nombre" ng-model="AgendasCtrl.nameFilter" minlength="3">
+              <button type="button" class="btn btn-default" ng-click="AgendasCtrl.changeSearchParameter()">Buscar</button>
+            </div>
           </div>
           <div class="col-md-2">
             <select class="form-control" ng-model="AgendasCtrl.statusFilter" ng-change="AgendasCtrl.changeSearchParameter()">
@@ -27,23 +36,28 @@
 
     <div class="panel-body">
       <div class="col-md-6" style="border-right: 1px solid;">
-        <table class="table table-hover">
-          <thead>
-          <tr>
-            <th>Profesional</th>
-            <th>Prestacion</th>
-            <th>Vigencia</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr ng-repeat="(key, agenda) in AgendasCtrl.agendas" ng-click="AgendasCtrl.detail(agenda)"
-              ng-class="{active:agenda == AgendasCtrl.agenda}">
-            <td style="max-width:150px; word-wrap:break-word;">{{agenda.profesional.fatherSurname}}</td>
-            <td style="max-width:150px; word-wrap:break-word;">{{agenda.prestacion.name}}</td>
-            <td style="max-width:150px; word-wrap:break-word;">{{agenda.validFrom | date : 'dd-MM-yyyy'}} a {{agenda.validTo | date : 'dd-MM-yyyy'}}</td>
-          </tr>
-          </tbody>
-        </table>
+        <div class="row">
+            <uib-pagination total-items="AgendasCtrl.totalItems" ng-model="AgendasCtrl.currentPage" items-per-page="AgendasCtrl.pageSize" class="pagination-sm" boundary-link-numbers="true" ng-change="AgendasCtrl.searchName()"></uib-pagination>
+        </div>
+        <div class="row">
+          <table class="table table-hover">
+            <thead>
+            <tr>
+              <th>Profesional</th>
+              <th>Prestacion</th>
+              <th>Vigencia</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="(key, agenda) in AgendasCtrl.agendas" ng-click="AgendasCtrl.detail(agenda)"
+                ng-class="{active:agenda == AgendasCtrl.agenda}">
+              <td style="max-width:150px; word-wrap:break-word;">{{agenda.profesional.fatherSurname}}</td>
+              <td style="max-width:150px; word-wrap:break-word;">{{agenda.prestacion.name}}</td>
+              <td style="max-width:150px; word-wrap:break-word;">{{agenda.validFrom | date : 'dd-MM-yyyy'}} a {{agenda.validTo | date : 'dd-MM-yyyy'}}</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="col-md-6" ng-show="AgendasCtrl.agenda">
         <div class="row">

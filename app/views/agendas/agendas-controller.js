@@ -13,13 +13,19 @@
     vm.searchName = searchName;
     vm.changeSearchParameter = changeSearchParameter;
     vm.currentPage = 1;
+    vm.pageSize = 20;
+    vm.totalItems = null;
     
     activate();
 
     //Controller initialization
     function activate() {
       vm.statusFilter = '1';
-      vm.agendas = Agenda.getActiveList();
+      Agenda.getPaginatedActiveList({page_size:vm.pageSize,order_field:'profesional',
+        order_by:'asc'}, function(paginatedResult){
+        vm.agendas = paginatedResult.results;
+        vm.totalItems = paginatedResult.count;
+      });
     }
 
     function detail(agenda) {
@@ -57,6 +63,13 @@
     function searchName() {
       vm.agenda = null;
       var currentStatusFilter;
+      var searchObject = {
+          page_size:vm.pageSize,
+          page:vm.currentPage,
+          order_field:'profesional',
+          order_by:'asc',
+          name:vm.nameFilter
+      };
       if (vm.statusFilter == 1) {
         currentStatusFilter = 'Active';
       } else {
@@ -64,11 +77,14 @@
           currentStatusFilter = 'Inactive';
         }
       }
-      if (currentStatusFilter) {
-        vm.agendas = Agenda.query({name: vm.nameFilter, status: currentStatusFilter});
-      } else {
-        vm.agendas = Agenda.query({name: vm.nameFilter});
+      if(currentStatusFilter){
+          searchObject.status = currentStatusFilter;
       }
+      Agenda.queryPaginated(searchObject,
+          function (paginatedResult){
+              vm.agendas = paginatedResult.results;
+              vm.totalItems = paginatedResult.count;
+      });
     }
 
     function changeSearchParameter(){
