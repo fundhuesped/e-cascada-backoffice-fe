@@ -16,7 +16,7 @@
       altInputFormats: ['d!/M!/yyyy','dd-MM-yyyy'],
       options: {
       }
-    };        
+    };
     vm.toDateCalendarPopup = {
       opened: false,
       altInputFormats: ['d!/M!/yyyy','dd-MM-yyyy'],
@@ -137,7 +137,7 @@
           var daysArray = [], day, j;
           for (j = 0; j < vm.daysStr.length; j++) {
             day = {
-              'id': j+1,
+              'id': j,
               'index': j,
               'name': vm.daysStr[j].name,
               'selected': false
@@ -188,12 +188,12 @@
 
               vm.endMonth = new Date();
               vm.endMonth.setDate(1);
-              vm.endMonth.setMonth(vm.lastAgendaFinishDate.getMonth() + 2);              
+              vm.endMonth.setMonth(vm.lastAgendaFinishDate.getMonth() + 2);
               vm.endMonth = new Date(vm.endMonth.getTime() - 86400000);
             }
             vm.fromDateCalendarPopup.options.minDate = vm.lastAgendaFinishDate;
             vm.toDateCalendarPopup.options.maxDate = vm.lastAgendaFinishDate;
-        }else{      
+        }else{
           vm.currentDate = new Date();
           vm.tomorrow = new Date(vm.currentDate);
           vm.tomorrow.setDate(vm.currentDate.getDate()+1);
@@ -201,9 +201,6 @@
           vm.endMonth.setDate(1);
           vm.endMonth.setMonth(vm.currentDate.getMonth() + 2);
           vm.endMonth = new Date(vm.endMonth.getTime() - 86400000);
-
-//        vm.fromDateCalendarPopup.options.minDate = vm.lastAgendaFinishDate;
-//        vm.toDateCalendarPopup.options.maxDate = vm.lastAgendaFinishDate;
         }
         vm.agenda = {
           validFrom: vm.tomorrow,

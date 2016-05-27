@@ -19,7 +19,7 @@
       altInputFormats: ['d!/M!/yyyy','dd-MM-yyyy'],
       options: {
       }
-    };        
+    };
     vm.toDateCalendarPopup = {
       opened: false,
       altInputFormats: ['d!/M!/yyyy','dd-MM-yyyy'],
@@ -29,37 +29,37 @@
 
 
     vm.daysStr = [{
-      'id': 1,
+      'id': 0,
       'name': 'Lu',
       'selected': false
     },
       {
-        'id': 2,
+        'id': 1,
         'name': 'Ma',
         'selected': false
       },
       {
-        'id': 3,
+        'id': 2,
         'name': 'Mie',
         'selected': false
       },
       {
-        'id': 4,
+        'id': 3,
         'name': 'Jue',
         'selected': false
       },
       {
-        'id': 5,
+        'id': 4,
         'name': 'Vi',
         'selected': false
       },
       {
-        'id': 6,
+        'id': 5,
         'name': 'Sa',
         'selected': false
       },
       {
-        'id': 7,
+        'id': 6,
         'name': 'Do',
         'selected': false
       }
