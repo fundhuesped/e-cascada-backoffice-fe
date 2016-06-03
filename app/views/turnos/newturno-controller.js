@@ -23,6 +23,7 @@
     var vm = this;
     vm.canConfirmTurno = canConfirmTurno;
     vm.clearPacienteSelection = clearPacienteSelection;
+    vm.cleanForm = cleanForm;
     vm.confirmTurno = confirmTurno;
     vm.especialidades = null;
     vm.eventSources = [];
@@ -30,6 +31,7 @@
     vm.lookForPacientes = lookForPacientes;
     vm.lookForTurnos = lookForTurnos;
     vm.newTurno = {};
+    vm.openTurnoModal = openTurnoModal;
     vm.openPacienteModal = openPacienteModal;
     vm.paciente = null;
     vm.prestaciones = [];
@@ -255,11 +257,31 @@
           }
         }
       });
-
       //Only way I found to inject Controller to refresh list after modal closing
       var ctrl = vm;
       modalInstance.result.then(function () {
         ctrl.lookForPacientes();
+      });
+    }
+
+    //Open turno info modal
+    function openTurnoModal(turno) {
+      var modalInstance = $uibModal.open({
+        templateUrl: '/views/turnos/turno-detail.html',
+        size: 'md',
+        backdrop:'static',
+        controller: 'TurnoDetailCtrl',
+        controllerAs: 'TurnoDetailCtrl',
+        resolve: {
+          turno: function () {
+            return turno;
+          }
+        }
+      });
+      //Only way I found to inject Controller to refresh list after modal closing
+      var ctrl = vm;
+      modalInstance.result.then(function () {
+        ctrl.cleanForm();
       });
     }
 
@@ -270,6 +292,15 @@
           uiCalendarConfig.calendars.newTurnosCalendar.fullCalendar('render');
         }
       }, 1);
+    }
+
+    function cleanForm(){
+      vm.limpiarBusquedaTurno();
+      vm.turnos = [];
+      vm.newPaciente = null;
+      vm.selectedTurno = null;
+      vm.clearPacienteSelection();
+      vm.totalItems = null;
     }
     
     function reRedender() {
@@ -288,12 +319,7 @@
       turno.$update(function(){
         $loading.finish('app');
         toastr.success('Turno creado con éxito');
-        vm.limpiarBusquedaTurno();
-        vm.turnos = [];
-        vm.newPaciente = null;
-        vm.selectedTurno = null;
-        vm.clearPacienteSelection();
-        vm.totalItems = null;
+        vm.openTurnoModal(turno);
       },function(error){
         $loading.finish('app');
         console.log('Error creando turno');

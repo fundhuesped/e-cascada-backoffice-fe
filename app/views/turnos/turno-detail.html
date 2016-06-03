@@ -1,0 +1,28 @@
+<div class="">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Turno reservado</h3>
+    </div>
+    <div class="panel-body">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+          <div class="row">
+            <span><label>Día y hora</label></span>
+            <p>{{TurnoDetailCtrl.turno.day | date : 'dd-MM-yyyy'}} {{TurnoDetailCtrl.turno.start}}-{{TurnoDetailCtrl.turno.end}} </p>
+          </div>
+          <div class="row">
+            <span><label>Profesional</label></span>
+            <p>{{TurnoDetailCtrl.turno.profesional.fatherSurname}}, {{TurnoDetailCtrl.turno.profesional.firstName}}</p>
+          </div>
+          <div class="row">
+            <span><label>Paciente</label></span>
+            <p>{{TurnoDetailCtrl.turno.paciente.fatherSurname}}, {{TurnoDetailCtrl.turno.paciente.firstName}}</p>
+          </div>
+        </div>
+      </form>
+      <div class="col-xs-6 col-sm-offset-9 col-sm-3 col-sm-offet-9 col-md-3 col-md-offset-9 col-lg-3 col-lg-offset-9">
+        <button ng-click="TurnoDetailCtrl.dismiss()" class="btn btn-success">Aceptar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
