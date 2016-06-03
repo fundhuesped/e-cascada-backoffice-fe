@@ -68,7 +68,7 @@
                     <div class="row">
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                             <div class="form-group" ng-class="{'has-error':NewPacienteCtrl.newPacienteForm.birthDate.$error.required}">
-                                <span><label>Fecha nacimiento*</label></span>
+                                <span><label>Fecha nacimiento*</label> <small><em>(dd/mm/aaaa o m/d/aaaa)</em></small></span>
                                 <p class="input-group">
                                     <input type="text" name="birthDate" class="form-control" uib-datepicker-popup="d!/M!/yyyy" ng-model="NewPacienteCtrl.newPaciente.birthDate" is-open="NewPacienteCtrl.birthDateCalendarPopup.opened" datepicker-options="NewPacienteCtrl.birthDateCalendarPopup.options" ng-required="true" close-text="Cerrar" alt-input-formats="NewPacienteCtrl.birthDateCalendarPopup.altInputFormats" current-text="Hoy" clear-text="Limpiar" />
                                     <span class="input-group-btn">
@@ -259,7 +259,7 @@
                     <div class="row">
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                             <div class="form-group">
-                                <span><label>Primera visita</label></span>
+                                <span><label>Primera visita</label> <small><em>(dd/mm/aaaa o m/d/aaaa)</em></small></span>
                                 <p class="input-group">
                                     <input type="text" name="firstVisit" class="form-control" uib-datepicker-popup="d!/M!/yyyy" ng-model="NewPacienteCtrl.newPaciente.firstVisit" is-open="NewPacienteCtrl.firstTimeCalendarPopup.opened" datepicker-options="NewPacienteCtrl.firstTimeCalendarPopup.options" ng-required="true" close-text="Cerrar" alt-input-formats="NewPacienteCtrl.firstTimeCalendarPopup.altInputFormats" current-text="Hoy" clear-text="Limpiar" />
                                     <span class="input-group-btn">

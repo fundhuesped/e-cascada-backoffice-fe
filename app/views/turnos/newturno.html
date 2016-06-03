@@ -85,7 +85,7 @@
                 <div class="row">
                   <div class="col-lg-10 col-lg-10 col-lg-10 col-lg-10">
                     <div class="form-group">
-                      <span><label>Fecha de nacimiento</label></span>
+                      <span><label>Fecha de nacimiento</label> <small><em>(dd/mm/aaaa o m/d/aaaa)</em></small></span>
                       <p class="input-group">
                         <input type="text" class="form-control" uib-datepicker-popup="d!/M!/yyyy" name="birthDate" ng-model="NewTurnoCtrl.paciente.birthDate" is-open="NewTurnoCtrl.birthDateCalendarPopup.opened" datepicker-options="NewTurnoCtrl.birthDateCalendarPopup.options" close-text="Cerrar" alt-input-formats="NewTurnoCtrl.birthDateCalendarPopup.altInputFormats" current-text="Hoy" clear-text="Limpiar" ng-disabled="NewTurnoCtrl.paciente.id" ng-model-options="{ debounce: { 'default': 500 } }" ng-change="NewTurnoCtrl.lookForPacientes()"/>
                         <span class="input-group-btn">
@@ -185,7 +185,7 @@ glyphicon glyphicon-remove"></span> Limpiar seleccion de paciente
             <div class="row">
               <div class="col-xs-12 col-md-6">
                 <div class="form-group">
-                  <span><label>A partir del día</label></span>
+                  <span><label>A partir del día</label> <small><em>(dd/mm/aaaa o m/d/aaaa)</em></small></span>
                   <p class="input-group">
                     <input type="text" class="form-control" uib-datepicker-popup="d!/M!/yyyy" ng-model="NewTurnoCtrl.selectedDate" is-open="NewTurnoCtrl.calendarPopup.opened" datepicker-options="NewTurnoCtrl.calendarPopup.options" ng-required="true" close-text="Cerrar" alt-input-formats="NewTurnoCtrl.calendarPopup.altInputFormats" current-text="Hoy" clear-text="Limpiar" />
                     <span class="input-group-btn">
