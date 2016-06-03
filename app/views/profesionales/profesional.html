@@ -90,7 +90,7 @@
                             <div class="form-group" ng-class="{'has-error':ProfesionalCtrl.profesionalForm.birthDate.$error.required}">
                                 <span><label>Fecha nacimiento</label></span>
                                 <p class="input-group">
-                                    <input type="text" name="birthDate" class="form-control" uib-datepicker-popup="dd/MM/yyyy" ng-model="ProfesionalCtrl.profesional.birthDate" is-open="ProfesionalCtrl.birthDateCalendarPopup.opened" datepicker-options="ProfesionalCtrl.birthDateCalendarPopup.options" ng-required="true" alt-input-formats="ProfesionalCtrl.birthDateCalendarPopup.altInputFormats" current-text="Hoy" clear-text="Limpiar" close-text="Cerrar"/>
+                                    <input type="text" name="birthDate" class="form-control" uib-datepicker-popup="d!/M!/yyyy" ng-model="ProfesionalCtrl.profesional.birthDate" is-open="ProfesionalCtrl.birthDateCalendarPopup.opened" datepicker-options="ProfesionalCtrl.birthDateCalendarPopup.options" ng-required="true" alt-input-formats="ProfesionalCtrl.birthDateCalendarPopup.altInputFormats" current-text="Hoy" clear-text="Limpiar" close-text="Cerrar"/>
                                     <span class="input-group-btn">
                                       <button type="button" class="btn btn-default" ng-click="ProfesionalCtrl.openBirthDateCalendar()"><i class="glyphicon glyphicon-calendar"></i></button>
                                     </span>

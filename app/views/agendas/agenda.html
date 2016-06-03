@@ -62,7 +62,7 @@
               <div class="form-group">
                 <span><label>Desde*</label></span>
                 <p class="input-group">
-                  <input type="text" name="birthDate" class="form-control" uib-datepicker-popup="dd/MM/yyyy" ng-model="AgendaCtrl.agenda.validFrom" is-open="AgendaCtrl.fromDateCalendarPopup.opened" datepicker-options="AgendaCtrl.fromDateCalendarPopup.options" ng-required="true" alt-input-formats="AgendaCtrl.fromDateCalendarPopup.altInputFormats" current-text="Hoy" clear-text="Limpiar" close-text="Cerrar" ng-disabled="true"/>
+                  <input type="text" name="birthDate" class="form-control" uib-datepicker-popup="d!/M!/yyyy" ng-model="AgendaCtrl.agenda.validFrom" is-open="AgendaCtrl.fromDateCalendarPopup.opened" datepicker-options="AgendaCtrl.fromDateCalendarPopup.options" ng-required="true" alt-input-formats="AgendaCtrl.fromDateCalendarPopup.altInputFormats" current-text="Hoy" clear-text="Limpiar" close-text="Cerrar" ng-disabled="true"/>
                   <span class="input-group-btn">
                     <button type="button" class="btn btn-default" ng-click="AgendaCtrl.openFromDateCalendar()"><i class="glyphicon glyphicon-calendar"></i></button>
                   </span>
@@ -76,7 +76,7 @@
               <div class="form-group">
                 <span><label>Hasta*</label></span>
                 <p class="input-group">
-                  <input type="text" name="validTo" class="form-control" uib-datepicker-popup="dd/MM/yyyy" ng-model="AgendaCtrl.agenda.validTo" is-open="AgendaCtrl.toDateCalendarPopup.opened" datepicker-options="AgendaCtrl.toDateCalendarPopup.options" ng-required="true" alt-input-formats="AgendaCtrl.toDateCalendarPopup.altInputFormats" current-text="Hoy" clear-text="Limpiar" close-text="Cerrar" ng-disabled="true"/>
+                  <input type="text" name="validTo" class="form-control" uib-datepicker-popup="d!/M!/yyyy" ng-model="AgendaCtrl.agenda.validTo" is-open="AgendaCtrl.toDateCalendarPopup.opened" datepicker-options="AgendaCtrl.toDateCalendarPopup.options" ng-required="true" alt-input-formats="AgendaCtrl.toDateCalendarPopup.altInputFormats" current-text="Hoy" clear-text="Limpiar" close-text="Cerrar" ng-disabled="true"/>
                   <span class="input-group-btn">
                     <button type="button" class="btn btn-default" ng-click="AgendaCtrl.openToDateCalendar()"><i class="glyphicon glyphicon-calendar"></i></button>
                   </span>

@@ -13,13 +13,11 @@
 
     vm.fromDateCalendarPopup = {
       opened: false,
-      altInputFormats: ['d!/M!/yyyy','dd-MM-yyyy'],
       options: {
       }
     };
     vm.toDateCalendarPopup = {
       opened: false,
-      altInputFormats: ['d!/M!/yyyy','dd-MM-yyyy'],
       options: {
       }
     };

@@ -40,7 +40,6 @@
         };
         vm.birthDateCalendarPopup = {
           opened: false,
-          altInputFormats: ['d!/M!/yyyy','dd-MM-yyyy'],
           options: {
             maxDate: new Date(),
           }

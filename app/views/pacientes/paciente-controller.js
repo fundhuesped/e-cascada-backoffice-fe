@@ -21,14 +21,12 @@
         vm.confirmStatusChange = confirmStatusChange;
         vm.birthDateCalendarPopup = {
           opened: false,
-          altInputFormats: ['d!/M!/yyyy','dd-MM-yyyy'],
           options: {
             maxDate: new Date(),
           }
         };
         vm.firstTimeCalendarPopup = {
           opened: false,
-          altInputFormats: ['d!/M!/yyyy','dd-MM-yyyy'],
           options: {
             maxDate: new Date(),
           }

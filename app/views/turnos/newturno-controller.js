@@ -51,14 +51,12 @@
     vm.updateSelectionRow = updateSelectionRow;
     vm.calendarPopup = {
       opened: false,
-      altInputFormats: ['d!/M!/yyyy','dd-MM-yyyy'],
       options: {
         minDate: new Date(),
       }
     };
     vm.birthDateCalendarPopup = {
       opened: false,
-      altInputFormats: ['d!/M!/yyyy','dd-MM-yyyy'],
       options: {
         maxDate: new Date(),
       }
