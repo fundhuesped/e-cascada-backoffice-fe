@@ -268,7 +268,7 @@
     function openTurnoModal(turno) {
       var modalInstance = $uibModal.open({
         templateUrl: '/views/turnos/turno-detail.html',
-        size: 'md',
+        size: 'sm',
         backdrop:'static',
         controller: 'TurnoDetailCtrl',
         controllerAs: 'TurnoDetailCtrl',
@@ -318,7 +318,6 @@
 
       turno.$update(function(){
         $loading.finish('app');
-        toastr.success('Turno creado con éxito');
         vm.openTurnoModal(turno);
       },function(error){
         $loading.finish('app');
