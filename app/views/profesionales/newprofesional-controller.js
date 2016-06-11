@@ -60,12 +60,6 @@
         }
 
         function confirm() {
-            if(vm.newProfesional.birthDate){
-                vm.newProfesionalForm.birthDate.$setValidity('required', true);
-            }else{
-                vm.newProfesionalForm.birthDate.$setValidity('required', false);
-            }
-
             if (vm.newProfesionalForm.$valid) {
                 vm.hideErrorMessage();
                 $loading.start('app');
@@ -74,9 +68,11 @@
                 profesional.otherNames = vm.newProfesional.otherNames;
                 profesional.fatherSurname = vm.newProfesional.fatherSurname;
                 profesional.motherSurname = vm.newProfesional.motherSurname;
+                profesional.licenseNumber = vm.newProfesional.licenseNumber;
+                profesional.municipalNumber = vm.newProfesional.municipalNumber;
                 profesional.documentType = vm.newProfesional.documentType;
                 profesional.documentNumber = vm.newProfesional.documentNumber;
-                profesional.birthDate = $filter('date')(vm.newProfesional.birthDate, "yyyy-MM-dd");
+                profesional.birthDate = (vm.newProfesional.birthDate?$filter('date')(vm.newProfesional.birthDate, "yyyy-MM-dd"):null);
                 profesional.genderAtBirth = vm.newProfesional.genderAtBirth;
                 profesional.genderOfChoice = vm.newProfesional.genderOfChoice;
                 profesional.email = vm.newProfesional.email;
