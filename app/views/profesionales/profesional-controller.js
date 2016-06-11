@@ -40,8 +40,8 @@
                 vm.districts = District.getActiveList();
                 vm.locations = Location.getActiveList();
                 vm.civilStatusTypes = CivilStatus.getActiveList();
-                vm.selectedDistrict = vm.profesional.location.district;
-                vm.selectedProvince = vm.profesional.location.district.province;
+                vm.selectedDistrict = (vm.profesional.location?vm.profesional.location.district:null);
+                vm.selectedProvince = (vm.profesional.location?vm.profesional.location.district.province:null);
                 vm.profesional.primaryPhoneMessage = (vm.profesional.primaryPhoneMessage?vm.profesional.primaryPhoneMessage:false);
                 if(vm.profesional.prestaciones && vm.profesional.prestaciones.length>0){
                     vm.selectedEspecialidad = vm.profesional.prestaciones[0].especialidad;
@@ -57,15 +57,11 @@
         }
         
         function confirm () {
-          if(vm.profesional.birthDate){
-                vm.profesionalForm.birthDate.$setValidity('required', true);
-            }else{
-                vm.profesionalForm.birthDate.$setValidity('required', false);
-            }
+
             if(vm.profesionalForm.$valid){
                 vm.hideErrorMessage();
                 $loading.start('app');
-                vm.profesional.birthDate = $filter('date')(vm.profesional.birthDate, 'yyyy-MM-dd');
+                vm.profesional.birthDate = (vm.profesional.birthDate?$filter('date')(vm.profesional.birthDate, 'yyyy-MM-dd'):null);
                 vm.profesional.$update(function(){
                     $loading.finish('app');
                     $uibModalInstance.close('modified');
