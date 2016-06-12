@@ -15,7 +15,7 @@
         }
 
         function dismiss (){
-            $uibModalInstance.dismiss('dismiss');
+            $uibModalInstance.close('dismiss');
         }
 
     }
