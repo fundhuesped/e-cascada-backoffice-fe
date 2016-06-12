@@ -126,6 +126,8 @@
         paciente.firstName = vm.paciente.firstName;
         paciente.fatherSurname = vm.paciente.fatherSurname;
         paciente.primaryPhoneNumber = vm.paciente.primaryPhoneNumber;
+        paciente.documentType = vm.paciente.documentType;
+        paciente.documentNumber = vm.paciente.documentNumber;
         paciente.prospect = true;
         paciente.birthDate = (vm.paciente.birthDate?$filter('date')(vm.paciente.birthDate, 'yyyy-MM-dd'):null);
 //        paciente.documentType = vm.paciente.documentType.id;
