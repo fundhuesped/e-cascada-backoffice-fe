@@ -206,8 +206,7 @@
       var searchObject = {
         taken: false,
         prestacion: vm.selectedPrestacion.id,
-        order_by:'asc',
-        order_field:'day',
+        ordering:'day,start',
         page:vm.currentPage,
         page_size:vm.pageSize
       };
