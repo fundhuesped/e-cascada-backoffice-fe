@@ -21,8 +21,7 @@
     //Controller initialization
     function activate() {
       vm.statusFilter = '1';
-      Agenda.getPaginatedActiveList({page_size:vm.pageSize,order_field:'profesional',
-        order_by:'asc'}, function(paginatedResult){
+      Agenda.getPaginatedActiveList({page_size:vm.pageSize,ordering:'profesional'}, function(paginatedResult){
         vm.agendas = paginatedResult.results;
         vm.totalItems = paginatedResult.count;
       });

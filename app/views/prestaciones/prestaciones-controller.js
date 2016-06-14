@@ -22,8 +22,7 @@
         //Controller initialization
         function activate(){
             vm.statusFilter = '1'; 
-            Prestacion.getPaginatedActiveList({page_size:vm.pageSize,order_field:'name',
-                order_by:'asc'}, function(paginatedResult){
+            Prestacion.getPaginatedActiveList({page_size:vm.pageSize,ordering:'name'}, function(paginatedResult){
                 vm.prestaciones = paginatedResult.results;
                 for (var i = vm.prestaciones.length - 1; i >= 0; i--) {
                     Object.defineProperty(vm.prestaciones[i],
@@ -69,8 +68,7 @@
             var searchObject = {
                 page_size:vm.pageSize,
                 page:vm.currentPage,
-                order_field:'name',
-                order_by:'asc',
+                ordering:'name',
                 name:vm.nameFilter
             };
             if(currentStatusFilter){

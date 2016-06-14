@@ -48,8 +48,7 @@
         activate();
 
         function activate() {
-            Agenda.getActiveList({page_size:1,order_field:'validTo',
-                order_by:'desc', profesional:profesional.id}, function(list){
+            Agenda.getActiveList({page_size:1,ordering:'-validTo', profesional:profesional.id}, function(list){
                 if(list.length>0){
                     vm.lastAgendaFinishDate = new Date(list[0].validTo);
                     vm.fromDateCalendarPopup.options.maxDate = vm.lastAgendaFinishDate;

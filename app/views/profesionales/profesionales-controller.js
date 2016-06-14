@@ -30,8 +30,7 @@
         //Controller initialization
         function activate(){
             vm.statusFilter = '1';
-            Profesional.getPaginatedActiveList({page_size:vm.pageSize,order_field:'firstName',
-                order_by:'asc'}, function(paginatedResult){
+            Profesional.getPaginatedActiveList({page_size:vm.pageSize,ordering:'firstName'}, function(paginatedResult){
                 vm.profesionales = paginatedResult.results;
                 vm.totalItems = paginatedResult.count;
             });
@@ -120,8 +119,7 @@
             var searchObject = {
                 page_size:vm.pageSize,
                 page:vm.currentPage,
-                order_field:'firstName',
-                order_by:'asc',
+                ordering:'firstName',
                 firstName:vm.nameFilter
             };
             if(currentStatusFilter){

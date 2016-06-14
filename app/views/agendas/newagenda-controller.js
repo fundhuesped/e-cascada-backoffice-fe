@@ -167,8 +167,7 @@
 
 
     function selectPrestacion(){
-      Agenda.getActiveList({page_size:1,order_field:'validTo',
-        order_by:'desc', profesional:vm.selectedProfesional.id, prestacion:vm.selectedPrestacion.id}, function(list){
+      Agenda.getActiveList({page_size:1,ordering:'-validTo', profesional:vm.selectedProfesional.id, prestacion:vm.selectedPrestacion.id}, function(list){
         if(list.length>0){
             vm.lastAgendaFinishDate = new Date(list[0].validTo + 'T03:00:00');
             if(vm.lastAgendaFinishDate <= new Date()){

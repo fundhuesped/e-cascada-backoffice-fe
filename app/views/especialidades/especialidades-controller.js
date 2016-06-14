@@ -16,8 +16,7 @@
         //Controller initialization
         function activate(){
             vm.statusFilter = '1'; 
-            Especialidad.getPaginatedActiveList({page_size:vm.pageSize,order_field:'name',
-                order_by:'asc'}, function(paginatedResult){
+            Especialidad.getPaginatedActiveList({page_size:vm.pageSize,ordering:'name'}, function(paginatedResult){
                 vm.especialidades = paginatedResult.results;
                 vm.totalItems = paginatedResult.count;
             });
@@ -66,8 +65,7 @@
             var searchObject = {
                 page_size:vm.pageSize,
                 page:vm.currentPage,
-                order_field:'name',
-                order_by:'asc',
+                ordering:'name',
                 name: vm.nameFilter
             };
 

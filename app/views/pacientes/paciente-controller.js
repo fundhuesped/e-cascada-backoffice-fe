@@ -58,7 +58,7 @@
                 vm.paciente.primaryPhoneMessage = (vm.paciente.primaryPhoneMessage?vm.paciente.primaryPhoneMessage:false);
                 vm.selectedDistrict = (vm.paciente.location?vm.paciente.location.district:null);
                 vm.selectedProvince = (vm.paciente.location?{id:vm.paciente.location.district.province.id}:null);
-                vm.turnos = Turno.getActiveList({paciente:vm.paciente.id, order_field:'day', order_by:'desc'});                
+                vm.turnos = Turno.getActiveList({paciente:vm.paciente.id, ordering:'-day'});                
             });
         }
 
