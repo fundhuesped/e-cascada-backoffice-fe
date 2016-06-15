@@ -45,10 +45,10 @@ angular.module('turnos.app', [
                         controllerAs: 'NavbarCtrl'
                     },
                     'main': {
-                        templateUrl: 'views/turnos/turnos.html',
-                        controller: 'TurnosCtrl',
-                        controllerAs: 'TurnosCtrl'
-                    }
+                        templateUrl: 'views/turnos/newturno.html',
+                        controller: 'NewTurnoCtrl',
+                        controllerAs: 'NewTurnoCtrl'
+                    },
                 }
             })
             .state('turnosCalendar', {
