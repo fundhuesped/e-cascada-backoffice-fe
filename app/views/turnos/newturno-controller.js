@@ -213,7 +213,10 @@
 
       if (vm.selectedDate) {
         searchObject.day__gte = $filter('date')(vm.selectedDate, 'yyyy-MM-dd');
+      }else{
+        searchObject.day__gte = $filter('date')(new Date(), 'yyyy-MM-dd');
       }
+      
       if (vm.selectedProfesional) {
         searchObject.profesional = vm.selectedProfesional.id;
       }
