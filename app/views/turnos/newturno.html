@@ -229,6 +229,27 @@ glyphicon glyphicon-remove"></span> Limpiar seleccion de paciente
         <div class="row" style="margin-top:15px;">
           <div class="col-md-12">
             <uib-tabset>
+              <uib-tab select="NewTurnoCtrl.renderCalendar()">
+                <uib-tab-heading>
+                  <span class="glyphicon glyphicon-calendar" ></span> Calendario
+                </uib-tab-heading>
+                <div class="row">
+                  <div class="col-md-9">
+                    <div ui-calendar="NewTurnoCtrl.calendarConfig" ng-model="NewTurnoCtrl.eventSources"
+                         calendar="newTurnosCalendar"></div>
+                  </div>
+                  <div class="col-md-3">
+                  <button ng-click="NewTurnoCtrl.reRedender()" type="button">Refresh</button>
+                    <div class="row" ng-show="NewTurnoCtrl.selectedTurno">
+                      <div><b>{{NewTurnoCtrl.selectedTurno.day | date : 'dd-MM-yyyy'}}</b></div>
+                      <div><label>Horario:</label> {{NewTurnoCtrl.selectedTurno.start}} - {{NewTurnoCtrl.selectedTurno.end}}</div>
+                      <div><label>Profesional:</label> {{NewTurnoCtrl.selectedTurno.profesional.fatherSurname}}, {{NewTurnoCtrl.selectedTurno.profesional.firstName}}</div>
+                      <div><label>Especialidad:</label> {{NewTurnoCtrl.selectedTurno.prestacion.especialidad.name}}</div>
+                      <div><label>Prestacion:</label> {{NewTurnoCtrl.selectedTurno.prestacion.name}}</div>
+                    </div>
+                  </div>
+                </div>
+              </uib-tab>
               <uib-tab>
                 <uib-tab-heading>
                   <span class="glyphicon glyphicon-list-alt"></span> Listado
@@ -260,27 +281,6 @@ glyphicon glyphicon-remove"></span> Limpiar seleccion de paciente
                       </tr>
                       </tbody>
                     </table>
-                  </div>
-                </div>
-              </uib-tab>
-              <uib-tab select="NewTurnoCtrl.renderCalendar()" ng-hide="true">
-                <uib-tab-heading>
-                  <span class="glyphicon glyphicon-calendar" ></span> Calendario
-                </uib-tab-heading>
-                <div class="row">
-                  <div class="col-md-9">
-                    <div ui-calendar="NewTurnoCtrl.calendarConfig" ng-model="NewTurnoCtrl.eventSources"
-                         calendar="newTurnosCalendar"></div>
-                  </div>
-                  <div class="col-md-3">
-                  <button ng-click="NewTurnoCtrl.reRedender()" type="button">Refresh</button>
-                    <div class="row" ng-show="NewTurnoCtrl.selectedTurno">
-                      <div><b>{{NewTurnoCtrl.selectedTurno.day | date : 'dd-MM-yyyy'}}</b></div>
-                      <div><label>Horario:</label> {{NewTurnoCtrl.selectedTurno.start}} - {{NewTurnoCtrl.selectedTurno.end}}</div>
-                      <div><label>Profesional:</label> {{NewTurnoCtrl.selectedTurno.profesional.fatherSurname}}, {{NewTurnoCtrl.selectedTurno.profesional.firstName}}</div>
-                      <div><label>Especialidad:</label> {{NewTurnoCtrl.selectedTurno.prestacion.especialidad.name}}</div>
-                      <div><label>Prestacion:</label> {{NewTurnoCtrl.selectedTurno.prestacion.name}}</div>
-                    </div>
                   </div>
                 </div>
               </uib-tab>
