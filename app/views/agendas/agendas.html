@@ -37,7 +37,7 @@
     <div class="panel-body">
       <div class="col-md-6" style="border-right: 1px solid;">
         <div class="row">
-            <uib-pagination total-items="AgendasCtrl.totalItems" ng-model="AgendasCtrl.currentPage" items-per-page="AgendasCtrl.pageSize" class="pagination-sm" boundary-link-numbers="true" ng-change="AgendasCtrl.searchName()"></uib-pagination>
+            <uib-pagination max-size="5" total-items="AgendasCtrl.totalItems" ng-model="AgendasCtrl.currentPage" items-per-page="AgendasCtrl.pageSize" class="pagination-sm" boundary-link-numbers="true" ng-change="AgendasCtrl.searchName()"></uib-pagination>
         </div>
         <div class="row">
           <table class="table table-hover">

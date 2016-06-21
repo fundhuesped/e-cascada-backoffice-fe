@@ -34,7 +34,7 @@
 		<div class="panel-body">
 			<div class="col-md-4" style="border-right: 1px solid;">
 				<div class="row">
-			    	<uib-pagination total-items="PacientesCtrl.totalItems" ng-model="PacientesCtrl.currentPage" items-per-page="PacientesCtrl.pageSize" class="pagination-sm" boundary-link-numbers="true" ng-change="PacientesCtrl.searchName()"></uib-pagination>
+			    	<uib-pagination max-size="5" total-items="PacientesCtrl.totalItems" ng-model="PacientesCtrl.currentPage" items-per-page="PacientesCtrl.pageSize" class="pagination-sm" boundary-link-numbers="true" ng-change="PacientesCtrl.searchName()"></uib-pagination>
 				</div>
 				<div class="row">					
 					<table class="table table-hover">
