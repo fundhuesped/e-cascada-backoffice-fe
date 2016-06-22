@@ -22,14 +22,17 @@
   function newTurnoCtrl($uibModal, uiCalendarConfig, toastr, $loading, $filter, Especialidad, Prestacion, Paciente, Document, Profesional, Turno) {
     var vm = this;
     vm.canConfirmTurno = canConfirmTurno;
+    vm.canLookForTurnos = canLookForTurnos;
     vm.clearPacienteSelection = clearPacienteSelection;
     vm.cleanForm = cleanForm;
     vm.confirmTurno = confirmTurno;
+    vm.currentTab = 0;
     vm.especialidades = null;
     vm.eventSources = [];
-    vm.limpiarBusquedaTurno = limpiarBusquedaTurno;
+    vm.cleanTurnosSearch = cleanTurnosSearch;
     vm.lookForPacientes = lookForPacientes;
     vm.lookForTurnos = lookForTurnos;
+    var lookedForTurnos = false;
     vm.newTurno = {};
     vm.openTurnoModal = openTurnoModal;
     vm.openPacienteModal = openPacienteModal;
@@ -49,6 +52,7 @@
     vm.totalItems = null;
     vm.currentPage = 1;
     vm.updateSelectionRow = updateSelectionRow;
+    vm.tabChanged = tabChanged;
     vm.calendarPopup = {
       opened: false,
       options: {
@@ -86,6 +90,11 @@
       },
       eventClick: function selectTurnoOnEventClick(date, jsEvent, view) {
         vm.updateSelectionRow(date.id, vm.turnos, date);
+      },
+      viewRender: function(view, element){
+        if(canLookForTurnos() && lookedForTurnos){
+          vm.lookForTurnos();
+        }
       }
     };
 
@@ -94,6 +103,7 @@
       vm.especialidades = Especialidad.getActiveList();
       vm.profesionales = Profesional.getActiveList();
       vm.recomendationsPanel.message = 'Por favor comience a completar el formulario para buscar pacientes';
+      vm.renderCalendar();
     }
 
     function canConfirmTurno(){
@@ -130,9 +140,7 @@
         paciente.documentNumber = vm.paciente.documentNumber;
         paciente.prospect = true;
         paciente.birthDate = (vm.paciente.birthDate?$filter('date')(vm.paciente.birthDate, 'yyyy-MM-dd'):null);
-//        paciente.documentType = vm.paciente.documentType.id;
         paciente.email = vm.paciente.email;
-//        paciente.documentNumber = vm.paciente.documentNumber;
         paciente.$save(function(createdPaciente){
           vm.selectedTurno.paciente = createdPaciente;
           vm.reserveTurno();
@@ -150,15 +158,32 @@
       vm.birthDateCalendarPopup.opened = true;
     }
 
+    function cleanForm(){
+      vm.cleanTurnosSearch();
+      vm.newPaciente = null;
+      vm.clearPacienteSelection();
+    }
+    
+    function cleanTurnosResult() {
+      lookedForTurnos = false;
+      vm.totalItems = null;
+      vm.selectedTurno = null;
+      if(vm.turnos){
+        vm.turnos.length = 0;
+      }
+      if(vm.eventSources){
+        vm.eventSources.length = 0;
+      }
+    }
 
-    function limpiarBusquedaTurno() {
-      vm.showTurnos = false;
+    function cleanTurnosSearch() {
       vm.selectedPrestacion = null;
       vm.selectedEspecialidad = null;
-      vm.prestaciones = [];
+      vm.prestaciones.length = 0;
       vm.selectedProfesional = null;
       vm.selectedDate = null;
       vm.selectedPaciente = null;
+      cleanTurnosResult();
     }
 
     function lookForPacientes() {
@@ -198,17 +223,25 @@
         }
     }
 
-    function lookForTurnos() {
+    function canLookForTurnos(){
+      return vm.selectedPrestacion || (vm.selectedEspecialidad && vm.selectedProfesional);
+    }
+
+
+    function tabChanged(){
+      if(lookedForTurnos){
+        lookForTurnos(true);
+      }
+    }
+
+    function lookForTurnos(tabChanged) {
       $loading.start('app');
-      vm.showTurnos = true;
-      vm.turnos = [];
-      vm.selectedTurno = null;
+      cleanTurnosResult();
+
       var searchObject = {
         taken: false,
         prestacion: vm.selectedPrestacion.id,
         ordering:'day,start',
-        page:vm.currentPage,
-        page_size:vm.pageSize
       };
 
       if (vm.selectedDate) {
@@ -221,11 +254,24 @@
         searchObject.profesional = vm.selectedProfesional.id;
       }
 
-      Turno.getPaginatedActiveList(searchObject).$promise.then(function (paginatedResult) {
+      //For calendar search
+      if(vm.currentTab === 0 && !tabChanged){
+        getAllTurnosForDates(searchObject);
+      }else{
+        getTurnosList(searchObject);
+      }
+    }
+
+    function getAllTurnosForDates(searchObject){
+      var calendarView = uiCalendarConfig.calendars.newTurnosCalendar.fullCalendar( 'getView' );
+      searchObject.start = calendarView.start.format('YYYY-MM-DD');
+      searchObject.end = calendarView.end.format('YYYY-MM-DD');
+  
+      Turno.getFullActiveList(searchObject).$promise.then(function (results) {
+        lookedForTurnos = true;
         turnosSource =[];
-        vm.totalItems = paginatedResult.count;
-        angular.forEach(paginatedResult.results, function (turno) {
-          vm.turnos.push(turno);
+        vm.turnos = results;
+        angular.forEach(results, function (turno) {
           var startTime = new Date(turno.day + 'T' + turno.start);
           var endTime = new Date(turno.day + 'T' + turno.end);
           var event = {
@@ -243,8 +289,21 @@
         vm.eventSources.push(turnosSource);
         vm.renderCalendar();
         $loading.finish('app');
-        });
-      }
+      });
+    }
+
+    function getTurnosList(searchObject){
+      searchObject.page = vm.currentPage;
+      searchObject.page_size = vm.pageSize;
+
+      Turno.getPaginatedActiveList(searchObject).$promise.then(function (paginatedResult) {
+        lookedForTurnos = true;
+        vm.totalItems = paginatedResult.count;
+        vm.turnos = paginatedResult.results;
+
+        $loading.finish('app');
+      });
+    }
 
     //Open the detailed pacient info modal
     function openPacienteModal(selectedPaciente) {
@@ -295,15 +354,6 @@
         }
       }, 1);
     }
-
-    function cleanForm(){
-      vm.limpiarBusquedaTurno();
-      vm.turnos = [];
-      vm.newPaciente = null;
-      vm.selectedTurno = null;
-      vm.clearPacienteSelection();
-      vm.totalItems = null;
-    }
     
     function reRedender() {
       uiCalendarConfig.calendars.newTurnosCalendar.fullCalendar( 'rerenderEvents' );
@@ -328,6 +378,7 @@
     }    
 
     function especialidadChanged() {
+      cleanTurnosResult();
       if (vm.selectedEspecialidad) {
         if(angular.isObject(vm.selectedProfesional)){
           vm.prestaciones = Prestacion.getActiveList({especialidad: vm.selectedEspecialidad.id, profesional:vm.selectedProfesional.id});
@@ -339,6 +390,7 @@
     }
 
     function prestacionChanged() {
+      cleanTurnosResult();
       if (vm.selectedPrestacion) {
         if(!angular.isObject(vm.selectedProfesional)){
           vm.profesionales = Profesional.getActiveList({prestacion: vm.selectedPrestacion.id});
@@ -347,6 +399,7 @@
     }
 
     function profesionalChanged() {
+      cleanTurnosResult();
       if (vm.selectedProfesional) {
         if(angular.isObject(vm.selectedEspecialidad)){
           vm.prestaciones = Prestacion.getActiveList({especialidad: vm.selectedEspecialidad.id, profesional:vm.selectedProfesional.id});
@@ -414,30 +467,31 @@
           selectedRepresentation = calendarRepresentation;
         }
       }else{
-        for (var i = vm.eventSources[0].length - 1; i >= 0; i--) {
-          
-          if(vm.eventSources[0][i].id == position){
-            if(vm.eventSources[0][i].selected){
-              vm.eventSources[0][i].color = '#D8C358';
-              vm.eventSources[0][i].selected = false;
-              selectedRepresentation = null;  
+        if(vm.eventSources.length >0){
+          for (var i = vm.eventSources[0].length - 1; i >= 0; i--) {
+            if(vm.eventSources[0][i].id == position){
+              if(vm.eventSources[0][i].selected){
+                vm.eventSources[0][i].color = '#D8C358';
+                vm.eventSources[0][i].selected = false;
+                selectedRepresentation = null;  
+              }else{
+                vm.eventSources[0][i].color = '#6CC547';
+                vm.eventSources[0][i].selected = true;
+                selectedRepresentation = event;            
+              }
             }else{
-              vm.eventSources[0][i].color = '#6CC547';
-              vm.eventSources[0][i].selected = true;
-              selectedRepresentation = event;            
-            }
-          }else{
-            if(vm.eventSources[0][i].selected){
-              vm.eventSources[0][i].selected = false;
-              vm.eventSources[0][i].color = '#D8C358';
+              if(vm.eventSources[0][i].selected){
+                vm.eventSources[0][i].selected = false;
+                vm.eventSources[0][i].color = '#D8C358';
+              }
             }
           }
         }
+
           
 
       }
       angular.forEach(entities, function (turno, index) {
-
         if (position != turno.id) {
           if(turno.selected){
             turno.selected = false;

@@ -153,3 +153,33 @@ body {
     }
 }
 
+
+
+/* uib-tabs styles for divs. Workarround for clikeable elements into tabs*/
+
+.nav-tabs > li.active > div, .nav-tabs > li.active > div:hover, .nav-tabs > li.active > div:focus {
+    color: #555;
+    cursor: default;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-bottom-color: transparent;
+}
+
+
+.nav-tabs > li > div{
+    margin-right: 2px;
+    line-height: 1.42857143;
+    border: 1px solid transparent;
+    border-radius: 4px 4px 0 0;
+}
+.nav > li > div{
+    position: relative;
+    display: block;
+    padding: 10px 15px;
+    color: #337ab7;
+    text-decoration: none;
+}
+
+.nav-tabs > li > div:hover {
+    border-color: #eee #eee #ddd;
+}

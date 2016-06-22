@@ -199,11 +199,11 @@ glyphicon glyphicon-remove"></span> Limpiar seleccion de paciente
               <br>
               <div
                 class="col-xs-6 col-xs-offset-5 col-sm-6 col-sm-offset-5 col-md-6 col-md-offset-5 col-lg-6 col-lg-offset-5">
-                <button ng-click="NewTurnoCtrl.limpiarBusquedaTurno()" class="btn btn-default" type="button">Limpiar
+                <button ng-click="NewTurnoCtrl.cleanTurnosSearch()" class="btn btn-default" type="button">Limpiar
                   busqueda
                 </button>
                 <button id="btn-confirm" type="button" class="btn btn-success" ng-click="NewTurnoCtrl.lookForTurnos()"
-                        ng-disabled="!NewTurnoCtrl.selectedPrestacion || (!NewTurnoCtrl.selectedEspecialidad && !NewTurnoCtrl.selectedProfesional)">
+                        ng-disabled="!NewTurnoCtrl.canLookForTurnos()">
                   Buscar
                 </button>
               </div>
@@ -228,8 +228,8 @@ glyphicon glyphicon-remove"></span> Limpiar seleccion de paciente
         </div>
         <div class="row" style="margin-top:15px;">
           <div class="col-md-12">
-            <uib-tabset>
-              <uib-tab select="NewTurnoCtrl.renderCalendar()">
+            <uib-tabset active="NewTurnoCtrl.currentTab">
+              <uib-tab select="NewTurnoCtrl.tabChanged()" index="0">
                 <uib-tab-heading>
                   <span class="glyphicon glyphicon-calendar" ></span> Calendario
                 </uib-tab-heading>
@@ -250,7 +250,7 @@ glyphicon glyphicon-remove"></span> Limpiar seleccion de paciente
                   </div>
                 </div>
               </uib-tab>
-              <uib-tab>
+              <uib-tab index="1" select="NewTurnoCtrl.tabChanged()" >
                 <uib-tab-heading>
                   <span class="glyphicon glyphicon-list-alt"></span> Listado
                 </uib-tab-heading>
@@ -268,7 +268,7 @@ glyphicon glyphicon-remove"></span> Limpiar seleccion de paciente
                         <th>Profesional</th>
                       </tr>
                       </thead>
-                      <tbody ng-show="NewTurnoCtrl.showTurnos">
+                      <tbody>
                       <tr ng-repeat="(key, turno) in NewTurnoCtrl.turnos" ng-class="{'bg-success':turno.selected}"
                           ng-click="NewTurnoCtrl.updateSelectionRow(turno.id,NewTurnoCtrl.turnos)">
                         <td><input type="checkbox" ng-checked="turno.selected"></td>
