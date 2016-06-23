@@ -19,7 +19,8 @@ angular.module('turnos.app', [
         'darthwade.dwLoading',
         'toastr',
         'date-dropdowns',
-        'LocalStorageModule'
+        'LocalStorageModule',
+        'angularMoment'
     ])
     .config(function ($stateProvider, $urlRouterProvider, $resourceProvider) {
         $resourceProvider.defaults.stripTrailingSlashes = false;

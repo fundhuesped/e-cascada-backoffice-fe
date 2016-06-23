@@ -11,9 +11,10 @@
                                   '$filter',
                                   'profesional',
                                   'Leave',
-                                  'Agenda'];
+                                  'Agenda',
+                                  'moment'];
 
-    function addLeaveController($loading, $uibModalInstance, $filter, profesional, Leave, Agenda) {
+    function addLeaveController($loading, $uibModalInstance, $filter, profesional, Leave, Agenda, moment) {
         var vm = this;
         vm.cancel = cancel;
         vm.confirm = confirm;
@@ -66,7 +67,8 @@
 
         function confirm() {
             if(vm.leaveForm.$valid){
-                if(vm.newLeave.fromDate && vm.newLeave.toDate && (vm.newLeave.fromDate <= vm.newLeave.toDate) && vm.newLeave.fromDate >= new Date() && vm.newLeave.toDate <=vm.lastAgendaFinishDate){
+                var today = moment().startOf('day');
+                if(vm.newLeave.fromDate && vm.newLeave.toDate && (vm.newLeave.fromDate <= vm.newLeave.toDate) && vm.newLeave.fromDate >= today && vm.newLeave.toDate <=vm.lastAgendaFinishDate){
                     vm.hideErrorMessage();
                     $loading.start('app');
                     var leave = new Leave();
