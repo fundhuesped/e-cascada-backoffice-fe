@@ -261,7 +261,7 @@
                             <div class="form-group">
                                 <span><label>Primera visita</label> <small><em>(dd/mm/aaaa o m/d/aaaa)</em></small></span>
                                 <p class="input-group">
-                                    <input type="text" name="firstVisit" class="form-control" uib-datepicker-popup="d!/M!/yyyy" ng-model="NewPacienteCtrl.newPaciente.firstVisit" is-open="NewPacienteCtrl.firstTimeCalendarPopup.opened" datepicker-options="NewPacienteCtrl.firstTimeCalendarPopup.options" ng-required="true" close-text="Cerrar" alt-input-formats="NewPacienteCtrl.firstTimeCalendarPopup.altInputFormats" current-text="Hoy" clear-text="Limpiar" />
+                                    <input type="text" name="firstVisit" class="form-control" uib-datepicker-popup="d!/M!/yyyy" ng-model="NewPacienteCtrl.newPaciente.firstVisit" is-open="NewPacienteCtrl.firstTimeCalendarPopup.opened" datepicker-options="NewPacienteCtrl.firstTimeCalendarPopup.options" close-text="Cerrar" alt-input-formats="NewPacienteCtrl.firstTimeCalendarPopup.altInputFormats" current-text="Hoy" clear-text="Limpiar" />
                                     <span class="input-group-btn">
                                       <button type="button" class="btn btn-default" ng-click="NewPacienteCtrl.openFirstTimeCalendar()"><i class="glyphicon glyphicon-calendar"></i></button>
                                     </span>
@@ -285,7 +285,9 @@
                     <div class="row">
                         <div class="form-group">
                             <span><label>Acepto consentimiento informado de datos</label></span>
-                            <input name="terms" type="checkbox" ng-model="NewPacienteCtrl.newPaciente.terms">
+                            <label class="radio-inline"><input type="radio" name="consent" ng-model="NewPacienteCtrl.newPaciente.consent" value="Yes">Si</label>
+                            <label class="radio-inline"><input type="radio" name="consent" ng-model="NewPacienteCtrl.newPaciente.consent" value="No">No</label>
+                            <label class="radio-inline"><input type="radio" name="consent" ng-model="NewPacienteCtrl.newPaciente.consent" value="Not asked" >No preguntado</label>
                         </div>
                     </div>
 

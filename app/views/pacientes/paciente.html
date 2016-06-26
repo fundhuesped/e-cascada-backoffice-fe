@@ -302,8 +302,9 @@
                     <div class="row">
                         <div class="form-group">
                             <span><label>Acepto consentimiento informado de datos</label></span>
-                            <input name="terms" type="checkbox" ng-model="PacienteCtrl.paciente.terms">
-                        </div>
+                            <label class="radio-inline"><input type="radio" name="consent" ng-model="PacienteCtrl.paciente.consent" value="Yes">Si</label>
+                            <label class="radio-inline"><input type="radio" name="consent" ng-model="PacienteCtrl.paciente.consent" value="No">No</label>
+                            <label class="radio-inline"><input type="radio" name="consent" ng-model="PacienteCtrl.paciente.consent" value="Not asked" >No preguntado</label>                        </div>
                     </div>
                 </div>
             </form>

@@ -36,7 +36,8 @@
             socialService:null,
             civilStatus:null,
             education:null,
-            primaryPhoneMessage:false
+            primaryPhoneMessage:false,
+            consent:'Not asked'
         };
 
         activate();
@@ -93,6 +94,7 @@
                 paciente.bornPlace = vm.newPaciente.bornPlace;
                 paciente.firstVisit = $filter('date')(vm.newPaciente.firstVisit, "yyyy-MM-dd");
                 paciente.notes = vm.newPaciente.notes;
+                paciente.consent = vm.newPaciente.consent;
                 paciente.$save(function () {
                         $loading.finish('app');
                         $uibModalInstance.close('created');
