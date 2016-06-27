@@ -3,7 +3,7 @@
   function LeaveProvider() {
     function LeaveResource($resource, apiBase) {
         function transformDataSet(data){ 
-                  return angular.fromJson(data).results;
+          return angular.fromJson(data).results;
         }
         var Leave = $resource(apiBase + 'practicas/ausencia/:id/', {id: '@id'}, {
         update: {
@@ -25,6 +25,11 @@
           method: 'GET',
           isArray: true,            
           transformResponse: transformDataSet
+        },
+        getPaginatedActiveList:{
+          method: 'GET',
+          params:{status:'Active'},
+          isArray: false
         }
       });
 

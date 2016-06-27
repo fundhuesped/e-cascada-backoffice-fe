@@ -9,14 +9,16 @@
         
     profesionalesCtrl.$inject = ['$uibModal',
                                  'toastr',
-                                 'Profesional'];
+                                 'Profesional', 
+                                 '$state'];
 
-    function profesionalesCtrl ($uibModal,toastr,Profesional) {
+    function profesionalesCtrl ($uibModal,toastr,Profesional, $state) {
         var vm = this;
         vm.addLeave = addLeave;
         vm.profesionales = [];
         vm.profesional = null;
         vm.detail = detail;
+        vm.goToAusencias = goToAusencias;
         vm.modifyProfesional = modifyProfesional;
         vm.newProfesional = newProfesional;
         vm.searchName = searchName;
@@ -38,6 +40,10 @@
 
         function detail(profesional){
             vm.profesional = profesional;
+        }
+
+        function goToAusencias(){
+            $state.go('ausencias',{profesional: vm.profesional});
         }
 
         function modifyProfesional(selectedProfesional){

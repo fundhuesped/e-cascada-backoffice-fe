@@ -262,6 +262,25 @@ angular.module('turnos.app', [
                     },
                 }
             })
+            .state('ausencias', {
+                url: '/ausencias',
+                params: {
+                    profesional: null
+                },
+                views: {
+                    'navbar': {
+                        templateUrl: 'views/navbar/navbar.html',
+                        controller: 'NavbarCtrl',
+                        controllerAs: 'NavbarCtrl'
+                    },
+
+                    'main': {
+                        templateUrl: 'views/profesionales/ausencias.html',
+                        controller: 'AusenciasCtrl',
+                        controllerAs: 'AusenciasCtrl'
+                    },
+                }
+            })
             .state('newagenda', {
               url: '/newagenda',
               views: {

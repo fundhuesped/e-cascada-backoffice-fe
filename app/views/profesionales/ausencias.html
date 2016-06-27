@@ -1,0 +1,51 @@
+<div class="container">
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<div class="row">
+				<form class="form-inline" name="AusenciasCtrl.searchPreferencesForm">
+					<div class="col-md-5">
+						<h3 class="panel-title">Ausencias del profesional {{AusenciasCtrl.profesional.firstName}} {{AusenciasCtrl.profesional.fatherSurname}}</h3>
+					</div>
+					<div class="col-md-2 col-md-offset-3">
+						<label>Mostrar</label>
+			            <input type="number" name="pageSize" class="form-control" ng-model="AusenciasCtrl.pageSize" ng-change="AusenciasCtrl.changeSearchParameter()" style="width: 64px;" ng-model-options="{ debounce: 500 }" >
+		            </div>
+					<div class="col-md-2">
+						<button id="btn-confirm" type="button" class="btn btn-success pull-right" ng-click="AusenciasCtrl.addLeave()">
+							<span class="glyphicon glyphicon-plus"></span> Nueva ausencia
+						</button>
+					</div>
+				</form>
+			</div>
+		</div>
+		<div class="panel-body">
+			<div class="col-md-12">
+				<div class="row">
+			    	<uib-pagination max-size="5" total-items="AusenciasCtrl.totalItems" ng-model="AusenciasCtrl.currentPage" items-per-page="AusenciasCtrl.pageSize" class="pagination-sm" boundary-link-numbers="true" ng-change="AusenciasCtrl.searchAusencias()"></uib-pagination>
+				</div>
+				<div class="row">
+					<table class="table table-hover">
+						<thead>
+						<tr>
+							<th>#</th>
+							<th>Desde</th>
+							<th>Hasta</th>
+							<th>Ausencia por</th>
+							<th>Notas</th>
+						</tr>
+						</thead>
+						<tbody>
+						<tr ng-repeat="(key, ausencia) in AusenciasCtrl.ausencias">
+							<th scope="row">{{ausencia.id}}</th>
+							<td style="max-width:125px; word-wrap:break-word;">{{ausencia.start_day}}</td>
+							<td style="max-width:125px; word-wrap:break-word;">{{ausencia.end_day}}</td>
+							<td style="max-width:125px; word-wrap:break-word;">{{ausencia.reason}}</td>
+							<td style="max-width:125px; word-wrap:break-word;">{{ausencia.notes}}</td>
+						</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

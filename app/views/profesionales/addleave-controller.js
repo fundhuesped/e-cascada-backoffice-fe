@@ -79,7 +79,7 @@
                     leave.reason = vm.newLeave.reason;
                     leave.$save(function(){
                         $loading.finish('app');
-                        $uibModalInstance.close('modified');
+                        $uibModalInstance.close('created');
                     },function(){
                         $loading.finish('app');
                         vm.showErrorMessage();
