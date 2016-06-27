@@ -24,6 +24,7 @@
                 prestacion.name = vm.newPrestacion.name;
                 prestacion.description = vm.newPrestacion.description;
                 prestacion.notes = vm.newPrestacion.notes;
+                prestacion.default = vm.newPrestacion.default;
                 prestacion.status = 'Active';
                 prestacion.durationHours = vm.newPrestacion.duration.hours;
                 prestacion.durationMinutes = vm.newPrestacion.duration.minutes;

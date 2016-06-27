@@ -9,7 +9,6 @@
         vm.confirmDelete = confirmDelete;
         vm.confirmReactivate = confirmReactivate;
         vm.confirmStatusChange = confirmStatusChange; 
-        vm.editing = true;
         vm.errorMessage = null;
         vm.especialidad = {};
         vm.originalEspecialidad = {};
