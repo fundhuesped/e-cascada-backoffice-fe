@@ -50,7 +50,6 @@
         getCancelados:{
           url: apiBase + 'practicas/turno/cancelado/',
           method: 'GET',
-          params: {ausencia: 1},
           isArray: true,
           transformResponse: transformDataSet
         }

@@ -15,7 +15,7 @@
     vm.currentPage = 1;
     vm.pageSize = 20;
     vm.totalItems = null;
-    
+
     activate();
 
     //Controller initialization
@@ -48,7 +48,20 @@
       });
       modalInstance.result.then(function (result) {
         if (result === 'modified') {
-          toastr.success('Agenda modificada');
+          $uibModal.open({
+            templateUrl: '/views/turnos/turnos-cancelados.html',
+            backdrop:'static',
+            controller: 'TurnosCanceladosCtrl',
+            controllerAs: 'TurnosCanceladosCtrl',
+            resolve: {
+                agenda: function () {
+                    return vm.agenda;
+                },
+                ausencia: null
+            }
+          }).result.then(function (result) {
+            toastr.success('Agenda modificada');
+          });
         } else if (result === 'deleted') {
           toastr.success('Agenda eliminada');
         } else if (result === 'reactivated') {

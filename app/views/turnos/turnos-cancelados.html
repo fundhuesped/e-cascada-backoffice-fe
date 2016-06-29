@@ -13,12 +13,24 @@
 </div>
 
 <script type="text/ng-template" id="turnos-cancelados-ausencia-con-turnos.html">
-  <p>Debido a que <strong>{{TurnosCanceladosCtrl.ausencia.profesional.firstName}} {{TurnosCanceladosCtrl.ausencia.profesional.fatherSurname}}</strong> estará ausente desde el <strong>{{TurnosCanceladosCtrl.ausencia.start_day | date:'shortDate' }}</strong> hasta el <strong>{{TurnosCanceladosCtrl.ausencia.end_day | date:'shortDate'}}</strong>; se cancelaron los siguientes turnos:</p>
+  <p>Debido a que {{TurnosCanceladosCtrl.ausencia.profesional.firstName}} {{TurnosCanceladosCtrl.ausencia.profesional.fatherSurname}} estará ausente desde el {{TurnosCanceladosCtrl.ausencia.start_day | date:'shortDate' }} hasta el {{TurnosCanceladosCtrl.ausencia.end_day | date:'shortDate'}}; se cancelaron los siguientes turnos:</p>
   <div ng-include src="'turnos-cancelados-table.html'"></div>
 </script>
 
 <script type="text/ng-template" id="turnos-cancelados-ausencia-sin-turnos.html">
   <p>La carga de ausencia fue realizada con éxito. No hay turnos que hayan sido afectados.</p>
+  <div class="text-center">
+      <button ng-click="TurnosCanceladosCtrl.dismiss()" class="btn btn-primary">Aceptar</button>
+  </div>
+</script>
+
+<script type="text/ng-template" id="turnos-cancelados-agenda-con-turnos.html">
+  <p>Debido a que se modificó la agenda de {{TurnosCanceladosCtrl.agenda.profesional.firstName}} {{TurnosCanceladosCtrl.agenda.profesional.fatherSurname}} para la especialidad {{TurnosCanceladosCtrl.agenda.prestacion.especialidad.name }} y prestación {{TurnosCanceladosCtrl.agenda.prestacion.name}} se cancelaron los siguientes turnos:</p>
+  <div ng-include src="'turnos-cancelados-table.html'"></div>
+</script>
+
+<script type="text/ng-template" id="turnos-cancelados-agenda-sin-turnos.html">
+  <p>La modificación en la grilla horaria fue realizada con éxito. No hay turnos que hayan sido afectados por este cambio.</p>
   <div class="text-center">
       <button ng-click="TurnosCanceladosCtrl.dismiss()" class="btn btn-primary">Aceptar</button>
   </div>

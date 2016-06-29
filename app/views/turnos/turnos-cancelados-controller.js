@@ -14,7 +14,16 @@
                                   'agenda'];
 
     function addTurnosCanceladosController($loading, $uibModalInstance, $window, Turno, ausencia, agenda) {
-      if (!ausencia && !agenda) {
+      var getTurnosCanceladoParams = {
+        page_size:100,
+        ordering:'day,start'
+      }
+
+      if (ausencia) {
+        getTurnosCanceladoParams.ausencia = ausencia.id
+      } else if (agenda) {
+        getTurnosCanceladoParams.agenda = agenda.id
+      } else {
         throw Error('No existe ausencia o agenda');
       }
 
@@ -25,7 +34,7 @@
       vm.turnosCancelados = [];
 
       $loading.start('app');
-      Turno.getCancelados({ausencia: ausencia.id, page_size:100, ordering:'day,start'}, function(turnosCancelados) {
+      Turno.getCancelados(getTurnosCanceladoParams, function(turnosCancelados) {
         vm.turnosCancelados = turnosCancelados;
         vm.template = determineTemplateToUse();
         $loading.finish('app');
