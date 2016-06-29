@@ -5,7 +5,7 @@
     angular
         .module('turnos.profesionales')
         .controller('AddLeaveCtrl',addLeaveController);
-        
+
     addLeaveController.$inject = ['$loading',
                                   '$uibModalInstance',
                                   '$filter',
@@ -37,7 +37,7 @@
             minDate: new Date(),
             maxDate: vm.lastAgendaFinishDate
           }
-        };        
+        };
         vm.toDateCalendarPopup = {
           opened: false,
           altInputFormats: ['d!/M!/yyyy','dd-MM-yyyy'],
@@ -54,7 +54,7 @@
                     vm.lastAgendaFinishDate = new Date(list[0].validTo);
                     vm.fromDateCalendarPopup.options.maxDate = vm.lastAgendaFinishDate;
                     vm.toDateCalendarPopup.options.maxDate = vm.lastAgendaFinishDate;
-                }else{      
+                }else{
                     vm.disabledForm = true;
                     vm.errorMessage = 'El profesional no posee agendas activas';
                 }
@@ -77,9 +77,9 @@
                     leave.profesional = vm.profesional;
                     leave.notes = vm.newLeave.notes;
                     leave.reason = vm.newLeave.reason;
-                    leave.$save(function(){
+                    leave.$save(function(leave){
                         $loading.finish('app');
-                        $uibModalInstance.close('created');
+                        $uibModalInstance.close(leave);
                     },function(){
                         $loading.finish('app');
                         vm.showErrorMessage();
@@ -99,11 +99,11 @@
         function checkLeaveDates(){
 
         }
-        
+
         function showErrorMessage() {
             vm.errorMessage = 'Ocurio un error en la comunicación';
         }
-        
+
         function openFromDateCalendar() {
           vm.fromDateCalendarPopup.opened = true;
         }

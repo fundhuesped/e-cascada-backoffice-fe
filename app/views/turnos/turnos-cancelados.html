@@ -1,0 +1,42 @@
+<div class="">
+  <div class="panel panel-default" id="printSection">
+      <div class="panel-heading">
+          <h3 class="panel-title">Listado de Turnos Cancelados</h3>
+          <button type="button" class="pull-right close" ng-click="TurnosCanceladosCtrl.dismiss();">
+            <span class="glyphicon glyphicon-remove"></span>
+          </button>
+      </div>
+      <!-- Con turnos afectados -->
+      <div class="panel-body" ng-if="TurnosCanceladosCtrl.turnosCancelados.length != 0">
+        <p>Debido a que <strong>{{TurnosCanceladosCtrl.ausencia.profesional.firstName}} {{TurnosCanceladosCtrl.ausencia.profesional.fatherSurname}}</strong> estará ausente desde el <strong>{{TurnosCanceladosCtrl.ausencia.start_day | date:'shortDate' }}</strong> hasta el <strong>{{TurnosCanceladosCtrl.ausencia.end_day | date:'shortDate'}}</strong>; se cancelaron los siguientes turnos:</p>
+        <table class="table table-hover">
+  				<thead>
+  				<tr>
+            <th>Fecha</th>
+            <th>Nombre y Apellido</th>
+            <th>Teléfono</th>
+            <th>Contacto</th>
+  				</tr>
+  				</thead>
+  				<tbody>
+            <tr ng-repeat="(key, turno) in TurnosCanceladosCtrl.turnosCancelados">
+  						<td>{{turno.day | date: 'dd/MM'}}</td>
+  						<td>{{turno.paciente.firstName}} {{turno.paciente.fatherSurname}}</td>
+              <td>{{turno.paciente.primaryPhoneNumber}}</td>
+  						<td>{{turno.paciente.primaryPhoneContact}}</td>
+  					</tr>
+  				</tbody>
+        </table>
+        <div class="text-center">
+            <button ng-click="TurnosCanceladosCtrl.print()" class="btn btn-primary"><span class="glyphicon glyphicon-print"></span> Imprimir</button>
+        </div>
+      </div>
+      <!-- Sin turnos afectados -->
+      <div class="panel-body" ng-if="TurnosCanceladosCtrl.turnosCancelados.length == 0">
+        <p>La carga de ausencia fue realizada con éxito. No hay turnos que hayan sido afectados.</p>
+        <div class="text-center">
+            <button ng-click="TurnosCanceladosCtrl.dismiss()" class="btn btn-primary">Aceptar</button>
+        </div>
+      </div>
+  </div>
+</div>

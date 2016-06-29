@@ -9,7 +9,7 @@
 
   function TurnoProvider() {
     function TurnoResource($resource, apiBase) {
-        function transformDataSet(data){ 
+        function transformDataSet(data){
                   return angular.fromJson(data).results;
         }
         var Turno = $resource(apiBase + 'practicas/turno/:id/', {id: '@id'}, {
@@ -46,6 +46,13 @@
           method: 'GET',
           params: {status: 'Active'},
           isArray: false
+        },
+        getCancelados:{
+          url: apiBase + 'practicas/turno/cancelado/',
+          method: 'GET',
+          params: {ausencia: 1},
+          isArray: true,
+          transformResponse: transformDataSet
         }
       });
 

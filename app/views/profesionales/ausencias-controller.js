@@ -6,7 +6,7 @@
     angular
         .module('turnos.profesionales')
         .controller('AusenciasCtrl',ausenciasCtrl);
-        
+
     ausenciasCtrl.$inject = ['$uibModal',
                                  'toastr',
                                  'Leave',
@@ -22,9 +22,9 @@
         vm.searchAusencias = searchAusencias;
         vm.totalItems = null;
         vm.currentPage = 1;
-        
+
         activate();
-        
+
         //Controller initialization
         function activate(){
             searchAusencias();
@@ -56,9 +56,21 @@
             });
             var ctrl = vm;
             modalInstance.result.then(function (result) {
-                if(result==='created'){
-                    toastr.success('Ausencia cargada');
-                    ctrl.changeSearchParameter();
+                if(result){
+                    $uibModal.open({
+                      templateUrl: '/views/turnos/turnos-cancelados.html',
+                      backdrop:'static',
+                      controller: 'TurnosCanceladosCtrl',
+                      controllerAs: 'TurnosCanceladosCtrl',
+                      resolve: {
+                          ausencia: function () {
+                              return result;
+                          }
+                      }
+                    }).result.then(function (result) {
+                      toastr.success('Ausencia cargada');
+                      ctrl.changeSearchParameter();
+                    });
                 }
             }, function () {
             });
