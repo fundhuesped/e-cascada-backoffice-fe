@@ -65,7 +65,8 @@
                       resolve: {
                           ausencia: function () {
                               return result;
-                          }
+                          },
+                          agenda: null
                       }
                     }).result.then(function (result) {
                       toastr.success('Ausencia cargada');
