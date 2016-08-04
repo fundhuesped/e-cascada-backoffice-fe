@@ -215,13 +215,19 @@ glyphicon glyphicon-remove"></span> Limpiar seleccion de paciente
                 <b>{{NewTurnoCtrl.selectedPrestacion.name}}</b>
               </div>
               <div class="row">
-                {{NewTurnoCtrl.selectedPrestacion.description}}
+                <p>
+                  {{NewTurnoCtrl.selectedPrestacion.description}}
+                </p>
               </div>
               <div class="row">
+              <p>
                 Duración: {{NewTurnoCtrl.selectedPrestacion.duration}}
+              </p>
               </div>
               <div class="row">
+              <p style="word-wrap:break-word;">
                 Observaciones: {{NewTurnoCtrl.selectedPrestacion.notes}}
+              </p>
               </div>
             </div>
           </div>
