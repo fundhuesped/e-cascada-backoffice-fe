@@ -228,7 +228,8 @@ module.exports = function (grunt) {
             '.htaccess',
             'bower_components/**/*',
             'images/{,*/}*.{gif,webp}',
-            'styles/fonts/*'
+            'styles/fonts/*',
+            'views/{,*/}*.html'
           ]
         }, {
           expand: true,
@@ -305,7 +306,7 @@ module.exports = function (grunt) {
           dest: '<%= yeoman.app %>/resources/resources-module.js'
         },
         constants: {
-          apiBase: 'http://localhost:8000/'
+          apiBase: 'http://localhost:8000/api/'
         }
       },      
     },
