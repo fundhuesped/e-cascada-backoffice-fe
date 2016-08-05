@@ -31,7 +31,7 @@
         }
 
         function searchAusencias(){
-            Leave.getPaginatedActiveList({page_size:vm.pageSize,ordering:'-start_day', profesional:vm.profesional.id, page:vm.currentPage}, function(paginatedResult){
+            Leave.getPaginatedActiveList({page_size:vm.pageSize,ordering:'-start_day', profesional:$stateParams.profesionalId, page:vm.currentPage}, function(paginatedResult){
                 vm.ausencias = paginatedResult.results;
                 vm.totalItems = paginatedResult.count;
             });
@@ -49,8 +49,8 @@
                 controller: 'AddLeaveCtrl',
                 controllerAs: 'AddLeaveCtrl',
                 resolve: {
-                    profesional: function () {
-                        return vm.profesional;
+                    profesionalId: function () {
+                        return $stateParams.profesionalId;
                     }
                 }
             });

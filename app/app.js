@@ -263,10 +263,7 @@ angular.module('turnos.app', [
                 }
             })
             .state('ausencias', {
-                url: '/ausencias',
-                params: {
-                    profesional: null
-                },
+                url: '/profesional/:profesionalId/ausencias/',
                 views: {
                     'navbar': {
                         templateUrl: 'views/navbar/navbar.html',
