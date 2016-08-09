@@ -29,7 +29,7 @@
         //Controller initialization
         function activate(){
             searchAusencias();
-            if(!$stateParams.profesional){
+            if($stateParams.profesional){
               vm.profesional= $stateParams.profesional;
             }else{
               vm.profesional = Profesional.get({id:$stateParams.profesionalId});
