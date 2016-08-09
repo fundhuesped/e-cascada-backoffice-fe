@@ -10,15 +10,16 @@
     ausenciasCtrl.$inject = ['$uibModal',
                                  'toastr',
                                  'Leave',
-                                 '$stateParams'];
+                                 '$stateParams',
+                                 'Profesional'];
 
-    function ausenciasCtrl ($uibModal, toastr, Leave, $stateParams) {
+    function ausenciasCtrl ($uibModal, toastr, Leave, $stateParams, Profesional) {
         var vm = this;
         vm.addLeave = addLeave;
         vm.ausencias = [];
         vm.changeSearchParameter = changeSearchParameter;
         vm.pageSize = 20;
-        vm.profesional= $stateParams.profesional;
+        vm.profesional = {};
         vm.searchAusencias = searchAusencias;
         vm.totalItems = null;
         vm.currentPage = 1;
@@ -28,6 +29,11 @@
         //Controller initialization
         function activate(){
             searchAusencias();
+            if(!$stateParams.profesional){
+              vm.profesional= $stateParams.profesional;
+            }else{
+              vm.profesional = Profesional.get({id:$stateParams.profesionalId});
+            }
         }
 
         function searchAusencias(){

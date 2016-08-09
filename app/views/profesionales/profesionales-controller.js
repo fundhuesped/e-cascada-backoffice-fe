@@ -42,7 +42,7 @@
         }
 
         function goToAusencias(){
-            $state.go('ausencias',{profesionalId: vm.profesional.id});
+            $state.go('ausencias',{profesionalId: vm.profesional.id, profesinoal: vm.profesiona});
         }
 
         function modifyProfesional(selectedProfesional){
