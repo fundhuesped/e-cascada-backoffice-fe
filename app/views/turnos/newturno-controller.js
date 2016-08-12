@@ -272,8 +272,9 @@
         turnosSource =[];
         vm.turnos = results;
         angular.forEach(results, function (turno) {
-          var startTime = new Date(turno.day + 'T' + turno.start);
-          var endTime = new Date(turno.day + 'T' + turno.end);
+          var startTime = new Date(turno.day + 'T' + turno.start + '-03:00');
+          var endTime = new Date(turno.day + 'T' + turno.end+ '-03:00');
+          
           var event = {
             id: turno.id,
             title: turno.profesional.fatherSurname,
