@@ -9,6 +9,7 @@
                 var especialidad = new Especialidad();
                 especialidad.name = this.newEspecialidad.name;
                 especialidad.description = this.newEspecialidad.description;
+                especialidad.default = this.newEspecialidad.default;
                 especialidad.status = 'Active';
                 especialidad.$save(function(){
                     $loading.finish('app');
