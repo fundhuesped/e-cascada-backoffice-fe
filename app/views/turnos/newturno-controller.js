@@ -37,6 +37,7 @@
     vm.openTurnoModal = openTurnoModal;
     vm.openPacienteModal = openPacienteModal;
     vm.paciente = null;
+    vm.pageChanged = pageChanged;
     vm.prestaciones = [];
     vm.prestacionChanged = prestacionChanged;
     vm.profesionalChanged = profesionalChanged;
@@ -262,6 +263,27 @@
       }
     }
 
+    function pageChanged() {
+      $loading.start('app');      
+      var searchObject = {
+        taken: false,
+        prestacion: vm.selectedPrestacion.id,
+        ordering:'day,start',
+      };
+
+      if (vm.selectedDate) {
+        searchObject.day__gte = $filter('date')(vm.selectedDate, 'yyyy-MM-dd');
+      }else{
+        searchObject.day__gte = $filter('date')(new Date(), 'yyyy-MM-dd');
+      }
+      
+      if (vm.selectedProfesional) {
+        searchObject.profesional = vm.selectedProfesional.id;
+      }
+      getTurnosList(searchObject);
+    }
+
+
     function getAllTurnosForDates(searchObject){
       var calendarView = uiCalendarConfig.calendars.newTurnosCalendar.fullCalendar( 'getView' );
       searchObject.start = calendarView.start.format('YYYY-MM-DD');
@@ -274,7 +296,7 @@
         angular.forEach(results, function (turno) {
           var startTime = new Date(turno.day + 'T' + turno.start + '-03:00');
           var endTime = new Date(turno.day + 'T' + turno.end+ '-03:00');
-          
+
           var event = {
             id: turno.id,
             title: turno.profesional.fatherSurname,
@@ -299,7 +321,9 @@
 
       Turno.getPaginatedActiveList(searchObject).$promise.then(function (paginatedResult) {
         lookedForTurnos = true;
-        vm.totalItems = paginatedResult.count;
+        if(vm.currentPage===1){
+          vm.totalItems = paginatedResult.count;
+        }
         vm.turnos = paginatedResult.results;
 
         $loading.finish('app');
