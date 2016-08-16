@@ -1,14 +1,26 @@
 <div class="">
   <div class="panel panel-default">
     <div class="panel-heading">
-      <h3 class="panel-title">Turno creado con éxito</h3>
+      <h3 class="panel-title">{{TurnoDetailCtrl.title}}</h3>
     </div>
     <div class="panel-body">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
           <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-              <span><label>Medico</label></span>
-              <p>{{TurnoDetailCtrl.turno.profesional.fatherSurname}}, {{TurnoDetailCtrl.turno.profesional.firstName}}</p>
+              <span><label>Médico</label></span>
+              <p>{{TurnoDetailCtrl.turno.profesional.fatherSurname + ', ' + TurnoDetailCtrl.turno.profesional.firstName}}</p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+              <span><label>Prestación</label></span>
+              <p>{{TurnoDetailCtrl.turno.prestacion.name}}</p>
+            </div>
+          </div>          
+          <div class="row" ng-show="TurnoDetailCtrl.turno.paciente">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+              <span><label>Paciente</label></span>
+              <p>{{TurnoDetailCtrl.turno.paciente.fatherSurname + ', ' + TurnoDetailCtrl.turno.paciente.firstName}}</p>
             </div>
           </div>
           <div class="row">

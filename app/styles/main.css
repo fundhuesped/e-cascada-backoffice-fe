@@ -109,10 +109,6 @@ body {
     padding-right: 0px;
 }
 
-.fc-day-grid{
-    display: none;
-}
-
 .turnos-calendar .fc-slats tr {
     height: 35px;
 }

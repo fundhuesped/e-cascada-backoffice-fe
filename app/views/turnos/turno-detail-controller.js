@@ -5,13 +5,18 @@
 
     function turnoDetailCtrl ($uibModalInstance, turno) {
         var vm = this;
-
+        vm.title = '';
         vm.turno = angular.copy(turno);
         vm.dismiss = dismiss;
 
         activate();
 
         function activate(){
+            if(turno.taken === true){
+                vm.title = 'Turno asignado';
+            }else{
+                vm.title = 'Turno disponible';
+            }
         }
 
         function dismiss (){

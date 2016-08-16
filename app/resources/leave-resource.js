@@ -15,6 +15,11 @@
           isArray: true,
           transformResponse: transformDataSet          
         },
+        getFullActiveList: {
+          method: 'GET',
+          params: {status: 'Active', all: true},
+          isArray: true
+        },
         getInactiveList: {
           method: 'GET',
           params: {status: 'Inactive'},
