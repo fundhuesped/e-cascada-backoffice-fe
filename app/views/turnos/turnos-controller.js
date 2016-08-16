@@ -117,6 +117,14 @@
     	  		searchObject.prestacion = vm.selectedPrestacion.id;
     	  	}
 
+    	  	if(vm.turnStatus==='taken'){
+    	  		searchObject.taken = true;
+    	  	}else{
+    	  		if(vm.turnStatus==='notTaken'){
+    	  			searchObject.taken = false;
+    	  		}
+    	  	}
+
 	      	Turno.getFullActiveList(searchObject)
 	      	   .$promise
 	      	   .then(function (results) {

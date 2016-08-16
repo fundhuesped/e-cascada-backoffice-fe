@@ -31,6 +31,15 @@
 	                    	<option value="">Seleccione prestación</option>
                   		</select>
                 	</div>
+					<div class="form-group">
+	                  	<span><label>Estado del turno</label></span>
+	                  	<select class="form-control" ng-model="TurnosCtrl.turnStatus">
+	                    	<option value="">Todos</option>
+	                    	<option value="taken">Tomados</option>
+	                    	<option value="notTaken">Disponibles</option>
+	                  </select>
+	                </div>
+
 	                <button id="btn-confirm" type="button" class="btn btn-success pull-right" ng-click="TurnosCtrl.lookForTurnos()"
                         ng-disabled="!TurnosCtrl.canLookForTurnos()">
                   Buscar
