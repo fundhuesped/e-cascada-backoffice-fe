@@ -6,14 +6,16 @@
     	.module('turnos.turnos')
     	.controller('TurnosCtrl', turnosCtrl);
 
-	turnosCtrl.$inject = ['Turno', 'Profesional', '$loading', '$filter', 'uiCalendarConfig', '$uibModal', 'Leave'];
+	turnosCtrl.$inject = ['Turno', 'Profesional', '$loading', '$filter', 'uiCalendarConfig', '$uibModal', 'Leave', 'Especialidad', 'Prestacion'];
 
-    function turnosCtrl (Turno, Profesional, $loading, $filter, uiCalendarConfig, $uibModal, Leave) {
+    function turnosCtrl (Turno, Profesional, $loading, $filter, uiCalendarConfig, $uibModal, Leave, Especialidad, Prestacion) {
 	    var vm = this;
+	    vm.canLookForTurnos = canLookForTurnos;
         vm.eventSources = [];
 		vm.profesionales = [];
     	vm.searchProfesional = searchProfesional;
     	vm.lookForTurnos = lookForTurnos;
+    	vm.especialidadChanged = especialidadChanged;
         vm.search = [];
         vm.selectedProfesional = null;
     	vm.selectProfesional = selectProfesional;
@@ -45,7 +47,7 @@
 
 	      	viewRender: function(view, element){
 		        if(vm.selectedProfesional){
-		          	vm.lookForTurnos(vm.selectedProfesional.id);
+		          	vm.lookForTurnos();
 	        	}
 	    	}
 
@@ -55,6 +57,7 @@
 
 	    function activate(){
 	        vm.profesionales = Profesional.getActiveList();
+	        vm.especialidades = Especialidad.getActiveList();
 	    }
 
 		function searchProfesional(){
@@ -70,19 +73,51 @@
 			}
 			vm.selectedProfesional = profesional;
 			vm.selectedProfesional.selected = true;
-			vm.lookForTurnos(profesional.id);
 		}
 
-	    function lookForTurnos(idProfesional) {
+	    function especialidadChanged() {
+	      if (vm.selectedEspecialidad) {
+	        if(angular.isObject(vm.selectedProfesional)){
+	          vm.prestaciones = Prestacion.getActiveList({especialidad: vm.selectedEspecialidad.id, profesional:vm.selectedProfesional.id});
+	        }else{
+	          vm.prestaciones = Prestacion.getActiveList({especialidad: vm.selectedEspecialidad.id});
+//	          vm.profesionales = Profesional.getActiveList({especialidad: vm.selectedEspecialidad.id});
+	        }
+	      }
+	    }
+
+	    function canLookForTurnos() {
+	    	if(vm.selectedEspecialidad&&!vm.selectedPrestacion){
+	    		return false;
+	    	}
+	    	return vm.selectedPrestacion || vm.selectedProfesional;
+	    }
+
+	    function lookForTurnos() {
 	      	$loading.start('app');
 	      	vm.turnos.length = 0;
 	        vm.eventSources.length = 0;
+  	      	
+	        var searchObject = {};
+
   	      	var calendarView = uiCalendarConfig.calendars.turnsCalendar.fullCalendar( 'getView' );
 
-	      	var calendarStart = calendarView.start.format('YYYY-MM-DD');
-    	  	var calendarEnd = calendarView.end.format('YYYY-MM-DD');
+	      	searchObject.start = calendarView.start.format('YYYY-MM-DD');
+    	  	searchObject.end = calendarView.end.format('YYYY-MM-DD');
 
-	      	Turno.getFullActiveList({profesional: idProfesional, start:calendarStart, end:calendarEnd})
+    	  	if(vm.selectedProfesional){
+    	  		searchObject.profesional = vm.selectedProfesional.id;
+    	  	}
+
+    	  	if(vm.selectedEspecialidad){
+    	  		searchObject.especialidad = vm.selectedEspecialidad.id;
+			}
+
+    	  	if(vm.selectedPrestacion){
+    	  		searchObject.prestacion = vm.selectedPrestacion.id;
+    	  	}
+
+	      	Turno.getFullActiveList(searchObject)
 	      	   .$promise
 	      	   .then(function (results) {
 			        var turnosSource =[];
@@ -95,17 +130,24 @@
 			        vm.eventSources.push(turnosSource);
 			        $loading.finish('app');
 	        	});
-  		    Leave.getFullActiveList({profesional:idProfesional}, function(results){
+      	    
+      	    if(vm.selectedProfesional){
+      	    	searchAusencias();
+      	    }
+	      }
+
+      	function searchAusencias(){
+		    Leave.getFullActiveList({profesional:vm.searchProfesional.id}, function(results){
 		        var ausenciasSource =[];
-                vm.ausencias = results;
+	            vm.ausencias = results;
 		        angular.forEach(results, function (ausencia) {
 		        	var event = createCalendarAusenciaEvent(ausencia);
-                	ausenciasSource.push(event);
+	            	ausenciasSource.push(event);
 		          	ausencia.calendarRepresentation = event;
-            	});
+	        	});
 		        vm.eventSources.push(ausenciasSource);
-            });   
-	      }
+        	});
+      	}
 
 	    function displayTurnDetails(position, entities, calendarRepresentation) {
 	      	angular.forEach(entities, function (turno, index) {
@@ -136,7 +178,6 @@
 	        var endTime = new Date(ausencia.end_day+ 'T00:00-03:00');
 	        var title = '';
 	        var color = '#FF9800';
-    	 	
          	title = ausencia.reason.charAt(0).toUpperCase() + ausencia.reason.slice(1);;
 	        return {
 	            id: ausencia.id,
