@@ -12,8 +12,7 @@
 	    var vm = this;
 	    vm.canLookForTurnos = canLookForTurnos;
         vm.eventSources = [];
-		vm.profesionales = [];
-    	vm.searchProfesional = searchProfesional;
+    	vm.getProfesionales = getProfesionales;
     	vm.lookForTurnos = lookForTurnos;
     	vm.especialidadChanged = especialidadChanged;
         vm.search = [];
@@ -55,15 +54,14 @@
 
 	    activate();
 
+
 	    function activate(){
-	        vm.profesionales = Profesional.getActiveList();
 	        vm.especialidades = Especialidad.getActiveList();
 	    }
 
-		function searchProfesional(){
-			if(vm.searchProfesional.firstname.length>0){
-		        vm.profesionales = Profesional.getActiveList({firstName: vm.searchProfesional.firstname});
-
+		function getProfesionales(firstname){
+			if(firstname.length>2){
+		        return Profesional.getActiveList({firstName: firstname}).$promise;
 			}
 		}
 		
@@ -81,7 +79,6 @@
 	          vm.prestaciones = Prestacion.getActiveList({especialidad: vm.selectedEspecialidad.id, profesional:vm.selectedProfesional.id});
 	        }else{
 	          vm.prestaciones = Prestacion.getActiveList({especialidad: vm.selectedEspecialidad.id});
-//	          vm.profesionales = Profesional.getActiveList({especialidad: vm.selectedEspecialidad.id});
 	        }
 	      }
 	    }

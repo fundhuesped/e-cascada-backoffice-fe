@@ -7,14 +7,8 @@
 	  		<form name="TurnosCtrl.searchProfesionalForm">
 		  		<div class="panel-body">
 					<div class="form-group">
-						<input type="text" name="firstname" class="form-control" ng-model="TurnosCtrl.search.firstName" placeholder="Nombre del profesional" ></input>
+						<input type="text" name="firstname" class="form-control" ng-model="TurnosCtrl.selectedProfesional" placeholder="Nombre del profesional" uib-typeahead='profesional as (profesional.fatherSurname + ", " + profesional.firstName) for profesional in TurnosCtrl.getProfesionales($viewValue)' autocomplete="off"></input>
 		            </div>	    		
-			        <div class="checkbox" ng-repeat="(key, profesional) in TurnosCtrl.profesionales | filter:TurnosCtrl.search" >
-				  		<label>
-					    	<input type="checkbox" ng-checked="profesional.selected" ng-click="TurnosCtrl.selectProfesional(profesional)">
-					    	{{profesional.fatherSurname}},{{profesional.firstName }}
-					  	</label>
-					</div>
 					<div class="form-group">
 	                  	<span><label>Especialidad</label></span>
 	                  	<select class="form-control" ng-model="TurnosCtrl.selectedEspecialidad"
