@@ -225,7 +225,7 @@
     }
 
     function canLookForTurnos(){
-      return vm.selectedPrestacion || (vm.selectedEspecialidad && vm.selectedProfesional);
+      return vm.selectedPrestacion && (vm.selectedEspecialidad || vm.selectedProfesional);
     }
 
 
