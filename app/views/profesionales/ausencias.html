@@ -37,8 +37,8 @@
 						<tbody>
 						<tr ng-repeat="(key, ausencia) in AusenciasCtrl.ausencias">
 							<th scope="row">{{ausencia.id}}</th>
-							<td style="max-width:125px; word-wrap:break-word;">{{ausencia.start_day}}</td>
-							<td style="max-width:125px; word-wrap:break-word;">{{ausencia.end_day}}</td>
+							<td style="max-width:125px; word-wrap:break-word;">{{ausencia.start_day | date:'dd/MM/yyyy'}}</td>
+							<td style="max-width:125px; word-wrap:break-word;">{{ausencia.end_day | date:'dd/MM/yyyy'}}</td>
 							<td style="max-width:125px; word-wrap:break-word;">{{ausencia.reason}}</td>
 							<td style="max-width:125px; word-wrap:break-word;">{{ausencia.notes}}</td>
 						</tr>
