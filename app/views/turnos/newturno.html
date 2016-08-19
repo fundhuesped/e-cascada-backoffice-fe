@@ -103,42 +103,54 @@
               <div ng-show="NewTurnoCtrl.recomendationsPanel.message" style="font-size: 20px;padding: 80px;">
                 {{NewTurnoCtrl.recomendationsPanel.message}}
               </div>
-              <table class="table" dw-loading="recomendations">
-                <tbody>
-                <tr ng-repeat="(key, recomendation) in NewTurnoCtrl.recomendationList"
+              <div class="col-md-12" dw-loading="recomendations">
+                <div class="row row-pacient-recomendation" ng-repeat="(key, recomendation) in NewTurnoCtrl.recomendationList"  
                     ng-class="{'bg-success':recomendation.selected}">
-                  <td class="col-md-5">
-                    <div><label>{{recomendation.firstName}} {{recomendation.otherNames}} {{recomendation.fatherSurname}}
-                      {{recomendation.motherSurname}}</label></div>
-                    <div>{{recomendation.documentType.name}} {{recomendation.documentNumber}}
-                      <div>{{recomendation.birthDate || 'No informado'}}</div>
+                  <div class="col-md-10">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div>
+                          <label>
+                            {{recomendation.firstName}} {{recomendation.otherNames}} {{recomendation.fatherSurname}}
+                          {{recomendation.motherSurname}}
+                          </label>
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <div>
+                          {{recomendation.documentType.name}} {{recomendation.documentNumber}}
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <div>{{recomendation.birthDate | date: "dd/MM/yyyy" || 'No informado'}}</div>
+                      </div>
                     </div>
-                  </td>
-                  <td class="col-md-4">
-                    <div><label>Tel</label> {{recomendation.primaryPhoneNumber || 'No informado'}}</div>
-                  </td>
-                  <td class="col-md-4">
-                    <div><label>e-m@il</label> {{recomendation.email || 'No informado'}}</div>
-                  </td>
-                  <td class="col-md-3">
-                    <button class="btn btn-success" type="button" ng-click="NewTurnoCtrl.selectPaciente(recomendation)"
+                    <div class="row">
+                      <div class="col-md-6">
+                        <label>Tel</label> {{recomendation.primaryPhoneNumber || 'No informado'}}
+                      </div>
+                      <div class="col-md-6">
+                        <label>e-m@il</label> {{recomendation.email || 'No informado'}}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <button class="btn btn-success pull-right" type="button" ng-click="NewTurnoCtrl.selectPaciente(recomendation)"
                             ng-show="!NewTurnoCtrl.paciente.id">
                       <span class="glyphicon glyphicon-ok"></span>
                     </button>
-                    <button class="btn btn-default" type="button"
+                    <button class="btn btn-default pull-right" type="button"
                             ng-click="NewTurnoCtrl.openPacienteModal(recomendation)">
                       <span class="glyphicon glyphicon-zoom-in"></span>
                     </button>
-                  </td>
-                </tr>
-                </tbody>
-              </table>
+                  </div>
+                </div>
+              </div>
             </div>
             <div class="row" ng-show="NewTurnoCtrl.paciente.id">
               <div class="col-md-12">
-                <button class="btn btn-warning" type="button" ng-click="NewTurnoCtrl.clearPacienteSelection()"><span
-                  class="
-glyphicon glyphicon-remove"></span> Limpiar seleccion de paciente
+                <button class="btn btn-warning pull-right" type="button" ng-click="NewTurnoCtrl.clearPacienteSelection()">
+                  <span class="glyphicon glyphicon-remove"></span> Limpiar seleccion de paciente
                 </button>
               </div>
             </div>

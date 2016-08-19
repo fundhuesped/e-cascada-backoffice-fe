@@ -125,6 +125,7 @@
       vm.selectedPaciente = null;
       delete vm.paciente.selected;
       vm.paciente = null;
+      vm.recomendationsPanel.message = 'Por favor comience a completar el formulario para buscar pacientes';
     }
 
     function confirmTurno() {
@@ -192,7 +193,10 @@
         $loading.start('recomendations');
         vm.recomendationsPanel.message = null;
 
-        var searchObject = {};
+        var searchObject = {
+
+        };
+
         if(vm.paciente.documentType){
           searchObject.documentType = vm.paciente.documentType.id;
         }
@@ -205,20 +209,23 @@
         if(vm.paciente.fatherSurname){
           searchObject.fatherSurname = vm.paciente.fatherSurname;
         }
+        if(vm.paciente.birthDate){
+          searchObject.birthDate = $filter('date')(vm.paciente.birthDate, 'yyyy-MM-dd');
+        }
+
 
         Paciente.getActiveList(searchObject,
            function(recomendations){
           $loading.finish('recomendations');
           if(recomendations.length === 0){
+            vm.recomendationList = [];
             vm.recomendationsPanel.message = 'No se encontraron pacientes con los criterios de busqueda';
             return;
           }
-          vm.copyPaciente = angular.copy(vm.paciente);
-          vm.copyPaciente.birthDate = $filter('date')(vm.copyPaciente.birthDate, "yyyy-MM-dd");
-          vm.recomendationList = $filter('filter')(recomendations, vm.copyPaciente);
-          }.bind(vm), function(){
+          vm.recomendationList = recomendations;
+          }, function(){
             $loading.finish('recomendations');
-            console.log('Failed to get activePacientes');
+            vm.recomendationsPanel.message = 'Ocurrio un error al buscar pacientes. Intente nuevamente';
           }
         );
         }
@@ -411,6 +418,14 @@
           vm.prestaciones = Prestacion.getActiveList({especialidad: vm.selectedEspecialidad.id});
           vm.profesionales = Profesional.getActiveList({especialidad: vm.selectedEspecialidad.id});
         }
+      }else{
+        vm.profesionales = Profesional.getActiveList();
+        if(angular.isObject(vm.selectedProfesional)){
+          vm.prestaciones = Prestacion.getActiveList({profesional:vm.selectedProfesional.id});
+        }else{
+          vm.prestaciones = [];
+        }
+
       }
     }
 
@@ -432,6 +447,13 @@
           vm.prestaciones = Prestacion.getActiveList({profesional: vm.selectedProfesional.id});
           vm.especialidades = Especialidad.getActiveList({profesional: vm.selectedProfesional.id});
         }
+      }else{
+        vm.especialidades = Especialidad.getActiveList();
+        if(angular.isObject(vm.selectedEspecialidad)){
+          vm.prestaciones = Prestacion.getActiveList({especialidad: vm.selectedEspecialidad.id});
+        }else{
+           vm.prestaciones = [];         
+        }
       }
     }
 
@@ -439,6 +461,7 @@
       vm.paciente = paciente;
       vm.selectedPaciente = paciente;
       vm.newTurno.paciente = paciente;
+      vm.recomendationList = [paciente];
       paciente.selected = true;
     }
 
@@ -456,19 +479,15 @@
         return true;
       }
 
-      if (vm.paciente.firstName) {
+      if (vm.paciente.firstName && vm.paciente.firstName.length >= 3) {
         populatedFields++;
       }
 
-      if (vm.paciente.fatherSurname) {
+      if (vm.paciente.fatherSurname && vm.paciente.fatherSurname.length >= 3) {
         populatedFields++;
       }
 
       if (vm.paciente.birthDate) {
-        populatedFields++;
-      }
-
-      if (vm.paciente.email) {
         populatedFields++;
       }
 
