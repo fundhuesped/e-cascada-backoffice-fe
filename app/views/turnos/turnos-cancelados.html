@@ -41,6 +41,7 @@
     <thead>
     <tr>
       <th>Fecha</th>
+      <th>Hora</th>
       <th>Nombre y Apellido</th>
       <th>Teléfono</th>
       <th>Contacto</th>
@@ -49,6 +50,7 @@
     <tbody>
       <tr ng-repeat="(key, turno) in TurnosCanceladosCtrl.turnosCancelados">
         <td>{{turno.day | date: 'dd/MM'}}</td>
+        <td>{{turno.start}}</td>
         <td>{{turno.paciente.firstName}} {{turno.paciente.fatherSurname}}</td>
         <td>{{turno.paciente.primaryPhoneNumber}}</td>
         <td>{{turno.paciente.primaryPhoneContact}}</td>
