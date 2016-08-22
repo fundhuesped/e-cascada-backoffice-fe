@@ -3,14 +3,16 @@
   /* jshint validthis: true */
   /*jshint latedef: nofunc */
 
-  function agendasCtrl($uibModal, toastr, Agenda) {
+  function agendasCtrl($uibModal, toastr, Agenda, Profesional) {
     var vm = this;
     vm.agendas = [];
     vm.agenda = null;
     vm.detail = detail;
+    vm.getProfesionales = getProfesionales;
     vm.modifyAgenda = modifyAgenda;
     vm.newAgenda = newAgenda;
     vm.searchName = searchName;
+    vm.selectedProfesional = null;
     vm.changeSearchParameter = changeSearchParameter;
     vm.currentPage = 1;
     vm.pageSize = 20;
@@ -25,6 +27,12 @@
         vm.agendas = paginatedResult.results;
         vm.totalItems = paginatedResult.count;
       });
+    }
+
+    function getProfesionales(firstname){
+      if(firstname.length>2){
+            return Profesional.getActiveList({firstName: firstname}).$promise;
+      }
     }
 
     function detail(agenda) {
@@ -79,9 +87,13 @@
           page_size:vm.pageSize,
           page:vm.currentPage,
           order_field:'profesional',
-          order_by:'asc',
-          name:vm.nameFilter
+          order_by:'asc'
       };
+
+      if(vm.selectedProfesional){
+        searchObject.profesional = vm.selectedProfesional.id;
+      }
+
       if (vm.statusFilter == 1) {
         currentStatusFilter = 'Active';
       } else {
@@ -122,5 +134,5 @@
 
   }
 
-  angular.module('turnos.agendas').controller('AgendasCtrl', ['$uibModal', 'toastr', 'Agenda', agendasCtrl]);
+  angular.module('turnos.agendas').controller('AgendasCtrl', ['$uibModal', 'toastr', 'Agenda', 'Profesional', agendasCtrl]);
 })();
