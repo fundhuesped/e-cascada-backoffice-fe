@@ -6,9 +6,9 @@
     	.module('turnos.turnos')
     	.controller('TurnosCtrl', turnosCtrl);
 
-	turnosCtrl.$inject = ['Turno', 'Profesional', '$loading', '$filter', 'uiCalendarConfig', '$uibModal', 'Leave', 'Especialidad', 'Prestacion'];
+	turnosCtrl.$inject = ['Turno', 'Profesional', '$loading', '$filter', 'uiCalendarConfig', '$uibModal', 'Leave', 'Especialidad', 'Prestacion', 'toastr'];
 
-    function turnosCtrl (Turno, Profesional, $loading, $filter, uiCalendarConfig, $uibModal, Leave, Especialidad, Prestacion) {
+    function turnosCtrl (Turno, Profesional, $loading, $filter, uiCalendarConfig, $uibModal, Leave, Especialidad, Prestacion, toastr) {
 	    var vm = this;
 	    vm.canLookForTurnos = canLookForTurnos;
         vm.eventSources = [];
@@ -39,29 +39,28 @@
 						    end: '16:00', 
 						    dow: [ 1, 2, 3, 4, 5 ]
 							},
-
 	    	eventClick: function selectTurnoOnEventClick(date, jsEvent, view) {
 		        displayTurnDetails(date.id, vm.turnos, date);
 		    },
-
 	      	viewRender: function(view, element){
 		        if(vm.selectedProfesional){
 		          	vm.lookForTurnos();
 	        	}
 	    	}
-
 	    };
 
 	    activate();
 
 
 	    function activate(){
-	        vm.especialidades = Especialidad.getActiveList();
+	        vm.especialidades = Especialidad.getActiveList(function(especialidades){
+	        	vm.especialidades = especialidades;
+	        },displayComunicationError);
 	    }
 
 		function getProfesionales(firstname){
 			if(firstname.length>2){
-		        return Profesional.getActiveList({firstName: firstname}).$promise;
+		        return Profesional.getActiveList({firstName: firstname}, angular.noop, displayComunicationError).$promise;
 			}
 		}
 		
@@ -76,9 +75,9 @@
 	    function especialidadChanged() {
 	      if (vm.selectedEspecialidad) {
 	        if(angular.isObject(vm.selectedProfesional)){
-	          vm.prestaciones = Prestacion.getActiveList({especialidad: vm.selectedEspecialidad.id, profesional:vm.selectedProfesional.id});
+	          vm.prestaciones = Prestacion.getActiveList({especialidad: vm.selectedEspecialidad.id, profesional:vm.selectedProfesional.id}, angular.noop, displayComunicationError);
 	        }else{
-	          vm.prestaciones = Prestacion.getActiveList({especialidad: vm.selectedEspecialidad.id});
+	          vm.prestaciones = Prestacion.getActiveList({especialidad: vm.selectedEspecialidad.id}, angular.noop, displayComunicationError);
 	        }
 	      }
 	    }
@@ -134,7 +133,7 @@
 		        	});
 			        vm.eventSources.push(turnosSource);
 			        $loading.finish('app');
-	        	});
+	        	}, function(){displayComunicationError('app');});
       	    
       	    if(vm.selectedProfesional){
       	    	searchAusencias();
@@ -151,7 +150,7 @@
 		          	ausencia.calendarRepresentation = event;
 	        	});
 		        vm.eventSources.push(ausenciasSource);
-        	});
+        	}, function(){displayComunicationError('app');});
       	}
 
 	    function displayTurnDetails(position, entities, calendarRepresentation) {
@@ -218,5 +217,15 @@
 	            timezone:'America/Argentina/Buenos_Aires'
 	         };
       	}
+
+	    function displayComunicationError(loading){
+	        if(!toastr.active()){
+	          toastr.warning('Ocurrió un error en la comunicación, por favor intente nuevamente.');
+	        }
+	        if(loading){
+	          $loading.finish(loading);
+	        }
+	    }
+
     }
 })();

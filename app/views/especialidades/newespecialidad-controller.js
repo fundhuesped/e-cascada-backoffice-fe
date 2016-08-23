@@ -1,45 +1,66 @@
 (function(){
     'use strict';
-    
-    function newespecialidadCtrl ($loading,$uibModalInstance,Especialidad) {
-        this.confirm = function confirm () {
-            if(this.newEspecialidadForm.$valid){
-                this.hideErrorMessage();
+    /* jshint validthis: true */
+    /*jshint latedef: nofunc */
+  
+    function newespecialidadCtrl ($loading,$uibModalInstance,Especialidad, toastr) {
+
+        var vm = this;
+        vm.clearForm = clearForm;
+        vm.close = close;
+        vm.confirm = confirm;
+        vm.hideErrorMessage = hideErrorMessage;
+        vm.newEspecialidad = {};
+        
+
+        activate();
+
+        function activate(){
+
+        }
+
+        function confirm () {
+            if(vm.newEspecialidadForm.$valid){
+                vm.hideErrorMessage();
                 $loading.start('app');
                 var especialidad = new Especialidad();
-                especialidad.name = this.newEspecialidad.name;
-                especialidad.description = this.newEspecialidad.description;
-                especialidad.default = this.newEspecialidad.default;
+                especialidad.name = vm.newEspecialidad.name;
+                especialidad.description = vm.newEspecialidad.description;
+                especialidad.default = vm.newEspecialidad.default;
                 especialidad.status = 'Active';
                 especialidad.$save(function(){
                     $loading.finish('app');
                     $uibModalInstance.close('created');
-                },function(error){
-                    $loading.finish('app');
-                    this.showErrorMessage();
-                }.bind(this)
+                },function(){
+                    displayComunicationError('app');
+                }
                 );
             }else{
-                this.errorMessage = 'Por favor revise el formulario';
+                vm.errorMessage = 'Por favor revise el formulario';
             }
-         };
-        this.close = function close (){
+         }
+        
+        function close(){
             $uibModalInstance.dismiss('cancel');
-        };
-        this.showErrorMessage = function showErrorMessage(){
-            this.errorMessage = 'Ocurio un error en la comunicación';
-        };
-        this.hideErrorMessage = function hideErrorMessage(){
-            this.errorMessage = null;
-        };
-        this.clearForm = function clearForm () {
-            if(this.isModal){
+        }
+                
+        function hideErrorMessage(){
+            vm.errorMessage = null;
+        }
 
-            }else{
-                this.newEspecialidad.name = '';
-                this.newEspecialidad.description = '';
+        function clearForm () {
+            vm.newEspecialidad.name = '';
+            vm.newEspecialidad.description = '';
+        }
+
+        function displayComunicationError(loading){
+            if(!toastr.active()){
+                toastr.warning('Ocurrió un error en la comunicación, por favor intente nuevamente.');
             }
-        };
+            if(loading){
+                $loading.finish(loading);
+            }
+        }
     }
-    angular.module('turnos.especialidades').controller('NewEspecialidadCtrl',['$loading','$uibModalInstance','Especialidad',newespecialidadCtrl]);
+    angular.module('turnos.especialidades').controller('NewEspecialidadCtrl',['$loading', '$uibModalInstance', 'Especialidad', 'toastr', newespecialidadCtrl]);
 })();

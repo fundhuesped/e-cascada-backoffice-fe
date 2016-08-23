@@ -3,7 +3,7 @@
     /* jshint validthis: true */
     /*jshint latedef: nofunc */
 
-    function newPacienteCtrl($loading, $uibModalInstance, $filter, Paciente, Document, Sex, Province, District, Location, SocialService, CivilStatus, Education) {
+    function newPacienteCtrl($loading, $uibModalInstance, $filter, Paciente, Document, Sex, Province, District, Location, SocialService, CivilStatus, Education, toastr) {
         var vm = this;
         vm.locations = null;
         vm.districts = null;
@@ -12,7 +12,6 @@
         vm.clearForm = clearForm;
         vm.searchLocations = searchLocations;
         vm.hideErrorMessage = hideErrorMessage;
-        vm.showErrorMessage = showErrorMessage;
         vm.searchDistricts = searchDistricts;
         vm.confirm = confirm;
         vm.birthDateCalendarPopup = {
@@ -43,12 +42,32 @@
         activate();
 
         function activate() {
-            vm.documents = Document.getActiveList();
-            vm.sexTypes = Sex.getActiveList();
-            vm.provinces = Province.getActiveList();
-            vm.socialServices = SocialService.getActiveList();
-            vm.civilStatusTypes = CivilStatus.getActiveList();
-            vm.educationTypes = Education.getActiveList();
+            $loading.start('app');
+            
+            Document.getActiveList(function(documents){
+                vm.documents = documents;
+            }, function(){displayComunicationError('app');});
+            
+            Sex.getActiveList(function(sexTypes){
+                vm.sexTypes = sexTypes;
+            }, function(){displayComunicationError('app');});
+            
+            Province.getActiveList(function(provinces){
+                vm.provinces = provinces;
+            }, function(){displayComunicationError('app');});
+            
+            SocialService.getActiveList(function(socialServices){
+                vm.socialServices = socialServices;
+            }, function(){displayComunicationError('app');});
+            
+            CivilStatus.getActiveList(function(civilStatusTypes){
+                vm.civilStatusTypes = civilStatusTypes;
+            });
+            
+            Education.getActiveList(function(educationTypes){
+                vm.educationTypes = educationTypes;
+                $loading.finish('app');
+            }, function(){displayComunicationError('app');});
         }
 
         function confirm() {
@@ -95,13 +114,12 @@
                 paciente.firstVisit = $filter('date')(vm.newPaciente.firstVisit, "yyyy-MM-dd");
                 paciente.notes = vm.newPaciente.notes;
                 paciente.consent = vm.newPaciente.consent;
+
                 paciente.$save(function () {
                         $loading.finish('app');
                         $uibModalInstance.close('created');
-                    }, function (error) {
-                        $loading.finish('app');
-                        vm.showErrorMessage();
-                    }.bind(vm)
+                    },
+                    function(){displayComunicationError('app');}
                 );
             } else {
                 vm.errorMessage = 'Por favor revise el formulario';
@@ -110,10 +128,6 @@
 
         function close() {
             $uibModalInstance.dismiss('cancel');
-        }
-
-        function showErrorMessage() {
-            vm.errorMessage = 'Ocurio un error en la comunicación';
         }
 
         function hideErrorMessage() {
@@ -139,16 +153,30 @@
 
         function searchLocations() {
             if (vm.selectedDistrict) {
-                vm.locations = Location.getActiveList({district: vm.selectedDistrict.id});
+                Location.getActiveList({district: vm.selectedDistrict.id}, function(locations){
+                    vm.locations = locations;
+                },displayComunicationError);
             }
         }
 
         function searchDistricts() {
             vm.locations = null;
             if (vm.selectedProvince) {
-                vm.districts = District.getActiveList({province: vm.selectedProvince.id});
+                District.getActiveList({province: vm.selectedProvince.id},function(districts){
+                    vm.districts = districts;
+                },displayComunicationError);
             }
         }
+
+        function displayComunicationError(loading){
+            if(!toastr.active()){
+                toastr.warning('Ocurrió un error en la comunicación, por favor intente nuevamente.');
+            }
+            if(loading){
+                $loading.finish(loading);
+            }
+        }
+
     }
 
     angular.module('turnos.pacientes').controller('NewPacienteCtrl', ['$loading', '$uibModalInstance', '$filter', 'Paciente', 'Document', 'Sex', 'Province', 'District', 'Location', 'SocialService', 'CivilStatus', 'Education', newPacienteCtrl]);

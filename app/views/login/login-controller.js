@@ -3,7 +3,7 @@
     /* jshint validthis: true */
     /*jshint latedef: nofunc */
     
-    function loginCtrl ($state, SessionService) {
+    function loginCtrl ($state, SessionService, $loading, toastr) {
         var vm = this;
         vm.errorMessage = null;
         vm.login = login;
@@ -11,18 +11,37 @@
         vm.hideErrorMessage = hideErrorMessage;
 
         function login(){
-            if(vm.LoginForm.$valid){
-                SessionService.login(vm.username, vm.password, vm.rememberMe, function(data){
-                    $state.transitionTo('home');
-                }, function(){
-                    vm.errorMessage = 'Usuario o password incorrecto';
+            
+            $loading.start('app');
+            hideErrorMessage();
 
+            if(vm.LoginForm.$valid){
+                SessionService.login(vm.username, vm.password, vm.rememberMe, function(){
+                    $loading.finish('app');
+                    $state.transitionTo('home');
+                }, function(errorResponse){
+                    $loading.finish('app');
+                    if(errorResponse.status === 401){
+                        vm.errorMessage = 'Usuario o password incorrecto';
+                    }else{
+                        displayComunicationError('app');
+                    }
                 });
             }
     	}
+
         function hideErrorMessage() {
             vm.errorMessage = null;
         }
+
+        function displayComunicationError(loading){
+          if(!toastr.active()){
+            toastr.warning('Ocurrió un error en la comunicación, por favor intente nuevamente.');
+          }
+          if(loading){
+            $loading.finish(loading);
+          }
+        }
     }
-    angular.module('turnos.login').controller('LoginCtrl',['$state', 'SessionService',loginCtrl]);
+    angular.module('turnos.login').controller('LoginCtrl',['$state', 'SessionService', '$loading', 'toastr', loginCtrl]);
 })();

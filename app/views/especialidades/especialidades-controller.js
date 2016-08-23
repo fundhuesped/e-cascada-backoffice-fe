@@ -3,7 +3,7 @@
     /* jshint validthis: true */
     /*jshint latedef: nofunc */
     
-    function especialidadesCtrl ($uibModal,toastr,Especialidad) {
+    function especialidadesCtrl ($uibModal, toastr, Especialidad, $loading) {
     	var vm = this;
         vm.especialidades = [];
         vm.especialidad = null;
@@ -15,11 +15,15 @@
 
         //Controller initialization
         function activate(){
+            $loading.start('app');
             vm.statusFilter = '1'; 
             Especialidad.getPaginatedActiveList({page_size:vm.pageSize,ordering:'name'}, function(paginatedResult){
                 vm.especialidades = paginatedResult.results;
                 vm.totalItems = paginatedResult.count;
-            });
+                $loading.finish('app');
+            },
+                function(){displayComunicationError('app');}
+            );
         }
 
 
@@ -40,15 +44,15 @@
                 }
             });
             modalInstance.result.then(function (result) {
-                if(result=='modified'){
+                if(result==='modified'){
                    toastr.success('Especialidad modificada');  
-                }else if(result=='deleted'){
+                }else if(result==='deleted'){
                    toastr.success('Especialidad eliminada');  
-                }else if(result=='reactivated'){
+                }else if(result==='reactivated'){
                    toastr.success('Especialidad reactivada');                      
                 }
                vm.searchName();                  
-            }.bind(vm), function () {
+            }, function () {
             });
         };
 
@@ -72,13 +76,17 @@
             if(currentStatusFilter){
                 searchObject.status = currentStatusFilter;
             }
+            $loading.start('app');
 
             Especialidad.queryPaginated(searchObject,
                     function (paginatedResult){
+                        $loading.finish('app');
                         vm.especialidades = paginatedResult.results;
                         vm.totalItems = paginatedResult.count;
+                },
+                function(){
+                    displayComunicationError('app');
                 });
-
         };
 
         function changeSearchParameter(){
@@ -96,13 +104,19 @@
             modalInstance.result.then(function () {
                toastr.success('Especialidad creada');
                vm.searchName();
-            }.bind(vm), function () {
-              
+            }, function () {
             });
         };
         
-
+        function displayComunicationError(loading){
+            if(!toastr.active()){
+                toastr.warning('Ocurrió un error en la comunicación, por favor intente nuevamente.');
+            }
+            if(loading){
+                $loading.finish(loading);
+            }
+        }
                         
     }
-    angular.module('turnos.especialidades').controller('EspecialidadesCtrl',['$uibModal','toastr','Especialidad',especialidadesCtrl]);
+    angular.module('turnos.especialidades').controller('EspecialidadesCtrl',['$uibModal','toastr','Especialidad', '$loading',especialidadesCtrl]);
 })();
