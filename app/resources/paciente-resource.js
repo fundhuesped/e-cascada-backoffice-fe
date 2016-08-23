@@ -2,8 +2,12 @@
     'use strict';
     function PacienteProvider() {
       function PacienteResource($resource,apiBase) {
-        function transformDataSet(data){ 
-                  return angular.fromJson(data).results;
+        function transformDataSet(data, headersGetter, status){
+          if(status > 0 && data){
+            return angular.fromJson(data).results;  
+          }else{
+            return [];
+          }
         }
         var Paciente = $resource(apiBase + 'pacientes/paciente/:id/',{id:'@id'},{
           update: {
