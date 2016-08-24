@@ -278,23 +278,25 @@
     }
 
     function pageChanged() {
-      $loading.start('app');      
-      var searchObject = {
-        taken: false,
-        prestacion: vm.selectedPrestacion.id,
-        ordering:'day,start',
-      };
+      if(vm.selectedPrestacion){
+        $loading.start('app');      
+        var searchObject = {
+          taken: false,
+          prestacion: vm.selectedPrestacion.id,
+          ordering:'day,start',
+        };
 
-      if (vm.selectedDate) {
-        searchObject.day__gte = $filter('date')(vm.selectedDate, 'yyyy-MM-dd');
-      }else{
-        searchObject.day__gte = $filter('date')(new Date(), 'yyyy-MM-dd');
+        if (vm.selectedDate) {
+          searchObject.day__gte = $filter('date')(vm.selectedDate, 'yyyy-MM-dd');
+        }else{
+          searchObject.day__gte = $filter('date')(new Date(), 'yyyy-MM-dd');
+        }
+        
+        if (vm.selectedProfesional) {
+          searchObject.profesional = vm.selectedProfesional.id;
+        }
+        getTurnosList(searchObject);
       }
-      
-      if (vm.selectedProfesional) {
-        searchObject.profesional = vm.selectedProfesional.id;
-      }
-      getTurnosList(searchObject);
     }
 
 
