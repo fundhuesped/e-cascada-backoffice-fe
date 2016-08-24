@@ -3,11 +3,11 @@
     function DistrictProvider() {
         function DistrictResource($resource, apiBase) {
             function transformDataSet(data, headersGetter, status){
-              if(status > 0 && data){
-                return angular.fromJson(data).results;  
-              }else{
-                return [];
-              }
+                if(status === 200 && data){
+                    return angular.fromJson(data).results;  
+                }else{
+                    return [];
+                }
             }
             var District = $resource(apiBase + 'comun/district/:id/', {id: '@id'}, {
                 update: {

@@ -3,7 +3,7 @@
     function EspecialidadProvider() {
       function EspecialidadResource($resource,apiBase) {
         function transformDataSet(data, headersGetter, status){
-          if(status > 0 && data){
+          if(status === 200 && data){
             return angular.fromJson(data).results;  
           }else{
             return [];

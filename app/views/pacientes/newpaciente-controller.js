@@ -62,7 +62,7 @@
             
             CivilStatus.getActiveList(function(civilStatusTypes){
                 vm.civilStatusTypes = civilStatusTypes;
-            });
+            }, function(){displayComunicationError('app');});
             
             Education.getActiveList(function(educationTypes){
                 vm.educationTypes = educationTypes;
@@ -179,5 +179,5 @@
 
     }
 
-    angular.module('turnos.pacientes').controller('NewPacienteCtrl', ['$loading', '$uibModalInstance', '$filter', 'Paciente', 'Document', 'Sex', 'Province', 'District', 'Location', 'SocialService', 'CivilStatus', 'Education', newPacienteCtrl]);
+    angular.module('turnos.pacientes').controller('NewPacienteCtrl', ['$loading', '$uibModalInstance', '$filter', 'Paciente', 'Document', 'Sex', 'Province', 'District', 'Location', 'SocialService', 'CivilStatus', 'Education', 'toastr', newPacienteCtrl]);
 })();
