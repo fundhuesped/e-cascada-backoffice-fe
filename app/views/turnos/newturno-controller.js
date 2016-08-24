@@ -104,11 +104,11 @@
         vm.documents = documents;
       }, displayComunicationError);
       
-      Especialidad.getActiveList(null, function(especialidades){
+      Especialidad.getActiveList(function(especialidades){
         vm.especialidades = especialidades;
       }, displayComunicationError);
       
-      Profesional.getActiveList(null, function(profesionales){
+      Profesional.getActiveList(function(profesionales){
         vm.profesionales = profesionales;
       }, displayComunicationError);
 
@@ -141,7 +141,7 @@
       $loading.start('app');      
       if(vm.selectedPaciente){
         vm.selectedTurno.paciente = vm.selectedPaciente;
-          vm.reserveTurno();
+        vm.reserveTurno();
       }else{
         var paciente = new Paciente();        
         paciente.firstName = vm.paciente.firstName;
@@ -193,7 +193,8 @@
       vm.prestaciones.length = 0;
       vm.selectedProfesional = null;
       vm.selectedDate = null;
-      vm.selectedPaciente = null;
+      vm.profesionales = Profesional.getActiveList(angular.noop,displayComunicationError);
+      vm.especialidades = Especialidad.getActiveList(angular.noop, displayComunicationError);
       cleanTurnosResult();
     }
 
@@ -428,7 +429,7 @@
           vm.profesionales = Profesional.getActiveList({especialidad: vm.selectedEspecialidad.id}, angular.noop, displayComunicationError);
         }
       }else{
-        vm.profesionales = Profesional.getActiveList(angular.noop,displayComunicationError());
+        vm.profesionales = Profesional.getActiveList(angular.noop,displayComunicationError);
         if(angular.isObject(vm.selectedProfesional)){
           vm.prestaciones = Prestacion.getActiveList({profesional:vm.selectedProfesional.id}, angular.noop, displayComunicationError);
         }else{
@@ -451,7 +452,7 @@
       cleanTurnosResult();
       if (vm.selectedProfesional) {
         if(angular.isObject(vm.selectedEspecialidad)){
-          vm.prestaciones = Prestacion.getActiveList({especialidad: vm.selectedEspecialidad.id, profesional:vm.selectedProfesional.id}, null, displayComunicationError);
+          vm.prestaciones = Prestacion.getActiveList({especialidad: vm.selectedEspecialidad.id, profesional:vm.selectedProfesional.id}, angular.noop, displayComunicationError);
         }else{
           vm.prestaciones = Prestacion.getActiveList({profesional: vm.selectedProfesional.id}, angular.noop, displayComunicationError);
           vm.especialidades = Especialidad.getActiveList({profesional: vm.selectedProfesional.id}, angular.noop, displayComunicationError);
