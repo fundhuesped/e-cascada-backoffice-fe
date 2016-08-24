@@ -2,8 +2,12 @@
     'use strict';
     function LocationProvider() {
         function LocationResource($resource, apiBase) {
-            function transformDataSet(data){ 
-                      return angular.fromJson(data).results;
+            function transformDataSet(data, headersGetter, status){
+              if(status === 200 && data){
+                return angular.fromJson(data).results;  
+              }else{
+                return [];
+              }
             }
             var Location = $resource(apiBase + 'comun/location/:id/', {id: '@id'}, {
                 update: {

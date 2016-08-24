@@ -3,13 +3,17 @@
     /* jshint validthis: true */
     /*jshint latedef: nofunc */
 
-    function newprestacionCtrl ($loading,$uibModalInstance,Prestacion,Especialidad) {
+    function newprestacionCtrl ($loading, $uibModalInstance, Prestacion, Especialidad, toastr) {
         var vm = this;
         
         activate();
 
         function activate(){
-            vm.especialidades = Especialidad.getActiveList();
+            $loading.start('app');
+            Especialidad.getActiveList(function(especialidades){
+                vm.especialidades = especialidades;
+                $loading.finish('app');
+            },function (){displayComunicationError('app');} );
         }
 
         vm.newPrestacion = {
@@ -32,18 +36,14 @@
                 prestacion.$save(function(){
                     $loading.finish('app');
                     $uibModalInstance.close('created');
-                },function(error){
-                    $loading.finish('app');
-                    vm.showErrorMessage();
-                }.bind(vm));
+                },function(){
+                    displayComunicationError('app');
+                });
             }else{
                 vm.errorMessage = 'Por favor revise el formulario';
             }
         };
 
-        vm.showErrorMessage = function showErrorMessage(){
-            vm.errorMessage = 'Ocurio un error en la comunicación';
-        };
         vm.hideErrorMessage = function hideErrorMessage(){
             vm.errorMessage = null;
         };
@@ -62,6 +62,15 @@
                 vm.newPrestacion.minutes = 0;
             }
         };
+
+        function displayComunicationError(loading){
+            if(!toastr.active()){
+                toastr.warning('Ocurrió un error en la comunicación, por favor intente nuevamente.');
+            }
+            if(loading){
+                $loading.finish(loading);
+            }
+        }
     }
-    angular.module('turnos.prestaciones').controller('NewPrestacionCtrl',['$loading','$uibModalInstance','Prestacion','Especialidad',newprestacionCtrl]);
+    angular.module('turnos.prestaciones').controller('NewPrestacionCtrl',['$loading', '$uibModalInstance', 'Prestacion', 'Especialidad', 'toastr',newprestacionCtrl]);
 })();

@@ -8,9 +8,10 @@
 
     pacientesCtrl.$inject = ['$uibModal',
                              'toastr',
-                             'Paciente'];
+                             'Paciente',
+                             '$loading'];
     
-    function pacientesCtrl ($uibModal,toastr,Paciente) {
+    function pacientesCtrl ($uibModal, toastr, Paciente, $loading) {
         var vm = this;
         vm.detail = detail;
         var modalInstance;        
@@ -29,11 +30,13 @@
         
         //Controller initialization
         function activate(){
+            $loading.start('app');    
             vm.statusFilter = '1';
             Paciente.getPaginatedActiveList({page_size:vm.pageSize,ordering:'firstName'}, function(paginatedResult){
                 vm.pacientes = paginatedResult.results;
                 vm.totalItems = paginatedResult.count;
-            });
+                $loading.finish('app');
+            }, function(){ displayComunicationError('app');});
         }
 
         function detail(paciente){
@@ -62,7 +65,7 @@
                     toastr.success('Paciente reactivado');
                 }
                 vm.searchName();
-            }.bind(vm), function () {
+            }, function () {
             });
         }
 
@@ -70,6 +73,7 @@
             vm.paciente = null;
             var currentStatusFilter;
             if(vm.searchPreferencesForm.searchName && vm.searchPreferencesForm.$valid){
+                $loading.start('app');
                 var searchObject = {
                     page_size:vm.pageSize,
                     page:vm.currentPage,
@@ -84,7 +88,8 @@
                     function (paginatedResult){
                         vm.pacientes = paginatedResult.results;
                         vm.totalItems = paginatedResult.count;
-                });
+                        $loading.finish('app');
+                },function(){displayComunicationError('app');});
             }else{
                 toastr.warning('Ingrese almenos 3 caracteres para buscar');
             }
@@ -118,6 +123,15 @@
                 vm.searchName();
             }, function () {
             });
+        }
+
+        function displayComunicationError(loading){
+            if(!toastr.active()){
+                toastr.warning('Ocurrió un error en la comunicación, por favor intente nuevamente.');
+            }
+            if(loading){
+                $loading.finish(loading);
+            }
         }
     }
 })();

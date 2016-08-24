@@ -3,7 +3,7 @@
   /* jshint validthis: true */
   /*jshint latedef: nofunc */
 
-  function agendaCtrl($loading, $uibModalInstance, $filter, Agenda, agenda) {
+  function agendaCtrl($loading, $uibModalInstance, $filter, Agenda, agenda, toastr) {
     var vm = this;
 
     vm.cancel = cancel;
@@ -25,11 +25,12 @@
     };
 
 
-    vm.daysStr = [{
-      'id': 0,
-      'name': 'Lu',
-      'selected': false
-    },
+    vm.daysStr = [
+      {
+        'id': 0,
+        'name': 'Lu',
+        'selected': false
+      },
       {
         'id': 1,
         'name': 'Ma',
@@ -77,7 +78,7 @@
         vm.minutesFrom = parseInt(vm.agenda.start.substr(3, 2), 10);
         vm.hoursTo = parseInt(vm.agenda.end.substr(0, 2), 10);
         vm.minutesTo = parseInt(vm.agenda.end.substr(3, 2), 10);
-      });
+      },displayComunicationError);
     }
 
     vm.confirm = function confirm() {
@@ -89,10 +90,8 @@
           vm.agenda.$update(function () {
           $loading.finish('app');
           $uibModalInstance.close('modified');
-        }, function () {
-          $loading.finish('app');
-          vm.showErrorMessage();
-        }.bind(vm));
+        }, function(){displayComunicationError('app');}
+        );
       } else {
         vm.errorMessage = 'Por favor revise el formulario';
       }
@@ -122,10 +121,7 @@
       agendaInstance.$update(function () {
         $loading.finish('app');
         $uibModalInstance.close('deleted');
-      }, function () {
-        $loading.finish('app');
-        $uibModalInstance.close('deleted');
-      });
+      },function(){displayComunicationError('app');});
     };
 
     vm.confirmReactivate = function confirmReactivate(agendaInstance) {
@@ -133,10 +129,7 @@
       agendaInstance.$update(function () {
         $loading.finish('app');
         $uibModalInstance.close('reactivated');
-      }, function () {
-        $loading.finish('app');
-        $uibModalInstance.close('reactivated');
-      });
+      },function(){displayComunicationError('app');});
     };
 
     vm.confirmStatusChange = function confirmDelete() {
@@ -205,7 +198,15 @@
       }
     };
 
+    function displayComunicationError(loading){
+      if(!toastr.active()){
+        toastr.warning('Ocurrió un error en la comunicación, por favor intente nuevamente.');
+      }
+      if(loading){
+        $loading.finish(loading);
+      }
+    }
   }
 
-  angular.module('turnos.agendas').controller('AgendaCtrl', ['$loading', '$uibModalInstance', '$filter', 'Agenda',  'agenda', agendaCtrl]);
+  angular.module('turnos.agendas').controller('AgendaCtrl', ['$loading', '$uibModalInstance', '$filter', 'Agenda',  'agenda', 'toastr', agendaCtrl]);
 })();

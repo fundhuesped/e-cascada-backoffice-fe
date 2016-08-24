@@ -5,9 +5,9 @@
     angular
         .module('turnos.prestaciones')
         .controller('PrestacionesCtrl',prestacionesCtrl);
-    prestacionesCtrl.$inject = ['$uibModal','toastr','Prestacion'];
+    prestacionesCtrl.$inject = ['$loading', '$uibModal','toastr','Prestacion'];
     
-    function prestacionesCtrl ($uibModal, toastr, Prestacion) {
+    function prestacionesCtrl ($loading, $uibModal, toastr, Prestacion) {
         var vm = this;
         vm.prestaciones = [];
         vm.prestacion = null;
@@ -21,6 +21,8 @@
 
         //Controller initialization
         function activate(){
+            $loading.start('app');
+
             vm.statusFilter = '1'; 
             Prestacion.getPaginatedActiveList({page_size:vm.pageSize,ordering:'name'}, function(paginatedResult){
                 vm.prestaciones = paginatedResult.results;
@@ -51,7 +53,8 @@
                     });
                 }
                 vm.totalItems = paginatedResult.count;
-            });
+                $loading.finish('app');
+            }, function(){displayComunicationError('app');});
         }
 
 
@@ -104,7 +107,8 @@
                         }
                     });
                 }
-            });
+                $loading.finish('app');
+            }, function(){displayComunicationError('app');});
         }
 
     	vm.detail = function detail(prestacion){
@@ -154,5 +158,14 @@
             }, function () {         
             });
         };
+
+        function displayComunicationError(loading){
+            if(!toastr.active()){
+                toastr.warning('Ocurrió un error en la comunicación, por favor intente nuevamente.');
+            }
+            if(loading){
+                $loading.finish(loading);
+            }
+        }
     }
 })();

@@ -12,10 +12,8 @@
           </div>
 
           <div class="col-md-3">
-            <div ng-class="{'has-warning':AgendasCtrl.searchPreferencesForm.searchName.$error.minlength}">
-              <input type="text" name="searchName" class="form-control" placeholder="Nombre" ng-model="AgendasCtrl.nameFilter" minlength="3">
-              <button type="button" class="btn btn-default" ng-click="AgendasCtrl.changeSearchParameter()">Buscar</button>
-            </div>
+            <input type="text" name="firstname" class="form-control" ng-model="AgendasCtrl.selectedProfesional" placeholder="Nombre del profesional" uib-typeahead='profesional as (profesional.fatherSurname + ", " + profesional.firstName) for profesional in AgendasCtrl.getProfesionales($viewValue)' autocomplete="off"></input>
+            <button type="button" class="btn btn-default" ng-click="AgendasCtrl.changeSearchParameter()">Buscar</button>
           </div>
           <div class="col-md-2">
             <select class="form-control" ng-model="AgendasCtrl.statusFilter" ng-change="AgendasCtrl.changeSearchParameter()">
@@ -51,7 +49,7 @@
             <tbody>
             <tr ng-repeat="(key, agenda) in AgendasCtrl.agendas" ng-click="AgendasCtrl.detail(agenda)"
                 ng-class="{active:agenda == AgendasCtrl.agenda}">
-              <td style="max-width:150px; word-wrap:break-word;">{{agenda.profesional.fatherSurname}}</td>
+              <td style="max-width:150px; word-wrap:break-word;">{{agenda.profesional.fatherSurname + ', ' + agenda.profesional.firstName}}</td>
               <td style="max-width:150px; word-wrap:break-word;">{{agenda.prestacion.name}}</td>
               <td style="max-width:150px; word-wrap:break-word;">{{agenda.validFrom | date : 'dd-MM-yyyy'}} a {{agenda.validTo | date : 'dd-MM-yyyy'}}</td>
             </tr>

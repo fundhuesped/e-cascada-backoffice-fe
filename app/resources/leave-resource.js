@@ -2,8 +2,12 @@
   'use strict';
   function LeaveProvider() {
     function LeaveResource($resource, apiBase) {
-        function transformDataSet(data){ 
-          return angular.fromJson(data).results;
+        function transformDataSet(data, headersGetter, status){
+          if(status === 200 && data){
+            return angular.fromJson(data).results;  
+          }else{
+            return [];
+          }
         }
         var Leave = $resource(apiBase + 'practicas/ausencia/:id/', {id: '@id'}, {
         update: {
@@ -14,6 +18,11 @@
           params: {status: 'Active'},
           isArray: true,
           transformResponse: transformDataSet          
+        },
+        getFullActiveList: {
+          method: 'GET',
+          params: {status: 'Active', all: true},
+          isArray: true
         },
         getInactiveList: {
           method: 'GET',

@@ -9,8 +9,12 @@
 
   function TurnoProvider() {
     function TurnoResource($resource, apiBase) {
-        function transformDataSet(data){
-                  return angular.fromJson(data).results;
+        function transformDataSet(data, headersGetter, status){
+          if(status > 0 && data){
+            return angular.fromJson(data).results;  
+          }else{
+            return [];
+          }
         }
         var Turno = $resource(apiBase + 'practicas/turno/:id/', {id: '@id'}, {
         update: {

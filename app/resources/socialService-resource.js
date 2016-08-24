@@ -2,9 +2,13 @@
     'use strict';
     function SocialServiceProvider() {
         function SocialServiceResource($resource, apiBase) {
-            function transformDataSet(data){ 
-                return angular.fromJson(data).results;
-            }            
+            function transformDataSet(data, headersGetter, status){
+              if(status === 200 && data){
+                return angular.fromJson(data).results;  
+              }else{
+                return [];
+              }
+            }         
             var SocialService = $resource(apiBase + 'comun/socialService/:id/', {id: '@id'}, {
                 update: {
                     method: 'PUT'

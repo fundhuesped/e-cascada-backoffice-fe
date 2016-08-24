@@ -37,6 +37,7 @@
     vm.openTurnoModal = openTurnoModal;
     vm.openPacienteModal = openPacienteModal;
     vm.paciente = null;
+    vm.pageChanged = pageChanged;
     vm.prestaciones = [];
     vm.prestacionChanged = prestacionChanged;
     vm.profesionalChanged = profesionalChanged;
@@ -99,9 +100,18 @@
     };
 
     function activate() {
-      vm.documents = Document.getActiveList();
-      vm.especialidades = Especialidad.getActiveList();
-      vm.profesionales = Profesional.getActiveList();
+      Document.getActiveList(function(documents){
+        vm.documents = documents;
+      }, displayComunicationError);
+      
+      Especialidad.getActiveList(function(especialidades){
+        vm.especialidades = especialidades;
+      }, displayComunicationError);
+      
+      Profesional.getActiveList(function(profesionales){
+        vm.profesionales = profesionales;
+      }, displayComunicationError);
+
       vm.recomendationsPanel.message = 'Por favor comience a completar el formulario para buscar pacientes';
       vm.renderCalendar();
     }
@@ -124,13 +134,14 @@
       vm.selectedPaciente = null;
       delete vm.paciente.selected;
       vm.paciente = null;
+      vm.recomendationsPanel.message = 'Por favor comience a completar el formulario para buscar pacientes';
     }
 
     function confirmTurno() {
       $loading.start('app');      
       if(vm.selectedPaciente){
         vm.selectedTurno.paciente = vm.selectedPaciente;
-          vm.reserveTurno();
+        vm.reserveTurno();
       }else{
         var paciente = new Paciente();        
         paciente.firstName = vm.paciente.firstName;
@@ -144,8 +155,8 @@
         paciente.$save(function(createdPaciente){
           vm.selectedTurno.paciente = createdPaciente;
           vm.reserveTurno();
-        },function(error){
-          console.log(error);
+        },function(){
+          displayComunicationError('app');
         }
         );
       }
@@ -182,7 +193,8 @@
       vm.prestaciones.length = 0;
       vm.selectedProfesional = null;
       vm.selectedDate = null;
-      vm.selectedPaciente = null;
+      vm.profesionales = Profesional.getActiveList(angular.noop,displayComunicationError);
+      vm.especialidades = Especialidad.getActiveList(angular.noop, displayComunicationError);
       cleanTurnosResult();
     }
 
@@ -192,6 +204,7 @@
         vm.recomendationsPanel.message = null;
 
         var searchObject = {};
+
         if(vm.paciente.documentType){
           searchObject.documentType = vm.paciente.documentType.id;
         }
@@ -204,27 +217,29 @@
         if(vm.paciente.fatherSurname){
           searchObject.fatherSurname = vm.paciente.fatherSurname;
         }
+        if(vm.paciente.birthDate){
+          searchObject.birthDate = $filter('date')(vm.paciente.birthDate, 'yyyy-MM-dd');
+        }
 
         Paciente.getActiveList(searchObject,
-           function(recomendations){
-          $loading.finish('recomendations');
-          if(recomendations.length === 0){
-            vm.recomendationsPanel.message = 'No se encontraron pacientes con los criterios de busqueda';
-            return;
-          }
-          vm.copyPaciente = angular.copy(vm.paciente);
-          vm.copyPaciente.birthDate = $filter('date')(vm.copyPaciente.birthDate, "yyyy-MM-dd");
-          vm.recomendationList = $filter('filter')(recomendations, vm.copyPaciente);
-          }.bind(vm), function(){
+          function(recomendations){
             $loading.finish('recomendations');
-            console.log('Failed to get activePacientes');
+            if(recomendations.length === 0){
+              vm.recomendationList = [];
+              vm.recomendationsPanel.message = 'No se encontraron pacientes con los criterios de busqueda';
+              return;
+            }
+            vm.recomendationList = recomendations;
+          }, function(){
+            vm.recomendationsPanel.message = 'Ocurrió un error en la comunicación, por favor intente nuevamente.';
+            displayComunicationError('recomendations');
           }
         );
         }
     }
 
     function canLookForTurnos(){
-      return vm.selectedPrestacion || (vm.selectedEspecialidad && vm.selectedProfesional);
+      return vm.selectedPrestacion && (vm.selectedEspecialidad || vm.selectedProfesional);
     }
 
 
@@ -262,6 +277,27 @@
       }
     }
 
+    function pageChanged() {
+      $loading.start('app');      
+      var searchObject = {
+        taken: false,
+        prestacion: vm.selectedPrestacion.id,
+        ordering:'day,start',
+      };
+
+      if (vm.selectedDate) {
+        searchObject.day__gte = $filter('date')(vm.selectedDate, 'yyyy-MM-dd');
+      }else{
+        searchObject.day__gte = $filter('date')(new Date(), 'yyyy-MM-dd');
+      }
+      
+      if (vm.selectedProfesional) {
+        searchObject.profesional = vm.selectedProfesional.id;
+      }
+      getTurnosList(searchObject);
+    }
+
+
     function getAllTurnosForDates(searchObject){
       var calendarView = uiCalendarConfig.calendars.newTurnosCalendar.fullCalendar( 'getView' );
       searchObject.start = calendarView.start.format('YYYY-MM-DD');
@@ -272,8 +308,9 @@
         turnosSource =[];
         vm.turnos = results;
         angular.forEach(results, function (turno) {
-          var startTime = new Date(turno.day + 'T' + turno.start);
-          var endTime = new Date(turno.day + 'T' + turno.end);
+          var startTime = new Date(turno.day + 'T' + turno.start + '-03:00');
+          var endTime = new Date(turno.day + 'T' + turno.end+ '-03:00');
+
           var event = {
             id: turno.id,
             title: turno.profesional.fatherSurname,
@@ -289,6 +326,8 @@
         vm.eventSources.push(turnosSource);
         vm.renderCalendar();
         $loading.finish('app');
+      }, function(){
+        displayComunicationError('app');
       });
     }
 
@@ -298,10 +337,14 @@
 
       Turno.getPaginatedActiveList(searchObject).$promise.then(function (paginatedResult) {
         lookedForTurnos = true;
-        vm.totalItems = paginatedResult.count;
+        if(vm.currentPage===1){
+          vm.totalItems = paginatedResult.count;
+        }
         vm.turnos = paginatedResult.results;
 
         $loading.finish('app');
+      }, function(){
+        displayComunicationError('app');
       });
     }
 
@@ -371,9 +414,8 @@
       turno.$update(function(){
         $loading.finish('app');
         vm.openTurnoModal(turno);
-      },function(error){
-        $loading.finish('app');
-        console.log('Error creando turno');
+      },function(){
+        displayComunicationError('app');
       });
     }    
 
@@ -381,11 +423,19 @@
       cleanTurnosResult();
       if (vm.selectedEspecialidad) {
         if(angular.isObject(vm.selectedProfesional)){
-          vm.prestaciones = Prestacion.getActiveList({especialidad: vm.selectedEspecialidad.id, profesional:vm.selectedProfesional.id});
+          vm.prestaciones = Prestacion.getActiveList({especialidad: vm.selectedEspecialidad.id, profesional:vm.selectedProfesional.id}, angular.noop, displayComunicationError);
         }else{
-          vm.prestaciones = Prestacion.getActiveList({especialidad: vm.selectedEspecialidad.id});
-          vm.profesionales = Profesional.getActiveList({especialidad: vm.selectedEspecialidad.id});
+          vm.prestaciones = Prestacion.getActiveList({especialidad: vm.selectedEspecialidad.id}, angular.noop, displayComunicationError);
+          vm.profesionales = Profesional.getActiveList({especialidad: vm.selectedEspecialidad.id}, angular.noop, displayComunicationError);
         }
+      }else{
+        vm.profesionales = Profesional.getActiveList(angular.noop,displayComunicationError);
+        if(angular.isObject(vm.selectedProfesional)){
+          vm.prestaciones = Prestacion.getActiveList({profesional:vm.selectedProfesional.id}, angular.noop, displayComunicationError);
+        }else{
+          vm.prestaciones = [];
+        }
+
       }
     }
 
@@ -393,7 +443,7 @@
       cleanTurnosResult();
       if (vm.selectedPrestacion) {
         if(!angular.isObject(vm.selectedProfesional)){
-          vm.profesionales = Profesional.getActiveList({prestacion: vm.selectedPrestacion.id});
+          vm.profesionales = Profesional.getActiveList({prestacion: vm.selectedPrestacion.id}, angular.noop, displayComunicationError);
         }
       }
     }
@@ -402,10 +452,17 @@
       cleanTurnosResult();
       if (vm.selectedProfesional) {
         if(angular.isObject(vm.selectedEspecialidad)){
-          vm.prestaciones = Prestacion.getActiveList({especialidad: vm.selectedEspecialidad.id, profesional:vm.selectedProfesional.id});
+          vm.prestaciones = Prestacion.getActiveList({especialidad: vm.selectedEspecialidad.id, profesional:vm.selectedProfesional.id}, angular.noop, displayComunicationError);
         }else{
-          vm.prestaciones = Prestacion.getActiveList({profesional: vm.selectedProfesional.id});
-          vm.especialidades = Especialidad.getActiveList({profesional: vm.selectedProfesional.id});
+          vm.prestaciones = Prestacion.getActiveList({profesional: vm.selectedProfesional.id}, angular.noop, displayComunicationError);
+          vm.especialidades = Especialidad.getActiveList({profesional: vm.selectedProfesional.id}, angular.noop, displayComunicationError);
+        }
+      }else{
+        vm.especialidades = Especialidad.getActiveList(angular.noop, displayComunicationError);
+        if(angular.isObject(vm.selectedEspecialidad)){
+          vm.prestaciones = Prestacion.getActiveList({especialidad: vm.selectedEspecialidad.id}, angular.noop, displayComunicationError);
+        }else{
+           vm.prestaciones = [];         
         }
       }
     }
@@ -414,6 +471,7 @@
       vm.paciente = paciente;
       vm.selectedPaciente = paciente;
       vm.newTurno.paciente = paciente;
+      vm.recomendationList = [paciente];
       paciente.selected = true;
     }
 
@@ -431,19 +489,15 @@
         return true;
       }
 
-      if (vm.paciente.firstName) {
+      if (vm.paciente.firstName && vm.paciente.firstName.length >= 3) {
         populatedFields++;
       }
 
-      if (vm.paciente.fatherSurname) {
+      if (vm.paciente.fatherSurname && vm.paciente.fatherSurname.length >= 3) {
         populatedFields++;
       }
 
       if (vm.paciente.birthDate) {
-        populatedFields++;
-      }
-
-      if (vm.paciente.email) {
         populatedFields++;
       }
 
@@ -495,9 +549,6 @@
         if (position != turno.id) {
           if(turno.selected){
             turno.selected = false;
-            //turno.calendarRepresentation.color = '#D8C358';
-            //uiCalendarConfig.calendars.newTurnosCalendar.fullCalendar('removeEvents', turno.calendarRepresentation.id);
-            //uiCalendarConfig.calendars.newTurnosCalendar.fullCalendar('renderEvent', turno.calendarRepresentation,true);
           }
         } else {
           turno.selected = !turno.selected;
@@ -505,20 +556,10 @@
             if (calendarRepresentation.selected) {
               calendarRepresentation.color = '#D8C358';
               calendarRepresentation.selected = false;
-              //turno.calendarRepresentation.color = '#D8C358';
-              //vm.selectedCalendarRepresentation = null;
             } else {
               calendarRepresentation.color = '#6CC547';
-              /*if(vm.selectedCalendarRepresentation){
-                vm.selectedCalendarRepresentation.color = '#D8C358';
-                vm.selectedCalendarRepresentation.selected = false;
-                vm.selectedCalendarRepresentation = calendarRepresentation;                
-              }*/
               calendarRepresentation.selected = true;
-              //turno.calendarRepresentation.color = '#dff0d8';
             }
-            //uiCalendarConfig.calendars.newTurnosCalendar.fullCalendar('removeEvents', turno.calendarRepresentation._id);
-            //uiCalendarConfig.calendars.newTurnosCalendar.fullCalendar('renderEvent', turno.calendarRepresentation,true);
           }
 
           if (vm.selectedTurno == turno) {
@@ -534,6 +575,15 @@
         }
       });
       uiCalendarConfig.calendars.newTurnosCalendar.fullCalendar( 'rerenderEvents' );
+    }
+    
+    function displayComunicationError(loading){
+      if(!toastr.active()){
+        toastr.warning('Ocurrió un error en la comunicación, por favor intente nuevamente.');
+      }
+      if(loading){
+        $loading.finish(loading);
+      }
     }
   }
 })();

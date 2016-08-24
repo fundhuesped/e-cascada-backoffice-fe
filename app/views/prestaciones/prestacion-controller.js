@@ -3,7 +3,7 @@
     /* jshint validthis: true */
     /*jshint latedef: nofunc */
 
-    function prestacionCtrl ($loading,$uibModalInstance,Especialidad,prestacion, Prestacion) {
+    function prestacionCtrl ($loading, $uibModalInstance, Especialidad, prestacion, Prestacion, toastr) {
         var vm = this;
         vm.prestacion = {};
         vm.errorMessage = null;
@@ -11,11 +11,15 @@
 
         activate();
         function activate(){
+            $loading.start('app');
             Prestacion.get({id:prestacion.id}, function(returnedObject){
                 vm.originalPrestacion = angular.copy(returnedObject);
                 vm.prestacion = returnedObject;
+                $loading.finish('app');
             });
-            vm.especialidades = Especialidad.getActiveList();
+            Especialidad.getActiveList(function(especialidades){
+                vm.especialidades = especialidades;
+            }, function(){displayComunicationError('app');} );
         }
 
         vm.confirm = function confirm () {
@@ -26,9 +30,8 @@
                     $loading.finish('app');
                     $uibModalInstance.close('modified'); 
                 },function(){
-                    $loading.finish('app');
-                    vm.showErrorMessage();
-                }.bind(vm));
+                    displayComunicationError('app');
+                });
             }else{
                 vm.errorMessage = 'Por favor revise el formulario';
             }
@@ -64,14 +67,10 @@
                 $loading.finish('app');
                 $uibModalInstance.close('reactivated');
             },function(){
-                $loading.finish('app');
-                vm.showErrorMessage();
-            }.bind(vm));
+                displayComunicationError('app');
+            });
         };
 
-        vm.showErrorMessage = function showErrorMessage(){
-            vm.errorMessage = 'Ocurio un error en la comunicación';
-        };
         vm.hideErrorMessage = function hideErrorMessage(){
             vm.errorMessage = null;
         };
@@ -96,7 +95,14 @@
             $uibModalInstance.dismiss('cancel');
         };
 
-
+        function displayComunicationError(loading){
+            if(!toastr.active()){
+                toastr.warning('Ocurrió un error en la comunicación, por favor intente nuevamente.');
+            }
+            if(loading){
+                $loading.finish(loading);
+            }
+        }
     }
-    angular.module('turnos.prestaciones').controller('PrestacionCtrl',['$loading','$uibModalInstance','Especialidad','prestacion', 'Prestacion', prestacionCtrl]);
+    angular.module('turnos.prestaciones').controller('PrestacionCtrl',['$loading','$uibModalInstance','Especialidad','prestacion', 'Prestacion', 'toastr', prestacionCtrl]);
 })();

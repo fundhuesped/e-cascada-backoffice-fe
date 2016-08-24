@@ -109,10 +109,6 @@ body {
     padding-right: 0px;
 }
 
-.fc-day-grid{
-    display: none;
-}
-
 .turnos-calendar .fc-slats tr {
     height: 35px;
 }
@@ -182,4 +178,11 @@ body {
 
 .nav-tabs > li > div:hover {
     border-color: #eee #eee #ddd;
+}
+
+
+.row-pacient-recomendation {
+    border-bottom: solid 1px #DDDDDD;
+    padding-top: 5px;
+    padding-bottom: 5px;
 }

@@ -2,8 +2,12 @@
     'use strict';
     function EducationProvider() {
         function EducationResource($resource, apiBase) {
-            function transformDataSet(data){ 
-                      return angular.fromJson(data).results;
+            function transformDataSet(data, headersGetter, status){
+              if(status === 200 && data){
+                return angular.fromJson(data).results;  
+              }else{
+                return [];
+              }
             }
             var Education = $resource(apiBase + 'comun/educationType/:id/', {id: '@id'}, {
                 update: {

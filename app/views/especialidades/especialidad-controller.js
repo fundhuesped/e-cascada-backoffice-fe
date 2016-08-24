@@ -3,7 +3,7 @@
     /* jshint validthis: true */
     /*jshint latedef: nofunc */
 
-    function especialidadCtrl ( $loading, $uibModalInstance, especialidad, Especialidad) {
+    function especialidadCtrl ( $loading, $uibModalInstance, especialidad, Especialidad, toastr) {
     	var vm = this;
         vm.confirm = confirm;
         vm.confirmDelete = confirmDelete;
@@ -18,7 +18,7 @@
             Especialidad.get({id:especialidad.id}, function(returnedObject){
                 vm.originalEspecialidad = angular.copy(returnedObject);
                 vm.especialidad = returnedObject;
-            });
+            }, displayComunicationError);
         }
 
         function confirm () {
@@ -29,8 +29,7 @@
                     $loading.finish('app');
                     $uibModalInstance.close('modified'); 
                 },function(){
-                    $loading.finish('app');
-                    vm.showErrorMessage();
+                    displayComunicationError('app');
                 }.bind(vm));
             }else{
                 vm.errorMessage = 'Por favor revise el formulario';                
@@ -49,9 +48,7 @@
         vm.dismissModal = function showModal(){
             vm.modalStyle = {};
         };
-        vm.showErrorMessage = function showErrorMessage(){
-            vm.errorMessage = 'Ocurio un error en la comunicación';
-        };
+
         vm.hideErrorMessage = function hideErrorMessage(){
             vm.errorMessage = null;
         };
@@ -62,8 +59,7 @@
                 $loading.finish('app');
                 $uibModalInstance.close('deleted');
             },function(){
-                $loading.finish('app');
-                $uibModalInstance.close('deleted');                    
+                displayComunicationError('app');
             });
         }
         function confirmReactivate(especialidadInstance){
@@ -72,8 +68,7 @@
                 $loading.finish('app');
                 $uibModalInstance.close('reactivated');
             },function(){
-                $loading.finish('app');
-                $uibModalInstance.close('reactivated');                    
+                displayComunicationError('app');
             });
         }
 
@@ -97,6 +92,15 @@
             $uibModalInstance.dismiss('cancel');
         };
 
+        function displayComunicationError(loading){
+            if(!toastr.active()){
+                toastr.warning('Ocurrió un error en la comunicación, por favor intente nuevamente.');
+            }
+            if(loading){
+                $loading.finish(loading);
+            }
+        }
+
     }
-    angular.module('turnos.especialidades').controller('EspecialidadCtrl',['$loading','$uibModalInstance','especialidad', 'Especialidad',especialidadCtrl]);
+    angular.module('turnos.especialidades').controller('EspecialidadCtrl',['$loading','$uibModalInstance','especialidad', 'Especialidad', 'toastr',especialidadCtrl]);
 })();

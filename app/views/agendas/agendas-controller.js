@@ -3,14 +3,16 @@
   /* jshint validthis: true */
   /*jshint latedef: nofunc */
 
-  function agendasCtrl($uibModal, toastr, Agenda) {
+  function agendasCtrl($uibModal, toastr, Agenda, Profesional, $loading) {
     var vm = this;
     vm.agendas = [];
     vm.agenda = null;
     vm.detail = detail;
+    vm.getProfesionales = getProfesionales;
     vm.modifyAgenda = modifyAgenda;
     vm.newAgenda = newAgenda;
     vm.searchName = searchName;
+    vm.selectedProfesional = null;
     vm.changeSearchParameter = changeSearchParameter;
     vm.currentPage = 1;
     vm.pageSize = 20;
@@ -20,11 +22,20 @@
 
     //Controller initialization
     function activate() {
+      $loading.start('app');
       vm.statusFilter = '1';
-      Agenda.getPaginatedActiveList({page_size:vm.pageSize,ordering:'profesional'}, function(paginatedResult){
+      Agenda.getPaginatedActiveList({page_size:vm.pageSize,ordering:'profesional'}, 
+        function(paginatedResult){
         vm.agendas = paginatedResult.results;
         vm.totalItems = paginatedResult.count;
-      });
+        $loading.finish('app');
+      },function(){displayComunicationError('app');});
+    }
+
+    function getProfesionales(firstname){
+      if(firstname.length>2){
+            return Profesional.getActiveList({firstName: firstname}, angular.noop, displayComunicationError).$promise;
+      }
     }
 
     function detail(agenda) {
@@ -79,9 +90,13 @@
           page_size:vm.pageSize,
           page:vm.currentPage,
           order_field:'profesional',
-          order_by:'asc',
-          name:vm.nameFilter
+          order_by:'asc'
       };
+
+      if(vm.selectedProfesional){
+        searchObject.profesional = vm.selectedProfesional.id;
+      }
+
       if (vm.statusFilter == 1) {
         currentStatusFilter = 'Active';
       } else {
@@ -96,7 +111,7 @@
           function (paginatedResult){
               vm.agendas = paginatedResult.results;
               vm.totalItems = paginatedResult.count;
-      });
+      },function(){displayComunicationError('app');});
     }
 
     function changeSearchParameter(){
@@ -120,7 +135,16 @@
       });
     }
 
+    function displayComunicationError(loading){
+      if(!toastr.active()){
+        toastr.warning('Ocurrió un error en la comunicación, por favor intente nuevamente.');
+      }
+      if(loading){
+        $loading.finish(loading);
+      }
+    }
+
   }
 
-  angular.module('turnos.agendas').controller('AgendasCtrl', ['$uibModal', 'toastr', 'Agenda', agendasCtrl]);
+  angular.module('turnos.agendas').controller('AgendasCtrl', ['$uibModal', 'toastr', 'Agenda', 'Profesional', '$loading', agendasCtrl]);
 })();
