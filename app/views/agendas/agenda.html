@@ -135,7 +135,7 @@
               </tr>
               </thead>
               <tbody>
-              <tr ng-repeat="period in AgendaCtrl.agenda.periods">
+              <tr ng-repeat="period in AgendaCtrl.agenda.periods | orderBy: '+start'">
                 <td align="center">{{period.start}}-{{period.end}} <input type="checkbox" ng-model="period.selected" ng-click="AgendaCtrl.checkAllRow(period)"></td>
                 <td align="center" ng-repeat="day in period.daysOfWeek | orderBy: '+index'"><input type="checkbox" ng-model="day.selected" ng-change="AgendaCtrl.changeState(day, period)">
                 </td>
