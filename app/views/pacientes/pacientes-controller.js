@@ -88,6 +88,7 @@
                     function (paginatedResult){
                         vm.pacientes = paginatedResult.results;
                         vm.totalItems = paginatedResult.count;
+                        $loading.finish('app');
                 },function(){displayComunicationError('app');});
             }else{
                 toastr.warning('Ingrese almenos 3 caracteres para buscar');

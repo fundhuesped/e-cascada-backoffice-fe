@@ -12,6 +12,7 @@
             $loading.start('app');
             Especialidad.getActiveList(function(especialidades){
                 vm.especialidades = especialidades;
+                $loading.finish('app');
             },function (){displayComunicationError('app');} );
         }
 
