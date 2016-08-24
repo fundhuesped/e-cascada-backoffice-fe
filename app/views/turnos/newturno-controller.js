@@ -17,9 +17,10 @@
                             'Paciente', 
                             'Document', 
                             'Profesional', 
-                            'Turno'];
+                            'Turno',
+                            'SocialService'];
 
-  function newTurnoCtrl($uibModal, uiCalendarConfig, toastr, $loading, $filter, Especialidad, Prestacion, Paciente, Document, Profesional, Turno) {
+  function newTurnoCtrl($uibModal, uiCalendarConfig, toastr, $loading, $filter, Especialidad, Prestacion, Paciente, Document, Profesional, Turno, SocialService) {
     var vm = this;
     vm.canConfirmTurno = canConfirmTurno;
     vm.canLookForTurnos = canLookForTurnos;
@@ -27,6 +28,7 @@
     vm.cleanForm = cleanForm;
     vm.confirmTurno = confirmTurno;
     vm.currentTab = 0;
+    vm.documents = [];
     vm.especialidades = null;
     vm.eventSources = [];
     vm.cleanTurnosSearch = cleanTurnosSearch;
@@ -49,6 +51,7 @@
     vm.selectPaciente = selectPaciente;
     vm.selectedPaciente = null;
     vm.shouldLookForPacient = shouldLookForPacient;
+    vm.socialServices = [];
     vm.pageSize = 20;
     vm.totalItems = null;
     vm.currentPage = 1;
@@ -112,6 +115,10 @@
         vm.profesionales = profesionales;
       }, displayComunicationError);
 
+      SocialService.getActiveList(function(socialServices){
+        vm.socialServices = socialServices;
+      }, displayComunicationError);
+
       vm.recomendationsPanel.message = 'Por favor comience a completar el formulario para buscar pacientes';
       vm.renderCalendar();
     }
@@ -149,6 +156,8 @@
         paciente.primaryPhoneNumber = vm.paciente.primaryPhoneNumber;
         paciente.documentType = vm.paciente.documentType;
         paciente.documentNumber = vm.paciente.documentNumber;
+        paciente.socialService = vm.paciente.socialService;
+        paciente.socialServiceNumber = vm.paciente.socialServiceNumber;
         paciente.prospect = true;
         paciente.birthDate = (vm.paciente.birthDate?$filter('date')(vm.paciente.birthDate, 'yyyy-MM-dd'):null);
         paciente.email = vm.paciente.email;
