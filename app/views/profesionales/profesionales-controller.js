@@ -31,7 +31,7 @@
         
         //Controller initialization
         function activate(){
-            $loading('app');
+            $loading.start('app');
             vm.statusFilter = '1';
             Profesional.getPaginatedActiveList({page_size:vm.pageSize,ordering:'firstName'}, function(paginatedResult){
                 vm.profesionales = paginatedResult.results;
