@@ -23,7 +23,7 @@
               <p>{{TurnoDetailCtrl.turno.paciente.fatherSurname + ', ' + TurnoDetailCtrl.turno.paciente.firstName}}</p>
             </div>
           </div>
-          <div class="row" ng-show="TurnoDetailCtrl.turno.paciente">
+          <div class="row" ng-show="TurnoDetailCtrl.turno.paciente && TurnoDetailCtrl.turno.paciente.socialService">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
               <span><label>Obra Social</label></span>
               <p>{{TurnoDetailCtrl.turno.paciente.socialService.name}}</p>
