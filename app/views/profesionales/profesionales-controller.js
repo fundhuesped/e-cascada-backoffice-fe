@@ -37,7 +37,7 @@
                 vm.profesionales = paginatedResult.results;
                 vm.totalItems = paginatedResult.count;
                 $loading.finish('app');
-            },displayComunicationError('app'));
+            },function(){displayComunicationError('app')});
         }
 
         function detail(profesional){
@@ -119,7 +119,7 @@
                     vm.profesionales = paginatedResult.results;
                     vm.totalItems = paginatedResult.count;
                     $loading.finish('app');
-            },displayComunicationError('app'));
+            },function(){displayComunicationError('app')});
         }
         function displayComunicationError(loading){
             if(!toastr.active()){
