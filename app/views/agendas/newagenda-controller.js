@@ -69,7 +69,7 @@
 
     vm.hoursFrom = 8;
     vm.minutesFrom = 0;
-    vm.hoursTo = 17;
+    vm.hoursTo = 20;
     vm.minutesTo = 0;
 
     vm.confirm = function confirm() {
