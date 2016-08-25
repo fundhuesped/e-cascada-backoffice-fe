@@ -82,7 +82,22 @@
                             <input class="form-control" maxlength="10" type="text" name="documentNumber" id="documentNumber" ng-model="PacienteCtrl.paciente.documentNumber" required>
                         </div>
                     </div>
-
+                    <div class="row">
+                        <br>
+                        <div class="col-xs-5">
+                            <div class="form-group" ng-class="{'has-error':PacienteCtrl.pacienteForm.socialService.$error.required}">
+                                <span><label>Obra social*</label></span>
+                                <select class="form-control" name="socialService" ng-model="PacienteCtrl.paciente.socialService" ng-options="socialService as socialService.name for socialService in PacienteCtrl.socialServices track by socialService.id" required>
+                                    <option value="" selected="selected">---Seleccione---</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-xs-5">
+                            <span><label>Número asociado</label></span>
+                            <input type="text" name="socialServiceNumber" maxlength="20" class="form-control" ng-model="PacienteCtrl.paciente.socialServiceNumber">
+                            <span><label>(máximo 20 caracteres)</label></span>
+                        </div>
+                    </div>
                     <div class="row">
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                             <div class="form-group" ng-class="{'has-error':PacienteCtrl.pacienteForm.birthDate.$error.required}">
@@ -257,22 +272,6 @@
                             </select>
                         </div>
                     </div>
-
-                    <div class="row">
-                        <br>
-                        <div class="col-xs-5">
-                            <span><label>Obra social</label></span>
-                            <select class="form-control" name="socialService" ng-model="PacienteCtrl.paciente.socialService" ng-options="socialService as socialService.name for socialService in PacienteCtrl.socialServices track by socialService.id">
-                                <option value="" selected="selected">---Seleccione---</option>
-                            </select>
-                        </div>
-                        <div class="col-xs-5">
-                            <span><label>Número asociado</label></span>
-                            <input type="text" name="socialServiceNumber" maxlength="20" class="form-control" ng-model="PacienteCtrl.paciente.socialServiceNumber">
-                            <span><label>(máximo 20 caracteres)</label></span>
-                        </div>
-                    </div>
-
                     <div class="row">
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                             <div class="form-group">

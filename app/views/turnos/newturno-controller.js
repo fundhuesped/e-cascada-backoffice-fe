@@ -115,7 +115,7 @@
         vm.profesionales = profesionales;
       }, displayComunicationError);
 
-      SocialService.getActiveList(function(socialServices){
+      SocialService.getFullActiveList(function(socialServices){
         vm.socialServices = socialServices;
       }, displayComunicationError);
 

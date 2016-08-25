@@ -64,7 +64,22 @@
                             <input class="form-control" maxlength="10" type="text" name="documentNumber" id="documentNumber" ng-model="NewPacienteCtrl.newPaciente.documentNumber" required>
                         </div>
                     </div>
-
+                    <div class="row">
+                        <br>
+                        <div class="col-xs-5">
+                            <div class="form-group" ng-class="{'has-error':NewPacienteCtrl.newPacienteForm.socialService.$error.required}">
+                            <span><label>Obra social*</label></span>
+                            <select class="form-control" name="socialService" ng-model="NewPacienteCtrl.newPaciente.socialService" ng-options="socialService.name for socialService in NewPacienteCtrl.socialServices" ng-required="true" >
+                                <option value="" selected="selected">---Seleccione---</option>
+                            </select>
+                            </div>
+                        </div>
+                        <div class="col-xs-5">
+                            <span><label>Número asociado</label></span>
+                            <input type="text" name="socialServiceNumber" maxlength="20" class="form-control" ng-model="NewPacienteCtrl.newPaciente.socialServiceNumber">
+                            <span><label>(máximo 20 caracteres)</label></span>
+                        </div>
+                    </div>
                     <div class="row">
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                             <div class="form-group" ng-class="{'has-error':NewPacienteCtrl.newPacienteForm.birthDate.$error.required}">
@@ -235,24 +250,9 @@
                         </div>
                         <div class="col-xs-5">
                             <span><label>Estudios</label></span>
-                            <select class="form-control" name="education" ng-model="NewPacienteCtrl.newPaciente.education" ng-options="education.name for education in NewPacienteCtrl.educationTypes" ng-required>
+                            <select class="form-control" name="education" ng-model="NewPacienteCtrl.newPaciente.education" ng-options="education.name for education in NewPacienteCtrl.educationTypes">
                                 <option value="" selected="selected">---Seleccione---</option>
                             </select>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <br>
-                        <div class="col-xs-5">
-                            <span><label>Obra social</label></span>
-                            <select class="form-control" name="socialService" ng-model="NewPacienteCtrl.newPaciente.socialService" ng-options="socialService.name for socialService in NewPacienteCtrl.socialServices">
-                                <option value="" selected="selected">---Seleccione---</option>
-                            </select>
-                        </div>
-                        <div class="col-xs-5">
-                            <span><label>Número asociado</label></span>
-                            <input type="text" name="socialServiceNumber" maxlength="20" class="form-control" ng-model="NewPacienteCtrl.newPaciente.socialServiceNumber">
-                            <span><label>(máximo 20 caracteres)</label></span>
                         </div>
                     </div>
 
