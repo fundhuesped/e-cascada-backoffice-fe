@@ -10,9 +10,10 @@
     profesionalesCtrl.$inject = ['$uibModal',
                                  'toastr',
                                  'Profesional', 
-                                 '$state'];
+                                 '$state',
+                                 '$loading'];
 
-    function profesionalesCtrl ($uibModal,toastr,Profesional, $state) {
+    function profesionalesCtrl ($uibModal,toastr,Profesional, $state, $loading) {
         var vm = this;
         vm.profesionales = [];
         vm.profesional = null;
@@ -30,11 +31,13 @@
         
         //Controller initialization
         function activate(){
+            $loading('app');
             vm.statusFilter = '1';
             Profesional.getPaginatedActiveList({page_size:vm.pageSize,ordering:'firstName'}, function(paginatedResult){
                 vm.profesionales = paginatedResult.results;
                 vm.totalItems = paginatedResult.count;
-            });
+                $loading.finish('app');
+            },displayComunicationError('app'));
         }
 
         function detail(profesional){
@@ -110,11 +113,21 @@
             if(currentStatusFilter){
                 searchObject.status = currentStatusFilter;
             }
+            $loading.start('app');
             Profesional.queryPaginated(searchObject,
                 function (paginatedResult){
                     vm.profesionales = paginatedResult.results;
                     vm.totalItems = paginatedResult.count;
-            });
+                    $loading.finish('app');
+            },displayComunicationError('app'));
+        }
+        function displayComunicationError(loading){
+            if(!toastr.active()){
+                toastr.warning('Ocurrió un error en la comunicación, por favor intente nuevamente.');
+            }
+            if(loading){
+                $loading.finish(loading);
+            }
         }
     }
 })();

@@ -17,7 +17,7 @@
                 vm.prestacion = returnedObject;
                 $loading.finish('app');
             });
-            Especialidad.getActiveList(function(especialidades){
+            Especialidad.getFullActiveList(function(especialidades){
                 vm.especialidades = especialidades;
             }, function(){displayComunicationError('app');} );
         }
