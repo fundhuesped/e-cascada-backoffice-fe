@@ -479,6 +479,7 @@
     }
 
     function selectPaciente(paciente) {      
+      paciente.birthDate =(paciente.birthDate?new Date(paciente.birthDate + 'T03:00:00'):null);     
       vm.paciente = paciente;
       vm.selectedPaciente = paciente;
       vm.newTurno.paciente = paciente;
