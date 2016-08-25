@@ -83,6 +83,8 @@
                 Especialidad.getFullActiveList(function(especialidades){
                     vm.especialidades = especialidades;
                 },function(){displayComunicationError('app');});
+                $loading.finish('app');
+
             },function(){displayComunicationError('app');});
         }
 
