@@ -43,7 +43,7 @@
 		        displayTurnDetails(date.id, vm.turnos, date);
 		    },
 	      	viewRender: function(view, element){
-		        if(vm.selectedProfesional){
+		        if(vm.selectedProfesional || vm.selectedPrestacion ){
 		          	vm.lookForTurnos();
 	        	}
 	    	}
