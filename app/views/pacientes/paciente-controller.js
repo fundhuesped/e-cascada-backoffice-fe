@@ -3,13 +3,14 @@
     /* jshint validthis: true */
     /*jshint latedef: nofunc */
 
-    function pacienteCtrl ($loading, $uibModalInstance, $filter, paciente, Document, Turno, Sex, Province, District, Location, SocialService, CivilStatus, Education, Paciente, toastr) {
+    function pacienteCtrl ($loading, $uibModalInstance, $filter, $uibModal, moment, paciente, Document, Turno, Sex, Province, District, Location, SocialService, CivilStatus, Education, Paciente, toastr) {
         var vm = this;
 
         vm.paciente = {};
         vm.editing = true;
         vm.errorMessage = null;
         vm.turnos = [];
+        vm.canShowCancelTurno = canShowCancelTurno;
         vm.confirm = confirm;
         vm.confirmDelete = confirmDelete;
         vm.confirmReactivate = confirmReactivate;
@@ -18,6 +19,7 @@
         vm.searchDistricts = searchDistricts;
         vm.cancel = cancel;
         vm.originalPaciente = {};
+        vm.showCancelTurno = showCancelTurno;
         vm.confirmStatusChange = confirmStatusChange;
         vm.birthDateCalendarPopup = {
           opened: false,
@@ -89,10 +91,10 @@
                 vm.selectedDistrict = (vm.paciente.location?vm.paciente.location.district:null);
 
                 vm.paciente.primaryPhoneMessage = (vm.paciente.primaryPhoneMessage?vm.paciente.primaryPhoneMessage:false);
-                vm.turnos = Turno.getActiveList({paciente:vm.paciente.id, ordering:'-day'}, function(turnos){
-                    vm.turnos = turnos;
-                    $loading.finish('app');
-                }, function(){displayComunicationError('app');});                
+
+
+                getTurnosForPaciente();
+
             },function(){displayComunicationError('app');});
         }
 
@@ -170,6 +172,36 @@
             }
         }
 
+        function showCancelTurno(turno){
+            var modalInstance = $uibModal.open({
+                templateUrl: '/views/turnos/turno-delete.html',
+                size: 'sm',
+                backdrop:'static',
+                controller: 'TurnoDeleteCtrl',
+                controllerAs: 'TurnoDeleteCtrl',
+                resolve: {
+                    turno: function () {
+                        return turno;
+                    }
+                }
+            });
+            modalInstance.result.then(function (result) {
+                if(result==='turnCanceled'){
+                    getTurnosForPaciente();
+                }
+            }, function () {
+            });
+        }
+
+
+
+        function getTurnosForPaciente(){
+            $loading.start('app');
+            vm.turnos = Turno.getActiveList({paciente:vm.paciente.id, ordering:'-day'}, function(turnos){
+                vm.turnos = turnos;
+                $loading.finish('app');
+            }, function(){displayComunicationError('app');});                
+        }
         function changeStatus() {
             vm.showModal();
         }
@@ -203,6 +235,10 @@
             }
         }
 
+        function canShowCancelTurno(turno){
+            return moment(turno.day + ' ' + turno.start).isSameOrAfter(moment(), 'minute');
+        }
+
         function displayComunicationError(loading){
             if(!toastr.active()){
                 toastr.warning('Ocurrió un error en la comunicación, por favor intente nuevamente.');
@@ -212,5 +248,5 @@
             }
         }
     }
-    angular.module('turnos.pacientes').controller('PacienteCtrl',['$loading','$uibModalInstance','$filter','paciente','Document','Turno','Sex', 'Province', 'District', 'Location', 'SocialService', 'CivilStatus', 'Education', 'Paciente', 'toastr', pacienteCtrl]);
+    angular.module('turnos.pacientes').controller('PacienteCtrl',['$loading','$uibModalInstance','$filter', '$uibModal', 'moment', 'paciente','Document','Turno','Sex', 'Province', 'District', 'Location', 'SocialService', 'CivilStatus', 'Education', 'Paciente', 'toastr', pacienteCtrl]);
 })();

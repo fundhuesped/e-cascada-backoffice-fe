@@ -1,3 +1,23 @@
+<div class="modal fade" ng-class="{'in':TurnoDetailCtrl.modalStyle}" ng-style="TurnoDetailCtrl.modalStyle">
+  <div class="modal-dialog modal-confirmation">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">¿Cancelar turno?</h4>
+      </div>
+      <div class="modal-body">
+        <p>¿Esta seguro que desea cancelar el turno seleccionado?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default btn-cancel" ng-click="TurnoDetailCtrl.dismissModal()">Cerrar
+        </button>
+        <button type="button" class="btn btn-danger btn-confirm" ng-click="TurnoDetailCtrl.confirmModal()"><span
+          class="glyphicon glyphicon-remove"></span> Cancelar turno
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="">
   <div class="panel panel-default">
     <div class="panel-heading">
@@ -6,19 +26,17 @@
     <div class="panel-body">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
           <div class="row">
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
               <span><label>Médico</label></span>
               <p>{{TurnoDetailCtrl.turno.profesional.fatherSurname + ', ' + TurnoDetailCtrl.turno.profesional.firstName}}</p>
             </div>
-          </div>
-          <div class="row">
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
               <span><label>Prestación</label></span>
               <p>{{TurnoDetailCtrl.turno.prestacion.name}}</p>
             </div>
           </div>          
           <div class="row" ng-show="TurnoDetailCtrl.turno.paciente">
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
               <span><label>Paciente</label></span>
               <p>{{TurnoDetailCtrl.turno.paciente.fatherSurname + ', ' + TurnoDetailCtrl.turno.paciente.firstName}}</p>
             </div>
@@ -41,7 +59,9 @@
           </div>
           <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-              <button ng-click="TurnoDetailCtrl.dismiss()" class="btn btn-success pull-right">Aceptar
+              <button ng-click="TurnoDetailCtrl.showModal()" class="btn btn-danger" ng-show="TurnoDetailCtrl.showDelete()"><i class="glyphicon glyphicon-remove"> </i> Eliminar
+              </button>
+              <button ng-click="TurnoDetailCtrl.dismiss()" class="btn btn-default pull-right">Cerrar
               </button>
             </div>
           </div>

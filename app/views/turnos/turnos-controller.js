@@ -43,7 +43,7 @@
 		        displayTurnDetails(date.id, vm.turnos, date);
 		    },
 	      	viewRender: function(view, element){
-		        if(vm.selectedProfesional){
+		        if(vm.selectedProfesional || vm.selectedPrestacion ){
 		          	vm.lookForTurnos();
 	        	}
 	    	}
@@ -165,7 +165,7 @@
       	function openTurnoModal(turno) {
 	      var modalInstance = $uibModal.open({
 	        templateUrl: '/views/turnos/turno-detail.html',
-	        size: 'sm',
+	        size: 'md',
 	        backdrop:'static',
 	        controller: 'TurnoDetailCtrl',
 	        controllerAs: 'TurnoDetailCtrl',
@@ -174,6 +174,9 @@
 	            return turno;
 	          }
 	        }
+	      });
+	      modalInstance.result.then(function () {
+	      	vm.lookForTurnos();
 	      });
 	    }
 

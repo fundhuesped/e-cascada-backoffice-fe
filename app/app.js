@@ -278,6 +278,22 @@ angular.module('turnos.app', [
                     },
                 }
             })
+            .state('profesionalTurnos', {
+                url: '/profesional/:profesionalId/turnos/',
+                views: {
+                    'navbar': {
+                        templateUrl: 'views/navbar/navbar.html',
+                        controller: 'NavbarCtrl',
+                        controllerAs: 'NavbarCtrl'
+                    },
+
+                    'main': {
+                        templateUrl: 'views/profesionales/profesional-turnos.html',
+                        controller: 'TurnosProfesionalCtrl',
+                        controllerAs: 'TurnosProfesionalCtrl'
+                    },
+                }
+            })
             .state('newagenda', {
               url: '/newagenda',
               views: {

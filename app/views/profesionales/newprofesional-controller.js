@@ -48,12 +48,6 @@
         activate();
 
         function activate() {
-            vm.documents = Document.getFullActiveList();
-            vm.sexTypes = Sex.getFullActiveList();
-            vm.provinces = Province.getFullActiveList();
-            vm.civilStatusTypes = CivilStatus.getFullActiveList();
-            vm.especialidades = Especialidad.getFullActiveList();
-
             
             Document.getFullActiveList(function(documents){
                 vm.documents = documents;
@@ -78,8 +72,6 @@
 
 
         }
-
-        displayComunicationError('app');
 
         function searchPrestacionesForEspecialidad(){
             Prestacion.getFullActiveList({especialidad: vm.selectedEspecialidad.id},function(prestaciones){
