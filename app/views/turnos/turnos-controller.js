@@ -165,7 +165,7 @@
       	function openTurnoModal(turno) {
 	      var modalInstance = $uibModal.open({
 	        templateUrl: '/views/turnos/turno-detail.html',
-	        size: 'sm',
+	        size: 'md',
 	        backdrop:'static',
 	        controller: 'TurnoDetailCtrl',
 	        controllerAs: 'TurnoDetailCtrl',
@@ -174,6 +174,9 @@
 	            return turno;
 	          }
 	        }
+	      });
+	      modalInstance.result.then(function () {
+	      	vm.lookForTurnos();
 	      });
 	    }
 

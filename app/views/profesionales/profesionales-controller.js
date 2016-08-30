@@ -19,6 +19,7 @@
         vm.profesional = null;
         vm.detail = detail;
         vm.goToAusencias = goToAusencias;
+        vm.goToTurnos = goToTurnos;
         vm.modifyProfesional = modifyProfesional;
         vm.newProfesional = newProfesional;
         vm.searchName = searchName;
@@ -46,6 +47,10 @@
 
         function goToAusencias(){
             $state.go('ausencias',{profesionalId: vm.profesional.id, profesinoal: vm.profesiona});
+        }
+
+        function goToTurnos(){
+            $state.go('profesionalTurnos',{profesionalId: vm.profesional.id, profesinoal: vm.profesiona});
         }
 
         function modifyProfesional(selectedProfesional){

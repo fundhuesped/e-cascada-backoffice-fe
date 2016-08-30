@@ -373,7 +373,7 @@
     //Open turno info modal
     function openTurnoModal(turno) {
       var modalInstance = $uibModal.open({
-        templateUrl: '/views/turnos/turno-detail.html',
+        templateUrl: '/views/turnos/turno-detail-modal.html',
         size: 'sm',
         backdrop:'static',
         controller: 'TurnoDetailCtrl',
@@ -386,7 +386,7 @@
       });
       //Only way I found to inject Controller to refresh list after modal closing
       var ctrl = vm;
-      modalInstance.result.then(function () {
+      modalInstance.result.then(angular.noop,function () {
         ctrl.cleanForm();
       });
     }
