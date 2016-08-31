@@ -1,0 +1,81 @@
+<div class="container">
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<div class="row">
+				<form class="form-inline" name="TurnosProfesionalCtrl.searchPreferencesForm">
+					<div class="col-md-5">
+						<h3 class="panel-title">Turnos del profesional {{TurnosProfesionalCtrl.profesional.firstName}} {{TurnosProfesionalCtrl.profesional.fatherSurname}}</h3>
+					</div>
+				</form>
+			</div>
+		</div>
+		<div class="panel-body">
+			<div class="col-md-12">
+				<div class="row">
+					<div class="col-md-12">
+						<h2>Turnos del día de hoy</h2>
+					</div>
+				</div>
+				<div class="row">
+					<table class="table table-hover">
+						<thead>
+						<tr>
+							<th>Fecha</th>
+							<th>Hora</th>
+							<th>Especialidad</th>
+							<th>Prestación</th>
+                            <th>Paciente</th>
+                            <th></th>
+                            </tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="(key, turno) in TurnosProfesionalCtrl.turnosToday" ng-class="{'bg-success':turno.selected}"
+                              >
+                                <td>{{turno.day | date : 'dd-MM-yyyy'}}</td>
+                                <td>{{turno.start}}</td>
+                                <td>{{turno.prestacion.especialidad.name}}</td>
+                                <td>{{turno.prestacion.name}}</td>
+                                <td>{{turno.paciente.fatherSurname}}, {{turno.paciente.firstName}}</td>
+                                <td><button class="btn btn-link" type="button" ng-click="TurnosProfesionalCtrl.showCancelTurno(turno)" ng-show="TurnosProfesionalCtrl.canShowCancelTurno(turno)"><i class="glyphicon glyphicon-remove text-danger"></i></button></td>
+                            </tr>
+						</tbody>
+					</table>
+				</div>
+				<hr>
+				<div class="row">
+					<div class="col-md-12">
+						<h2>Turnos futuros</h2>
+					</div>
+				</div>
+				<div class="row">
+			    	<uib-pagination max-size="5" total-items="TurnosProfesionalCtrl.totalItems" ng-model="TurnosProfesionalCtrl.currentPage" items-per-page="TurnosProfesionalCtrl.pageSize" class="pagination-sm" boundary-link-numbers="true" ng-change="TurnosProfesionalCtrl.getTurnosForProfesional()"></uib-pagination>
+				</div>
+				<div class="row">
+					<table class="table table-hover">
+						<thead>
+						<tr>
+							<th>Fecha</th>
+							<th>Hora</th>
+							<th>Especialidad</th>
+							<th>Prestación</th>
+                            <th>Paciente</th>
+                            <th></th>
+                            </tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="(key, turno) in TurnosProfesionalCtrl.turnos" ng-class="{'bg-success':turno.selected}"
+                              >
+                                <td>{{turno.day | date : 'dd-MM-yyyy'}}</td>
+                                <td>{{turno.start}}</td>
+                                <td>{{turno.prestacion.especialidad.name}}</td>
+                                <td>{{turno.prestacion.name}}</td>
+                                <td>{{turno.paciente.fatherSurname}}, {{turno.paciente.firstName}}</td>
+                                <td><button class="btn btn-link" type="button" ng-click="TurnosProfesionalCtrl.showCancelTurno(turno)" ng-show="TurnosProfesionalCtrl.canShowCancelTurno(turno)"><i class="glyphicon glyphicon-remove text-danger"></i></button></td>
+                            </tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
