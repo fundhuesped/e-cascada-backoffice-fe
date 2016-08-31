@@ -3,7 +3,42 @@
     /* jshint validthis: true */
     /*jshint latedef: nofunc */
 
-    function profesionalCtrl ($loading,$uibModalInstance,$filter,profesional,Document,Sex, Province, District, Location, CivilStatus, Prestacion, Especialidad, Profesional,toastr) {
+
+    angular
+        .module('turnos.profesionales')
+        .controller('ProfesionalCtrl',profesionalCtrl);
+
+    profesionalCtrl.$inject = ['$loading',
+                               '$uibModalInstance',
+                               '$filter',
+                               'profesional',
+                               'Document',
+                               'Sex', 
+                               'Province', 
+                               'District', 
+                               'Location', 
+                               'CivilStatus', 
+                               'Prestacion', 
+                               'Especialidad', 
+                               'Profesional',     
+                               'Agenda',     
+                               'toastr'];
+
+    function profesionalCtrl ($loading,
+                              $uibModalInstance,
+                              $filter,
+                              profesional,
+                              Document,
+                              Sex,
+                              Province,
+                              District, 
+                              Location, 
+                              CivilStatus, 
+                              Prestacion, 
+                              Especialidad, 
+                              Profesional,
+                              Agenda,
+                              toastr) {
         var vm = this;
         vm.profesional = {};
         vm.editing = true;
@@ -129,13 +164,32 @@
         };
 
         function confirmDelete(profesionalInstance){
-            profesionalInstance.status = 'Inactive';
-            profesionalInstance.$update(function(){
-                $loading.finish('app');
-                $uibModalInstance.close('deleted');
-            },function(){
-                displayComunicationError('app');
+
+            var searchObject = {
+                page_size:1,
+                ordering:'-validTo',
+                profesional:vm.profesional.id
+            };
+
+            searchObject.validTo__gte = $filter('date')(new Date(), 'yyyy-MM-dd');
+
+            Agenda.getActiveList(searchObject, function(list){
+                if(list.length>0){
+                    $loading.finish('app');
+                    toastr.warning('No se puede eliminar un profesional con agendas activas.');
+                }else{
+                    profesionalInstance.status = 'Inactive';
+                    profesionalInstance.$update(function(){
+                        $loading.finish('app');
+                        $uibModalInstance.close('deleted');
+                    },function(){
+                        displayComunicationError('app');
+                    });
+                    vm.disabledForm = true;
+                }
             });
+
+
         }
         function confirmReactivate(profesionalInstance){
             profesionalInstance.status = 'Active';
@@ -200,5 +254,4 @@
         }
 
     }
-    angular.module('turnos.profesionales').controller('ProfesionalCtrl',['$loading','$uibModalInstance','$filter','profesional','Document','Sex', 'Province', 'District', 'Location', 'CivilStatus', 'Prestacion', 'Especialidad', 'Profesional', 'toastr', profesionalCtrl]);
 })();
