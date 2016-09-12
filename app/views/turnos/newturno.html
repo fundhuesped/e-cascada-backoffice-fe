@@ -246,8 +246,8 @@
         </div>
         <div class="row" style="margin-top:15px;">
           <div class="col-md-12">
-            <uib-tabset active="NewTurnoCtrl.currentTab">
-              <uib-tab select="NewTurnoCtrl.tabChanged()" index="0">
+            <uib-tabset active="NewTurnoCtrl.currentTab" >
+              <uib-tab select="NewTurnoCtrl.tabChanged(0)" index="0">
                 <uib-tab-heading>
                   <span class="glyphicon glyphicon-calendar" ></span> Calendario
                 </uib-tab-heading>
@@ -268,7 +268,7 @@
                   </div>
                 </div>
               </uib-tab>
-              <uib-tab index="1" select="NewTurnoCtrl.tabChanged()" >
+              <uib-tab index="1" select="NewTurnoCtrl.tabChanged(1)" >
                 <uib-tab-heading>
                   <span class="glyphicon glyphicon-list-alt"></span> Listado
                 </uib-tab-heading>

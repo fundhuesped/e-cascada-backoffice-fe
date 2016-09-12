@@ -243,13 +243,13 @@
     }
 
 
-    function tabChanged(){
+    function tabChanged(newTab){
       if(lookedForTurnos){
-        lookForTurnos(true);
+        lookForTurnos(newTab);
       }
     }
 
-    function lookForTurnos(tabChanged) {
+    function lookForTurnos(newTab) {
       $loading.start('app');
       cleanTurnosResult();
 
@@ -270,7 +270,7 @@
       }
 
       //For calendar search
-      if(vm.currentTab === 0 && !tabChanged){
+      if(newTab === 0){
         getAllTurnosForDates(searchObject);
       }else{
         getTurnosList(searchObject);
