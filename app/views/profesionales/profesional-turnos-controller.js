@@ -96,7 +96,7 @@
                 controllerAs: 'TurnoDeleteCtrl',
                 resolve: {
                     turno: function () {
-                        return turno;
+                        return new Turno(turno);
                     }
                 }
             });
