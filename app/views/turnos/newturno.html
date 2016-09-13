@@ -149,7 +149,7 @@
             </div>
             <div class="row" ng-show="NewTurnoCtrl.paciente.id">
               <div class="col-md-12">
-                <button class="btn btn-warning pull-right" type="button" ng-click="NewTurnoCtrl.clearPacienteSelection()">
+                <button class="btn btn-warning pull-right" type="button" style="margin-top: 20px;" ng-click="NewTurnoCtrl.clearPacienteSelection()">
                   <span class="glyphicon glyphicon-remove"></span> Limpiar seleccion de paciente
                 </button>
               </div>
@@ -257,7 +257,6 @@
                          calendar="newTurnosCalendar"></div>
                   </div>
                   <div class="col-md-3">
-                  <button ng-click="NewTurnoCtrl.reRedender()" type="button">Refresh</button>
                     <div class="row" ng-show="NewTurnoCtrl.selectedTurno">
                       <div><b>{{NewTurnoCtrl.selectedTurno.day | date : 'dd-MM-yyyy'}}</b></div>
                       <div><label>Horario:</label> {{NewTurnoCtrl.selectedTurno.start}} - {{NewTurnoCtrl.selectedTurno.end}}</div>
@@ -304,19 +303,19 @@
               </uib-tab>
             </uib-tabset>
           </div>
-          <div class="row">
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-              <div class="row">
-                <div class="form-group">
-                  <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
-                    <uib-pagination max-size="10" total-items="NewTurnoCtrl.totalItems" ng-model="NewTurnoCtrl.currentPage" items-per-page="NewTurnoCtrl.pageSize" class="pagination" boundary-link-numbers="true" ng-change="NewTurnoCtrl.pageChanged()"></uib-pagination>
-                  </div>
-                  <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
-                    <button id="btn-confirm" type="button" class="btn btn-success pull-right"
-                            ng-disabled="!NewTurnoCtrl.canConfirmTurno()"
-                            ng-click="NewTurnoCtrl.confirmTurno()">Confirmar
-                    </button>
-                  </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="row">
+              <div class="form-group">
+                <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
+                  <uib-pagination max-size="10" total-items="NewTurnoCtrl.totalItems" ng-model="NewTurnoCtrl.currentPage" items-per-page="NewTurnoCtrl.pageSize" class="pagination" boundary-link-numbers="true" ng-change="NewTurnoCtrl.pageChanged()" ng-show="NewTurnoCtrl.currentTab==1"></uib-pagination>
+                </div>
+                <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+                  <button id="btn-confirm" type="button" class="btn btn-success pull-right"
+                          ng-disabled="!NewTurnoCtrl.canConfirmTurno()"
+                          ng-click="NewTurnoCtrl.confirmTurno()">Confirmar
+                  </button>
                 </div>
               </div>
             </div>

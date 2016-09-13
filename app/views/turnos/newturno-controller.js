@@ -43,7 +43,6 @@
     vm.profesionalChanged = profesionalChanged;
     vm.recomendationsPanel = {};
     vm.renderCalendar = renderCalendar;
-    vm.reRedender = reRedender;
     vm.reserveTurno = reserveTurno;
     vm.especialidadChanged = especialidadChanged;
     vm.selectPaciente = selectPaciente;
@@ -270,10 +269,18 @@
       }
 
       //For calendar search
-      if(newTab === 0){
-        getAllTurnosForDates(searchObject);
+      if(newTab !== undefined){
+        if(newTab === 0){
+          getAllTurnosForDates(searchObject);
+        }else{
+          getTurnosList(searchObject);
+        }
       }else{
-        getTurnosList(searchObject);
+        if(vm.currentTab === 0){
+          getAllTurnosForDates(searchObject);
+        }else{
+          getTurnosList(searchObject);
+        }
       }
     }
 
@@ -400,10 +407,6 @@
       }, 1);
     }
     
-    function reRedender() {
-      uiCalendarConfig.calendars.newTurnosCalendar.fullCalendar( 'rerenderEvents' );
-    }
-
     function reserveTurno(){
       var turno = new Turno();
       turno.taken = true;
