@@ -147,9 +147,10 @@ body {
         left:0;
         top:0;
     }
+    .fc-day-grid{
+        display: none;
+    }
 }
-
-
 
 /* uib-tabs styles for divs. Workarround for clikeable elements into tabs*/
 
@@ -186,3 +187,4 @@ body {
     padding-top: 5px;
     padding-bottom: 5px;
 }
+
