@@ -204,10 +204,19 @@
 	        var endTime = new Date(turno.day + 'T' + turno.end+ '-03:00');
 	        var title = '';
 	        var color = '#B2EBF2';
-	        if(turno.taken){
+
+  	      	var calendarView = uiCalendarConfig.calendars.turnsCalendar.fullCalendar( 'getView' );
+
+	        if(calendarView.name === 'agendaDay' && turno.taken){
 	         	color = '#00796B';
-	         	title = turno.paciente.fatherSurname + ',' + turno.paciente.firstName + '-' + turno.paciente.primaryPhoneNumber;
+	         	title = turno.paciente.fatherSurname + ',' + turno.paciente.firstName + ' - ' + turno.paciente.primaryPhoneNumber + ' - ' + turno.paciente.socialService.name + ' - ' + turno.prestacion.name;
+	        }else{
+	        	if(turno.taken){
+		         	color = '#00796B';
+		         	title = turno.paciente.fatherSurname + ',' + turno.paciente.firstName + ' - ' + turno.paciente.primaryPhoneNumber + ' - ';
+	        	}
 	        }
+
 	        return {
 	            id: turno.id,
 	            title: title,
