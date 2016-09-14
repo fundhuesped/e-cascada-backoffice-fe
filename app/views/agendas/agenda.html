@@ -28,6 +28,11 @@
     </div>
     <div class="panel-body">
       <form name="AgendaCtrl.agendaForm">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg 12">
+          <div class="alert alert-danger">
+              <p><i class="glyphicon glyphicon-warning-sign"></i> Los cambios que usted ingrese pueden generar la cancelación de turnos ya tomados</p>
+          </div>
+        </div>
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
           <div class="row">
             <div class="alert alert-dismissable alert-warning" ng-show="AgendaCtrl.errorMessage">
