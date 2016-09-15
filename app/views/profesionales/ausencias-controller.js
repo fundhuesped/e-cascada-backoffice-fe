@@ -55,8 +55,8 @@
                 controller: 'AddLeaveCtrl',
                 controllerAs: 'AddLeaveCtrl',
                 resolve: {
-                    profesionalId: function () {
-                        return $stateParams.profesionalId;
+                    profesional: function () {
+                        return vm.profesional;
                     }
                 }
             });
