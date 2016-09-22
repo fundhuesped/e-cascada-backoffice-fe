@@ -3,7 +3,11 @@
     /* jshint validthis: true */
     /*jshint latedef: nofunc */
 
-    function turnoDeleteCtrl ($uibModalInstance, $loading, toastr, turno) {
+    function turnoDeleteCtrl ($uibModalInstance, 
+                              $loading, 
+                              toastr, 
+                              turno, 
+                              Turno) {
         var vm = this;
         vm.cancelTurn = cancelTurn;
         vm.dismiss = dismiss;
@@ -18,7 +22,7 @@
 
         function cancelTurn(){
             $loading.start('app');
-            vm.turno.taken = false;
+            vm.turno.state = Turno.state.canceled;
             vm.turno.$update(function(){
                 $loading.finish('app');
                 toastr.success('Turno cancelado con éxito');
@@ -49,5 +53,10 @@
 
 
     }
-    angular.module('turnos.turnos').controller('TurnoDeleteCtrl',['$uibModalInstance', '$loading', 'toastr', 'turno', turnoDeleteCtrl]);
+    angular.module('turnos.turnos').controller('TurnoDeleteCtrl',['$uibModalInstance', 
+                                                                  '$loading', 
+                                                                  'toastr', 
+                                                                  'turno', 
+                                                                  'Turno',
+                                                                  turnoDeleteCtrl]);
 })();

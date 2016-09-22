@@ -9,6 +9,7 @@
         vm.paciente = {};
         vm.editing = true;
         vm.errorMessage = null;
+        vm.estadoTurno = estadoTurno;
         vm.turnos = [];
         vm.canShowCancelTurno = canShowCancelTurno;
         vm.confirm = confirm;
@@ -33,7 +34,6 @@
             maxDate: new Date(),
           }
         };
-
 
         vm.openBirthDateCalendar = openBirthDateCalendar;
         vm.openFirstTimeCalendar = openFirstTimeCalendar;
@@ -193,7 +193,17 @@
             });
         }
 
-
+        function estadoTurno(estado){
+            if(estado === Turno.state.initial){
+                return 'Reservado';
+            }else if(estado === Turno.state.canceled){
+                return 'Cancelado';
+            }else if(estado === Turno.state.present){
+                return 'Presente';
+            }else if(estado === Turno.state.served){
+                return 'Atendido';
+            }
+        }
 
         function getTurnosForPaciente(){
             $loading.start('app');
@@ -236,7 +246,7 @@
         }
 
         function canShowCancelTurno(turno){
-            return moment(turno.day + ' ' + turno.start).isSameOrAfter(moment(), 'minute');
+            return moment(turno.turnoSlot.day + ' ' + turno.turnoSlot.start).isSameOrAfter(moment(), 'minute');
         }
 
         function displayComunicationError(loading){

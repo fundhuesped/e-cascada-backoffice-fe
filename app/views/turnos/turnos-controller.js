@@ -6,9 +6,29 @@
     	.module('turnos.turnos')
     	.controller('TurnosCtrl', turnosCtrl);
 
-	turnosCtrl.$inject = ['Turno', 'Profesional', '$loading', '$filter', 'uiCalendarConfig', '$uibModal', 'Leave', 'Especialidad', 'Prestacion', 'toastr'];
+	turnosCtrl.$inject = ['Turno', 
+						  'TurnoSlot', 
+						  'Profesional', 
+						  '$loading', 
+						  '$filter', 
+						  'uiCalendarConfig', 
+						  '$uibModal', 
+						  'Leave', 
+						  'Especialidad', 
+						  'Prestacion', 
+						  'toastr'];
 
-    function turnosCtrl (Turno, Profesional, $loading, $filter, uiCalendarConfig, $uibModal, Leave, Especialidad, Prestacion, toastr) {
+    function turnosCtrl (Turno,
+    					 TurnoSlot, 
+    					 Profesional, 
+    					 $loading, 
+    					 $filter, 
+    					 uiCalendarConfig, 
+    					 $uibModal, 
+    					 Leave, 
+    					 Especialidad, 
+    					 Prestacion, 
+    					 toastr) {
 	    var vm = this;
 	    vm.canLookForTurnos = canLookForTurnos;
         vm.eventSources = [];
@@ -114,14 +134,14 @@
     	  	}
 
     	  	if(vm.turnStatus==='taken'){
-    	  		searchObject.taken = true;
+    	  		searchObject.state = Turno.state.ocuppied;
     	  	}else{
     	  		if(vm.turnStatus==='notTaken'){
-    	  			searchObject.taken = false;
+    	  			searchObject.state = Turno.state.available;
     	  		}
     	  	}
 
-	      	Turno.getFullActiveList(searchObject)
+	      	TurnoSlot.getFullActiveList(searchObject)
 	      	   .$promise
 	      	   .then(function (results) {
 			        var turnosSource =[];
@@ -199,17 +219,18 @@
 	         };
       	}
 
-      	function createCalendarTurnoEvent(turno){
-	        var startTime = new Date(turno.day + 'T' + turno.start + '-03:00');
-	        var endTime = new Date(turno.day + 'T' + turno.end+ '-03:00');
+      	function createCalendarTurnoEvent(turnoSlot){
+	        var startTime = new Date(turnoSlot.day + 'T' + turnoSlot.start + '-03:00');
+	        var endTime = new Date(turnoSlot.day + 'T' + turnoSlot.end+ '-03:00');
 	        var title = '';
 	        var color = '#B2EBF2';
-	        if(turno.taken){
+  	      	var turno = turnoSlot.turnos[0];
+	        if(turnoSlot.state === TurnoSlot.state.ocuppied){
 	         	color = '#00796B';
 	         	title = turno.paciente.fatherSurname + ',' + turno.paciente.firstName + '-' + turno.paciente.primaryPhoneNumber;
 	        }
 	        return {
-	            id: turno.id,
+	            id: turnoSlot.id,
 	            title: title,
 	            start: startTime,
 	            end: endTime,

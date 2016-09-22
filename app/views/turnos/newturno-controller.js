@@ -17,9 +17,22 @@
                             'Paciente', 
                             'Document', 
                             'Profesional', 
+                            'TurnoSlot',
                             'Turno'];
 
-  function newTurnoCtrl($uibModal, uiCalendarConfig, toastr, $loading, $filter, Especialidad, Prestacion, Paciente, Document, Profesional, Turno) {
+
+  function newTurnoCtrl($uibModal,
+                        uiCalendarConfig,
+                        toastr,
+                        $loading,
+                        $filter,
+                        Especialidad,
+                        Prestacion,
+                        Paciente,
+                        Document,
+                        Profesional,
+                        TurnoSlot,
+                        Turno) {
     var vm = this;
     vm.canConfirmTurno = canConfirmTurno;
     vm.canLookForTurnos = canLookForTurnos;
@@ -253,7 +266,7 @@
       cleanTurnosResult();
 
       var searchObject = {
-        taken: false,
+        state: 'Available',
         prestacion: vm.selectedPrestacion.id,
         ordering:'day,start',
       };
@@ -271,15 +284,15 @@
       //For calendar search
       if(newTab !== undefined){
         if(newTab === 0){
-          getAllTurnosForDates(searchObject);
+          getAllTurnoSlotsForDates(searchObject);
         }else{
-          getTurnosList(searchObject);
+          getTurnoSlotsList(searchObject);
         }
       }else{
         if(vm.currentTab === 0){
-          getAllTurnosForDates(searchObject);
+          getAllTurnoSlotsForDates(searchObject);
         }else{
-          getTurnosList(searchObject);
+          getTurnoSlotsList(searchObject);
         }
       }
     }
@@ -288,7 +301,7 @@
       if(vm.selectedPrestacion){
         $loading.start('app');      
         var searchObject = {
-          taken: false,
+          state: 'Available',
           prestacion: vm.selectedPrestacion.id,
           ordering:'day,start',
         };
@@ -302,17 +315,17 @@
         if (vm.selectedProfesional) {
           searchObject.profesional = vm.selectedProfesional.id;
         }
-        getTurnosList(searchObject);
+        getTurnoSlotsList(searchObject);
       }
     }
 
 
-    function getAllTurnosForDates(searchObject){
+    function getAllTurnoSlotsForDates(searchObject){
       var calendarView = uiCalendarConfig.calendars.newTurnosCalendar.fullCalendar( 'getView' );
       searchObject.start = calendarView.start.format('YYYY-MM-DD');
       searchObject.end = calendarView.end.format('YYYY-MM-DD');
   
-      Turno.getFullActiveList(searchObject).$promise.then(function (results) {
+      TurnoSlot.getFullActiveList(searchObject).$promise.then(function (results) {
         lookedForTurnos = true;
         turnosSource =[];
         vm.turnos = results;
@@ -340,11 +353,11 @@
       });
     }
 
-    function getTurnosList(searchObject){
+    function getTurnoSlotsList(searchObject){
       searchObject.page = vm.currentPage;
       searchObject.page_size = vm.pageSize;
 
-      Turno.getPaginatedActiveList(searchObject).$promise.then(function (paginatedResult) {
+      TurnoSlot.getPaginatedActiveList(searchObject).$promise.then(function (paginatedResult) {
         lookedForTurnos = true;
         if(vm.currentPage===1){
           vm.totalItems = paginatedResult.count;
@@ -409,16 +422,13 @@
     
     function reserveTurno(){
       var turno = new Turno();
-      turno.taken = true;
-      turno.id = vm.selectedTurno.id;
-      turno.paciente = vm.selectedTurno.paciente;
-      turno.day = vm.selectedTurno.day;
-      turno.prestacion = vm.selectedTurno.prestacion;
-      turno.profesional = vm.selectedTurno.profesional;
 
-      turno.$update(function(){
+      turno.turnoSlot = vm.selectedTurno.id;
+      turno.paciente = vm.selectedTurno.paciente;
+
+      turno.$save(function(turnoResult){
         $loading.finish('app');
-        vm.openTurnoModal(turno);
+        vm.openTurnoModal(turnoResult);
       },function(){
         displayComunicationError('app');
       });

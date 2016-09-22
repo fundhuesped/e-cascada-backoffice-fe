@@ -10,24 +10,59 @@
                                 '$loading', 
                                 'toastr',
                                 'moment', 
-                                'turno'];
+                                'turno',
+                                'Turno',
+                                'TurnoSlot'];
 
-    function turnoDetailCtrl ($uibModalInstance, $loading, toastr, moment, turno) {
+    function turnoDetailCtrl ($uibModalInstance, 
+                              $loading,
+                              toastr,
+                              moment,
+                              turno,
+                              Turno,
+                              TurnoSlot){
         var vm = this;
         vm.cancelTurn = cancelTurn;
         vm.title = '';
-        vm.turno = angular.copy(turno);
+        vm.turnoSlot = angular.copy(turno);
+        vm.turno = turno.turnos.length>0?angular.copy(turno.turnos[0]):{};
         vm.dismiss = dismiss;
-        vm.showModal = showModal;
-        vm.confirmModal = confirmModal;
-        vm.dismissModal = dismissModal;
+        vm.markedAsTurnAsPresent = markedAsTurnAsPresent;
         vm.modalStyle = {};
         vm.showDelete = showDelete;
+
+        vm.cancelModal = {
+            style : {},
+            show : function show(){
+                this.style = {display:'block'};
+            },
+            dismiss : function dismiss(){
+                this.style = {};
+            },
+            confirm : function confirm(){
+                this.dismiss();
+                vm.cancelTurn();
+            }
+        };
+
+        vm.presentModal = {
+            style : {},
+            show : function show(){
+                this.style = {display:'block'};
+            },
+            dismiss : function dismiss(){
+                this.style = {};
+            },
+            confirm : function confirm(){
+                this.dismiss();
+                vm.markedAsTurnAsPresent();
+            }
+        };
 
         activate();
 
         function activate(){
-            if(turno.taken === true){
+            if(vm.turnoSlot.state === TurnoSlot.state.ocuppied){
                 vm.title = 'Turno asignado';
             }else{
                 vm.title = 'Turno disponible';
@@ -40,11 +75,32 @@
 
         function cancelTurn(){
             $loading.start('app');
-            vm.turno.taken = false;
-            vm.turno.$update(function(){
+            var turno = vm.turnoSlot.turnos[0];
+            turno.state = Turno.state.canceled;
+            turno.$update(function(){
                 $loading.finish('app');
                 toastr.success('Turno cancelado con éxito');
                 $uibModalInstance.close('deleted');
+            },
+            function(errorResponse){
+                if(errorResponse.status == 400 && errorResponse.data.error){
+                    $loading.finish('app');
+                    toastr.warning(errorResponse.data.error);
+                }else{
+                    vm.turnoSlot = angular.copy(turno);
+                    displayComunicationError('app');
+                }
+            });
+        }
+
+        function markedAsTurnAsPresent(){
+            $loading.start('app');
+            var turno = new Turno(vm.turnoSlot.turnos[0]);
+            turno.state = Turno.state.present;
+            turno.$update(function(){
+                $loading.finish('app');
+                toastr.success('Turno marcado como presente con éxito');
+                $uibModalInstance.close('markedAsPresent');
             },
             function(errorResponse){
                 if(errorResponse.status == 400 && errorResponse.data.error){
@@ -58,20 +114,7 @@
         }
 
         function showDelete(){
-            return moment(vm.turno.day + ' ' + vm.turno.start).isSameOrAfter(moment(), 'minute') && vm.turno.taken === true;
-        }
-
-        function showModal(){
-            vm.modalStyle = {display:'block'};
-        }
-
-        function confirmModal(){
-            dismissModal();
-            vm.cancelTurn();
-        }
-                
-        function dismissModal(){
-            vm.modalStyle = {};
+            return moment(vm.turnoSlot.day + ' ' + vm.turnoSlot.start).isSameOrAfter(moment(), 'minute') && vm.turnoSlot.state === TurnoSlot.state.ocuppied;
         }
 
         function displayComunicationError(loading){

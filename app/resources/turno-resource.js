@@ -59,6 +59,14 @@
         }
       });
 
+      Turno.state = {
+        initial:'Initial',
+        present:'Present',
+        absent:'Absent',
+        served:'Served',
+        canceled:'Canceled',
+      };
+
       return Turno;
     }
 
