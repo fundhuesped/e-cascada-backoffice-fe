@@ -184,7 +184,7 @@
 
       	function openTurnoModal(turnoSlot) {
 	      var modalInstance = $uibModal.open({
-	        templateUrl: '/views/turnos/turnoSlot-detail.html',
+	        templateUrl: '/views/turnos/turnoslot-detail.html',
 	        size: 'md',
 	        backdrop:'static',
 	        controller: 'TurnoSlotDetailCtrl',
