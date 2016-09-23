@@ -133,11 +133,11 @@
     	  		searchObject.prestacion = vm.selectedPrestacion.id;
     	  	}
 
-    	  	if(vm.turnStatus==='taken'){
-    	  		searchObject.state = Turno.state.ocuppied;
+    	  	if(vm.turnStatus==='ocuppied'){
+    	  		searchObject.state = TurnoSlot.state.ocuppied;
     	  	}else{
-    	  		if(vm.turnStatus==='notTaken'){
-    	  			searchObject.state = Turno.state.available;
+    	  		if(vm.turnStatus==='available'){
+    	  			searchObject.state = TurnoSlot.state.available;
     	  		}
     	  	}
 
