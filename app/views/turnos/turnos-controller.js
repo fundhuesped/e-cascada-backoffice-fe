@@ -161,7 +161,7 @@
 	      }
 
       	function searchAusencias(){
-		    Leave.getFullActiveList({profesional:vm.searchProfesional.id}, function(results){
+		    Leave.getFullActiveList({profesional:vm.selectedProfesional.id}, function(results){
 		        var ausenciasSource =[];
 	            vm.ausencias = results;
 		        angular.forEach(results, function (ausencia) {
