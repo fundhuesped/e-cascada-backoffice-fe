@@ -8,25 +8,34 @@
         .controller('TurnosProfesionalCtrl',turnosProfesionalCtrl);
 
     turnosProfesionalCtrl.$inject = ['$uibModal',
-                                  '$loading',
-                                  '$filter',
-                                 'toastr',
-                                 'moment',
-                                 'Turno',
-                                 '$stateParams',
-                                 'Profesional'];
+                                     '$loading',
+                                     '$filter',
+                                     'toastr',
+                                     'moment',
+                                     'Turno',
+                                     'TurnoSlot',
+                                     '$stateParams',
+                                     'Profesional'];
 
-    function turnosProfesionalCtrl ($uibModal, $loading, $filter, toastr, moment, Turno, $stateParams, Profesional) {
+    function turnosProfesionalCtrl ($uibModal, 
+                                    $loading, 
+                                    $filter, 
+                                    toastr, 
+                                    moment, 
+                                    Turno, 
+                                    TurnoSlot, 
+                                    $stateParams, 
+                                    Profesional) {
         var vm = this;
         vm.canShowCancelTurno = canShowCancelTurno;
         vm.pageSize = 6;
         vm.profesional = {};
-        vm.getTurnosForProfesional = getTurnosForProfesional;
-        vm.getTurnosForProfesionalToday = getTurnosForProfesionalToday;
+        vm.getTurnoSlotsForProfesional = getTurnoSlotsForProfesional;
+        vm.getTurnosSlotsForProfesionalToday = getTurnosSlotsForProfesionalToday;
         vm.totalItems = null;
         vm.currentPage = 1;
-        vm.turnosToday = [];
-        vm.turnos = [];
+        vm.turnoSlotsToday = [];
+        vm.turnoSlots = [];
         vm.refresh = refresh;
         vm.showCancelTurno = showCancelTurno;
 
@@ -34,8 +43,8 @@
 
         //Controller initialization
         function activate(){
-            getTurnosForProfesional();
-            getTurnosForProfesionalToday();
+            getTurnoSlotsForProfesional();
+            getTurnosSlotsForProfesionalToday();
             if($stateParams.profesional){
               vm.profesional= $stateParams.profesional;
             }else{
@@ -43,31 +52,31 @@
             }
         }
 
-        function getTurnosForProfesionalToday(){
+        function getTurnosSlotsForProfesionalToday(){
             $loading.start('app');
 
             var searchObject = {
               profesional:$stateParams.profesionalId,
               ordering:'day, start', 
-              taken:true
+              state: TurnoSlot.state.ocuppied
             };
             
             searchObject.day = $filter('date')(new Date(), 'yyyy-MM-dd');
 
 
-            vm.turnos = Turno.getActiveList(searchObject, function(turnos){
-                vm.turnosToday = turnos;
+            vm.turnos = TurnoSlot.getActiveList(searchObject, function(turnoSlots){
+                vm.turnoSlotsToday = turnoSlots;
                 $loading.finish('app');
             }, function(){displayComunicationError('app');});                
         }
 
-        function getTurnosForProfesional(){
+        function getTurnoSlotsForProfesional(){
             $loading.start('app');
 
             var searchObject = {
               profesional:$stateParams.profesionalId,
               ordering:'day, start', 
-              taken:true
+              state: TurnoSlot.state.ocuppied
             };
             
             searchObject.day__gte = $filter('date')(new Date(), 'yyyy-MM-dd');
@@ -76,18 +85,18 @@
             searchObject.page_size  = vm.pageSize;
             searchObject.page  = vm.currentPage;
 
-            vm.turnos = Turno.getPaginatedActiveList(searchObject, function(paginatedResult){
-                vm.turnos = paginatedResult.results;
+            vm.turnos = TurnoSlot.getPaginatedActiveList(searchObject, function(paginatedResult){
+                vm.turnoSlots = paginatedResult.results;
                 vm.totalItems =  paginatedResult.count;
                 $loading.finish('app');
             }, function(){displayComunicationError('app');});                
         }
 
-        function canShowCancelTurno(turno){
-            return moment(turno.day + ' ' + turno.start).isSameOrAfter(moment(), 'minute');
+        function canShowCancelTurno(turnoSlot){
+            return moment(turnoSlot.day + ' ' + turnoSlot.start).isSameOrAfter(moment(), 'minute');
         }
 
-        function showCancelTurno(turno){
+        function showCancelTurno(turnoSlot){
             var modalInstance = $uibModal.open({
                 templateUrl: '/views/turnos/turno-delete.html',
                 size: 'sm',
@@ -96,7 +105,9 @@
                 controllerAs: 'TurnoDeleteCtrl',
                 resolve: {
                     turno: function () {
-                        return new Turno(turno);
+                        var turno = new Turno(turnoSlot.currentTurno);
+                        turno.turnoSlot = turnoSlot;
+                        return turno;
                     }
                 }
             });

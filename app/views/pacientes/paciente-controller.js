@@ -246,7 +246,10 @@
         }
 
         function canShowCancelTurno(turno){
-            return moment(turno.turnoSlot.day + ' ' + turno.turnoSlot.start).isSameOrAfter(moment(), 'minute');
+            if(turno.state === Turno.state.initial && moment(turno.turnoSlot.day + ' ' + turno.turnoSlot.start).isSameOrAfter(moment(), 'minute')){
+                return true;                
+            }
+            return false;
         }
 
         function displayComunicationError(loading){

@@ -174,24 +174,24 @@
       	}
 
 	    function displayTurnDetails(position, entities, calendarRepresentation) {
-	      	angular.forEach(entities, function (turno, index) {
-    			if (position == turno.id) {
-					openTurnoModal(turno);
+	      	angular.forEach(entities, function (turnoSlot, index) {
+    			if (position === turnoSlot.id) {
+					openTurnoModal(turnoSlot);
 					return;
 				}
 			});
 	    }
 
-      	function openTurnoModal(turno) {
+      	function openTurnoModal(turnoSlot) {
 	      var modalInstance = $uibModal.open({
-	        templateUrl: '/views/turnos/turno-detail.html',
+	        templateUrl: '/views/turnos/turnoSlot-detail.html',
 	        size: 'md',
 	        backdrop:'static',
-	        controller: 'TurnoDetailCtrl',
-	        controllerAs: 'TurnoDetailCtrl',
+	        controller: 'TurnoSlotDetailCtrl',
+	        controllerAs: 'TurnoSlotDetailCtrl',
 	        resolve: {
-	          turno: function () {
-	            return turno;
+	          turnoSlot: function () {
+	            return turnoSlot;
 	          }
 	        }
 	      });
@@ -205,7 +205,7 @@
 	        var endTime = new Date(ausencia.end_day+ 'T00:00-03:00');
 	        var title = '';
 	        var color = '#FF9800';
-         	title = ausencia.reason.charAt(0).toUpperCase() + ausencia.reason.slice(1);;
+         	title = ausencia.reason.charAt(0).toUpperCase() + ausencia.reason.slice(1);
 	        return {
 	            id: ausencia.id,
 	            title: title,
@@ -224,9 +224,13 @@
 	        var endTime = new Date(turnoSlot.day + 'T' + turnoSlot.end+ '-03:00');
 	        var title = '';
 	        var color = '#B2EBF2';
-  	      	var turno = turnoSlot.turnos[0];
 	        if(turnoSlot.state === TurnoSlot.state.ocuppied){
-	         	color = '#00796B';
+	  	      	var turno = turnoSlot.currentTurno;
+	        	if(turno.state === Turno.state.present){
+		         	color = '#d6e9c6';
+	        	}else{
+		         	color = '#00796B';
+	        	}
 	         	title = turno.paciente.fatherSurname + ',' + turno.paciente.firstName + '-' + turno.paciente.primaryPhoneNumber;
 	        }
 	        return {

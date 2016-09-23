@@ -332,7 +332,7 @@
                                 <td>{{turno.turnoSlot.prestacion.name}}</td>
                                 <td>{{turno.turnoSlot.profesional.fatherSurname}}, {{turno.turnoSlot.profesional.firstName}}</td>
                                 <td>{{PacienteCtrl.estadoTurno(turno.state)}}</td>
-                                <td><button class="btn btn-link" type="button" ng-click="PacienteCtrl.showCancelTurno(turno)"><i class="glyphicon glyphicon-remove text-danger" ng-show="PacienteCtrl.canShowCancelTurno(turno)"></i></button></td>
+                                <td><button class="btn btn-link" type="button" ng-click="PacienteCtrl.showCancelTurno(turno)" ng-show="PacienteCtrl.canShowCancelTurno(turno)"><i class="glyphicon glyphicon-remove text-danger"></i></button></td>
                             </tr>
                         </tbody>
                     </table>

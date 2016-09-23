@@ -25,18 +25,20 @@
 							<th>Especialidad</th>
 							<th>Prestación</th>
                             <th>Paciente</th>
+                            <th>Estado</th>
                             <th></th>
                             </tr>
 						</thead>
 						<tbody>
-							<tr ng-repeat="(key, turno) in TurnosProfesionalCtrl.turnosToday" ng-class="{'bg-success':turno.selected}"
+							<tr ng-repeat="(key, turnoSlot) in TurnosProfesionalCtrl.turnoSlotsToday" ng-class="{'bg-success':turnoSlot.selected}"
                               >
-                                <td>{{turno.day | date : 'dd-MM-yyyy'}}</td>
-                                <td>{{turno.start}}</td>
-                                <td>{{turno.prestacion.especialidad.name}}</td>
-                                <td>{{turno.prestacion.name}}</td>
-                                <td>{{turno.paciente.fatherSurname}}, {{turno.paciente.firstName}}</td>
-                                <td><button class="btn btn-link" type="button" ng-click="TurnosProfesionalCtrl.showCancelTurno(turno)" ng-show="TurnosProfesionalCtrl.canShowCancelTurno(turno)"><i class="glyphicon glyphicon-remove text-danger"></i></button></td>
+                                <td>{{turnoSlot.day | date : 'dd-MM-yyyy'}}</td>
+                                <td>{{turnoSlot.start}}</td>
+                                <td>{{turnoSlot.prestacion.especialidad.name}}</td>
+                                <td>{{turnoSlot.prestacion.name}}</td>
+                                <td>{{turnoSlot.currentTurno.paciente.fatherSurname}}, {{turnoSlot.currentTurno.paciente.firstName}}</td>
+                                <td>{{turnoSlot.currentTurno.state=='Present'?'Presente':'Reservado'}}</td>
+                                <td><button class="btn btn-link" type="button" ng-click="TurnosProfesionalCtrl.showCancelTurno(turnoSlot)" ng-show="TurnosProfesionalCtrl.canShowCancelTurno(turnoSlot)"><i class="glyphicon glyphicon-remove text-danger"></i></button></td>
                             </tr>
 						</tbody>
 					</table>
@@ -59,18 +61,20 @@
 							<th>Especialidad</th>
 							<th>Prestación</th>
                             <th>Paciente</th>
+                            <th>Estado</th>
                             <th></th>
                             </tr>
 						</thead>
 						<tbody>
-							<tr ng-repeat="(key, turno) in TurnosProfesionalCtrl.turnos" ng-class="{'bg-success':turno.selected}"
+							<tr ng-repeat="(key, turnoSlot) in TurnosProfesionalCtrl.turnoSlots" ng-class="{'bg-success':turno.selected}"
                               >
-                                <td>{{turno.day | date : 'dd-MM-yyyy'}}</td>
-                                <td>{{turno.start}}</td>
-                                <td>{{turno.prestacion.especialidad.name}}</td>
-                                <td>{{turno.prestacion.name}}</td>
-                                <td>{{turno.paciente.fatherSurname}}, {{turno.paciente.firstName}}</td>
-                                <td><button class="btn btn-link" type="button" ng-click="TurnosProfesionalCtrl.showCancelTurno(turno)" ng-show="TurnosProfesionalCtrl.canShowCancelTurno(turno)"><i class="glyphicon glyphicon-remove text-danger"></i></button></td>
+                                <td>{{turnoSlot.day | date : 'dd-MM-yyyy'}}</td>
+                                <td>{{turnoSlot.start}}</td>
+                                <td>{{turnoSlot.prestacion.especialidad.name}}</td>
+                                <td>{{turnoSlot.prestacion.name}}</td>
+                                <td>{{turnoSlot.currentTurno.paciente.fatherSurname}}, {{turnoSlot.currentTurno.paciente.firstName}}</td>
+                                <td>{{turnoSlot.currentTurno.state=='Present'?'Presente':'Reservado'}}</td>
+                                <td><button class="btn btn-link" type="button" ng-click="TurnosProfesionalCtrl.showCancelTurno(turnoSlot)" ng-show="TurnosProfesionalCtrl.canShowCancelTurno(turnoSlot)"><i class="glyphicon glyphicon-remove text-danger"></i></button></td>
                             </tr>
 						</tbody>
 					</table>
