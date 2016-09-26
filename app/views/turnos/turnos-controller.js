@@ -135,11 +135,12 @@
 
     	  	if(vm.turnStatus==='ocuppied'){
     	  		searchObject.state = TurnoSlot.state.ocuppied;
-    	  	}else{
-    	  		if(vm.turnStatus==='available'){
+    	  	}else if(vm.turnStatus==='available'){
     	  			searchObject.state = TurnoSlot.state.available;
     	  		}
-    	  	}
+	  		else{
+				searchObject.state = TurnoSlot.state.ocuppied + ',' +  TurnoSlot.state.available;
+	  		}
 
 	      	TurnoSlot.getFullActiveList(searchObject)
 	      	   .$promise
