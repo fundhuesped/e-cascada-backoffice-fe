@@ -47,6 +47,7 @@
     vm.lookForTurnos = lookForTurnos;
     var lookedForTurnos = false;
     vm.newTurno = {};
+    vm.notes = '';
     vm.openTurnoModal = openTurnoModal;
     vm.openPacienteModal = openPacienteModal;
     vm.paciente = null;
@@ -184,6 +185,7 @@
     function cleanForm(){
       vm.cleanTurnosSearch();
       vm.newPaciente = null;
+      vm.notes = '';
       vm.clearPacienteSelection();
     }
     
@@ -425,7 +427,7 @@
 
       turno.turnoSlot = vm.selectedTurno.id;
       turno.paciente = vm.selectedTurno.paciente;
-
+      turno.notes = vm.notes;
       turno.$save(function(turnoResult){
         $loading.finish('app');
         vm.openTurnoModal(turnoResult);
