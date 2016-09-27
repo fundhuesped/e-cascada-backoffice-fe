@@ -97,6 +97,21 @@ angular.module('turnos.app', [
                     },
                 }
             })
+            .state('turnostoinform', {
+                url: '/turnostoinform',
+                views: {
+                    'navbar': {
+                        templateUrl: 'views/navbar/navbar.html',
+                        controller: 'NavbarCtrl',
+                        controllerAs: 'NavbarCtrl'
+                    },
+                    'main': {
+                        templateUrl: 'views/turnos/turnostoinform.html',
+                        controller: 'TurnosToInformCtrl',
+                        controllerAs: 'TurnosToInformCtrl'
+                    },
+                }
+            })
             .state('newespecialidad', {
                 url: '/newespecialidad',
                 views: {

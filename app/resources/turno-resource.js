@@ -66,6 +66,18 @@
         served:'Served',
         canceled:'Canceled',
       };
+      Turno.cancelationReason = {
+        absent:'ProfesionalAbsent',
+        agendaChanged:'AgendaChanged',
+        pacientRequest:'PacientRequest',
+        other:'Other'
+      };
+      Turno.cancelationReasonDescription = {
+        ProfesionalAbsent:'Ausencia del profesional',
+        AgendaChanged:'Modificación de agenda',
+        PacientRequest:'Pedido del paciente',
+        Other:'Otros'
+      };
 
       return Turno;
     }
