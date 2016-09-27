@@ -32,6 +32,8 @@
         vm.showDelete = showDelete;
         vm.showMarkAsPresent = showMarkAsPresent;
         vm.panelStyle = panelStyle;
+        vm.newNotes = '';
+
 
         vm.cancelModal = {
             style : {},
@@ -51,6 +53,7 @@
             style : {},
             show : function show(){
                 this.style = {display:'block'};
+                vm.newNotes = angular.copy(vm.turno.notes);
             },
             dismiss : function dismiss(){
                 this.style = {};
@@ -102,6 +105,7 @@
         function markedTurnAsPresent(){
             $loading.start('app');
             vm.turno.state = Turno.state.present;
+            vm.turno.notes = vm.newNotes;
             vm.turno.$update(function(){
                 $loading.finish('app');
                 toastr.success('Turno marcado como presente con éxito');
