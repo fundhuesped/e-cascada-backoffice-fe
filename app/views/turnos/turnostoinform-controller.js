@@ -61,7 +61,7 @@
             var searchObject = {
                 ordering:'day,start', 
                 state: Turno.state.canceled,
-                reason: Turno.cancelationReason.agendaChanged + ',' + Turno.cancelationReason.agendaChanged,
+                cancelation_reason: Turno.cancelationReason.agendaChanged + ',' + Turno.cancelationReason.absent,
                 page_size: vm.pageSize,
                 page: vm.currentPage
             };
