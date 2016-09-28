@@ -172,14 +172,22 @@
             };
 
             searchObject.validTo__gte = $filter('date')(new Date(), 'yyyy-MM-dd');
-            profesionalInstance.status = 'Inactive';
-            profesionalInstance.$update(function(){
-                $loading.finish('app');
-                $uibModalInstance.close('deleted');
-            },function(){
-                displayComunicationError('app');
+
+            Agenda.getActiveList(searchObject, function(list){
+                if(list.length>0){
+                    $loading.finish('app');
+                    toastr.warning('No se puede eliminar un profesional con agendas activas.');
+                }else{
+                    profesionalInstance.status = 'Inactive';
+                    profesionalInstance.$update(function(){
+                        $loading.finish('app');
+                        $uibModalInstance.close('deleted');
+                    },function(){
+                        displayComunicationError('app');
+                    });
+                    vm.disabledForm = true;
+                }
             });
-            vm.disabledForm = true;
         }
         function confirmReactivate(profesionalInstance){
             profesionalInstance.status = 'Active';
