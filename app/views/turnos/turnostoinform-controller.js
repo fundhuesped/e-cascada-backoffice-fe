@@ -66,8 +66,6 @@
                 page: vm.currentPage
             };
 
-//            searchObject.day = $filter('date')(new Date(), 'yyyy-MM-dd');
-
             if (vm.statusFilter === '1') {
                 searchObject.informed = false;
             }else{
