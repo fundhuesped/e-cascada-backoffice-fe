@@ -12,38 +12,51 @@
                                   'Turno',
                                   'ausencia',
                                   'agenda',
-                                  'toastr'];
+                                  'toastr',
+                                  '$state'];
 
-    function addTurnosCanceladosController($loading, $uibModalInstance, $window, Turno, ausencia, agenda, toastr) {
+    function addTurnosCanceladosController($loading, $uibModalInstance, $window, Turno, ausencia, agenda, toastr, $state) {
       var vm = this;
       vm.template = '';
       vm.agenda = agenda;
       vm.ausencia = ausencia;
+      vm.count = null;
       vm.turnosCancelados = [];
       vm.dismiss = dismiss;
       vm.print = printReport;
-      var getTurnosCanceladoParams = {
-        page_size: 100,
-        ordering: 'day,start'
-      };
+      vm.goToTurnosToInform = goToTurnosToInform;
 
       activate();
 
       function activate(){
+        var searchObject = {
+            state: Turno.state.canceled,
+            page_size: 1,
+            page: 1,
+            informed: false
+        };
         if (ausencia) {
-          getTurnosCanceladoParams.ausencia = ausencia.id;
+          searchObject.cancelation_reason = Turno.cancelationReason.absent;
         } else if (agenda) {
-          getTurnosCanceladoParams.agenda = agenda.id;
+          searchObject.cancelation_reason = Turno.cancelationReason.agendaChanged;
+          searchObject.agenda = agenda.id;
         } else {
           throw Error('No existe ausencia o agenda');
         }
 
         $loading.start('app');
-        Turno.getCancelados(getTurnosCanceladoParams, function(turnosCancelados) {
-          vm.turnosCancelados = turnosCancelados;
+        Turno.getPaginatedActiveList(searchObject, function(paginatedResult) {
+          vm.turnosCancelados = paginatedResult.results;
+          vm.turnosCount = paginatedResult.count;
           vm.template = determineTemplateToUse();
           $loading.finish('app');
         }, function(){displayComunicationError('app');});
+      }
+
+
+      function goToTurnosToInform(){
+        dismiss();
+        $state.go('turnostoinform');
       }
 
       function printReport () {
