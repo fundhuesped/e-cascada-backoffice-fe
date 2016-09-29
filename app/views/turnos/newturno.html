@@ -158,177 +158,278 @@
         </div>
 
         <hr>
-
-        <div class="row">
-          <div class="col-md-6">
+        <uib-tabset active="NewTurnoCtrl.turnoTypeCurrentTab" >
+          <uib-tab index="0" >              
+            <uib-tab-heading>
+              <span class="glyphicon glyphicon-calendar" ></span> Turno
+            </uib-tab-heading>
             <div class="row">
-              <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
-                <div class="form-group">
-                  <span><label>Especialidad(*)</label></span>
-                  <select class="form-control" ng-model="NewTurnoCtrl.selectedEspecialidad"
-                          ng-options="especialidad.name for especialidad in NewTurnoCtrl.especialidades"
-                          ng-change="NewTurnoCtrl.especialidadChanged()" required>
-                    <option value="">Todas las especialidades</option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
-                <div class="form-group">
-                  <span><label>Profesional</label></span>
-                  <select class="form-control" ng-model="NewTurnoCtrl.selectedProfesional"
-                          ng-options='profesional as (profesional.fatherSurname + ", " + profesional.firstName) for profesional in NewTurnoCtrl.profesionales track by profesional.id' ng-change="NewTurnoCtrl.profesionalChanged()">
-                    <option value="">Todos los médicos</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
-                <div class="form-group">
-                  <span><label>Prestación(*)</label></span>
-                  <select class="form-control" ng-model="NewTurnoCtrl.selectedPrestacion"
-                          ng-options="prestacion.name for prestacion in NewTurnoCtrl.prestaciones"
-                          ng-change="NewTurnoCtrl.prestacionChanged()" required>
-                    <option value="">Seleccione prestación</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-xs-12 col-md-6">
-                <div class="form-group">
-                  <span><label>A partir del día</label> <small><em>(dd/mm/aaaa o m/d/aaaa)</em></small></span>
-                  <p class="input-group">
-                    <input type="text" class="form-control" uib-datepicker-popup="d!/M!/yyyy" ng-model="NewTurnoCtrl.selectedDate" is-open="NewTurnoCtrl.calendarPopup.opened" datepicker-options="NewTurnoCtrl.calendarPopup.options" ng-required="true" close-text="Cerrar" alt-input-formats="NewTurnoCtrl.calendarPopup.altInputFormats" current-text="Hoy" clear-text="Limpiar" />
-                    <span class="input-group-btn">
-                      <button type="button" class="btn btn-default" ng-click="NewTurnoCtrl.openCalendar()"><i class="glyphicon glyphicon-calendar"></i></button>
-                    </span>
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-xs-12 col-md-6">
-                <div class="form-group">
-                  <span><label>Notas</label></span>
-                      <textarea name="notes" class="form-control" ng-model="NewTurnoCtrl.notes" rows="5" maxlength="150"></textarea>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <br>
-              <div
-                class="col-xs-6 col-xs-offset-5 col-sm-6 col-sm-offset-5 col-md-6 col-md-offset-5 col-lg-6 col-lg-offset-5">
-                <button ng-click="NewTurnoCtrl.cleanTurnosSearch()" class="btn btn-default" type="button">Limpiar
-                  busqueda
-                </button>
-                <button id="btn-confirm" type="button" class="btn btn-success" ng-click="NewTurnoCtrl.lookForTurnos()"
-                        ng-disabled="!NewTurnoCtrl.canLookForTurnos()">
-                  Buscar
-                </button>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div ng-show="NewTurnoCtrl.selectedPrestacion">
-              <div class="row">
-                <b>{{NewTurnoCtrl.selectedPrestacion.name}}</b>
-              </div>
-              <div class="row">
-                <p>
-                  {{NewTurnoCtrl.selectedPrestacion.description}}
-                </p>
-              </div>
-              <div class="row">
-              <p>
-                Duración: {{NewTurnoCtrl.selectedPrestacion.duration}}
-              </p>
-              </div>
-              <div class="row">
-              <p style="word-wrap:break-word;">
-                Observaciones: {{NewTurnoCtrl.selectedPrestacion.notes}}
-              </p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="row" style="margin-top:15px;">
-          <div class="col-md-12">
-            <uib-tabset active="NewTurnoCtrl.currentTab" >
-              <uib-tab select="NewTurnoCtrl.tabChanged(0)" index="0">
-                <uib-tab-heading>
-                  <span class="glyphicon glyphicon-calendar" ></span> Calendario
-                </uib-tab-heading>
+              <div class="col-md-6">
                 <div class="row">
-                  <div class="col-md-9">
-                    <div ui-calendar="NewTurnoCtrl.calendarConfig" ng-model="NewTurnoCtrl.eventSources"
-                         calendar="newTurnosCalendar"></div>
+                  <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
+                    <div class="form-group">
+                      <span><label>Especialidad(*)</label></span>
+                      <select class="form-control" ng-model="NewTurnoCtrl.selectedEspecialidad"
+                              ng-options="especialidad.name for especialidad in NewTurnoCtrl.especialidades"
+                              ng-change="NewTurnoCtrl.especialidadChanged()" required>
+                        <option value="">Todas las especialidades</option>
+                      </select>
+                    </div>
                   </div>
-                  <div class="col-md-3">
-                    <div class="row" ng-show="NewTurnoCtrl.selectedTurno">
-                      <div><b>{{NewTurnoCtrl.selectedTurno.day | date : 'dd-MM-yyyy'}}</b></div>
-                      <div><label>Horario:</label> {{NewTurnoCtrl.selectedTurno.start}} - {{NewTurnoCtrl.selectedTurno.end}}</div>
-                      <div><label>Profesional:</label> {{NewTurnoCtrl.selectedTurno.profesional.fatherSurname}}, {{NewTurnoCtrl.selectedTurno.profesional.firstName}}</div>
-                      <div><label>Especialidad:</label> {{NewTurnoCtrl.selectedTurno.prestacion.especialidad.name}}</div>
-                      <div><label>Prestacion:</label> {{NewTurnoCtrl.selectedTurno.prestacion.name}}</div>
+                  <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
+                    <div class="form-group">
+                      <span><label>Profesional</label></span>
+                      <select class="form-control" ng-model="NewTurnoCtrl.selectedProfesional"
+                              ng-options='profesional as (profesional.fatherSurname + ", " + profesional.firstName) for profesional in NewTurnoCtrl.profesionales track by profesional.id' ng-change="NewTurnoCtrl.profesionalChanged()">
+                        <option value="">Todos los médicos</option>
+                      </select>
                     </div>
                   </div>
                 </div>
-              </uib-tab>
-              <uib-tab index="1" select="NewTurnoCtrl.tabChanged(1)" >
-                <uib-tab-heading>
-                  <span class="glyphicon glyphicon-list-alt"></span> Listado
-                </uib-tab-heading>
                 <div class="row">
-                  <div class="col-md-12">
-                    <table class="table">
-                      <thead>
-                      <tr>
-                        <th></th>
-                        <th>Fecha</th>
-                        <th>Hora</th>
-                        <th>Hasta</th>
-                        <th>Especialidad</th>
-                        <th>Prestaciones</th>
-                        <th>Profesional</th>
-                      </tr>
-                      </thead>
-                      <tbody>
-                      <tr ng-repeat="(key, turno) in NewTurnoCtrl.turnos" ng-class="{'bg-success':turno.selected}"
-                          ng-click="NewTurnoCtrl.updateSelectionRow(turno.id,NewTurnoCtrl.turnos)">
-                        <td><input type="checkbox" ng-checked="turno.selected"></td>
-                        <td>{{turno.day | date : 'dd-MM-yyyy'}}</td>
-                        <td>{{turno.start}}</td>
-                        <td>{{turno.end}}</td>
-                        <td>{{turno.prestacion.especialidad.name}}</td>
-                        <td>{{turno.prestacion.name}}</td>
-                        <td>{{turno.profesional.fatherSurname}}, {{turno.profesional.firstName}}</td>
-                      </tr>
-                      </tbody>
-                    </table>
+                  <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
+                    <div class="form-group">
+                      <span><label>Prestación(*)</label></span>
+                      <select class="form-control" ng-model="NewTurnoCtrl.selectedPrestacion"
+                              ng-options="prestacion.name for prestacion in NewTurnoCtrl.prestaciones"
+                              ng-change="NewTurnoCtrl.prestacionChanged()" required>
+                        <option value="">Seleccione prestación</option>
+                      </select>
+                    </div>
                   </div>
                 </div>
-              </uib-tab>
-            </uib-tabset>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            <div class="row">
-              <div class="form-group">
-                <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
-                  <uib-pagination max-size="10" total-items="NewTurnoCtrl.totalItems" ng-model="NewTurnoCtrl.currentPage" items-per-page="NewTurnoCtrl.pageSize" class="pagination" boundary-link-numbers="true" ng-change="NewTurnoCtrl.pageChanged()" ng-show="NewTurnoCtrl.currentTab==1"></uib-pagination>
+                <div class="row">
+                  <div class="col-xs-12 col-md-6">
+                    <div class="form-group">
+                      <span><label>A partir del día</label> <small><em>(dd/mm/aaaa o m/d/aaaa)</em></small></span>
+                      <p class="input-group">
+                        <input type="text" class="form-control" uib-datepicker-popup="d!/M!/yyyy" ng-model="NewTurnoCtrl.selectedDate" is-open="NewTurnoCtrl.calendarPopup.opened" datepicker-options="NewTurnoCtrl.calendarPopup.options" ng-required="true" close-text="Cerrar" alt-input-formats="NewTurnoCtrl.calendarPopup.altInputFormats" current-text="Hoy" clear-text="Limpiar" />
+                        <span class="input-group-btn">
+                          <button type="button" class="btn btn-default" ng-click="NewTurnoCtrl.openCalendar()"><i class="glyphicon glyphicon-calendar"></i></button>
+                        </span>
+                      </p>
+                    </div>
+                  </div>
                 </div>
-                <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
-                  <button id="btn-confirm" type="button" class="btn btn-success pull-right"
-                          ng-disabled="!NewTurnoCtrl.canConfirmTurno()"
-                          ng-click="NewTurnoCtrl.confirmTurno()">Confirmar
+                <div class="row">
+                  <div class="col-xs-12 col-md-6">
+                    <div class="form-group">
+                      <span><label>Notas</label></span>
+                          <textarea name="notes" class="form-control" ng-model="NewTurnoCtrl.notes" rows="5" maxlength="150"></textarea>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <br>
+                  <div
+                    class="col-xs-6 col-xs-offset-5 col-sm-6 col-sm-offset-5 col-md-6 col-md-offset-5 col-lg-6 col-lg-offset-5">
+                    <button ng-click="NewTurnoCtrl.cleanTurnosSearch()" class="btn btn-default" type="button">Limpiar
+                      busqueda
+                    </button>
+                    <button id="btn-confirm" type="button" class="btn btn-success" ng-click="NewTurnoCtrl.lookForTurnos()"
+                            ng-disabled="!NewTurnoCtrl.canLookForTurnos()">
+                      Buscar
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div ng-show="NewTurnoCtrl.selectedPrestacion">
+                  <div class="row">
+                    <b>{{NewTurnoCtrl.selectedPrestacion.name}}</b>
+                  </div>
+                  <div class="row">
+                    <p>
+                      {{NewTurnoCtrl.selectedPrestacion.description}}
+                    </p>
+                  </div>
+                  <div class="row">
+                  <p>
+                    Duración: {{NewTurnoCtrl.selectedPrestacion.duration}}
+                  </p>
+                  </div>
+                  <div class="row">
+                  <p style="word-wrap:break-word;">
+                    Observaciones: {{NewTurnoCtrl.selectedPrestacion.notes}}
+                  </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row" style="margin-top:15px;">
+              <div class="col-md-12">
+                <uib-tabset active="NewTurnoCtrl.currentTab" >
+                  <uib-tab select="NewTurnoCtrl.tabChanged(0)" index="0">
+                    <uib-tab-heading>
+                      <span class="glyphicon glyphicon-calendar" ></span> Calendario
+                    </uib-tab-heading>
+                    <div class="row">
+                      <div class="col-md-9">
+                        <div ui-calendar="NewTurnoCtrl.calendarConfig" ng-model="NewTurnoCtrl.eventSources"
+                             calendar="newTurnosCalendar"></div>
+                      </div>
+                      <div class="col-md-3">
+                        <div class="row" ng-show="NewTurnoCtrl.selectedTurno">
+                          <div><b>{{NewTurnoCtrl.selectedTurno.day | date : 'dd-MM-yyyy'}}</b></div>
+                          <div><label>Horario:</label> {{NewTurnoCtrl.selectedTurno.start}} - {{NewTurnoCtrl.selectedTurno.end}}</div>
+                          <div><label>Profesional:</label> {{NewTurnoCtrl.selectedTurno.profesional.fatherSurname}}, {{NewTurnoCtrl.selectedTurno.profesional.firstName}}</div>
+                          <div><label>Especialidad:</label> {{NewTurnoCtrl.selectedTurno.prestacion.especialidad.name}}</div>
+                          <div><label>Prestacion:</label> {{NewTurnoCtrl.selectedTurno.prestacion.name}}</div>
+                        </div>
+                      </div>
+                    </div>
+                  </uib-tab>
+                  <uib-tab index="1" select="NewTurnoCtrl.tabChanged(1)" >
+                    <uib-tab-heading>
+                      <span class="glyphicon glyphicon-list-alt"></span> Listado
+                    </uib-tab-heading>
+                    <div class="row">
+                      <div class="col-md-12">
+                        <table class="table">
+                          <thead>
+                          <tr>
+                            <th></th>
+                            <th>Fecha</th>
+                            <th>Hora</th>
+                            <th>Hasta</th>
+                            <th>Especialidad</th>
+                            <th>Prestaciones</th>
+                            <th>Profesional</th>
+                          </tr>
+                          </thead>
+                          <tbody>
+                          <tr ng-repeat="(key, turno) in NewTurnoCtrl.turnos" ng-class="{'bg-success':turno.selected}"
+                              ng-click="NewTurnoCtrl.updateSelectionRow(turno.id,NewTurnoCtrl.turnos)">
+                            <td><input type="checkbox" ng-checked="turno.selected"></td>
+                            <td>{{turno.day | date : 'dd-MM-yyyy'}}</td>
+                            <td>{{turno.start}}</td>
+                            <td>{{turno.end}}</td>
+                            <td>{{turno.prestacion.especialidad.name}}</td>
+                            <td>{{turno.prestacion.name}}</td>
+                            <td>{{turno.profesional.fatherSurname}}, {{turno.profesional.firstName}}</td>
+                          </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </uib-tab>
+                </uib-tabset>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="row">
+                  <div class="form-group">
+                    <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
+                      <uib-pagination max-size="10" total-items="NewTurnoCtrl.totalItems" ng-model="NewTurnoCtrl.currentPage" items-per-page="NewTurnoCtrl.pageSize" class="pagination" boundary-link-numbers="true" ng-change="NewTurnoCtrl.pageChanged()" ng-show="NewTurnoCtrl.currentTab==1"></uib-pagination>
+                    </div>
+                    <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+                      <button id="btn-confirm" type="button" class="btn btn-success pull-right"
+                              ng-disabled="!NewTurnoCtrl.canConfirmTurno()"
+                              ng-click="NewTurnoCtrl.confirmTurno()">Confirmar
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </uib-tab>
+          <uib-tab index="1">
+            <uib-tab-heading>
+              <span class="glyphicon glyphicon-calendar" ></span> Sobreturno
+            </uib-tab-heading>
+            <div class="col-md-6">
+              <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                  <div class="form-group">
+                    <span><label>Profesional(*)</label></span>
+                    <select class="form-control" ng-model="NewTurnoCtrl.sobreturno.profesional"
+                            ng-options='profesional as (profesional.fatherSurname + ", " + profesional.firstName) for profesional in NewTurnoCtrl.sobreturnoProfesionales track by profesional.id' ng-change="NewTurnoCtrl.sobreturnoProfesionalChanged()">
+                      <option value="">Todos los médicos</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                  <div class="form-group">
+                    <span><label>Prestación(*)</label></span>
+                    <select class="form-control" ng-model="NewTurnoCtrl.sobreturno.prestacion"
+                            ng-options="prestacion.name for prestacion in NewTurnoCtrl.sobreturnoPrestaciones" required>
+                      <option value="">Seleccione prestación</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12 col-md-6">
+                  <div class="form-group">
+                    <span><label>Día</label> <small><em>(dd/mm/aaaa o m/d/aaaa)</em></small></span>
+                    <p class="input-group">
+                      <input type="text" class="form-control" uib-datepicker-popup="d!/M!/yyyy" ng-model="NewTurnoCtrl.sobreturno.day" is-open="NewTurnoCtrl.sobreturnoCalendarPopup.opened" datepicker-options="NewTurnoCtrl.sobreturnoCalendarPopup.options" ng-required="true" close-text="Cerrar" alt-input-formats="NewTurnoCtrl.sobreturnoCalendarPopup.altInputFormats" current-text="Hoy" clear-text="Limpiar" />
+                      <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="NewTurnoCtrl.sobreturnoCalendarPopup.openCalendar()"><i class="glyphicon glyphicon-calendar"></i></button>
+                      </span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                  <div class="form-group">
+                    <span><label>Desde*</label></span>
+                    <div uib-timepicker ng-model="NewTurnoCtrl.sobreturno.start" hour-step="1" minute-step="1" show-meridian="ismeridian"></div>
+                  </div>
+                </div>
+                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                  <div class="form-group">
+                    <span><label>Hasta*</label></span>
+                    <div uib-timepicker ng-model="NewTurnoCtrl.sobreturno.end" hour-step="1" minute-step="1" show-meridian="ismeridian"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-xs-12 col-md-6">
+                  <div class="form-group">
+                    <span><label>Notas</label></span>
+                        <textarea name="notes" class="form-control" ng-model="NewTurnoCtrl.sobreturno.notes" rows="5" maxlength="150"></textarea>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <br>
+                <div
+                  class="col-xs-6 col-xs-offset-5 col-sm-6 col-sm-offset-5 col-md-6 col-md-offset-5 col-lg-6 col-lg-offset-5">
+                  <button ng-click="NewTurnoCtrl.confirmSobreturno()" class="btn btn-success" type="button" ng-disabled="!NewTurnoCtrl.canConfirmSobreturno()">Confirmar sobreturno
                   </button>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
+            <div class="col-md-6">
+              <div ng-show="NewTurnoCtrl.sobreturno.prestacion">
+                <div class="row">
+                  <b>{{NewTurnoCtrl.sobreturno.prestacion.name}}</b>
+                </div>
+                <div class="row">
+                  <p>
+                    {{NewTurnoCtrl.sobreturno.prestacion.description}}
+                  </p>
+                </div>
+                <div class="row">
+                <p>
+                  Duración: {{NewTurnoCtrl.sobreturno.prestacion.duration}}
+                </p>
+                </div>
+                <div class="row">
+                <p style="word-wrap:break-word;">
+                  Observaciones: {{NewTurnoCtrl.sobreturno.prestacion.notes}}
+                </p>
+                </div>
+              </div>
+            </div>
+          </uib-tab>
+        </uib-tabset>
       </form>
     </div>
   </div>
