@@ -45,24 +45,6 @@
     }
 
     function modifyAgenda(selectedAgenda) {
-
-
-      $uibModal.open({
-            templateUrl: '/views/turnos/turnos-cancelados.html',
-            backdrop:'static',
-            controller: 'TurnosCanceladosCtrl',
-            controllerAs: 'TurnosCanceladosCtrl',
-            resolve: {
-                agenda: function () {
-                    return vm.agenda;
-                },
-                ausencia: null
-            }
-          });
-            return;
-
-
-
       var modalInstance = $uibModal.open({
         templateUrl: '/views/agendas/agenda.html',
         backdrop: 'static',

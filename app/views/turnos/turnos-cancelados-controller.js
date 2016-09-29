@@ -37,6 +37,9 @@
         };
         if (ausencia) {
           searchObject.cancelation_reason = Turno.cancelationReason.absent;
+          searchObject.day__range_start = ausencia.start_day;
+          searchObject.day__range_end = ausencia.end_day;
+          searchObject.profesional = ausencia.profesional.id;
         } else if (agenda) {
           searchObject.cancelation_reason = Turno.cancelationReason.agendaChanged;
           searchObject.agenda = agenda.id;
