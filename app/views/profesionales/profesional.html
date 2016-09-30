@@ -6,7 +6,6 @@
             </div>
             <div class="modal-body">
                 <p>¿Esta seguro que desea {{ProfesionalCtrl.profesional.status == "Active" ? "eliminar" : "reactivar"}} el profesional seleccionado?</p>
-                <p ng-show="ProfesionalCtrl.profesional.status == 'Active'">Esto cancelará tambien sus agendas y turnos</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default btn-cancel" ng-click="ProfesionalCtrl.dismissModal()">Cancelar</button>
