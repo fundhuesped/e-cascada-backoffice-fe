@@ -8,13 +8,13 @@
           <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
               <span><label>Médico</label></span>
-              <p>{{TurnoDetailCtrl.turno.profesional.fatherSurname + ', ' + TurnoDetailCtrl.turno.profesional.firstName}}</p>
+              <p>{{TurnoDetailCtrl.turnoSlot.profesional.fatherSurname + ', ' + TurnoDetailCtrl.turnoSlot.profesional.firstName}}</p>
             </div>
           </div>
           <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
               <span><label>Prestación</label></span>
-              <p>{{TurnoDetailCtrl.turno.prestacion.name}}</p>
+              <p>{{TurnoDetailCtrl.turnoSlot.prestacion.name}}</p>
             </div>
           </div>          
           <div class="row" ng-show="TurnoDetailCtrl.turno.paciente">
@@ -26,11 +26,15 @@
           <div class="row">
             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
               <span><label>Fecha</label></span>
-              <p>{{TurnoDetailCtrl.turno.day | date : 'dd-MM-yyyy'}} </p>
+              <p>{{TurnoDetailCtrl.turnoSlot.day | date : 'dd-MM-yyyy'}} </p>
             </div>
             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
               <span><label>Hora</label></span>
-              <p>{{TurnoDetailCtrl.turno.start}}</p>
+              <p>{{TurnoDetailCtrl.turnoSlot.start}}</p>
+            </div>
+            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" ng-show="TurnoDetailCtrl.turno.notes">
+              <span><label>Notas</label></span>
+              <p>{{TurnoDetailCtrl.turno.notes}}</p>
             </div>
           </div>
           <div class="row">

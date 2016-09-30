@@ -5,10 +5,10 @@
 
     angular
       .module('turnos.resources')
-      .provider('Turno', TurnoProvider);
+      .provider('TurnoSlot', TurnoSlotProvider);
 
-  function TurnoProvider() {
-    function TurnoResource($resource, apiBase) {
+  function TurnoSlotProvider() {
+    function TurnoSlotResource($resource, apiBase) {
         function transformDataSet(data, headersGetter, status){
           if(status > 0 && data){
             return angular.fromJson(data).results;  
@@ -16,7 +16,7 @@
             return [];
           }
         }
-        var Turno = $resource(apiBase + 'practicas/turno/:id/', {id: '@id'}, {
+        var TurnoSlot = $resource(apiBase + 'practicas/turnoSlot/:id/', {id: '@id'}, {
         update: {
           method: 'PUT'
         },
@@ -58,30 +58,17 @@
           transformResponse: transformDataSet
         }
       });
-
-      Turno.state = {
-        initial:'Initial',
-        present:'Present',
-        absent:'Absent',
-        served:'Served',
-        canceled:'Canceled',
-      };
-      Turno.cancelationReason = {
-        absent:'ProfesionalAbsent',
-        agendaChanged:'AgendaChanged',
-        pacientRequest:'PacientRequest',
-        other:'Other'
-      };
-      Turno.cancelationReasonDescription = {
-        ProfesionalAbsent:'Ausencia del profesional',
-        AgendaChanged:'Modificación de agenda',
-        PacientRequest:'Pedido del paciente',
-        Other:'Otros'
+        
+      TurnoSlot.state = {
+        available:'Available',
+        ocuppied:'Occupied',
+        conflict:'Conflict',
+        deleted:'Deleted',
       };
 
-      return Turno;
+      return TurnoSlot;
     }
 
-    this.$get = ['$resource', 'apiBase', TurnoResource];
+    this.$get = ['$resource', 'apiBase', TurnoSlotResource];
   }
 })();

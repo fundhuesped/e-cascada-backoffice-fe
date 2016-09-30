@@ -188,8 +188,6 @@
                     vm.disabledForm = true;
                 }
             });
-
-
         }
         function confirmReactivate(profesionalInstance){
             profesionalInstance.status = 'Active';

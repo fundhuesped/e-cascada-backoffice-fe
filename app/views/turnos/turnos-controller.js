@@ -6,9 +6,29 @@
     	.module('turnos.turnos')
     	.controller('TurnosCtrl', turnosCtrl);
 
-	turnosCtrl.$inject = ['Turno', 'Profesional', '$loading', '$filter', 'uiCalendarConfig', '$uibModal', 'Leave', 'Especialidad', 'Prestacion', 'toastr'];
+	turnosCtrl.$inject = ['Turno', 
+						  'TurnoSlot', 
+						  'Profesional', 
+						  '$loading', 
+						  '$filter', 
+						  'uiCalendarConfig', 
+						  '$uibModal', 
+						  'Leave', 
+						  'Especialidad', 
+						  'Prestacion', 
+						  'toastr'];
 
-    function turnosCtrl (Turno, Profesional, $loading, $filter, uiCalendarConfig, $uibModal, Leave, Especialidad, Prestacion, toastr) {
+    function turnosCtrl (Turno,
+    					 TurnoSlot, 
+    					 Profesional, 
+    					 $loading, 
+    					 $filter, 
+    					 uiCalendarConfig, 
+    					 $uibModal, 
+    					 Leave, 
+    					 Especialidad, 
+    					 Prestacion, 
+    					 toastr) {
 	    var vm = this;
 	    vm.canLookForTurnos = canLookForTurnos;
         vm.eventSources = [];
@@ -113,15 +133,16 @@
     	  		searchObject.prestacion = vm.selectedPrestacion.id;
     	  	}
 
-    	  	if(vm.turnStatus==='taken'){
-    	  		searchObject.taken = true;
-    	  	}else{
-    	  		if(vm.turnStatus==='notTaken'){
-    	  			searchObject.taken = false;
+    	  	if(vm.turnStatus==='ocuppied'){
+    	  		searchObject.state = TurnoSlot.state.ocuppied;
+    	  	}else if(vm.turnStatus==='available'){
+    	  			searchObject.state = TurnoSlot.state.available;
     	  		}
-    	  	}
+	  		else{
+				searchObject.state = TurnoSlot.state.ocuppied + ',' +  TurnoSlot.state.available;
+	  		}
 
-	      	Turno.getFullActiveList(searchObject)
+	      	TurnoSlot.getFullActiveList(searchObject)
 	      	   .$promise
 	      	   .then(function (results) {
 			        var turnosSource =[];
@@ -141,7 +162,7 @@
 	      }
 
       	function searchAusencias(){
-		    Leave.getFullActiveList({profesional:vm.searchProfesional.id}, function(results){
+		    Leave.getFullActiveList({profesional:vm.selectedProfesional.id}, function(results){
 		        var ausenciasSource =[];
 	            vm.ausencias = results;
 		        angular.forEach(results, function (ausencia) {
@@ -154,24 +175,24 @@
       	}
 
 	    function displayTurnDetails(position, entities, calendarRepresentation) {
-	      	angular.forEach(entities, function (turno, index) {
-    			if (position == turno.id) {
-					openTurnoModal(turno);
+	      	angular.forEach(entities, function (turnoSlot, index) {
+    			if (position === turnoSlot.id) {
+					openTurnoModal(turnoSlot);
 					return;
 				}
 			});
 	    }
 
-      	function openTurnoModal(turno) {
+      	function openTurnoModal(turnoSlot) {
 	      var modalInstance = $uibModal.open({
-	        templateUrl: '/views/turnos/turno-detail.html',
+	        templateUrl: '/views/turnos/turnoslot-detail.html',
 	        size: 'md',
 	        backdrop:'static',
-	        controller: 'TurnoDetailCtrl',
-	        controllerAs: 'TurnoDetailCtrl',
+	        controller: 'TurnoSlotDetailCtrl',
+	        controllerAs: 'TurnoSlotDetailCtrl',
 	        resolve: {
-	          turno: function () {
-	            return turno;
+	          turnoSlot: function () {
+	            return turnoSlot;
 	          }
 	        }
 	      });
@@ -185,7 +206,7 @@
 	        var endTime = new Date(ausencia.end_day+ 'T00:00-03:00');
 	        var title = '';
 	        var color = '#FF9800';
-         	title = ausencia.reason.charAt(0).toUpperCase() + ausencia.reason.slice(1);;
+         	title = ausencia.reason.charAt(0).toUpperCase() + ausencia.reason.slice(1);
 	        return {
 	            id: ausencia.id,
 	            title: title,
@@ -199,26 +220,35 @@
 	         };
       	}
 
-      	function createCalendarTurnoEvent(turno){
-	        var startTime = new Date(turno.day + 'T' + turno.start + '-03:00');
-	        var endTime = new Date(turno.day + 'T' + turno.end+ '-03:00');
+      	function createCalendarTurnoEvent(turnoSlot){
+	        var startTime = new Date(turnoSlot.day + 'T' + turnoSlot.start + '-03:00');
+	        var endTime = new Date(turnoSlot.day + 'T' + turnoSlot.end+ '-03:00');
 	        var title = '';
 	        var color = '#B2EBF2';
-
   	      	var calendarView = uiCalendarConfig.calendars.turnsCalendar.fullCalendar( 'getView' );
 
-	        if(calendarView.name === 'agendaDay' && turno.taken){
-	         	color = '#00796B';
+	        if(calendarView.name === 'agendaDay' && turnoSlot.state === TurnoSlot.state.ocuppied){
+	  	      	var turno = turnoSlot.currentTurno;
 	         	title = turno.paciente.fatherSurname + ',' + turno.paciente.firstName + ' - ' + turno.paciente.primaryPhoneNumber + ' - ' + turno.paciente.socialService.name + ' - ' + turno.prestacion.name;
-	        }else{
-	        	if(turno.taken){
+	        	if(turno.state === Turno.state.present){
+		         	color = '#d6e9c6';
+	        	}else{
 		         	color = '#00796B';
+	        	}
+	        }else{
+	        	if(turnoSlot.state === TurnoSlot.state.ocuppied){
+		  	      	var turno = turnoSlot.currentTurno;
+		        	if(turno.state === Turno.state.present){
+			         	color = '#d6e9c6';
+		        	}else{
+			         	color = '#00796B';
+		        	}
 		         	title = turno.paciente.fatherSurname + ',' + turno.paciente.firstName + ' - ' + turno.paciente.primaryPhoneNumber + ' - ';
 	        	}
 	        }
 
 	        return {
-	            id: turno.id,
+	            id: turnoSlot.id,
 	            title: title,
 	            start: startTime,
 	            end: endTime,

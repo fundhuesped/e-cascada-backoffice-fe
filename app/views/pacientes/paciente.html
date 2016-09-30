@@ -318,18 +318,20 @@
                                 <th>Especialidad</th>
                                 <th>Prestaciones</th>
                                 <th>Profesional</th>
+                                <th>Estado</th>
                                 <th></th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr ng-repeat="(key, turno) in PacienteCtrl.turnos" ng-class="{'bg-success':turno.selected}"
                               >
-                                <td>{{turno.day | date : 'dd-MM-yyyy'}}</td>
-                                <td>{{turno.start}}</td>
-                                <td>{{turno.prestacion.especialidad.name}}</td>
-                                <td>{{turno.prestacion.name}}</td>
-                                <td>{{turno.profesional.fatherSurname}}, {{turno.profesional.firstName}}</td>
-                                <td><button class="btn btn-link" type="button" ng-click="PacienteCtrl.showCancelTurno(turno)"><i class="glyphicon glyphicon-remove text-danger" ng-show="PacienteCtrl.canShowCancelTurno(turno)"></i></button></td>
+                                <td>{{turno.turnoSlot.day | date : 'dd-MM-yyyy'}}</td>
+                                <td>{{turno.turnoSlot.start}}</td>
+                                <td>{{turno.turnoSlot.prestacion.especialidad.name}}</td>
+                                <td>{{turno.turnoSlot.prestacion.name}}</td>
+                                <td>{{turno.turnoSlot.profesional.fatherSurname}}, {{turno.turnoSlot.profesional.firstName}}</td>
+                                <td>{{PacienteCtrl.estadoTurno(turno.state)}}</td>
+                                <td><button class="btn btn-link" type="button" ng-click="PacienteCtrl.showCancelTurno(turno)" ng-show="PacienteCtrl.canShowCancelTurno(turno)"><i class="glyphicon glyphicon-remove text-danger"></i></button></td>
                             </tr>
                         </tbody>
                     </table>
