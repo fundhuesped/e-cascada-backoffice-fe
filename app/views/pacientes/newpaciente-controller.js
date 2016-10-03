@@ -44,27 +44,27 @@
         function activate() {
             $loading.start('app');
             
-            Document.getActiveList(function(documents){
+            Document.getFullActiveList(function(documents){
                 vm.documents = documents;
             }, function(){displayComunicationError('app');});
             
-            Sex.getActiveList(function(sexTypes){
+            Sex.getFullActiveList(function(sexTypes){
                 vm.sexTypes = sexTypes;
             }, function(){displayComunicationError('app');});
             
-            Province.getActiveList(function(provinces){
+            Province.getFullActiveList(function(provinces){
                 vm.provinces = provinces;
             }, function(){displayComunicationError('app');});
             
-            SocialService.getActiveList(function(socialServices){
+            SocialService.getFullActiveList(function(socialServices){
                 vm.socialServices = socialServices;
             }, function(){displayComunicationError('app');});
             
-            CivilStatus.getActiveList(function(civilStatusTypes){
+            CivilStatus.getFullActiveList(function(civilStatusTypes){
                 vm.civilStatusTypes = civilStatusTypes;
             }, function(){displayComunicationError('app');});
             
-            Education.getActiveList(function(educationTypes){
+            Education.getFullActiveList(function(educationTypes){
                 vm.educationTypes = educationTypes;
                 $loading.finish('app');
             }, function(){displayComunicationError('app');});
@@ -153,7 +153,7 @@
 
         function searchLocations() {
             if (vm.selectedDistrict) {
-                Location.getActiveList({district: vm.selectedDistrict.id}, function(locations){
+                Location.getFullActiveList({district: vm.selectedDistrict.id}, function(locations){
                     vm.locations = locations;
                 },displayComunicationError);
             }
@@ -162,7 +162,7 @@
         function searchDistricts() {
             vm.locations = null;
             if (vm.selectedProvince) {
-                District.getActiveList({province: vm.selectedProvince.id},function(districts){
+                District.getFullActiveList({province: vm.selectedProvince.id},function(districts){
                     vm.districts = districts;
                 },displayComunicationError);
             }

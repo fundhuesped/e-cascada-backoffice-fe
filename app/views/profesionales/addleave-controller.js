@@ -9,12 +9,12 @@
     addLeaveController.$inject = ['$loading',
                                   '$uibModalInstance',
                                   '$filter',
-                                  'profesionalId',
+                                  'profesional',
                                   'Leave',
                                   'Agenda',
                                   'moment'];
 
-    function addLeaveController($loading, $uibModalInstance, $filter, profesionalId, Leave, Agenda, moment) {
+    function addLeaveController($loading, $uibModalInstance, $filter, profesional, Leave, Agenda, moment) {
         var vm = this;
         vm.cancel = cancel;
         vm.confirm = confirm;
@@ -22,7 +22,7 @@
         vm.hideErrorMessage = hideErrorMessage;
         vm.leaveForm;
         vm.newLeave = {};
-        vm.profesionalId = angular.copy(profesionalId);
+        vm.profesional = angular.copy(profesional);
         vm.showErrorMessage = showErrorMessage;
         vm.openFromDateCalendar = openFromDateCalendar;
         vm.openToDateCalendar = openToDateCalendar;
@@ -49,14 +49,13 @@
         activate();
 
         function activate() {
-            Agenda.getActiveList({page_size:1,ordering:'-validTo', profesional:profesionalId}, function(list){
+            Agenda.getActiveList({page_size:1,ordering:'-validTo', profesional:profesional.id}, function(list){
                 if(list.length>0){
                     vm.lastAgendaFinishDate = moment(list[0].validTo);
                     vm.fromDateCalendarPopup.options.maxDate = vm.lastAgendaFinishDate;
                     vm.toDateCalendarPopup.options.maxDate = vm.lastAgendaFinishDate;
                 }else{
                     vm.disabledForm = true;
-                    vm.errorMessage = 'El profesional no posee agendas activas';
                 }
             });
         }
@@ -74,7 +73,7 @@
                     var leave = new Leave();
                     leave.start_day = $filter('date')(vm.newLeave.fromDate, 'yyyy-MM-dd');
                     leave.end_day = $filter('date')(vm.newLeave.toDate, 'yyyy-MM-dd');
-                    leave.profesional = vm.profesionalId;
+                    leave.profesional = vm.profesional.id;
                     leave.notes = vm.newLeave.notes;
                     leave.reason = vm.newLeave.reason;
                     leave.$save(function(leave){

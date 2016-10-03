@@ -10,14 +10,16 @@
     profesionalesCtrl.$inject = ['$uibModal',
                                  'toastr',
                                  'Profesional', 
-                                 '$state'];
+                                 '$state',
+                                 '$loading'];
 
-    function profesionalesCtrl ($uibModal,toastr,Profesional, $state) {
+    function profesionalesCtrl ($uibModal,toastr,Profesional, $state, $loading) {
         var vm = this;
         vm.profesionales = [];
         vm.profesional = null;
         vm.detail = detail;
         vm.goToAusencias = goToAusencias;
+        vm.goToTurnos = goToTurnos;
         vm.modifyProfesional = modifyProfesional;
         vm.newProfesional = newProfesional;
         vm.searchName = searchName;
@@ -30,11 +32,13 @@
         
         //Controller initialization
         function activate(){
+            $loading.start('app');
             vm.statusFilter = '1';
             Profesional.getPaginatedActiveList({page_size:vm.pageSize,ordering:'firstName'}, function(paginatedResult){
                 vm.profesionales = paginatedResult.results;
                 vm.totalItems = paginatedResult.count;
-            });
+                $loading.finish('app');
+            },function(){displayComunicationError('app')});
         }
 
         function detail(profesional){
@@ -43,6 +47,10 @@
 
         function goToAusencias(){
             $state.go('ausencias',{profesionalId: vm.profesional.id, profesinoal: vm.profesiona});
+        }
+
+        function goToTurnos(){
+            $state.go('profesionalTurnos',{profesionalId: vm.profesional.id, profesinoal: vm.profesiona});
         }
 
         function modifyProfesional(selectedProfesional){
@@ -110,11 +118,21 @@
             if(currentStatusFilter){
                 searchObject.status = currentStatusFilter;
             }
+            $loading.start('app');
             Profesional.queryPaginated(searchObject,
                 function (paginatedResult){
                     vm.profesionales = paginatedResult.results;
                     vm.totalItems = paginatedResult.count;
-            });
+                    $loading.finish('app');
+            },function(){displayComunicationError('app')});
+        }
+        function displayComunicationError(loading){
+            if(!toastr.active()){
+                toastr.warning('Ocurrió un error en la comunicación, por favor intente nuevamente.');
+            }
+            if(loading){
+                $loading.finish(loading);
+            }
         }
     }
 })();

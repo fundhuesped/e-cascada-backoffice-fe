@@ -13,6 +13,11 @@
                 update: {
                     method: 'PUT'
                 },
+                getFullActiveList: {
+                  method: 'GET',
+                  params: {status: 'Active', all: true},
+                  isArray: true
+                },
                 getActiveList:{
                     method: 'GET',
                     params:{status:'Active'},

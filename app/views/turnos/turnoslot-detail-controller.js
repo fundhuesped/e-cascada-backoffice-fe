@@ -4,13 +4,13 @@
     /*jshint latedef: nofunc */
     angular
         .module('turnos.turnos')
-        .controller('TurnoDetailCtrl',turnoDetailCtrl);
+        .controller('TurnoSlotDetailCtrl',turnoDetailCtrl);
   
     turnoDetailCtrl.$inject =  [ '$uibModalInstance', 
                                 '$loading', 
                                 'toastr',
                                 'moment', 
-                                'turno',
+                                'turnoSlot',
                                 'Turno',
                                 'TurnoSlot'];
 
@@ -18,20 +18,22 @@
                               $loading,
                               toastr,
                               moment,
-                              turno,
+                              turnoSlot,
                               Turno,
                               TurnoSlot){
         var vm = this;
         vm.cancelTurn = cancelTurn;
         vm.title = '';
-        vm.turno = angular.copy(turno);
-        vm.turnoSlot = new TurnoSlot(turno.turnoSlot);
+        vm.turnoSlot = angular.copy(turnoSlot);
+        vm.turno = {};
         vm.dismiss = dismiss;
-        vm.markedAsTurnAsPresent = markedAsTurnAsPresent;
+        vm.markedTurnAsPresent = markedTurnAsPresent;
         vm.modalStyle = {};
         vm.showDelete = showDelete;
         vm.showMarkAsPresent = showMarkAsPresent;
+        vm.panelStyle = panelStyle;
         vm.newNotes = '';
+
 
         vm.cancelModal = {
             style : {},
@@ -50,25 +52,28 @@
         vm.presentModal = {
             style : {},
             show : function show(){
-                vm.newNotes = angular.copy(vm.turno.notes);
                 this.style = {display:'block'};
+                vm.newNotes = angular.copy(vm.turno.notes);
             },
             dismiss : function dismiss(){
                 this.style = {};
             },
             confirm : function confirm(){
                 this.dismiss();
-                vm.markedAsTurnAsPresent();
+                vm.markedTurnAsPresent();
             }
         };
 
         activate();
 
         function activate(){
-            if(vm.turno.state === Turno.state.initial){
-                vm.title = 'Turno reservado';
-            }else if(vm.turno.state === Turno.state.present){
-                vm.title = 'Paciente presente';
+            if(vm.turnoSlot.state === TurnoSlot.state.ocuppied){
+                vm.turno = new Turno(turnoSlot.currentTurno);
+                if(vm.turno.state === Turno.state.initial){
+                    vm.title = 'Turno reservado';
+                }else if(vm.turno.state === Turno.state.present){
+                    vm.title = 'Turno reservado - Paciente presente';
+                }
             }else{
                 vm.title = 'Turno disponible';
             }
@@ -91,13 +96,13 @@
                     $loading.finish('app');
                     toastr.warning(errorResponse.data.error);
                 }else{
-                    vm.turno = angular.copy(turno);
+                    vm.turnoSlot = angular.copy(turno);
                     displayComunicationError('app');
                 }
             });
         }
 
-        function markedAsTurnAsPresent(){
+        function markedTurnAsPresent(){
             $loading.start('app');
             vm.turno.state = Turno.state.present;
             vm.turno.notes = vm.newNotes;
@@ -111,21 +116,26 @@
                     $loading.finish('app');
                     toastr.warning(errorResponse.data.error);
                 }else{
-                    vm.turno = angular.copy(turno);
                     displayComunicationError('app');
                 }
             });
         }
 
         function showMarkAsPresent(){
-            return vm.turno.state === Turno.state.initial;
+            return vm.turno && vm.turno.state === Turno.state.initial;
         }
 
         function showDelete(){
-            if(vm.turno.state === Turno.state.initial){
-                return moment(vm.turnoSlot.day + ' ' + vm.turnoSlot.start).isSameOrAfter(moment(), 'minute') && vm.turnoSlot.state === TurnoSlot.state.ocuppied;
+            if(vm.turnoSlot.state === TurnoSlot.state.ocuppied && vm.turno.state === Turno.state.initial){
+                return moment(vm.turnoSlot.day + ' ' + vm.turnoSlot.start).isSameOrAfter(moment(), 'minute');
             }
-            return true;
+        }
+
+        function panelStyle(){
+            if(vm.turnoSlot.state === TurnoSlot.state.ocuppied && vm.turno.state === Turno.state.present){
+                return 'panel-success';
+            }
+            return 'panel-default';
         }
 
         function displayComunicationError(loading){

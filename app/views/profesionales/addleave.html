@@ -4,7 +4,17 @@
             <h3 class="panel-title">Cargar ausencia</h3>
         </div>
         <div class="panel-body">
-            <form name="AddLeaveCtrl.leaveForm">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-show="AddLeaveCtrl.disabledForm">
+                <div class="row">
+                    <div class="alert alert-warning">
+                        <p><span class="glyphicon glyphicon-warning-sign"></span> No se puede cargar una ausencia para {{AddLeaveCtrl.profesional.firstName}} {{AddLeaveCtrl.profesional.fatherSurname}} ya que no posee agendas activas</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <button ng-click="AddLeaveCtrl.cancel()" class="btn btn-primary center-block">Aceptar</button>
+                </div>
+            </div>       
+            <form name="AddLeaveCtrl.leaveForm" ng-show="!AddLeaveCtrl.disabledForm">
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                     <div class="row">
                         <div class="alert alert-dismissable alert-danger">
@@ -77,11 +87,13 @@
                     </div>
                 </div>
             </form>
-            <div class="col-xs-6 col-sm-offset-7 col-sm-2 col-md-offset-7 col-md-2 col-lg-offset-7 col-lg-2">
-                <button ng-click="AddLeaveCtrl.cancel()" class="btn btn-default">Cancelar</button>
-            </div>
-            <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
-                <button ng-click="AddLeaveCtrl.confirm()" class="btn btn-primary" ng-disabled="AddLeaveCtrl.disabledForm"><span class="glyphicon glyphicon-ok"></span> Confirmar</button>
+            <div ng-show="!AddLeaveCtrl.disabledForm">
+                <div class="col-xs-6 col-sm-offset-7 col-sm-2 col-md-offset-7 col-md-2 col-lg-offset-7 col-lg-2">
+                    <button ng-click="AddLeaveCtrl.cancel()" class="btn btn-default">Cancelar</button>
+                </div>
+                <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
+                    <button ng-click="AddLeaveCtrl.confirm()" class="btn btn-primary" ng-disabled="AddLeaveCtrl.disabledForm"><span class="glyphicon glyphicon-ok"></span> Confirmar</button>
+                </div>
             </div>
         </div>
     </div>

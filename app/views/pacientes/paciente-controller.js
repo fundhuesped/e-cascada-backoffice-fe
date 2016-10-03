@@ -3,13 +3,15 @@
     /* jshint validthis: true */
     /*jshint latedef: nofunc */
 
-    function pacienteCtrl ($loading, $uibModalInstance, $filter, paciente, Document, Turno, Sex, Province, District, Location, SocialService, CivilStatus, Education, Paciente, toastr) {
+    function pacienteCtrl ($loading, $uibModalInstance, $filter, $uibModal, moment, paciente, Document, Turno, Sex, Province, District, Location, SocialService, CivilStatus, Education, Paciente, toastr) {
         var vm = this;
 
         vm.paciente = {};
         vm.editing = true;
         vm.errorMessage = null;
+        vm.estadoTurno = estadoTurno;
         vm.turnos = [];
+        vm.canShowCancelTurno = canShowCancelTurno;
         vm.confirm = confirm;
         vm.confirmDelete = confirmDelete;
         vm.confirmReactivate = confirmReactivate;
@@ -18,6 +20,7 @@
         vm.searchDistricts = searchDistricts;
         vm.cancel = cancel;
         vm.originalPaciente = {};
+        vm.showCancelTurno = showCancelTurno;
         vm.confirmStatusChange = confirmStatusChange;
         vm.birthDateCalendarPopup = {
           opened: false,
@@ -31,7 +34,6 @@
             maxDate: new Date(),
           }
         };
-
 
         vm.openBirthDateCalendar = openBirthDateCalendar;
         vm.openFirstTimeCalendar = openFirstTimeCalendar;
@@ -49,27 +51,27 @@
                 vm.paciente.firstVisit = (vm.paciente.firstVisit?new Date(vm.paciente.firstVisit):null);
 
 
-                Document.getActiveList(function(documents){
+                Document.getFullActiveList(function(documents){
                     vm.documents = documents;
                 }, function(){displayComunicationError('app');});
                 
-                Sex.getActiveList(function(sexTypes){
+                Sex.getFullActiveList(function(sexTypes){
                     vm.sexTypes = sexTypes;
                 }, function(){displayComunicationError('app');});
                 
-                Province.getActiveList(function(provinces){
+                Province.getFullActiveList(function(provinces){
                     vm.provinces = provinces;
                 }, function(){displayComunicationError('app');});
                 
-                SocialService.getActiveList(function(socialServices){
+                SocialService.getFullActiveList(function(socialServices){
                     vm.socialServices = socialServices;
                 }, function(){displayComunicationError('app');});
                 
-                CivilStatus.getActiveList(function(civilStatusTypes){
+                CivilStatus.getFullActiveList(function(civilStatusTypes){
                     vm.civilStatusTypes = civilStatusTypes;
-                });
+                }, function(){displayComunicationError('app');});
                 
-                Education.getActiveList(function(educationTypes){
+                Education.getFullActiveList(function(educationTypes){
                     vm.educationTypes = educationTypes;
                 }, function(){displayComunicationError('app');});
                 
@@ -79,21 +81,21 @@
                 if (vm.paciente.location) {
                     District.getActiveList({province: vm.paciente.location.district.province.id},function(districts){
                         vm.districts = districts;
-                    },displayComunicationError);
+                    },function(){displayComunicationError('app');});
 
                     Location.getActiveList({district: vm.paciente.location.district.id}, function(locations){
                         vm.locations = locations;
-                    },displayComunicationError);
+                    },function(){displayComunicationError('app');});
                 }   
 
                 vm.selectedDistrict = (vm.paciente.location?vm.paciente.location.district:null);
 
                 vm.paciente.primaryPhoneMessage = (vm.paciente.primaryPhoneMessage?vm.paciente.primaryPhoneMessage:false);
-                vm.turnos = Turno.getActiveList({paciente:vm.paciente.id, ordering:'-day'}, function(turnos){
-                    vm.turnos = turnos;
-                    $loading.finish('app');
-                }, function(){displayComunicationError('app');});                
-            });
+
+
+                getTurnosForPaciente();
+
+            },function(){displayComunicationError('app');});
         }
 
         function confirm () {
@@ -170,6 +172,46 @@
             }
         }
 
+        function showCancelTurno(turno){
+            var modalInstance = $uibModal.open({
+                templateUrl: '/views/turnos/turno-delete.html',
+                size: 'sm',
+                backdrop:'static',
+                controller: 'TurnoDeleteCtrl',
+                controllerAs: 'TurnoDeleteCtrl',
+                resolve: {
+                    turno: function () {
+                        return turno;
+                    }
+                }
+            });
+            modalInstance.result.then(function (result) {
+                if(result==='turnCanceled'){
+                    getTurnosForPaciente();
+                }
+            }, function () {
+            });
+        }
+
+        function estadoTurno(estado){
+            if(estado === Turno.state.initial){
+                return 'Reservado';
+            }else if(estado === Turno.state.canceled){
+                return 'Cancelado';
+            }else if(estado === Turno.state.present){
+                return 'Presente';
+            }else if(estado === Turno.state.served){
+                return 'Atendido';
+            }
+        }
+
+        function getTurnosForPaciente(){
+            $loading.start('app');
+            vm.turnos = Turno.getActiveList({paciente:vm.paciente.id, ordering:'-day'}, function(turnos){
+                vm.turnos = turnos;
+                $loading.finish('app');
+            }, function(){displayComunicationError('app');});                
+        }
         function changeStatus() {
             vm.showModal();
         }
@@ -188,7 +230,7 @@
 
         function searchLocations() {
             if (vm.selectedDistrict) {
-                Location.getActiveList({district: vm.selectedDistrict.id},function(locations){
+                Location.getFullActiveList({district: vm.selectedDistrict.id},function(locations){
                     vm.locations = locations;
                 }, displayComunicationError);
             }
@@ -197,10 +239,17 @@
         function searchDistricts() {
             vm.locations = null;
             if (vm.selectedProvince) {
-                District.getActiveList({province: vm.selectedProvince.id}, function(districts){
+                District.getFullActiveList({province: vm.selectedProvince.id}, function(districts){
                     vm.districts = districts;
                 }, displayComunicationError);
             }
+        }
+
+        function canShowCancelTurno(turno){
+            if(turno.state === Turno.state.initial && moment(turno.turnoSlot.day + ' ' + turno.turnoSlot.start).isSameOrAfter(moment(), 'minute')){
+                return true;                
+            }
+            return false;
         }
 
         function displayComunicationError(loading){
@@ -212,5 +261,5 @@
             }
         }
     }
-    angular.module('turnos.pacientes').controller('PacienteCtrl',['$loading','$uibModalInstance','$filter','paciente','Document','Turno','Sex', 'Province', 'District', 'Location', 'SocialService', 'CivilStatus', 'Education', 'Paciente', 'toastr', pacienteCtrl]);
+    angular.module('turnos.pacientes').controller('PacienteCtrl',['$loading','$uibModalInstance','$filter', '$uibModal', 'moment', 'paciente','Document','Turno','Sex', 'Province', 'District', 'Location', 'SocialService', 'CivilStatus', 'Education', 'Paciente', 'toastr', pacienteCtrl]);
 })();

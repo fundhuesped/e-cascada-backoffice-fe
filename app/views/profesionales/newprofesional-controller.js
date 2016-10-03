@@ -17,9 +17,10 @@
                                   'Location', 
                                   'CivilStatus', 
                                   'Prestacion',
-                                  'Especialidad'];
+                                  'Especialidad', 
+                                  'toastr'];
 
-    function newProfesionalCtrl($loading, $uibModalInstance, $filter, Profesional, Document, Sex, Province, District, Location, CivilStatus, Prestacion,Especialidad) {
+    function newProfesionalCtrl($loading, $uibModalInstance, $filter, Profesional, Document, Sex, Province, District, Location, CivilStatus, Prestacion,Especialidad, toastr) {
         var vm = this;
         vm.searchPrestacionesForEspecialidad = searchPrestacionesForEspecialidad;
         vm.especialidades = [];
@@ -27,7 +28,6 @@
         vm.searchDistricts = searchDistricts;
         vm.searchLocations = searchLocations;
         vm.close = close;
-        vm.showErrorMessage = showErrorMessage;
         vm.hideErrorMessage = hideErrorMessage;
         vm.confirm = confirm;
         vm.openBirthDateCalendar = openBirthDateCalendar;
@@ -48,15 +48,35 @@
         activate();
 
         function activate() {
-            vm.documents = Document.getActiveList();
-            vm.sexTypes = Sex.getActiveList();
-            vm.provinces = Province.getActiveList();
-            vm.civilStatusTypes = CivilStatus.getActiveList();
-            vm.especialidades = Especialidad.getActiveList();
+            
+            Document.getFullActiveList(function(documents){
+                vm.documents = documents;
+            }, function(){displayComunicationError('app');});
+            
+            Sex.getFullActiveList(function(sexTypes){
+                vm.sexTypes = sexTypes;
+            }, function(){displayComunicationError('app');});
+            
+            Province.getFullActiveList(function(provinces){
+                vm.provinces = provinces;
+            }, function(){displayComunicationError('app');});
+                        
+            CivilStatus.getFullActiveList(function(civilStatusTypes){
+                vm.civilStatusTypes = civilStatusTypes;
+            }, function(){displayComunicationError('app');});
+            
+            Especialidad.getFullActiveList(function(especialidades){
+                vm.especialidades = especialidades;
+                $loading.finish('app');
+            }, function(){displayComunicationError('app');});
+
+
         }
 
         function searchPrestacionesForEspecialidad(){
-            vm.prestaciones = Prestacion.getActiveList({especialidad: vm.selectedEspecialidad.id});
+            Prestacion.getFullActiveList({especialidad: vm.selectedEspecialidad.id},function(prestaciones){
+                vm.prestaciones = prestaciones;
+            }, function(){displayComunicationError('app');});
         }
 
         function confirm() {
@@ -90,45 +110,51 @@
                 profesional.$save(function () {
                         $loading.finish('app');
                         $uibModalInstance.close('created');
-                    }, function (error) {
-                        $loading.finish('app');
-                        vm.showErrorMessage();
-                    }.bind(vm)
+                    }, function () {
+                        displayComunicationError('app');
+                    }
                 );
             } else {
                 vm.errorMessage = 'Por favor revise el formulario';
             }
-        };
+        }
         
         function close() {
             $uibModalInstance.dismiss('cancel');
-        }
-        
-        function showErrorMessage() {
-            vm.errorMessage = 'Ocurio un error en la comunicación';
         }
 
         function hideErrorMessage() {
             vm.errorMessage = null;
         }
 
-        function searchLocations() {
-            if (vm.selectedDistrict) {
-                vm.locations = Location.getActiveList({district: vm.selectedDistrict.id});
-            }
-        }
-
         function openBirthDateCalendar() {
           vm.birthDateCalendarPopup.opened = true;
         }
         
-        function searchDistricts() {
-            vm.locations = [];
-            if (vm.selectedProvince) {
-                vm.districts = District.getActiveList({province: vm.selectedProvince.id});
+        function searchLocations() {
+            if (vm.selectedDistrict) {
+                Location.getFullActiveList({district: vm.selectedDistrict.id}, function(locations){
+                    vm.locations = locations;
+                },displayComunicationError);
             }
         }
-        
+
+        function searchDistricts() {
+            vm.locations = null;
+            if (vm.selectedProvince) {
+                District.getFullActiveList({province: vm.selectedProvince.id},function(districts){
+                    vm.districts = districts;
+                },displayComunicationError);
+            }
+        }
+        function displayComunicationError(loading){
+            if(!toastr.active()){
+                toastr.warning('Ocurrió un error en la comunicación, por favor intente nuevamente.');
+            }
+            if(loading){
+                $loading.finish(loading);
+            }
+        }     
 
     }
 })();

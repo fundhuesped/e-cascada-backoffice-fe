@@ -97,6 +97,21 @@ angular.module('turnos.app', [
                     },
                 }
             })
+            .state('turnostoinform', {
+                url: '/turnostoinform',
+                views: {
+                    'navbar': {
+                        templateUrl: 'views/navbar/navbar.html',
+                        controller: 'NavbarCtrl',
+                        controllerAs: 'NavbarCtrl'
+                    },
+                    'main': {
+                        templateUrl: 'views/turnos/turnostoinform.html',
+                        controller: 'TurnosToInformCtrl',
+                        controllerAs: 'TurnosToInformCtrl'
+                    },
+                }
+            })
             .state('newespecialidad', {
                 url: '/newespecialidad',
                 views: {
@@ -275,6 +290,22 @@ angular.module('turnos.app', [
                         templateUrl: 'views/profesionales/ausencias.html',
                         controller: 'AusenciasCtrl',
                         controllerAs: 'AusenciasCtrl'
+                    },
+                }
+            })
+            .state('profesionalTurnos', {
+                url: '/profesional/:profesionalId/turnos/',
+                views: {
+                    'navbar': {
+                        templateUrl: 'views/navbar/navbar.html',
+                        controller: 'NavbarCtrl',
+                        controllerAs: 'NavbarCtrl'
+                    },
+
+                    'main': {
+                        templateUrl: 'views/profesionales/profesional-turnos.html',
+                        controller: 'TurnosProfesionalCtrl',
+                        controllerAs: 'TurnosProfesionalCtrl'
                     },
                 }
             })
