@@ -229,7 +229,7 @@
 
 	        if(calendarView.name === 'agendaDay' && turnoSlot.state === TurnoSlot.state.ocuppied){
 	  	      	var turno = turnoSlot.currentTurno;
-	         	title = turno.paciente.fatherSurname + ',' + turno.paciente.firstName + ' - ' + turno.paciente.primaryPhoneNumber + ' - ' + turno.paciente.socialService.name + ' - ' + turno.prestacion.name;
+	         	title = turno.paciente.fatherSurname + ',' + turno.paciente.firstName + ' - ' + turno.paciente.primaryPhoneNumber + ' - ' + turno.paciente.socialService.name + ' - ' + turnoSlot.prestacion.name;
 	        	if(turno.state === Turno.state.present){
 		         	color = '#d6e9c6';
 	        	}else{
