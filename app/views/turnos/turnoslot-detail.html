@@ -64,6 +64,10 @@
               <span><label>Paciente</label></span>
               <p>{{TurnoSlotDetailCtrl.turno.paciente.fatherSurname + ', ' + TurnoSlotDetailCtrl.turno.paciente.firstName}}</p>
             </div>
+          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" ng-show="TurnoSlotDetailCtrl.turno.paciente && TurnoSlotDetailCtrl.turno.paciente.socialService">
+              <span><label>Obra Social</label></span>
+              <p>{{TurnoSlotDetailCtrl.turno.paciente.socialService.name}}</p>
+            </div>
           </div>
           <div class="row">
             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
