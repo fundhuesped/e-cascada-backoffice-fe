@@ -81,6 +81,6 @@ Dentro de esta carpeta se situan los distintos modulos conteniendo tanto los con
 * `grunt serve` 
     : Ejecuta el sistema utilizando connect
 * `grunt build`
-	: Genera el release ofuscando, minimizando y empaquetando el código. El mismo queda en el directorio /dist
+	: Genera el release ofuscando, minimizando y empaquetando el código. El mismo queda en el directorio /dist. Se debe tener configurada la variable de entorno `API_BASE`
 * `grunt configure (ambiente)`
 	: Reemplaza el archivo resources-module.js agregandole la URL de la api. Soporta ingresar por parametro el ambiente para el cual configurar. En caso de pasar 'production' levanta la URL de la variable de entorno $API_BASE. En caso de no indicar ningún parámetro asume por default 'development' inyectando la url http://localhost:8000/api/
