@@ -160,7 +160,7 @@
         if(vm.selectedPaciente){
           return true;
         }else{
-          if(vm.paciente && vm.paciente.firstName && vm.paciente.fatherSurname && vm.paciente.primaryPhoneNumber) {
+          if(vm.paciente && vm.paciente.firstName && vm.paciente.fatherSurname && vm.paciente.primaryPhoneNumber && vm.paciente.socialService) {
             return true;
           }
         }
