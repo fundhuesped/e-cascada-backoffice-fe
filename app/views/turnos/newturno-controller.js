@@ -202,6 +202,8 @@
         paciente.primaryPhoneNumber = vm.paciente.primaryPhoneNumber;
         paciente.documentType = vm.paciente.documentType;
         paciente.documentNumber = vm.paciente.documentNumber;
+        paciente.socialService = vm.paciente.socialService;
+        paciente.socialServiceNumber = vm.paciente.socialServiceNumber;
         paciente.prospect = true;
         paciente.birthDate = (vm.paciente.birthDate?$filter('date')(vm.paciente.birthDate, 'yyyy-MM-dd'):null);
         paciente.email = vm.paciente.email;
