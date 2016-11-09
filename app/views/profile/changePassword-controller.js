@@ -10,15 +10,29 @@
         vm.hideErrorMessage = hideErrorMessage;
         vm.changePasswordForm;
 
+
+        vm.modal = {
+            style: {},
+            isVisible: false,
+            show :  function showModal(){
+                        this.style = {display:'block'};
+                        this.isVisible = true;
+                    },
+            confirm:    function confirmModal(){
+                            $state.go('home');
+                        }
+        };
+
+
         function changePassword(){
             
             $loading.start('app');
             hideErrorMessage();
 
-            if(vm.changePasswordForm.$valid){
+            if(vm.changePasswordForm.$valid && !vm.modal.isVisible){
                 SessionService.changePassword(vm.oldPassword, vm.newPassword, vm.repeatNewPassword, function(){
                     $loading.finish('app');
-                    SessionService.logout();
+                    vm.modal.show();
                 }, function(errorResponse){
                     $loading.finish('app');
                     if(errorResponse.status === 400){
