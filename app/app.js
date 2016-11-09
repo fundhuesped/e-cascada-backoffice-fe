@@ -16,6 +16,7 @@ angular.module('turnos.app', [
         'turnos.agendas',
         'turnos.login',
         'turnos.resources',
+        'turnos.profile',
         'darthwade.dwLoading',
         'toastr',
         'date-dropdowns',
@@ -172,21 +173,6 @@ angular.module('turnos.app', [
                     },
                 }
             })
-            .state('pacientes', {
-                url: '/pacientes?detail=:pacienteId',
-                views: {
-                    'navbar': {
-                        templateUrl: 'views/navbar/navbar.html',
-                        controller: 'NavbarCtrl',
-                        controllerAs: 'NavbarCtrl'
-                    },
-                    'main': {
-                        templateUrl: 'views/pacientes/pacientes.html',
-                        controller: 'PacientesCtrl',
-                        controllerAs: 'PacientesCtrl'
-                    },
-                }
-            })
             .state('newpaciente', {
                 url: '/newpaciente',
                 views: {
@@ -319,6 +305,21 @@ angular.module('turnos.app', [
                   templateUrl: 'views/agendas/newagenda.html',
                   controller: 'NewAgendaCtrl',
                   controllerAs: 'NewAgendaCtrl'
+                },
+              }
+            })
+            .state('changePassword', {
+              url: '/user/changePassword',
+              views: {
+                'navbar': {
+                    templateUrl: 'views/navbar/navbar.html',
+                    controller: 'NavbarCtrl',
+                    controllerAs: 'NavbarCtrl'
+                },
+                'main': {
+                  templateUrl: 'views/profile/changepassword.html',
+                  controller: 'ChangePasswordCtrl',
+                  controllerAs: 'ChangePasswordCtrl'
                 },
               }
             })

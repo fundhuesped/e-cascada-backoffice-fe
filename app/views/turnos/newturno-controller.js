@@ -461,9 +461,23 @@
         }
       });
       //Only way I found to inject Controller to refresh list after modal closing
-      var ctrl = vm;
-      modalInstance.result.then(function () {
-        ctrl.lookForPacientes();
+      modalInstance.result.then(function (resolution) {
+        if(resolution==='modified'){
+          if(vm.selectedPaciente && vm.selectedPaciente.id === selectedPaciente.id){
+            Paciente.get({id:selectedPaciente.id}, function(returnedObject){
+              vm.selectedPaciente = returnedObject;
+              returnedObject.birthDate =(returnedObject.birthDate?new Date(returnedObject.birthDate + 'T03:00:00'):null);     
+              vm.paciente = returnedObject;
+            });
+          }          
+        }else{
+          if(resolution==='deleted'){
+            if(vm.selectedPaciente && vm.selectedPaciente.id === selectedPaciente.id){
+              clearPacienteSelection();
+            }
+          }
+        }
+        vm.lookForPacientes();
       });
     }
 

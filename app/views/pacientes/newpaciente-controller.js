@@ -3,7 +3,7 @@
     /* jshint validthis: true */
     /*jshint latedef: nofunc */
 
-    function newPacienteCtrl($loading, $uibModalInstance, $filter, Paciente, Document, Sex, Province, District, Location, SocialService, CivilStatus, Education, toastr) {
+    function newPacienteCtrl($state, $loading, $filter, Paciente, Document, Sex, Province, District, Location, SocialService, CivilStatus, Education, toastr) {
         var vm = this;
         vm.locations = null;
         vm.districts = null;
@@ -117,7 +117,7 @@
 
                 paciente.$save(function () {
                         $loading.finish('app');
-                        $uibModalInstance.close('created');
+                        $state.go('newturno');
                     },
                     function(){displayComunicationError('app');}
                 );
@@ -126,21 +126,18 @@
             }
         }
 
-        function close() {
-            $uibModalInstance.dismiss('cancel');
-        }
-
         function hideErrorMessage() {
             vm.errorMessage = null;
         }
 
         function clearForm() {
-            if (vm.isModal) {
-
-            } else {
-                vm.newPaciente.name = '';
-                vm.newPaciente.description = '';
-            }
+            vm.newPaciente = {
+                socialService:null,
+                civilStatus:null,
+                education:null,
+                primaryPhoneMessage:false,
+                consent:'Not asked'
+            };
         }
         
         function openFirstTimeCalendar() {
@@ -179,5 +176,5 @@
 
     }
 
-    angular.module('turnos.pacientes').controller('NewPacienteCtrl', ['$loading', '$uibModalInstance', '$filter', 'Paciente', 'Document', 'Sex', 'Province', 'District', 'Location', 'SocialService', 'CivilStatus', 'Education', 'toastr', newPacienteCtrl]);
+    angular.module('turnos.pacientes').controller('NewPacienteCtrl', ['$state', '$loading', '$filter', 'Paciente', 'Document', 'Sex', 'Province', 'District', 'Location', 'SocialService', 'CivilStatus', 'Education', 'toastr', newPacienteCtrl]);
 })();
