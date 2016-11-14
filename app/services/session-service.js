@@ -29,7 +29,8 @@
                              'list-ausencias',
                              'add-ausencia',
                              'change-ausencia',
-                            ]
+                            ],
+            'secretaria'    : []                
         }
 
         function activate(){
