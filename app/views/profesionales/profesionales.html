@@ -22,7 +22,7 @@
 						</select>
 					</div>
 					<div class="col-md-2">
-						<button id="btn-confirm" type="button" class="btn btn-success pull-right" ng-click="ProfesionalesCtrl.newProfesional()">
+						<button id="btn-confirm" type="button" class="btn btn-success pull-right" ng-click="ProfesionalesCtrl.newProfesional()" ng-if="ProfesionalesCtrl.currentUserCan('add-profesional')">
 							<span class="glyphicon glyphicon-plus"></span> Nuevo profesional
 						</button>
 					</div>
@@ -58,8 +58,8 @@
 					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding-top: 10px;">
 						<div class="row">
 							<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-								<button ng-click="ProfesionalesCtrl.modifyProfesional(ProfesionalesCtrl.profesional)" class="btn btn-primary pull-right" style="margin-left:10px;margin-right:10px"><span class="glyphicon glyphicon-user"></span> Detalle</button>
-								<button ng-click="ProfesionalesCtrl.goToAusencias()" class="btn btn-primary pull-right"><span class="glyphicon glyphicon-calendar" style="margin-left:10px;margin-right:10px"></span> Ausencias</button>
+								<button ng-click="ProfesionalesCtrl.modifyProfesional(ProfesionalesCtrl.profesional)" ng-if="ProfesionalesCtrl.currentUserCan('change-profesional')" class="btn btn-primary pull-right" style="margin-left:10px;margin-right:10px" ><span class="glyphicon glyphicon-user"></span> Detalle</button>
+								<button ng-click="ProfesionalesCtrl.goToAusencias()" ng-if="ProfesionalesCtrl.currentUserCan('list-ausencias')" class="btn btn-primary pull-right"><span class="glyphicon glyphicon-calendar" style="margin-left:10px;margin-right:10px"></span> Ausencias</button>
 								<button ng-click="ProfesionalesCtrl.goToTurnos()" class="btn btn-primary pull-right" style="margin-left:10px;margin-right:10px"><span class="glyphicon glyphicon-time"></span> Turnos</button>
 							</div>
 						</div>

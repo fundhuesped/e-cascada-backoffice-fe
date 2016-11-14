@@ -22,7 +22,7 @@
 			            </select>
 		            </div>
 		            <div class="col-md-2">            
-		            	<button id="btn-confirm" type="button" class="btn btn-success pull-right" ng-click="PrestacionesCtrl.create()">		
+		            	<button id="btn-confirm" type="button" class="btn btn-success pull-right" ng-click="PrestacionesCtrl.create()" ng-if="PrestacionesCtrl.currentUserCan('add-prestacion')">		
 		            		<span class="glyphicon glyphicon-plus"></span> Nueva prestación
 		            	</button>
 	            	</div>
@@ -60,7 +60,7 @@
 					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding-top: 10px;">
 						<div class="row">
 							<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-								<button ng-click="PrestacionesCtrl.modify(PrestacionesCtrl.prestacion)"   class="btn btn-primary pull-right"><span class="glyphicon glyphicon-pencil"></span> Modificar</button>
+								<button ng-click="PrestacionesCtrl.modify(PrestacionesCtrl.prestacion)"   class="btn btn-primary pull-right" ng-if="PrestacionesCtrl.currentUserCan('change-prestacion')"><span class="glyphicon glyphicon-pencil"></span> Modificar</button>
 							</div>
 						</div>
 						<div class="detail-info">
