@@ -23,7 +23,7 @@ angular.module('turnos.app', [
         'LocalStorageModule',
         'angularMoment'
     ])
-    .config(function ($stateProvider, $urlRouterProvider, $resourceProvider) {
+    .config(function ($stateProvider, $urlRouterProvider, $resourceProvider, $injector) {
         $resourceProvider.defaults.stripTrailingSlashes = false;
 
         $urlRouterProvider.otherwise('/');
@@ -261,6 +261,15 @@ angular.module('turnos.app', [
                         controller: 'AgendasCtrl',
                         controllerAs: 'AgendasCtrl'
                     },
+                },
+                resolve:{
+                    "check":function(SessionService, $state){   
+                        if(SessionService.currentUserCan('list-agendas')){ 
+                            return true;
+                        }else{
+                            $state.go('home');
+                        }
+                    }
                 }
             })
             .state('ausencias', {

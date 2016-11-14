@@ -15,11 +15,12 @@
           <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
               <li><a ui-sref="newpaciente">Nuevo paciente</a></li>
+              <li><a ui-sref="turnostoinform">Turnos a informar</a></li>
               <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Agendas <span class="caret"></span></a>
                 <ul class="dropdown-menu">
                   <li><a ui-sref="turnosCalendar">Calendario</a></li>
-                  <li><a ui-sref="agendas">Listado</a></li>
+                  <li ng-if="NavbarCtrl.currentUserCan('list-agendas')"><a ui-sref="agendas">Listado</a></li>
                 </ul>
               </li>              
               <li class="dropdown">
@@ -27,12 +28,11 @@
                 <ul class="dropdown-menu">
                   <li><a ui-sref="especialidades">Especialidades</a></li>
                   <li><a ui-sref="prestaciones">Prestaciones</a></li>
-                  <li><a ui-sref="turnostoinform">Turnos a informar</a></li>
                   <li role="separator" class="divider"></li>
                   <li><a ui-sref="profesionales">Profesionales</a></li>
                 </ul>
               </li>
-              <li><a ui-sref="ayuda">Ayuda</a></li>
+              <li><a href="https://github.com/mcaracotche/test/blob/master/manual.md" target="_blank">Ayuda</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
               <li class="dropdown">

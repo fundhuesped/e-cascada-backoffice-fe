@@ -5,9 +5,9 @@
     angular
         .module('turnos.prestaciones')
         .controller('PrestacionesCtrl',prestacionesCtrl);
-    prestacionesCtrl.$inject = ['$loading', '$uibModal','toastr','Prestacion'];
+    prestacionesCtrl.$inject = ['$loading', '$uibModal','toastr','Prestacion', 'SessionService'];
     
-    function prestacionesCtrl ($loading, $uibModal, toastr, Prestacion) {
+    function prestacionesCtrl ($loading, $uibModal, toastr, Prestacion, SessionService) {
         var vm = this;
         vm.prestaciones = [];
         vm.prestacion = null;
@@ -16,6 +16,7 @@
         vm.currentPage = 1;
         vm.searchName = searchName;
         vm.changeSearchParameter = changeSearchParameter;
+        vm.currentUserCan = SessionService.currentUserCan;
         
         activate();
 
