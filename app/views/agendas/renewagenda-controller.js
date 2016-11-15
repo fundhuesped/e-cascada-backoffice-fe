@@ -76,7 +76,7 @@
               vm.agenda.validTo = moment(vm.agenda.validFrom).endOf('month');
 
           }else{
-            vm.agenda.validFrom = moment().add(1,'day').add(1,'month');
+            vm.agenda.validFrom = moment().add(1,'day');
             vm.agenda.validTo = moment().add(1,'month').endOf("month");
           }
           vm.selectedProfesionalName = vm.agenda.profesional.fatherSurname + ', ' + vm.agenda.profesional.firstName;
