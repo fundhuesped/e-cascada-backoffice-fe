@@ -64,10 +64,7 @@
               <div class="form-group">
                 <span><label>Desde*</label> <small><em>(dd/mm/aaaa o m/d/aaaa)</em></small></span>
                 <p class="input-group">
-                  <input type="text" name="birthDate" class="form-control" uib-datepicker-popup="d!/M!/yyyy" ng-model="NewAgendaCtrl.agenda.validFrom" is-open="NewAgendaCtrl.fromDateCalendarPopup.opened" datepicker-options="NewAgendaCtrl.fromDateCalendarPopup.options" ng-required="true" alt-input-formats="NewAgendaCtrl.fromDateCalendarPopup.altInputFormats" current-text="Hoy" clear-text="Limpiar" close-text="Cerrar" ng-disabled="true"/>
-                  <span class="input-group-btn">
-                    <button type="button" class="btn btn-default" ng-click="NewAgendaCtrl.openFromDateCalendar()"><i class="glyphicon glyphicon-calendar"></i></button>
-                  </span>
+                  <input type="text" class="form-control" value="{{NewAgendaCtrl.agenda.validFrom.format('DD/MM/YYYY')}}" ng-disabled="true"/>
                 </p>
               </div>
             </div>
@@ -78,10 +75,7 @@
               <div class="form-group">
                 <span><label>Hasta*</label> <small><em>(dd/mm/aaaa o m/d/aaaa)</em></small></span>
                 <p class="input-group">
-                  <input type="text" name="validTo" class="form-control" uib-datepicker-popup="d!/M!/yyyy" ng-model="NewAgendaCtrl.agenda.validTo" is-open="NewAgendaCtrl.toDateCalendarPopup.opened" datepicker-options="NewAgendaCtrl.toDateCalendarPopup.options" ng-required="true" alt-input-formats="NewAgendaCtrl.toDateCalendarPopup.altInputFormats" current-text="Hoy" clear-text="Limpiar" close-text="Cerrar" ng-disabled="true"/>
-                  <span class="input-group-btn">
-                    <button type="button" class="btn btn-default" ng-click="NewAgendaCtrl.openToDateCalendar()"><i class="glyphicon glyphicon-calendar"></i></button>
-                  </span>
+                  <input type="text" name="validTo" class="form-control" value="{{NewAgendaCtrl.agenda.validTo.format('DD/MM/YYYY')}}" ng-disabled="true"/>
                 </p>
               </div>
             </div>

@@ -81,8 +81,8 @@
         agenda.prestacion = vm.selectedPrestacion;
         agenda.start = vm.hoursFrom + ':' + vm.minutesFrom;
         agenda.end = vm.hoursTo + ':' + vm.minutesTo;
-        agenda.validFrom = $filter('date')(vm.agenda.validFrom, 'yyyy-MM-dd');
-        agenda.validTo = $filter('date')(vm.agenda.validTo, 'yyyy-MM-dd');
+        agenda.validFrom = vm.agenda.validFrom.format('YYYY-MM-DD');
+        agenda.validTo = vm.agenda.validTo.format('YYYY-MM-DD');
         agenda.start = vm.agenda.start;
         agenda.end = vm.agenda.end;
         agenda.periods = vm.agenda.periods;
@@ -169,41 +169,16 @@
 
     function selectPrestacion(){
       Agenda.getActiveList({page_size:1,ordering:'-validTo', profesional:vm.selectedProfesional.id, prestacion:vm.selectedPrestacion.id}, function(list){
+        vm.agenda = {};
+
         if(list.length>0){
-            vm.lastAgendaFinishDate = new Date(list[0].validTo + 'T03:00:00');
-            if(vm.lastAgendaFinishDate <= new Date()){
-              vm.currentDate = new Date();
-              vm.tomorrow = new Date(vm.currentDate);
-              vm.tomorrow.setDate(vm.currentDate.getDate()+1);
+              vm.agenda.validFrom = moment(list[0].validTo).add(1,'month').startOf('month');
+              vm.agenda.validTo = moment(vm.agenda.validFrom).endOf('month');
+          }else{
+            vm.agenda.validFrom = moment().add(1,'day');
+            vm.agenda.validTo = moment().add(1,'month').endOf("month");
+          }
 
-              vm.endMonth = new Date();
-              vm.endMonth.setDate(1);
-              vm.endMonth.setMonth(vm.currentDate.getMonth() + 2);
-              vm.endMonth = new Date(vm.endMonth.getTime() - 86400000);
-            }else{
-              vm.tomorrow = new Date(vm.lastAgendaFinishDate);
-              vm.tomorrow.setDate(vm.lastAgendaFinishDate.getDate()+1);
-
-              vm.endMonth = new Date();
-              vm.endMonth.setDate(1);
-              vm.endMonth.setMonth(vm.lastAgendaFinishDate.getMonth() + 2);
-              vm.endMonth = new Date(vm.endMonth.getTime() - 86400000);
-            }
-            vm.fromDateCalendarPopup.options.minDate = vm.lastAgendaFinishDate;
-            vm.toDateCalendarPopup.options.maxDate = vm.lastAgendaFinishDate;
-        }else{
-          vm.currentDate = new Date();
-          vm.tomorrow = new Date(vm.currentDate);
-          vm.tomorrow.setDate(vm.currentDate.getDate()+1);
-          vm.endMonth = new Date();
-          vm.endMonth.setDate(1);
-          vm.endMonth.setMonth(vm.currentDate.getMonth() + 2);
-          vm.endMonth = new Date(vm.endMonth.getTime() - 86400000);
-        }
-        vm.agenda = {
-          validFrom: vm.tomorrow,
-          validTo: vm.endMonth
-        };
       },displayComunicationError);
     }
 
