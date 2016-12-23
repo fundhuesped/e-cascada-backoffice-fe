@@ -8,7 +8,8 @@
     	vm.logout = SessionService.logout;
     	vm.userFirstname = (SessionService.currentUser?SessionService.currentUser.first_name:'');
     	vm.userLastName = (SessionService.currentUser?SessionService.currentUser.last_name:'');
-
+        vm.currentUserCan = SessionService.currentUserCan;
+        
 		activate();
 
 		function activate(){
@@ -16,6 +17,7 @@
 				vm.logout();
 			}
 		}
+
 
 
 

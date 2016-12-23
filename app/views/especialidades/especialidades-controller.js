@@ -3,7 +3,7 @@
     /* jshint validthis: true */
     /*jshint latedef: nofunc */
     
-    function especialidadesCtrl ($uibModal, toastr, Especialidad, $loading) {
+    function especialidadesCtrl ($uibModal, toastr, Especialidad, $loading, SessionService) {
     	var vm = this;
         vm.especialidades = [];
         vm.especialidad = null;
@@ -12,6 +12,7 @@
         vm.currentPage = 1;
         vm.changeSearchParameter = changeSearchParameter;
         activate();
+        vm.currentUserCan = SessionService.currentUserCan;
 
         //Controller initialization
         function activate(){
@@ -118,5 +119,5 @@
         }
                         
     }
-    angular.module('turnos.especialidades').controller('EspecialidadesCtrl',['$uibModal','toastr','Especialidad', '$loading',especialidadesCtrl]);
+    angular.module('turnos.especialidades').controller('EspecialidadesCtrl',['$uibModal','toastr','Especialidad', '$loading', 'SessionService',especialidadesCtrl]);
 })();

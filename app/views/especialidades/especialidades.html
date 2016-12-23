@@ -24,7 +24,7 @@
 		            </div>
 		            <div class="col-md-2">            
 
-		            	<button id="btn-confirm" type="button" class="btn btn-success pull-right" ng-click="EspecialidadesCtrl.newEspecialidad()">
+		            	<button id="btn-confirm" type="button" class="btn btn-success pull-right" ng-click="EspecialidadesCtrl.newEspecialidad()" ng-if="EspecialidadesCtrl.currentUserCan('add-especialidad')">
 		            		<span class="glyphicon glyphicon-plus"></span> Nueva especialidad
 		            	</button>
 	            	</div>
@@ -73,7 +73,7 @@
 					<div class="col-md-12">
 						<div class="row detail-accions">
 							<div class="col-md-12">
-								<button ng-click="EspecialidadesCtrl.modifyEspecialidad(EspecialidadesCtrl.especialidad)"   class="btn btn-primary pull-right"><span class="glyphicon glyphicon-pencil"></span> Modificar</button>
+								<button ng-click="EspecialidadesCtrl.modifyEspecialidad(EspecialidadesCtrl.especialidad)"   class="btn btn-primary pull-right" ng-if="EspecialidadesCtrl.currentUserCan('change-especialidad')"><span class="glyphicon glyphicon-pencil"></span> Modificar</button>
 							</div>
 						</div>
 						<div class="detail-info">

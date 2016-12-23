@@ -11,9 +11,10 @@
                                  'toastr',
                                  'Profesional', 
                                  '$state',
-                                 '$loading'];
+                                 '$loading',
+                                 'SessionService'];
 
-    function profesionalesCtrl ($uibModal,toastr,Profesional, $state, $loading) {
+    function profesionalesCtrl ($uibModal,toastr,Profesional, $state, $loading, SessionService) {
         var vm = this;
         vm.profesionales = [];
         vm.profesional = null;
@@ -26,6 +27,7 @@
         vm.pageSize = 20;
         vm.totalItems = null;
         vm.currentPage = 1;
+        vm.currentUserCan = SessionService.currentUserCan;
         vm.changeSearchParameter = changeSearchParameter;
         
         activate();

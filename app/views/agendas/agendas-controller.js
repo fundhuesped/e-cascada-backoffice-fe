@@ -11,6 +11,7 @@
     vm.getProfesionales = getProfesionales;
     vm.modifyAgenda = modifyAgenda;
     vm.newAgenda = newAgenda;
+    vm.renewAgenda = renewAgenda;
     vm.searchName = searchName;
     vm.selectedProfesional = null;
     vm.changeSearchParameter = changeSearchParameter;
@@ -95,6 +96,30 @@
       }, function () {
       });
     }
+
+
+    function renewAgenda(selectedAgenda) {
+      var modalInstance = $uibModal.open({
+        templateUrl: '/views/agendas/renewagenda.html',
+        backdrop: 'static',
+        controller: 'RenewAgendaCtrl',
+        controllerAs: 'RenewAgendaCtrl',
+        size: 'lg',
+        resolve: {
+          agenda: function () {
+            return selectedAgenda;
+          }
+        }
+      });
+      modalInstance.result.then(function (result) {
+        if (result === 'renewed') {
+          
+        } 
+        vm.changeSearchParameter();
+      }, function () {
+      });
+    }
+
 
     function searchName() {
       vm.agenda = null;
