@@ -55,7 +55,11 @@
     vm.notes = '';
     vm.openTurnoModal = openTurnoModal;
     vm.openPacienteModal = openPacienteModal;
-    vm.paciente = null;
+    vm.paciente = {};
+
+    //Default documentType to DNI
+    vm.paciente.documentType = {id: 1, name: "DNI", description: "DNI", status: "Active"};
+
     vm.pageChanged = pageChanged;
     vm.prestaciones = [];
     vm.prestacionChanged = prestacionChanged;
@@ -180,7 +184,9 @@
       vm.recomendationList = [];
       vm.selectedPaciente = null;
       delete vm.paciente.selected;
-      vm.paciente = null;
+      vm.paciente = {};
+      //Default documentType to DNI
+      vm.paciente.documentType = {id: 1, name: "DNI", description: "DNI", status: "Active"};
       vm.recomendationsPanel.message = 'Por favor comience a completar el formulario para buscar pacientes';
     }
 
@@ -284,12 +290,11 @@
 
         var searchObject = {};
 
-        if(vm.paciente.documentType){
+        if(vm.paciente.documentType && vm.paciente.documentNumber){
           searchObject.documentType = vm.paciente.documentType.id;
-        }
-        if(vm.paciente.documentNumber){
           searchObject.documentNumber = vm.paciente.documentNumber;
         }
+
         if(vm.paciente.firstName){
           searchObject.firstName = vm.paciente.firstName;
         }
@@ -601,11 +606,7 @@
         return false;
       }
 
-      if (vm.paciente.documentType) {
-        populatedFields++;
-      }
-
-      if (vm.paciente.documentNumber) {
+      if (vm.paciente.documentType && vm.paciente.documentNumber) {
         return true;
       }
 
