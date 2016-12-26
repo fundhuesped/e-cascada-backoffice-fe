@@ -99,12 +99,6 @@
         }
 
         function confirm () {
-            if(vm.paciente.birthDate){
-                vm.pacienteForm.birthDate.$setValidity('required', true);
-            }else{
-                vm.pacienteForm.birthDate.$setValidity('required', false);
-            }
-
             if(vm.pacienteForm.$valid){
                 vm.hideErrorMessage();
                 $loading.start('app');
