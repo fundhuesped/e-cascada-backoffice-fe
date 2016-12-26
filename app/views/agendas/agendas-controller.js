@@ -3,7 +3,7 @@
   /* jshint validthis: true */
   /*jshint latedef: nofunc */
 
-  function agendasCtrl($uibModal, toastr, Agenda, Profesional, $loading) {
+  function agendasCtrl($uibModal, toastr, Agenda, Profesional, $loading, moment) {
     var vm = this;
     vm.agendas = [];
     vm.agenda = null;
@@ -25,7 +25,11 @@
     function activate() {
       $loading.start('app');
       vm.statusFilter = '1';
-      Agenda.getPaginatedActiveList({page_size:vm.pageSize,ordering:'profesional'}, 
+      vm.actualFilter = '1';
+      var validTo = moment();
+      validTo = validTo.format('YYYY-MM-DD');
+
+      Agenda.getPaginatedActiveList({page_size:vm.pageSize,ordering:'profesional', validToGte:validTo}, 
         function(paginatedResult){
         vm.agendas = paginatedResult.results;
         vm.totalItems = paginatedResult.count;
@@ -124,6 +128,7 @@
     function searchName() {
       vm.agenda = null;
       var currentStatusFilter;
+      var validTo = moment();
       var searchObject = {
           page_size:vm.pageSize,
           page:vm.currentPage,
@@ -135,16 +140,29 @@
         searchObject.profesional = vm.selectedProfesional.id;
       }
 
-      if (vm.statusFilter == 1) {
+      if (vm.statusFilter == "1") {
         currentStatusFilter = 'Active';
       } else {
-        if (vm.statusFilter == 3) {
+        if (vm.statusFilter == "3") {
           currentStatusFilter = 'Inactive';
         }
       }
       if(currentStatusFilter){
           searchObject.status = currentStatusFilter;
       }
+      var validTo = moment();
+
+      if(vm.actualFilter == "1"){
+        searchObject.validToGte = validTo.format('YYYY-MM-DD');
+      }else{
+        if(vm.actualFilter == "2"){
+          searchObject.validToLt = validTo.format('YYYY-MM-DD');
+        }
+      }
+
+
+
+
       Agenda.queryPaginated(searchObject,
           function (paginatedResult){
               vm.agendas = paginatedResult.results;
@@ -184,5 +202,5 @@
 
   }
 
-  angular.module('turnos.agendas').controller('AgendasCtrl', ['$uibModal', 'toastr', 'Agenda', 'Profesional', '$loading', agendasCtrl]);
+  angular.module('turnos.agendas').controller('AgendasCtrl', ['$uibModal', 'toastr', 'Agenda', 'Profesional', '$loading', 'moment',agendasCtrl]);
 })();
