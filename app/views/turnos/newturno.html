@@ -175,9 +175,9 @@
             <div class="row">
               <div class="col-md-6">
                 <div class="row">
-                  <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
-                    <div class="form-group">
-                      <span><label>Especialidad(*)</label></span>
+                  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6 no-padding-left">
+                      <span><label>Especialidad(1)</label></span>
                       <select class="form-control" ng-model="NewTurnoCtrl.selectedEspecialidad"
                               ng-options="especialidad.name for especialidad in NewTurnoCtrl.especialidades"
                               ng-change="NewTurnoCtrl.especialidadChanged()" required>
@@ -185,24 +185,26 @@
                       </select>
                     </div>
                   </div>
-                  <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
-                    <div class="form-group">
-                      <span><label>Profesional</label></span>
+                  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6 no-padding-left">
+                      <span><label>Profesional(2)</label></span>
                       <select class="form-control" ng-model="NewTurnoCtrl.selectedProfesional"
-                              ng-options='profesional as (profesional.fatherSurname + ", " + profesional.firstName) for profesional in NewTurnoCtrl.profesionales track by profesional.id' ng-change="NewTurnoCtrl.profesionalChanged()">
-                        <option value="">Todos los médicos</option>
+                              ng-options='profesional as (profesional.fatherSurname + ", " + profesional.firstName) for profesional in NewTurnoCtrl.profesionales track by profesional.id' ng-change="NewTurnoCtrl.profesionalChanged()"
+                              ng-disabled="NewTurnoCtrl.profesionales.length==0">
+                        <option value="">Seleccione un médico</option>
                       </select>
                     </div>
                   </div>
                 </div>
                 <div class="row">
-                  <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
-                    <div class="form-group">
-                      <span><label>Prestación(*)</label></span>
+                  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6 no-padding-left">
+                      <span><label>Prestación(3)</label></span>
                       <select class="form-control" ng-model="NewTurnoCtrl.selectedPrestacion"
                               ng-options="prestacion.name for prestacion in NewTurnoCtrl.prestaciones"
-                              ng-change="NewTurnoCtrl.prestacionChanged()" required>
-                        <option value="">Seleccione prestación</option>
+                              required
+                              ng-disabled="NewTurnoCtrl.prestaciones.length==0">
+                        <option value="">Seleccione una prestación</option>
                       </select>
                     </div>
                   </div>
@@ -364,7 +366,9 @@
                   <div class="form-group">
                     <span><label>Prestación(*)</label></span>
                     <select class="form-control" ng-model="NewTurnoCtrl.sobreturno.prestacion"
-                            ng-options="prestacion.name for prestacion in NewTurnoCtrl.sobreturnoPrestaciones" required>
+                            ng-options="prestacion.name for prestacion in NewTurnoCtrl.sobreturnoPrestaciones" 
+                            ng-disabled='NewTurnoCtrl.sobreturnoPrestaciones.length == 0'
+                            required>
                       <option value="">Seleccione prestación</option>
                     </select>
                   </div>
