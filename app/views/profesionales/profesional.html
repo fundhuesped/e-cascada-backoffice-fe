@@ -173,16 +173,16 @@
                             <div class="form-group">
                                 <span><label>Provincia</label></span>
                                 <div class="form-group">
-                                    <select name="selectedProvince" class="form-control" ng-model="ProfesionalCtrl.selectedProvince"º ng-options="province as province.name for province in ProfesionalCtrl.provinces track by province.id" ng-change="ProfesionalCtrl.searchDistricts()">
+                                    <select name="selectedProvince" class="form-control" ng-model="ProfesionalCtrl.selectedProvince" ng-options="province as province.name for province in ProfesionalCtrl.provinces track by province.id" ng-change="ProfesionalCtrl.searchDistricts()">
                                     </select>
                                 </div>
                             </div>
                         </div>
                         <div class="col-xs-5">
-                            <div class="form-group">
+                            <div class="form-group"  ng-class="{'has-error':ProfesionalCtrl.profesionalForm.selectedDistrict.$error.required}">
                                 <span><label>Partido</label></span>
                                 <div class="form-group">
-                                    <select name="selectedDistrict" class="form-control" ng-model="ProfesionalCtrl.selectedDistrict" ng-options="district as district.name for district in ProfesionalCtrl.districts track by district.id" ng-change="ProfesionalCtrl.searchLocations()">
+                                    <select name="selectedDistrict" class="form-control" ng-model="ProfesionalCtrl.selectedDistrict" ng-options="district as district.name for district in ProfesionalCtrl.districts track by district.id" ng-change="ProfesionalCtrl.searchLocations()" ng-required="ProfesionalCtrl.selectedProvince">
                                     </select>
                                 </div>
                             </div>
@@ -193,8 +193,8 @@
                         <div class="col-xs-5">
                             <div class="form-group">
                                 <span><label>Localidad</label></span>
-                                <div class="form-group">
-                                    <select name="location" class="form-control" ng-model="ProfesionalCtrl.profesional.location" ng-options="location as location.name for location in ProfesionalCtrl.locations track by location.id">
+                                <div class="form-group"  ng-class="{'has-error':ProfesionalCtrl.profesionalForm.location.$error.required}">
+                                    <select name="location" class="form-control" ng-model="ProfesionalCtrl.profesional.location" ng-options="location as location.name for location in ProfesionalCtrl.locations track by location.id" ng-required="ProfesionalCtrl.selectedProvince">
                                     </select>
                                 </div>
                             </div>

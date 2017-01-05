@@ -42,6 +42,11 @@
         }
       });
 
+      Leave.status = {
+        active:'Active',
+        inactive:'Inactive'
+      };
+
       return Leave;
     }
 

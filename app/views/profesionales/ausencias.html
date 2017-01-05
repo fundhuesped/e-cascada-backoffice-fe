@@ -1,3 +1,21 @@
+<div class="modal fade" ng-class="{'in':AusenciasCtrl.disableAusenciaModal.style}" ng-style="AusenciasCtrl.disableAusenciaModal.style">
+    <div class="modal-dialog modal-confirmation">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">¿Eliminar la ausencia?</h4>
+            </div>
+            <div class="modal-body">
+                <p>¿Esta seguro que desea eleminar la ausencia seleccionada?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-cancel" ng-click="AusenciasCtrl.disableAusenciaModal.cancel()">Cancelar</button>
+                <button type="button" class="btn btn-danger btn-confirm" ng-click="AusenciasCtrl.disableAusenciaModal.confirm()"><span class="glyphicon glyphicon-remove"></span> Eliminar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <div class="container">
 	<div class="panel panel-default">
 		<div class="panel-heading">
@@ -32,6 +50,7 @@
 							<th>Hasta</th>
 							<th>Ausencia por</th>
 							<th>Notas</th>
+							<th></th>
 						</tr>
 						</thead>
 						<tbody>
@@ -41,6 +60,10 @@
 							<td style="max-width:125px; word-wrap:break-word;">{{ausencia.end_day | date:'dd/MM/yyyy'}}</td>
 							<td style="max-width:125px; word-wrap:break-word;">{{ausencia.reason}}</td>
 							<td style="max-width:125px; word-wrap:break-word;">{{ausencia.notes}}</td>
+							<td style="max-width:125px; word-wrap:break-word;">
+                                <td><button class="btn btn-info" type="button" ng-click="AusenciasCtrl.disableAusenciaModal.show(ausencia)" ng-show="ausencia.status=='Active'"><i class="glyphicon glyphicon-remove"></i> </button></td>
+
+							</td>
 						</tr>
 						</tbody>
 					</table>
