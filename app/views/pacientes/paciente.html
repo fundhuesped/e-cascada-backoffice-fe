@@ -152,7 +152,7 @@
                             <div class="form-group">
                                 <span><label>Provincia</label></span>
                                 <div class="form-group">
-                                    <select name="selectedProvince" class="form-control" ng-model="PacienteCtrl.selectedProvince" ng-options="province as province.name for province in PacienteCtrl.provinces track by province.id" ng-change="PacienteCtrl.searchDistricts()">
+                                    <select name="selectedProvince" class="form-control" ng-model="PacienteCtrl.selectedProvince" ng-options="province as province.name for province in PacienteCtrl.provinces track by province.id" ng-change="PacienteCtrl.searchDistricts()" >
                                     </select>
                                 </div>
                             </div>
@@ -160,8 +160,8 @@
                         <div class="col-xs-5">
                             <div class="form-group">
                                 <span><label>Partido</label></span>
-                                <div class="form-group">
-                                    <select name="selectedDistrict" class="form-control" ng-model="PacienteCtrl.selectedDistrict" ng-options="district as district.name for district in PacienteCtrl.districts track by district.id" ng-change="PacienteCtrl.searchLocations()" ng-disabled="!PacienteCtrl.districts">
+                                <div class="form-group" ng-class="{'has-error':PacienteCtrl.pacienteForm.selectedDistrict.$error.required}">
+                                    <select name="selectedDistrict" class="form-control" ng-model="PacienteCtrl.selectedDistrict" ng-options="district as district.name for district in PacienteCtrl.districts track by district.id" ng-change="PacienteCtrl.searchLocations()" ng-required="PacienteCtrl.selectedProvince" ng-disabled="!PacienteCtrl.districts">
                                     </select>
                                 </div>
                             </div>
@@ -170,10 +170,10 @@
 
                     <div class="row">
                         <div class="col-xs-5">
-                            <div class="form-group">
+                            <div class="form-group" ng-class="{'has-error':PacienteCtrl.pacienteForm.location.$error.required}">
                                 <span><label>Localidad</label></span>
                                 <div class="form-group">
-                                    <select name="location" class="form-control" ng-model="PacienteCtrl.paciente.location" ng-options="location as location.name for location in PacienteCtrl.locations track by location.id" ng-disabled="!PacienteCtrl.locations">
+                                    <select name="location" class="form-control" ng-model="PacienteCtrl.paciente.location" ng-required="PacienteCtrl.selectedProvince" ng-options="location as location.name for location in PacienteCtrl.locations track by location.id" ng-disabled="!PacienteCtrl.locations">
                                     </select>
                                 </div>
                             </div>

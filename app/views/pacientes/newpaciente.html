@@ -79,10 +79,10 @@
                     </div>
                     <div class="row">
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                            <div class="form-group" ng-class="{'has-error':NewPacienteCtrl.newPacienteForm.birthDate.$error.required}">
+                            <div class="form-group">
                                 <span><label>Fecha nacimiento*</label> <small><em>(dd/mm/aaaa o m/d/aaaa)</em></small></span>
                                 <p class="input-group">
-                                    <input type="text" name="birthDate" class="form-control" uib-datepicker-popup="d!/M!/yyyy" ng-model="NewPacienteCtrl.newPaciente.birthDate" is-open="NewPacienteCtrl.birthDateCalendarPopup.opened" datepicker-options="NewPacienteCtrl.birthDateCalendarPopup.options" ng-required="true" close-text="Cerrar" alt-input-formats="NewPacienteCtrl.birthDateCalendarPopup.altInputFormats" current-text="Hoy" clear-text="Limpiar" />
+                                    <input type="text" name="birthDate" class="form-control" uib-datepicker-popup="d!/M!/yyyy" ng-model="NewPacienteCtrl.newPaciente.birthDate" is-open="NewPacienteCtrl.birthDateCalendarPopup.opened" datepicker-options="NewPacienteCtrl.birthDateCalendarPopup.options" close-text="Cerrar" alt-input-formats="NewPacienteCtrl.birthDateCalendarPopup.altInputFormats" current-text="Hoy" clear-text="Limpiar" />
                                     <span class="input-group-btn">
                                       <button type="button" class="btn btn-default" ng-click="NewPacienteCtrl.openBirthDateCalendar()"><i class="glyphicon glyphicon-calendar"></i></button>
                                     </span>
@@ -94,17 +94,17 @@
                     <div class="row">
                         <br>
                         <div class="col-xs-5">
-                            <span><label>Sexo al nacer*</label></span>
-                            <div class="form-group" ng-class="{'has-error':NewPacienteCtrl.newPacienteForm.genderAtBirth.$error.required}">
-                                <select class="form-control" name="genderAtBirth" ng-model="NewPacienteCtrl.newPaciente.genderAtBirth" ng-options="genderAtBirth as genderAtBirth.name for genderAtBirth in NewPacienteCtrl.sexTypes track by genderAtBirth.id" required>
+                            <span><label>Sexo al nacer</label></span>
+                            <div class="form-group">
+                                <select class="form-control" name="genderAtBirth" ng-model="NewPacienteCtrl.newPaciente.genderAtBirth" ng-options="genderAtBirth as genderAtBirth.name for genderAtBirth in NewPacienteCtrl.sexTypes track by genderAtBirth.id">
                                     <option value=""></option>
                                 </select>
                             </div>
                         </div>
                         <div class="col-xs-5">
-                            <span><label>Género por elección*</label></span>
-                            <div class="form-group" ng-class="{'has-error':NewPacienteCtrl.newPacienteForm.genderOfChoice.$error.required}">
-                                <select class="form-control" name="genderOfChoice" ng-model="NewPacienteCtrl.newPaciente.genderOfChoice" ng-options="genderOfChoice as genderOfChoice.name for genderOfChoice in NewPacienteCtrl.sexTypes track by genderOfChoice.id" required>
+                            <span><label>Género por elección</label></span>
+                            <div class="form-group">
+                                <select class="form-control" name="genderOfChoice" ng-model="NewPacienteCtrl.newPaciente.genderOfChoice" ng-options="genderOfChoice as genderOfChoice.name for genderOfChoice in NewPacienteCtrl.sexTypes track by genderOfChoice.id">
                                     <option value=""></option>
                                 </select>
                             </div>
@@ -113,16 +113,16 @@
 
                     <div class="row">
                         <div class="col-xs-5">
-                            <div class="form-group" ng-class="{'has-error':NewPacienteCtrl.newPacienteForm.street.$error.required}">
-                                <span><label>Calle*</span>
-                                <input type="text" name="street" maxlength="150" class="form-control" ng-model="NewPacienteCtrl.newPaciente.street" required>
+                            <div class="form-group">
+                                <span><label>Calle</span>
+                                <input type="text" name="street" maxlength="150" class="form-control" ng-model="NewPacienteCtrl.newPaciente.street">
                                 <span><label>(máximo 150 caracteres)</label></span>
                             </div>
                         </div>
                         <div class="col-xs-5">
-                            <div class="form-group" ng-class="{'has-error':NewPacienteCtrl.newPacienteForm.postal.$error.required}">
-                                <span><label>Código Postal*</label></span>
-                                <input type="text" name="postal" maxlength="10" class="form-control" ng-model="NewPacienteCtrl.newPaciente.postal" required>
+                            <div class="form-group">
+                                <span><label>Código Postal</label></span>
+                                <input type="text" name="postal" maxlength="10" class="form-control" ng-model="NewPacienteCtrl.newPaciente.postal">
                                 <span><label>(máximo 10 caracteres)</label></span>
                             </div>
                         </div>
@@ -131,18 +131,18 @@
                     <div class="row">
                         <div class="col-xs-5">
                             <div class="form-group">
-                                <span><label>Provincia*</label></span>
-                                <div class="form-group" ng-class="{'has-error':NewPacienteCtrl.newPacienteForm.selectedProvince.$error.required}">
-                                    <select name="selectedProvince" class="form-control" ng-model="NewPacienteCtrl.selectedProvince" ng-options="province as province.name for province in NewPacienteCtrl.provinces track by province.id" ng-change="NewPacienteCtrl.searchDistricts()" required>
+                                <span><label>Provincia</label></span>
+                                <div class="form-group">
+                                    <select name="selectedProvince" class="form-control" ng-model="NewPacienteCtrl.selectedProvince" ng-options="province as province.name for province in NewPacienteCtrl.provinces track by province.id" ng-change="NewPacienteCtrl.searchDistricts()">
                                     </select>
                                 </div>
                             </div>
                         </div>
                         <div class="col-xs-5">
                             <div class="form-group">
-                                <span><label>Partido*</label></span>
+                                <span><label>Partido</label></span>
                                 <div class="form-group" ng-class="{'has-error':NewPacienteCtrl.newPacienteForm.selectedDistrict.$error.required}">
-                                    <select name="selectedDistrict" class="form-control" ng-model="NewPacienteCtrl.selectedDistrict" ng-options="district as district.name for district in NewPacienteCtrl.districts track by district.id" ng-change="NewPacienteCtrl.searchLocations()" ng-disabled="!NewPacienteCtrl.districts" required>
+                                    <select name="selectedDistrict" class="form-control" ng-model="NewPacienteCtrl.selectedDistrict" ng-options="district as district.name for district in NewPacienteCtrl.districts track by district.id" ng-change="NewPacienteCtrl.searchLocations()" ng-disabled="!NewPacienteCtrl.districts" ng-required="NewPacienteCtrl.selectedProvince">
                                     </select>
                                 </div>
                             </div>
@@ -152,9 +152,9 @@
                     <div class="row">
                         <div class="col-xs-5">
                             <div class="form-group">
-                                <span><label>Localidad*</label></span>
+                                <span><label>Localidad</label></span>
                                 <div class="form-group" ng-class="{'has-error':NewPacienteCtrl.newPacienteForm.location.$error.required}">
-                                    <select name="location" class="form-control" ng-model="NewPacienteCtrl.newPaciente.location" ng-options="location as location.name for location in NewPacienteCtrl.locations track by location.id" ng-disabled="!NewPacienteCtrl.locations" required>
+                                    <select name="location" class="form-control" ng-model="NewPacienteCtrl.newPaciente.location" ng-options="location as location.name for location in NewPacienteCtrl.locations track by location.id" ng-disabled="!NewPacienteCtrl.locations" ng-required="NewPacienteCtrl.selectedProvince">
                                     </select>
                                 </div>
                             </div>
@@ -178,9 +178,9 @@
                             </div>
                         </div>
                         <div class="col-xs-5">
-                            <div class="form-group" ng-class="{'has-error':NewPacienteCtrl.newPacienteForm.primaryPhoneContact.$error.required}">
-                                <span><label>Contacto*</label></span>
-                                <input type="text" name="primaryPhoneContact" maxlength="40" class="form-control" ng-model="NewPacienteCtrl.newPaciente.primaryPhoneContact" required>
+                            <div class="form-group">
+                                <span><label>Contacto</label></span>
+                                <input type="text" name="primaryPhoneContact" maxlength="40" class="form-control" ng-model="NewPacienteCtrl.newPaciente.primaryPhoneContact">
                                 <span><label>(máximo 40 caracteres)</label></span>
                             </div>
                         </div>
