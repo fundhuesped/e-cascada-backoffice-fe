@@ -347,7 +347,7 @@
       }else{
         searchObject.day__gte = $filter('date')(new Date(), 'yyyy-MM-dd');
       }
-      if (vm.selectedProfesional) {
+      if (vm.selectedProfesional && vm.selectedProfesional.id !== -99) {
         searchObject.profesional = vm.selectedProfesional.id;
       }
 
@@ -537,7 +537,10 @@
     function especialidadChanged() {
       cleanTurnosResult();
       if (vm.selectedEspecialidad) {
-          vm.profesionales = Profesional.getActiveList({especialidad: vm.selectedEspecialidad.id}, angular.noop, displayComunicationError);
+          Profesional.getActiveList({especialidad: vm.selectedEspecialidad.id}, function (profesionales) {
+            vm.profesionales = [{id:-99,firstName:'Todos los médicos'}];
+            vm.profesionales = vm.profesionales.concat(profesionales);
+          }, displayComunicationError);
           vm.prestaciones = [];
       }
     }
@@ -546,7 +549,11 @@
     function profesionalChanged() {
       cleanTurnosResult();
       if (vm.selectedProfesional) {
-        vm.prestaciones = Prestacion.getActiveList({especialidad: vm.selectedEspecialidad.id, profesional:vm.selectedProfesional.id}, angular.noop, displayComunicationError);
+        if(vm.selectedProfesional.id === -99){
+          vm.prestaciones = Prestacion.getActiveList({especialidad: vm.selectedEspecialidad.id}, angular.noop, displayComunicationError);
+        }else{
+          vm.prestaciones = Prestacion.getActiveList({especialidad: vm.selectedEspecialidad.id, profesional:vm.selectedProfesional.id}, angular.noop, displayComunicationError);
+        }
       }
     }
 
