@@ -1,0 +1,100 @@
+<div class="">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Cargar ausencia</h3>
+        </div>
+        <div class="panel-body">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-show="AddLeaveCtrl.disabledForm">
+                <div class="row">
+                    <div class="alert alert-warning">
+                        <p><span class="glyphicon glyphicon-warning-sign"></span> No se puede cargar una ausencia para {{AddLeaveCtrl.profesional.firstName}} {{AddLeaveCtrl.profesional.fatherSurname}} ya que no posee agendas activas</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <button ng-click="AddLeaveCtrl.cancel()" class="btn btn-primary center-block">Aceptar</button>
+                </div>
+            </div>       
+            <form name="AddLeaveCtrl.leaveForm" ng-show="!AddLeaveCtrl.disabledForm">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="row">
+                        <div class="alert alert-dismissable alert-danger">
+                            <p><span class="glyphicon glyphicon-warning-sign"></span> Los cambios realizados no se podran volver atrás</p>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-bottom: 10px;">
+                            <em class="text-muted">Se cancelarán los turnos tomados para las fechas ingresadas.</em>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="alert alert-dismissable alert-warning" ng-show="AddLeaveCtrl.errorMessage">
+                            <button type="button" class="close" ng-click="AddLeaveCtrl.hideErrorMessage()">×</button>
+                            <p>{{AddLeaveCtrl.errorMessage}}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <span><label>Ausencia por *</label></span>
+                            <div class="form-group" ng-class="{'has-error':AddLeaveCtrl.leaveForm.reason.$error.required}">
+                                <select class="form-control" name="reason" ng-model="AddLeaveCtrl.newLeave.reason" required>
+                                <option value="Congreso">Congreso</option>
+                                <option value="Enfermedad">Enfermedad</option>
+                                <option value="Vacaciones">Vacaciones</option>
+                                <option value="Otros">Otros</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                            <div class="form-group" ng-class="{'has-error':AddLeaveCtrl.leaveForm.fromDate.$error.required}">
+                                <span><label>Desde el día *</label></span>
+                                <p class="input-group">
+                                    <input type="text" name="fromDate" class="form-control" uib-datepicker-popup="dd/MM/yyyy" ng-model="AddLeaveCtrl.newLeave.fromDate" is-open="AddLeaveCtrl.fromDateCalendarPopup.opened" datepicker-options="AddLeaveCtrl.fromDateCalendarPopup.options" ng-required="true" alt-input-formats="AddLeaveCtrl.fromDateCalendarPopup.altInputFormats" current-text="Hoy" clear-text="Limpiar" close-text="Cerrar" ng-change="AddLeaveCtrl.calculateToDate()"/>
+                                    <span class="input-group-btn">
+                                      <button type="button" class="btn btn-default" ng-click="AddLeaveCtrl.openFromDateCalendar()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="hidden-xs col-sm-6 col-md-6 col-lg-6">
+                            <em class="text-muted"> La ausencia a cargar debe ser entre el día de hoy y el último dia de la agenda inclusive.</em>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                            <div class="form-group" ng-class="{'has-error':AddLeaveCtrl.leaveForm.toDate.$error.required}">
+                                <span><label>Hasta el día *</label></span>
+                                <p class="input-group">
+                                    <input type="text" name="toDate" class="form-control" uib-datepicker-popup="dd/MM/yyyy" ng-model="AddLeaveCtrl.newLeave.toDate" is-open="AddLeaveCtrl.toDateCalendarPopup.opened" datepicker-options="AddLeaveCtrl.toDateCalendarPopup.options" ng-required="true" alt-input-formats="AddLeaveCtrl.toDateCalendarPopup.altInputFormats" current-text="Hoy" clear-text="Limpiar" close-text="Cerrar"/>
+                                    <span class="input-group-btn">
+                                      <button type="button" class="btn btn-default" ng-click="AddLeaveCtrl.openToDateCalendar()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                                </p>                                
+                            </div>
+                        </div>
+                        <div class="col-xs-12 hidden-sm hidden-md hidden-lg">
+                            <em class="text-muted"> La ausencia a cargar debe ser entre el día de hoy y el último dia de la agenda inclusive.</em>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <div class="form-group">
+                                <span><label>Notas</label></span>
+                                <textarea rows="4" cols="50" name="notes" maxlength="150" class="form-control" ng-model="AddLeaveCtrl.newLeave.notes">
+                                </textarea>
+                                <span><label>(máximo 150 caracteres)</label></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div ng-show="!AddLeaveCtrl.disabledForm">
+                <div class="col-xs-6 col-sm-offset-7 col-sm-2 col-md-offset-7 col-md-2 col-lg-offset-7 col-lg-2">
+                    <button ng-click="AddLeaveCtrl.cancel()" class="btn btn-default">Cancelar</button>
+                </div>
+                <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
+                    <button ng-click="AddLeaveCtrl.confirm()" class="btn btn-primary" ng-disabled="AddLeaveCtrl.disabledForm"><span class="glyphicon glyphicon-ok"></span> Confirmar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

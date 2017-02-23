@@ -1,0 +1,42 @@
+<div class="">
+  <div class="panel panel-default" id="printSection">
+      <div class="panel-heading">
+          <h3 class="panel-title">Resumen de acción</h3>
+          <button type="button" class="pull-right close" ng-click="TurnosCanceladosCtrl.dismiss();">
+            <span class="glyphicon glyphicon-remove"></span>
+          </button>
+      </div>
+      <div class="panel-body">
+        <div ng-include src="TurnosCanceladosCtrl.template"></div>
+      </div>
+  </div>
+</div>
+
+<script type="text/ng-template" id="turnos-cancelados-ausencia-con-turnos.html">
+  <p>Debido a que {{TurnosCanceladosCtrl.ausencia.profesional.firstName}} {{TurnosCanceladosCtrl.ausencia.profesional.fatherSurname}} estará ausente desde el {{TurnosCanceladosCtrl.ausencia.start_day | date:'shortDate' }} hasta el {{TurnosCanceladosCtrl.ausencia.end_day | date:'shortDate'}}; se cancelaron {{TurnosCanceladosCtrl.turnosCount}} turnos. Recuerde contactar a los pacientes para coordinar un nuevo turno.</p>
+  <button ng-click="TurnosCanceladosCtrl.goToTurnosToInform()" class="btn btn-default">Ir a turnos cancelados</button>
+
+  <button ng-click="TurnosCanceladosCtrl.dismiss()" class="btn btn-primary">Aceptar</button>
+
+</script>
+
+<script type="text/ng-template" id="turnos-cancelados-ausencia-sin-turnos.html">
+  <p>La carga de ausencia fue realizada con éxito. No hay turnos que hayan sido afectados.</p>
+  <div class="text-center">
+      <button ng-click="TurnosCanceladosCtrl.dismiss()" class="btn btn-primary">Aceptar</button>
+  </div>
+</script>
+
+<script type="text/ng-template" id="turnos-cancelados-agenda-con-turnos.html">
+  <p>Debido a que se modificó la agenda de {{TurnosCanceladosCtrl.agenda.profesional.firstName}} {{TurnosCanceladosCtrl.agenda.profesional.fatherSurname}} para la especialidad {{TurnosCanceladosCtrl.agenda.prestacion.especialidad.name }} y prestación {{TurnosCanceladosCtrl.agenda.prestacion.name}} se cancelaron {{TurnosCanceladosCtrl.turnosCount}} turnos. Recuerde contactar a los pacientes para coordinar un nuevo turno.</p>
+  <button ng-click="TurnosCanceladosCtrl.goToTurnosToInform()" class="btn btn-default">Ir a turnos cancelados</button>
+
+  <button ng-click="TurnosCanceladosCtrl.dismiss()" class="btn btn-primary">Aceptar</button>
+</script>
+
+<script type="text/ng-template" id="turnos-cancelados-agenda-sin-turnos.html">
+  <p>La modificación en la grilla horaria fue realizada con éxito. No hay turnos que hayan sido afectados por este cambio.</p>
+  <div class="text-center">
+      <button ng-click="TurnosCanceladosCtrl.dismiss()" class="btn btn-primary">Aceptar</button>
+  </div>
+</script>

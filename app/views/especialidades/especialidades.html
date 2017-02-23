@@ -1,0 +1,102 @@
+<div class="container">
+    <div class="panel panel-default">
+        <div class="panel-heading"> 
+        	<div class="row">
+
+	    		<form class="form-inline" name="EspecialidadesCtrl.searchPreferencesForm"> 
+	        		<div class="col-md-3">    
+	  		          	<h3 class="panel-title">Especialidades</h3>
+		            </div>
+					<div class="col-md-2">
+						<label>Mostrar</label>
+			            <input type="number" name="pageSize" class="form-control" ng-model="EspecialidadesCtrl.pageSize" ng-change="EspecialidadesCtrl.changeSearchParameter()" style="width: 64px;" ng-model-options="{ debounce: 500 }" >
+		            </div>
+	    			<div class="col-md-3">    
+	                	<input type="text" name="nameFilter" class="form-control" placeholder="Nombre" ng-model="EspecialidadesCtrl.nameFilter">
+		              	<button type="button" class="btn btn-default" ng-click="EspecialidadesCtrl.changeSearchParameter()">Buscar</button>
+		            </div>   
+	            	<div class="col-md-2">
+			            <select class="form-control" ng-model="EspecialidadesCtrl.statusFilter" ng-change="EspecialidadesCtrl.changeSearchParameter()">
+			            	<option value="1">Activos</option>
+			            	<option value="2">Activos e inactivos</option>
+			            	<option value="3">Inactivos</option>
+			            </select>
+		            </div>
+		            <div class="col-md-2">            
+
+		            	<button id="btn-confirm" type="button" class="btn btn-success pull-right" ng-click="EspecialidadesCtrl.newEspecialidad()" ng-if="EspecialidadesCtrl.currentUserCan('add-especialidad')">
+		            		<span class="glyphicon glyphicon-plus"></span> Nueva especialidad
+		            	</button>
+	            	</div>
+	        	</form>
+        	</div>
+        </div>
+        <div class="panel-body">
+			<div class="col-md-4" style="border-right: 1px solid;">
+				<div class="row">
+			    	<uib-pagination max-size="5" total-items="EspecialidadesCtrl.totalItems" ng-model="EspecialidadesCtrl.currentPage" items-per-page="EspecialidadesCtrl.pageSize" class="pagination-sm" boundary-link-numbers="true" ng-change="EspecialidadesCtrl.searchName()"></uib-pagination>
+				</div>
+				<div class="row">
+					<table class="table table-hover"> 
+						<thead> 
+							<tr> 
+								<th>#</th> 
+								<th>Nombre</th> 
+								<th>Descripción</th> 
+								<th hidden="hidden">Acciones</th> 
+							</tr> 
+						</thead> 
+						<tbody> 
+							<tr ng-repeat="(key, especialidad) in EspecialidadesCtrl.especialidades" ng-click="EspecialidadesCtrl.detail(especialidad)"  ng-class="{active:especialidad == EspecialidadesCtrl.especialidad}"> 
+								<th scope="row">{{especialidad.id}}</th> 
+								<td style="max-width:150px; word-wrap:break-word;">{{especialidad.name}}</td>
+								<td style="max-width:150px; word-wrap:break-word;">{{especialidad.description}}</td>
+								<td hidden="hidden">
+									<a ng-href="#especialidad/{{especialidad.id}}">
+							            <button class="btn btn-default">
+							            	<span class="glyphicon glyphicon-pencil">
+							            	</span>
+							            </button>
+							        </a>
+						            <button class="btn btn-default" ng-click="EspecialidadesCtrl.delete(especialidad.id)">
+						            	<span class="glyphicon glyphicon-remove">
+						            	</span>
+						            </button>
+								</td> 
+							</tr> 
+						</tbody> 
+					</table>
+				</div>
+			</div>	
+			<div class="col-md-8" ng-show="EspecialidadesCtrl.especialidad">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="row detail-accions">
+							<div class="col-md-12">
+								<button ng-click="EspecialidadesCtrl.modifyEspecialidad(EspecialidadesCtrl.especialidad)"   class="btn btn-primary pull-right" ng-if="EspecialidadesCtrl.currentUserCan('change-especialidad')"><span class="glyphicon glyphicon-pencil"></span> Modificar</button>
+							</div>
+						</div>
+						<div class="detail-info">
+							<div class="row">
+								<div class="col-md-4"><label>Nombre</label></div>
+								<div class="col-md-8" style="word-wrap:break-word;">{{EspecialidadesCtrl.especialidad.name}}</div>
+							</div>
+							<div class="row">
+								<div class="col-md-4"><label>Descripción</label></div>
+								<div class="col-md-8" style="word-wrap:break-word;">{{EspecialidadesCtrl.especialidad.description}}</div>
+							</div>		    
+							<div class="row" ng-show="EspecialidadesCtrl.especialidad.createdAt">
+								<div class="col-md-4"><label>Fecha de creación</label></div>
+								<div class="col-md-8">{{EspecialidadesCtrl.especialidad.createdAt}} por {{EspecialidadesCtrl.especialidad.createdBy.name}}</div>
+							</div>
+							<div class="row" ng-show="EspecialidadesCtrl.especialidad.lastModifiedAt">
+								<div class="col-md-4"><label>Fecha de modificación</label></div>
+								<div class="col-md-8">{{EspecialidadesCtrl.especialidad.lastModifiedAt}} por {{EspecialidadesCtrl.especialidad.lastModifiedBy.name}}</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

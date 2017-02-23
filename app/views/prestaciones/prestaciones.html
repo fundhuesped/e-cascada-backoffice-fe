@@ -1,0 +1,97 @@
+<div class="container">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+        	<div class="row">
+        		<form class="form-inline" name="PrestacionesCtrl.searchPreferencesForm"> 
+	        		<div class="col-md-3">    
+	  		          	<h3 class="panel-title">Prestaciones</h3>
+		            </div>
+					<div class="col-md-2">
+						<label>Mostrar</label>
+			            <input type="number" name="pageSize" class="form-control" ng-model="PrestacionesCtrl.pageSize" ng-change="PrestacionesCtrl.changeSearchParameter()" style="width: 64px;" ng-model-options="{ debounce: 500 }" >
+		            </div>
+	        		<div class="col-md-3">    
+		                	<input type="text" class="form-control" placeholder="Nombre" ng-model="PrestacionesCtrl.nameFilter">
+			              	<button type="button" class="btn btn-default" ng-click="PrestacionesCtrl.changeSearchParameter()">Buscar</button>
+		            </div>
+		            <div class="col-md-2">
+			            <select class="form-control" ng-model="PrestacionesCtrl.statusFilter" ng-change="PrestacionesCtrl.changeSearchParameter()">
+			            	<option value="1">Activos</option>
+			            	<option value="2">Activos e inactivos</option>
+			            	<option value="3">Inactivos</option>
+			            </select>
+		            </div>
+		            <div class="col-md-2">            
+		            	<button id="btn-confirm" type="button" class="btn btn-success pull-right" ng-click="PrestacionesCtrl.create()" ng-if="PrestacionesCtrl.currentUserCan('add-prestacion')">		
+		            		<span class="glyphicon glyphicon-plus"></span> Nueva prestación
+		            	</button>
+	            	</div>
+            	</form>
+        	</div>
+        </div>
+        <div class="panel-body">
+		   	<div class="col-md-4" style="border-right: 1px solid;">
+				<div class="row">
+			    	<uib-pagination max-size="5" total-items="PrestacionesCtrl.totalItems" ng-model="PrestacionesCtrl.currentPage" items-per-page="PrestacionesCtrl.pageSize" class="pagination-sm" boundary-link-numbers="true" ng-change="PrestacionesCtrl.searchName()"></uib-pagination>
+				</div>
+				<div class="row">
+					<table class="table table-hover"> 
+						<thead> 
+							<tr> 
+								<th>#</th> 
+								<th>Nombre</th> 
+								<th>Descripción</th> 
+								<th>Duración</th> 
+							</tr> 
+						</thead> 
+						<tbody> 
+							<tr ng-repeat="(key, prestacion) in PrestacionesCtrl.prestaciones" ng-click="PrestacionesCtrl.detail(prestacion)" ng-class="{active:prestacion == PrestacionesCtrl.prestacion}"> 
+								<th scope="row">{{prestacion.id}}</th> 
+								<td style="max-width:125px; word-wrap:break-word;">{{prestacion.name}}</td>
+								<td style="max-width:125px; word-wrap:break-word;">{{prestacion.description}}</td>
+								<td>{{prestacion.durationHours}}h {{prestacion.durationMinutes}}m </td>
+							</tr> 
+						</tbody> 
+					</table>
+				</div>
+			</div>	
+			<div class="col-md-8" ng-show="PrestacionesCtrl.prestacion">
+				<div class="row">
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding-top: 10px;">
+						<div class="row">
+							<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+								<button ng-click="PrestacionesCtrl.modify(PrestacionesCtrl.prestacion)"   class="btn btn-primary pull-right" ng-if="PrestacionesCtrl.currentUserCan('change-prestacion')"><span class="glyphicon glyphicon-pencil"></span> Modificar</button>
+							</div>
+						</div>
+						<div class="detail-info">
+							<div class="row">
+								<div class="col-md-4"><label>Nombre</label></div>
+								<div class="col-md-8" style="word-wrap:break-word;">{{PrestacionesCtrl.prestacion.name}}</div>
+							</div>
+							<div class="row">
+								<div class="col-md-4"><label>Descripción</label></div>
+								<div class="col-md-8" style="word-wrap:break-word;">{{PrestacionesCtrl.prestacion.description}}</div>
+							</div>		    
+							<div class="row">
+								<div class="col-md-4"><label>Duración</label></div>
+								<div class="col-md-8">{{PrestacionesCtrl.prestacion.durationHours}}h {{PrestacionesCtrl.prestacion.durationMinutes}}m</div>
+							</div>	
+							<div class="row">
+								<div class="col-md-4"><label>Especialidad</label></div>
+								<div class="col-md-8" style="word-wrap:break-word;">{{PrestacionesCtrl.prestacion.especialidad.name}}</div>
+							</div>		    
+							<div class="row">
+								<div class="col-md-4"><label>Notas</label></div>
+								<div class="col-md-8" style="word-wrap:break-word;">{{PrestacionesCtrl.prestacion.notes}}</div>
+							</div>		
+							<div class="row" ng-show="PrestacionesCtrl.prestacion.lastModifiedAt">
+								<div class="col-md-4"><label>Fecha de modificación</label></div>
+								<div class="col-md-8">{{PrestacionesCtrl.prestacion.lastModifiedAt}} por {{PrestacionesCtrl.prestacion.lastModifiedBy.name}}</div>
+							</div>
+						</div>
+					</div>	
+				</div>	
+			</div>
+		</div>	
+	</div>
+</div>

@@ -1,0 +1,190 @@
+body {
+    background: #fafafa;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: #333;
+}
+
+.hero-unit {
+    margin: 50px auto 0 auto;
+    width: 300px;
+    font-size: 18px;
+    font-weight: 200;
+    line-height: 30px;
+    background-color: #eee;
+    border-radius: 6px;
+    padding: 60px;
+}
+
+.hero-unit h1 {
+    font-size: 60px;
+    line-height: 1;
+    letter-spacing: -1px;
+}
+
+.container-turnos{
+    border-top: 1px solid;
+    border: 1px solid;
+    border-color: lightgrey;
+    border-radius: 5px;
+    background-color: white;
+}
+
+.master-detail .right-column{
+    border-left: 1px solid;
+    border-color: grey;
+    margin-top: -16px;
+}
+
+.panel-heading h3{
+    display: inline;
+    line-height: 34px;
+}
+
+
+
+.panel-heading button.close{
+    margin-top: -2px;
+    -webkit-appearance: none;
+    padding: 0;
+    cursor: pointer;
+    background: 0 0;
+    border: 0;
+    float: right;
+}
+
+
+/*Modal confirmation (Just yes or no)*/
+.modal-confirmation{
+    width: 300px;
+}
+
+
+.modal-confirmation .btn-cancel{
+    float:left;
+}
+
+.modal-confirmation .btn-confirm{
+    float:right;
+}
+
+
+.detail-info{
+    margin-top: 10px;
+}
+
+.detail-info .row{
+    line-height: 32px;
+}
+
+.detail-info .row:nth-of-type(1)::before{
+    content: "";
+    border-bottom: 1px solid;
+    width: 96%;
+    margin: auto;
+    border-color: lightgray;
+}
+.detail-info .row::after {
+    content: "";
+    border-bottom: 1px solid;
+    width: 96%;
+    margin: auto;
+    border-color: lightgray;
+}
+
+.right-column .dw-loading.dw-loading-overlay{
+    min-height: 269px;
+}
+
+
+.no-padding{
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+.no-padding-left{
+    padding-left: 0px;
+}
+
+.no-padding-right{
+    padding-right: 0px;
+}
+
+.turnos-calendar .fc-slats tr {
+    height: 35px;
+}
+@media screen {
+    #printSectionTitle{
+        display: none;
+        visibility: hidden;
+    }
+    #printSectionWithoutTurno{
+        visibility: hidden;
+        display: none;
+    }
+}
+@media print {
+    body * {
+        visibility:hidden;
+    }
+
+    #printSection, #printSection * {
+        visibility:visible;
+    }
+    .fc-left {
+        visibility:hidden!important;
+    }
+    .fc-toolbar{
+        display: none;
+    }
+    #printSectionTitle{
+        display: block;
+    }
+    #printSectionWithoutTurno tr{
+        font-size: 10px;
+    }
+    #printSection {
+        position:absolute;
+        left:0;
+        top:0;
+    }
+    .fc-day-grid{
+        display: none;
+    }
+}
+
+/* uib-tabs styles for divs. Workarround for clikeable elements into tabs*/
+
+.nav-tabs > li.active > div, .nav-tabs > li.active > div:hover, .nav-tabs > li.active > div:focus {
+    color: #555;
+    cursor: default;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-bottom-color: transparent;
+}
+
+
+.nav-tabs > li > div{
+    margin-right: 2px;
+    line-height: 1.42857143;
+    border: 1px solid transparent;
+    border-radius: 4px 4px 0 0;
+}
+.nav > li > div{
+    position: relative;
+    display: block;
+    padding: 10px 15px;
+    color: #337ab7;
+    text-decoration: none;
+}
+
+.nav-tabs > li > div:hover {
+    border-color: #eee #eee #ddd;
+}
+
+
+.row-pacient-recomendation {
+    border-bottom: solid 1px #DDDDDD;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+

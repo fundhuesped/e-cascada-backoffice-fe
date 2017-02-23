@@ -1,0 +1,97 @@
+<div class="container">
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<div class="row">
+				<form class="form-inline" name="ProfesionalesCtrl.searchPreferencesForm">
+					<div class="col-md-3">
+						<h3 class="panel-title">Profesionales</h3>
+					</div>
+					<div class="col-md-2">
+						<label>Mostrar</label>
+			            <input type="number" name="pageSize" class="form-control" ng-model="ProfesionalesCtrl.pageSize" ng-change="ProfesionalesCtrl.changeSearchParameter()" style="width: 64px;" ng-model-options="{ debounce: 500 }" >
+		            </div>
+					<div class="col-md-3">
+						<input type="text" class="form-control" placeholder="Nombre" ng-model="ProfesionalesCtrl.nameFilter">
+						<button type="button" class="btn btn-default" ng-click="ProfesionalesCtrl.changeSearchParameter()">Buscar</button>
+					</div>
+					<div class="col-md-2">
+						<select class="form-control" ng-model="ProfesionalesCtrl.statusFilter" ng-change="ProfesionalesCtrl.changeSearchParameter()">
+							<option value="1">Activos</option>
+							<option value="2">Activos e inactivos</option>
+							<option value="3">Inactivos</option>
+						</select>
+					</div>
+					<div class="col-md-2">
+						<button id="btn-confirm" type="button" class="btn btn-success pull-right" ng-click="ProfesionalesCtrl.newProfesional()" ng-if="ProfesionalesCtrl.currentUserCan('add-profesional')">
+							<span class="glyphicon glyphicon-plus"></span> Nuevo profesional
+						</button>
+					</div>
+				</form>
+			</div>
+		</div>
+		<div class="panel-body">
+			<div class="col-md-4" style="border-right: 1px solid;">
+				<div class="row">
+			    	<uib-pagination max-size="5" total-items="ProfesionalesCtrl.totalItems" ng-model="ProfesionalesCtrl.currentPage" items-per-page="ProfesionalesCtrl.pageSize" class="pagination-sm" boundary-link-numbers="true" ng-change="ProfesionalesCtrl.searchName()"></uib-pagination>
+				</div>
+				<div class="row">
+					<table class="table table-hover">
+						<thead>
+						<tr>
+							<th>#</th>
+							<th>Nombre</th>
+							<th>Apellido</th>
+						</tr>
+						</thead>
+						<tbody>
+						<tr ng-repeat="(key, profesional) in ProfesionalesCtrl.profesionales" ng-click="ProfesionalesCtrl.detail(profesional)" ng-class="{active:profesional == ProfesionalesCtrl.profesional}">
+							<th scope="row">{{profesional.id}}</th>
+							<td style="max-width:125px; word-wrap:break-word;">{{profesional.firstName}}</td>
+							<td style="max-width:125px; word-wrap:break-word;">{{profesional.fatherSurname}}</td>
+						</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div class="col-md-8" ng-show="ProfesionalesCtrl.profesional">
+				<div class="row">
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding-top: 10px;">
+						<div class="row">
+							<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+								<button ng-click="ProfesionalesCtrl.modifyProfesional(ProfesionalesCtrl.profesional)" ng-if="ProfesionalesCtrl.currentUserCan('change-profesional')" class="btn btn-primary pull-right" style="margin-left:10px;margin-right:10px" ><span class="glyphicon glyphicon-user"></span> Detalle</button>
+								<button ng-click="ProfesionalesCtrl.goToAusencias()" ng-if="ProfesionalesCtrl.currentUserCan('list-ausencias')" class="btn btn-primary pull-right"><span class="glyphicon glyphicon-calendar" style="margin-left:10px;margin-right:10px"></span> Ausencias</button>
+								<button ng-click="ProfesionalesCtrl.goToTurnos()" class="btn btn-primary pull-right" style="margin-left:10px;margin-right:10px"><span class="glyphicon glyphicon-time"></span> Turnos</button>
+							</div>
+						</div>
+						<div class="detail-info">
+							<div class="row">
+								<div class="col-md-4"><label>Nombre</label></div>
+								<div class="col-md-8" style="word-wrap:break-word;">{{ProfesionalesCtrl.profesional.firstName}} {{ProfesionalesCtrl.profesional.otherNames}}</div>
+							</div>
+							<div class="row">
+								<div class="col-md-4"><label>Apellido</label></div>
+								<div class="col-md-8" style="word-wrap:break-word;">{{ProfesionalesCtrl.profesional.fatherSurname}} {{ProfesionalesCtrl.profesional.motherSurname}}</div>
+							</div>
+							<div class="row">
+								<div class="col-md-4"><label>Ficha municipal</label></div>
+								<div class="col-md-8" style="word-wrap:break-word;">{{ProfesionalesCtrl.profesional.municipalNumber}}</div>
+							</div>
+							<div class="row">
+								<div class="col-md-4"><label>Número de licencia</label></div>
+								<div class="col-md-8" style="word-wrap:break-word;">{{ProfesionalesCtrl.profesional.licenseNumber}}</div>
+							</div>
+							<div class="row">
+								<div class="col-md-4"><label>Prestaciones</label></div>
+								<div class="col-md-8">
+									<ul>
+										<li ng-repeat="prestacion in ProfesionalesCtrl.profesional.prestaciones">{{prestacion.name}} ({{prestacion.especialidad.name}})</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

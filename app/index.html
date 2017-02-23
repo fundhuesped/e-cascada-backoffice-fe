@@ -1,0 +1,167 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+
+        <!-- build:css(.tmp) styles/main.css -->
+        <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
+        <link rel="stylesheet" href="bower_components/fullcalendar/dist/fullcalendar.css"/>
+        <link rel="stylesheet" href="bower_components/angular-loading/angular-loading.css"/>
+        <link rel="stylesheet" href="bower_components/angular-toastr/dist/angular-toastr.css"/>
+        <link rel="stylesheet" href="styles/main.css">
+        <link rel="stylesheet" href="styles/login.css">
+        <!-- endbuild -->
+</head>
+  <body ng-app="turnos.app" dw-loading="app" dw-loading-options="{}">
+    <!--[if lt IE 7]>
+      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+
+    <!--[if lt IE 9]>
+      <script src="bower_components/es5-shim/es5-shim.js"></script>
+      <script src="bower_components/json3/lib/json3.min.js"></script>
+    <![endif]-->
+    <div ui-view="navbar"></div>
+
+    <!-- Add your site or application content here -->
+
+    <div ui-view="main"></div>
+
+    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
+     <script>
+       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+       ga('create', 'UA-XXXXX-X');
+       ga('send', 'pageview');
+    </script>
+
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script type="text/javascript" src="bower_components/moment/min/moment.min.js"></script>
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-moment/angular-moment.js"></script>
+    
+        <!-- build:js scripts/plugins.js -->
+        <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+        <script src="bower_components/bootstrap-sass/assets/javascripts/bootstrap/affix.js"></script>
+        <script src="bower_components/bootstrap-sass/assets/javascripts/bootstrap/alert.js"></script>
+        <script src="bower_components/bootstrap-sass/assets/javascripts/bootstrap/dropdown.js"></script>
+        <script src="bower_components/bootstrap-sass/assets/javascripts/bootstrap/tooltip.js"></script>
+        <script src="bower_components/bootstrap-sass/assets/javascripts/bootstrap/modal.js"></script>
+        <script src="bower_components/bootstrap-sass/assets/javascripts/bootstrap/transition.js"></script>
+        <script src="bower_components/bootstrap-sass/assets/javascripts/bootstrap/button.js"></script>
+        <script src="bower_components/bootstrap-sass/assets/javascripts/bootstrap/popover.js"></script>
+        <!--script src="bower_components/bootstrap-sass/assets/javascripts/bootstrap/typeahead.js"></script-->
+        <script src="bower_components/bootstrap-sass/assets/javascripts/bootstrap/carousel.js"></script>
+        <script src="bower_components/bootstrap-sass/assets/javascripts/bootstrap/scrollspy.js"></script>
+        <script src="bower_components/bootstrap-sass/assets/javascripts/bootstrap/collapse.js"></script>
+        <script src="bower_components/bootstrap-sass/assets/javascripts/bootstrap/tab.js"></script>
+        <script src="bower_components/angular-local-storage/dist/angular-local-storage.min.js"></script>
+        <script src="bower_components/angular-i18n/angular-locale_es-ar.js"></script>
+
+
+        <script type="text/javascript" src="bower_components/angular-ui-calendar/src/calendar.js"></script>
+        <script type="text/javascript" src="bower_components/fullcalendar/dist/fullcalendar.min.js"></script>
+        <script type="text/javascript" src="bower_components/fullcalendar/dist/gcal.js"></script>
+        <script type="text/javascript" src="bower_components/fullcalendar/dist/lang/es.js"></script>
+        <script type="text/javascript" src="bower_components/angular-toastr/dist/angular-toastr.js"></script>
+        <script type="text/javascript" src="bower_components/angular-toastr/dist/angular-toastr.tpls.js"></script>
+        <script type="text/javascript" src="bower_components/spin.js/spin.js"></script>
+        <script type="text/javascript" src="bower_components/angular-loading/angular-loading.js"></script>
+        <!-- endbuild -->
+
+        <!-- build:js scripts/modules.js -->
+        <script src="bower_components/angular-resource/angular-resource.js"></script>
+        <script src="bower_components/angular-cookies/angular-cookies.js"></script>
+        <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+        <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+        <script src="scripts/third-party-redefinitions.js"></script>
+
+        <!-- endbuild -->
+
+        <!-- build:js({.tmp,app}) scripts/scripts.js -->
+        <script src="app.js"></script>
+        <script src="scripts/security-interceptor.js"></script>
+
+        <script src="resources/resources-module.js"></script>
+        <script src="resources/education-resource.js"></script>
+        <script src="resources/civilStatus-resource.js"></script>
+        <script src="resources/socialService-resource.js"></script>
+        <script src="resources/location-resource.js"></script>
+        <script src="resources/district-resource.js"></script>
+        <script src="resources/province-resource.js"></script>
+        <script src="resources/especialidad-resource.js"></script>
+        <script src="resources/document-resource.js"></script>
+        <script src="resources/sex-resource.js"></script>
+        <script src="resources/prestacion-resource.js"></script>
+        <script src="resources/profesional-resource.js"></script>
+        <script src="resources/paciente-resource.js"></script>
+        <script src="resources/agenda-resource.js"></script>
+        <script src="resources/turnoSlot-resource.js"></script>
+        <script src="resources/turno-resource.js"></script>
+        <script src="resources/sobreturno-resource.js"></script>
+        <script src="resources/leave-resource.js"></script>
+        <script src="resources/token-resource.js"></script>
+        <script src="resources/user-resource.js"></script>
+
+        <script src="services/date-directive.js"></script>
+        <script src="services/services-module.js"></script>
+        <script src="services/turnos-service.js"></script>
+        <script src="services/session-service.js"></script>
+        <script src="views/turnos/turnos-module.js"></script>
+        <script src="views/turnos/turnos-controller.js"></script>
+        <script src="views/turnos/turno-detail-controller.js"></script>
+        <script src="views/turnos/turnoslot-detail-controller.js"></script>
+        <script src="views/turnos/turno-delete-controller.js"></script>
+        <script src="views/turnos/newturno-controller.js"></script>
+        <script src="views/turnos/turnostoinform-controller.js"></script>
+        <script src="views/turnos/turnos-cancelados-controller.js"></script>
+        <script src="views/navbar/navbar-module.js"></script>
+        <script src="views/navbar/navbar-controller.js"></script>
+
+        <script src="views/especialidades/especialidades-module.js"></script>
+        <script src="views/especialidades/especialidades-controller.js"></script>
+        <script src="views/especialidades/especialidad-controller.js"></script>
+        <script src="views/especialidades/newespecialidad-controller.js"></script>
+
+        <script src="views/profesionales/profesionales-module.js"></script>
+        <script src="views/profesionales/profesionales-controller.js"></script>
+        <script src="views/profesionales/profesional-controller.js"></script>
+        <script src="views/profesionales/profesional-turnos-controller.js"></script>
+        <script src="views/profesionales/newprofesional-controller.js"></script>
+        <script src="views/profesionales/addleave-controller.js"></script>
+        <script src="views/profesionales/ausencias-controller.js"></script>
+
+        <script src="views/prestaciones/prestaciones-module.js"></script>
+        <script src="views/prestaciones/prestaciones-controller.js"></script>
+        <script src="views/prestaciones/prestacion-controller.js"></script>
+        <script src="views/prestaciones/newprestacion-controller.js"></script>
+
+        <script src="views/pacientes/pacientes-module.js"></script>
+        <script src="views/pacientes/newpaciente-controller.js"></script>
+        <script src="views/pacientes/paciente-controller.js"></script>
+
+        <script src="views/agendas/agendas-module.js"></script>
+        <script src="views/agendas/agendas-controller.js"></script>
+        <script src="views/agendas/agenda-controller.js"></script>
+        <script src="views/agendas/renewagenda-controller.js"></script>
+        <script src="views/agendas/newagenda-controller.js"></script>
+
+        <script src="views/login/login-module.js"></script>
+        <script src="views/login/login-controller.js"></script>
+
+        <script src="views/profile/profile-module.js"></script>
+        <script src="views/profile/changepassword-controller.js"></script>
+        <!-- endbuild -->
+</body>
+</html>

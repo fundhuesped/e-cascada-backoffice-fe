@@ -1,0 +1,95 @@
+<div class="modal fade" ng-class="{'in':TurnoDetailCtrl.cancelModal.style}" ng-style="TurnoDetailCtrl.cancelModal.style">
+  <div class="modal-dialog modal-confirmation">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">¿Cancelar turno?</h4>
+      </div>
+      <div class="modal-body">
+        <p>¿Esta seguro que desea cancelar el turno seleccionado?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default btn-cancel" ng-click="TurnoDetailCtrl.cancelModal.dismiss()">Cerrar
+        </button>
+        <button type="button" class="btn btn-danger btn-confirm" ng-click="TurnoDetailCtrl.cancelModal.confirm()"><span
+          class="glyphicon glyphicon-remove"></span> Cancelar turno
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" ng-class="{'in':TurnoDetailCtrl.presentModal.style}" ng-style="TurnoDetailCtrl.presentModal.style">
+  <div class="modal-dialog modal-confirmation">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Marcar como presente</h4>
+      </div>
+      <div class="modal-body">
+        <p>¿Esta seguro que desea marcar como presente al turno seleccionado?</p>
+        <div class="form-group">
+          <span><label>Notas</label></span>
+          <textarea name="notes" class="form-control" ng-model="TurnoDetailCtrl.newNotes" rows="3" maxlength="150"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default btn-cancel" ng-click="TurnoDetailCtrl.presentModal.dismiss()">Cerrar
+        </button>
+        <button type="button" class="btn btn-success btn-confirm" ng-click="TurnoDetailCtrl.presentModal.confirm()"><span
+          class="glyphicon glyphicon-ok"></span> Confirmar 
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">{{TurnoDetailCtrl.title}}</h3>
+    </div>
+    <div class="panel-body">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+          <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+              <span><label>Médico</label></span>
+              <p>{{TurnoDetailCtrl.turnoSlot.profesional.fatherSurname + ', ' + TurnoDetailCtrl.turnoSlot.profesional.firstName}}</p>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+              <span><label>Prestación</label></span>
+              <p>{{TurnoDetailCtrl.turnoSlot.prestacion.name}}</p>
+            </div>
+          </div>          
+          <div class="row" ng-show="TurnoDetailCtrl.turno.paciente">
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+              <span><label>Paciente</label></span>
+              <p>{{TurnoDetailCtrl.turno.paciente.fatherSurname + ', ' + TurnoDetailCtrl.turno.paciente.firstName}}</p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+              <span><label>Fecha</label></span>
+              <p>{{TurnoDetailCtrl.turnoSlot.day | date : 'dd-MM-yyyy'}} </p>
+            </div>
+            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+              <span><label>Hora</label></span>
+              <p>{{TurnoDetailCtrl.turnoSlot.start}}</p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-show="TurnoDetailCtrl.turno.notes">
+              <span><label>Notas</label></span>
+              <p>{{TurnoDetailCtrl.turno.notes}}</p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+              <button ng-click="TurnoDetailCtrl.cancelModal.show()" class="btn btn-danger" ng-show="TurnoDetailCtrl.showDelete()"><i class="glyphicon glyphicon-remove"> </i> Cancelar turno
+              </button>
+              <button ng-click="TurnoDetailCtrl.dismiss()" class="btn btn-default pull-right">Cerrar
+              </button>
+              <button ng-click="TurnoDetailCtrl.presentModal.show()" class="btn btn-success pull-right" ng-show="TurnoDetailCtrl.showMarkAsPresent()"><i class="glyphicon glyphicon-ok"> </i> Marcar presente
+              </button>
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
+</div>
