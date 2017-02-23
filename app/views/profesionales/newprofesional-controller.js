@@ -44,6 +44,14 @@
             maxDate: new Date(),
           }
         };
+        vm.titulos = [
+            'Dr.',
+            'Dra.',
+            'Lic.',
+            'Sr.',
+            'Sra.',
+            'Srta.',
+        ];
 
         activate();
 
@@ -95,6 +103,7 @@
                 profesional.birthDate = (vm.newProfesional.birthDate?$filter('date')(vm.newProfesional.birthDate, "yyyy-MM-dd"):null);
                 profesional.genderAtBirth = vm.newProfesional.genderAtBirth;
                 profesional.genderOfChoice = vm.newProfesional.genderOfChoice;
+                profesional.title = vm.newProfesional.title;
                 profesional.email = vm.newProfesional.email;
                 //TODO: Set as default
                 profesional.status = 'Active';

@@ -3,7 +3,7 @@
     <div class="panel-heading">
       <div class="row">
         <form class="form-inline" name="AgendasCtrl.searchPreferencesForm">
-          <div class="col-md-3">
+          <div class="col-md-2">
             <h3 class="panel-title">Agendas</h3>
           </div>
           <div class="col-md-2">
@@ -15,14 +15,21 @@
             <input type="text" name="firstname" class="form-control" ng-model="AgendasCtrl.selectedProfesional" placeholder="Nombre del profesional" uib-typeahead='profesional as (profesional.fatherSurname + ", " + profesional.firstName) for profesional in AgendasCtrl.getProfesionales($viewValue)' autocomplete="off"></input>
             <button type="button" class="btn btn-default" ng-click="AgendasCtrl.changeSearchParameter()">Buscar</button>
           </div>
-          <div class="col-md-2">
+          <div class="col-md-1">
+            <select class="form-control" ng-model="AgendasCtrl.actualFilter" ng-change="AgendasCtrl.changeSearchParameter()">
+              <option value="1">Actuales</option>
+              <option value="2">Pasadas</option>
+              <option value="3">Todas</option>
+            </select>
+          </div>
+          <div class="col-md-1">
             <select class="form-control" ng-model="AgendasCtrl.statusFilter" ng-change="AgendasCtrl.changeSearchParameter()">
               <option value="1">Activos</option>
               <option value="2">Activos e inactivos</option>
               <option value="3">Inactivos</option>
             </select>
           </div>
-          <div class="col-md-2">
+          <div class="col-md-3">
             <button id="btn-confirm" type="button" class="btn btn-success pull-right"
                     ng-click="AgendasCtrl.newAgenda()">
               <span class="glyphicon glyphicon-plus"></span> Nueva agenda

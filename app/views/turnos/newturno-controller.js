@@ -6,17 +6,17 @@
   angular
     .module('turnos.turnos')
     .controller('NewTurnoCtrl',newTurnoCtrl);
-  
-  newTurnoCtrl.$inject =  [ '$uibModal', 
-                            'uiCalendarConfig', 
-                            'toastr', 
-                            '$loading', 
-                            '$filter', 
-                            'Especialidad', 
-                            'Prestacion', 
-                            'Paciente', 
-                            'Document', 
-                            'Profesional', 
+
+  newTurnoCtrl.$inject =  [ '$uibModal',
+                            'uiCalendarConfig',
+                            'toastr',
+                            '$loading',
+                            '$filter',
+                            'Especialidad',
+                            'Prestacion',
+                            'Paciente',
+                            'Document',
+                            'Profesional',
                             'TurnoSlot',
                             'Turno',
                             'Sobreturno'];
@@ -55,10 +55,15 @@
     vm.notes = '';
     vm.openTurnoModal = openTurnoModal;
     vm.openPacienteModal = openPacienteModal;
-    vm.paciente = null;
+    vm.paciente = {};
+
+    //Default documentType to DNI
+    vm.paciente.documentType = {id: 1, name: "DNI", description: "DNI", status: "Active"};
+
+    vm.profesionales = [];
+
     vm.pageChanged = pageChanged;
     vm.prestaciones = [];
-    vm.prestacionChanged = prestacionChanged;
     vm.profesionalChanged = profesionalChanged;
     vm.sobreturnoProfesionalChanged = sobreturnoProfesionalChanged;
     vm.sobreturnoPrestaciones = [];
@@ -80,19 +85,19 @@
     vm.calendarPopup = {
       opened: false,
       options: {
-        minDate: new Date(),
+        minDate: new Date()
       }
     };
     vm.birthDateCalendarPopup = {
       opened: false,
       options: {
-        maxDate: new Date(),
+        maxDate: new Date()
       }
     };
     vm.sobreturnoCalendarPopup = {
       opened: false,
       options: {
-        minDate: new Date(),
+        minDate: new Date()
       },
       openCalendar : function(){
         this.opened = true;
@@ -135,13 +140,12 @@
       Document.getActiveList(function(documents){
         vm.documents = documents;
       }, displayComunicationError);
-      
+
       Especialidad.getActiveList(function(especialidades){
         vm.especialidades = especialidades;
       }, displayComunicationError);
-      
+
       Profesional.getActiveList(function(profesionales){
-        vm.profesionales = profesionales;
         vm.sobreturnoProfesionales = profesionales;
       }, displayComunicationError);
 
@@ -159,7 +163,7 @@
           }
         }
       }
-      return false; 
+      return false;
     }
 
 
@@ -173,24 +177,26 @@
           }
         }
       }
-      return false; 
+      return false;
     }
 
     function clearPacienteSelection() {
       vm.recomendationList = [];
       vm.selectedPaciente = null;
       delete vm.paciente.selected;
-      vm.paciente = null;
+      vm.paciente = {};
+      //Default documentType to DNI
+      vm.paciente.documentType = {id: 1, name: "DNI", description: "DNI", status: "Active"};
       vm.recomendationsPanel.message = 'Por favor comience a completar el formulario para buscar pacientes';
     }
 
     function confirmSobreturno() {
-      $loading.start('app');      
+      $loading.start('app');
       if(vm.selectedPaciente){
         vm.sobreturno.paciente = vm.selectedPaciente;
         vm.reserveSobreturno();
       }else{
-        var paciente = new Paciente();        
+        var paciente = new Paciente();
         paciente.firstName = vm.paciente.firstName;
         paciente.fatherSurname = vm.paciente.fatherSurname;
         paciente.primaryPhoneNumber = vm.paciente.primaryPhoneNumber;
@@ -200,22 +206,22 @@
         paciente.birthDate = (vm.paciente.birthDate?$filter('date')(vm.paciente.birthDate, 'yyyy-MM-dd'):null);
         paciente.email = vm.paciente.email;
         paciente.$save(function(createdPaciente){
-          vm.sobreturno.paciente = createdPaciente;
-          vm.reserveSobreturno();
-        },function(){
-          displayComunicationError('app');
-        }
+                        vm.sobreturno.paciente = createdPaciente;
+                        vm.reserveSobreturno();
+                      },function(){
+                        displayComunicationError('app');
+                      }
         );
       }
     }
 
     function confirmTurno() {
-      $loading.start('app');      
+      $loading.start('app');
       if(vm.selectedPaciente){
         vm.selectedTurno.paciente = vm.selectedPaciente;
         vm.reserveTurno();
       }else{
-        var paciente = new Paciente();        
+        var paciente = new Paciente();
         paciente.firstName = vm.paciente.firstName;
         paciente.fatherSurname = vm.paciente.fatherSurname;
         paciente.primaryPhoneNumber = vm.paciente.primaryPhoneNumber;
@@ -253,7 +259,7 @@
       vm.sobreturno = {};
       vm.sobreturnoPrestaciones = [];
     }
-    
+
     function cleanTurnosResult() {
       lookedForTurnos = false;
       vm.totalItems = null;
@@ -272,7 +278,7 @@
       vm.prestaciones.length = 0;
       vm.selectedProfesional = null;
       vm.selectedDate = null;
-      vm.profesionales = Profesional.getActiveList(angular.noop,displayComunicationError);
+      vm.profesionales.length = 0;
       vm.especialidades = Especialidad.getActiveList(angular.noop, displayComunicationError);
       cleanTurnosResult();
     }
@@ -284,12 +290,11 @@
 
         var searchObject = {};
 
-        if(vm.paciente.documentType){
+        if(vm.paciente.documentType && vm.paciente.documentNumber){
           searchObject.documentType = vm.paciente.documentType.id;
-        }
-        if(vm.paciente.documentNumber){
           searchObject.documentNumber = vm.paciente.documentNumber;
         }
+
         if(vm.paciente.firstName){
           searchObject.firstName = vm.paciente.firstName;
         }
@@ -318,7 +323,7 @@
     }
 
     function canLookForTurnos(){
-      return vm.selectedPrestacion && (vm.selectedEspecialidad || vm.selectedProfesional);
+      return vm.selectedPrestacion && vm.selectedEspecialidad && vm.selectedProfesional;
     }
 
 
@@ -335,16 +340,14 @@
       var searchObject = {
         state: 'Available',
         prestacion: vm.selectedPrestacion.id,
-        ordering:'day,start',
+        ordering:'day,start'
       };
-
       if (vm.selectedDate) {
         searchObject.day__gte = $filter('date')(vm.selectedDate, 'yyyy-MM-dd');
       }else{
         searchObject.day__gte = $filter('date')(new Date(), 'yyyy-MM-dd');
       }
-      
-      if (vm.selectedProfesional) {
+      if (vm.selectedProfesional && vm.selectedProfesional.id !== -99) {
         searchObject.profesional = vm.selectedProfesional.id;
       }
 
@@ -366,11 +369,11 @@
 
     function pageChanged() {
       if(vm.selectedPrestacion){
-        $loading.start('app');      
+        $loading.start('app');
         var searchObject = {
           state: 'Available',
           prestacion: vm.selectedPrestacion.id,
-          ordering:'day,start',
+          ordering:'day,start'
         };
 
         if (vm.selectedDate) {
@@ -378,7 +381,6 @@
         }else{
           searchObject.day__gte = $filter('date')(new Date(), 'yyyy-MM-dd');
         }
-        
         if (vm.selectedProfesional) {
           searchObject.profesional = vm.selectedProfesional.id;
         }
@@ -391,7 +393,6 @@
       var calendarView = uiCalendarConfig.calendars.newTurnosCalendar.fullCalendar( 'getView' );
       searchObject.start = calendarView.start.format('YYYY-MM-DD');
       searchObject.end = calendarView.end.format('YYYY-MM-DD');
-  
       TurnoSlot.getFullActiveList(searchObject).$promise.then(function (results) {
         lookedForTurnos = true;
         turnosSource =[];
@@ -456,10 +457,10 @@
           if(vm.selectedPaciente && vm.selectedPaciente.id === selectedPaciente.id){
             Paciente.get({id:selectedPaciente.id}, function(returnedObject){
               vm.selectedPaciente = returnedObject;
-              returnedObject.birthDate =(returnedObject.birthDate?new Date(returnedObject.birthDate + 'T03:00:00'):null);     
+              returnedObject.birthDate =(returnedObject.birthDate?new Date(returnedObject.birthDate + 'T03:00:00'):null);
               vm.paciente = returnedObject;
             });
-          }          
+          }
         }else{
           if(resolution==='deleted'){
             if(vm.selectedPaciente && vm.selectedPaciente.id === selectedPaciente.id){
@@ -519,7 +520,6 @@
         displayComunicationError('app');
       });
     }
-    
     function reserveTurno(){
       var turno = new Turno();
 
@@ -532,52 +532,27 @@
       },function(){
         displayComunicationError('app');
       });
-    }    
+    }
 
     function especialidadChanged() {
       cleanTurnosResult();
       if (vm.selectedEspecialidad) {
-        if(angular.isObject(vm.selectedProfesional)){
-          vm.prestaciones = Prestacion.getActiveList({especialidad: vm.selectedEspecialidad.id, profesional:vm.selectedProfesional.id}, angular.noop, displayComunicationError);
-        }else{
-          vm.prestaciones = Prestacion.getActiveList({especialidad: vm.selectedEspecialidad.id}, angular.noop, displayComunicationError);
-          vm.profesionales = Profesional.getActiveList({especialidad: vm.selectedEspecialidad.id}, angular.noop, displayComunicationError);
-        }
-      }else{
-        vm.profesionales = Profesional.getActiveList(angular.noop,displayComunicationError);
-        if(angular.isObject(vm.selectedProfesional)){
-          vm.prestaciones = Prestacion.getActiveList({profesional:vm.selectedProfesional.id}, angular.noop, displayComunicationError);
-        }else{
+          Profesional.getActiveList({especialidad: vm.selectedEspecialidad.id}, function (profesionales) {
+            vm.profesionales = [{id:-99,firstName:'Todos los médicos'}];
+            vm.profesionales = vm.profesionales.concat(profesionales);
+          }, displayComunicationError);
           vm.prestaciones = [];
-        }
-
       }
     }
 
-    function prestacionChanged() {
-      cleanTurnosResult();
-      if (vm.selectedPrestacion) {
-        if(!angular.isObject(vm.selectedProfesional)){
-          vm.profesionales = Profesional.getActiveList({prestacion: vm.selectedPrestacion.id}, angular.noop, displayComunicationError);
-        }
-      }
-    }
 
     function profesionalChanged() {
       cleanTurnosResult();
       if (vm.selectedProfesional) {
-        if(angular.isObject(vm.selectedEspecialidad)){
-          vm.prestaciones = Prestacion.getActiveList({especialidad: vm.selectedEspecialidad.id, profesional:vm.selectedProfesional.id}, angular.noop, displayComunicationError);
-        }else{
-          vm.prestaciones = Prestacion.getActiveList({profesional: vm.selectedProfesional.id}, angular.noop, displayComunicationError);
-          vm.especialidades = Especialidad.getActiveList({profesional: vm.selectedProfesional.id}, angular.noop, displayComunicationError);
-        }
-      }else{
-        vm.especialidades = Especialidad.getActiveList(angular.noop, displayComunicationError);
-        if(angular.isObject(vm.selectedEspecialidad)){
+        if(vm.selectedProfesional.id === -99){
           vm.prestaciones = Prestacion.getActiveList({especialidad: vm.selectedEspecialidad.id}, angular.noop, displayComunicationError);
         }else{
-           vm.prestaciones = [];         
+          vm.prestaciones = Prestacion.getActiveList({especialidad: vm.selectedEspecialidad.id, profesional:vm.selectedProfesional.id}, angular.noop, displayComunicationError);
         }
       }
     }
@@ -586,8 +561,8 @@
       vm.sobreturnoPrestaciones = Prestacion.getActiveList({profesional:vm.sobreturno.profesional.id}, angular.noop, displayComunicationError);
     }
 
-    function selectPaciente(paciente) {      
-      paciente.birthDate =(paciente.birthDate?new Date(paciente.birthDate + 'T03:00:00'):null);     
+    function selectPaciente(paciente) {
+      paciente.birthDate =(paciente.birthDate?new Date(paciente.birthDate + 'T03:00:00'):null);
       vm.paciente = paciente;
       vm.selectedPaciente = paciente;
       vm.newTurno.paciente = paciente;
@@ -601,11 +576,7 @@
         return false;
       }
 
-      if (vm.paciente.documentType) {
-        populatedFields++;
-      }
-
-      if (vm.paciente.documentNumber) {
+      if (vm.paciente.documentType && vm.paciente.documentNumber) {
         return true;
       }
 
@@ -647,11 +618,11 @@
               if(vm.eventSources[0][i].selected){
                 vm.eventSources[0][i].color = '#D8C358';
                 vm.eventSources[0][i].selected = false;
-                selectedRepresentation = null;  
+                selectedRepresentation = null;
               }else{
                 vm.eventSources[0][i].color = '#6CC547';
                 vm.eventSources[0][i].selected = true;
-                selectedRepresentation = event;            
+                selectedRepresentation = event;
               }
             }else{
               if(vm.eventSources[0][i].selected){
@@ -661,9 +632,6 @@
             }
           }
         }
-
-          
-
       }
       angular.forEach(entities, function (turno, index) {
         if (position != turno.id) {
@@ -696,7 +664,6 @@
       });
       uiCalendarConfig.calendars.newTurnosCalendar.fullCalendar( 'rerenderEvents' );
     }
-    
     function displayComunicationError(loading){
       if(!toastr.active()){
         toastr.warning('Ocurrió un error en la comunicación, por favor intente nuevamente.');

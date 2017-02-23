@@ -59,7 +59,14 @@
             maxDate: new Date(),
           }
         };
-
+        vm.titulos = [
+            'Dr.',
+            'Dra.',
+            'Lic.',
+            'Sr.',
+            'Sra.',
+            'Srta.',
+        ];
 
         activate();
 
