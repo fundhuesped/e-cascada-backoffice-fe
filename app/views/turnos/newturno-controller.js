@@ -539,8 +539,12 @@
       turno.$save(function(turnoResult){
         $loading.finish('app');
         vm.openTurnoModal(turnoResult);
-      },function(){
-        displayComunicationError('app');
+      },function(err){
+        if(err && err.status == 400){
+          toastr.warning(err.data.error);
+        }else{
+          displayComunicationError('app');
+        }
       });
     }
 
