@@ -292,6 +292,7 @@
     function cleanSobreturnosForm(){
       vm.sobreturno = {};
       vm.sobreturnoPrestaciones = [];
+      cleanSobreturnosResult();
     }
 
     function cleanTurnosResult() {
