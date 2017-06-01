@@ -369,6 +369,7 @@
                     <select class="form-control" ng-model="NewTurnoCtrl.sobreturno.prestacion"
                             ng-options="prestacion.name for prestacion in NewTurnoCtrl.sobreturnoPrestaciones" 
                             ng-disabled='NewTurnoCtrl.sobreturnoPrestaciones.length == 0'
+                            ng-change="NewTurnoCtrl.sobreturnoSearchChanged()"
                             required>
                       <option value="">Seleccione prestación</option>
                     </select>
@@ -378,9 +379,9 @@
               <div class="row">
                 <div class="col-xs-12 col-md-6">
                   <div class="form-group">
-                    <span><label>Día</label> <small><em>(dd/mm/aaaa o m/d/aaaa)</em></small></span>
+                    <span><label>Día(*)</label> <small><em>(dd/mm/aaaa o m/d/aaaa)</em></small></span>
                     <p class="input-group">
-                      <input type="text" class="form-control" uib-datepicker-popup="d!/M!/yyyy" ng-model="NewTurnoCtrl.sobreturno.day" is-open="NewTurnoCtrl.sobreturnoCalendarPopup.opened" datepicker-options="NewTurnoCtrl.sobreturnoCalendarPopup.options" ng-required="true" close-text="Cerrar" alt-input-formats="NewTurnoCtrl.sobreturnoCalendarPopup.altInputFormats" current-text="Hoy" clear-text="Limpiar" />
+                      <input type="text" class="form-control" uib-datepicker-popup="d!/M!/yyyy" ng-model="NewTurnoCtrl.sobreturno.day" is-open="NewTurnoCtrl.sobreturnoCalendarPopup.opened" datepicker-options="NewTurnoCtrl.sobreturnoCalendarPopup.options" ng-required="true" close-text="Cerrar" alt-input-formats="NewTurnoCtrl.sobreturnoCalendarPopup.altInputFormats" current-text="Hoy" clear-text="Limpiar" ng-change="NewTurnoCtrl.sobreturnoSearchChanged()" />
                       <span class="input-group-btn">
                         <button type="button" class="btn btn-default" ng-click="NewTurnoCtrl.sobreturnoCalendarPopup.openCalendar()"><i class="glyphicon glyphicon-calendar"></i></button>
                       </span>
@@ -391,13 +392,13 @@
               <div class="row">
                 <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                   <div class="form-group">
-                    <span><label>Desde*</label></span>
+                    <span><label>Desde(*)</label></span>
                     <div uib-timepicker ng-model="NewTurnoCtrl.sobreturno.start" hour-step="1" minute-step="1" show-meridian="ismeridian"></div>
                   </div>
                 </div>
                 <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                   <div class="form-group">
-                    <span><label>Hasta*</label></span>
+                    <span><label>Hasta(*)</label></span>
                     <div uib-timepicker ng-model="NewTurnoCtrl.sobreturno.end" hour-step="1" minute-step="1" show-meridian="ismeridian"></div>
                   </div>
                 </div>
@@ -421,25 +422,33 @@
               </div>
             </div>
             <div class="col-md-6">
-              <div ng-show="NewTurnoCtrl.sobreturno.prestacion">
-                <div class="row">
-                  <b>{{NewTurnoCtrl.sobreturno.prestacion.name}}</b>
+              <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                  <div ng-show="NewTurnoCtrl.sobreturno.prestacion">
+                    <div class="row">
+                      <b>{{NewTurnoCtrl.sobreturno.prestacion.name}}</b>
+                    </div>
+                    <div class="row">
+                      <p>
+                        {{NewTurnoCtrl.sobreturno.prestacion.description}}
+                      </p>
+                    </div>
+                    <div class="row">
+                    <p>
+                      Duración: {{NewTurnoCtrl.sobreturno.prestacion.duration}}
+                    </p>
+                    </div>
+                    <div class="row">
+                    <p style="word-wrap:break-word;">
+                      Observaciones: {{NewTurnoCtrl.sobreturno.prestacion.notes}}
+                    </p>
+                    </div>
+                  </div>
                 </div>
-                <div class="row">
-                  <p>
-                    {{NewTurnoCtrl.sobreturno.prestacion.description}}
-                  </p>
-                </div>
-                <div class="row">
-                <p>
-                  Duración: {{NewTurnoCtrl.sobreturno.prestacion.duration}}
-                </p>
-                </div>
-                <div class="row">
-                <p style="word-wrap:break-word;">
-                  Observaciones: {{NewTurnoCtrl.sobreturno.prestacion.notes}}
-                </p>
-                </div>
+              </div>
+              <div class="row">
+                <div ng-if="NewTurnoCtrl.sobreTurnosWarningMessage" class="alert alert-warning" role="alert">{{NewTurnoCtrl.sobreTurnosWarningMessage}}</div>
+                <div ui-calendar="NewTurnoCtrl.sobreturnoCalendarConfig" ng-model="NewTurnoCtrl.sobreturnoEventSources" calendar="sobreturnoCalendar"></div>
               </div>
             </div>
           </uib-tab>
