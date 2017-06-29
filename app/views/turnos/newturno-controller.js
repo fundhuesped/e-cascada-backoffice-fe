@@ -422,7 +422,8 @@
         ordering:'day,start'
       };
       searchObject.day = $filter('date')(vm.sobreturno.day, 'yyyy-MM-dd');
-      
+      searchObject.state = TurnoSlot.state.ocuppied + ',' +  TurnoSlot.state.available;
+
 
       if (vm.sobreturno.profesional && vm.sobreturno.profesional.id !== -99) {
         searchObject.profesional = vm.sobreturno.profesional.id;
@@ -459,7 +460,7 @@
       TurnoSlot.getFullActiveList(searchObject).$promise.then(function (results) {
         sobreturnosSource =[];
         if(results.length===0){
-          vm.sobreTurnosWarningMessage = "El médico no tiene agenda cargada el día seleccionado";
+          vm.sobreTurnosWarningMessage = 'El médico no tiene agenda cargada el día seleccionado';
         }else{
           vm.sobreTurnosWarningMessage = null;
         }
