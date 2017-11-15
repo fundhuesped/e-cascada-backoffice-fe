@@ -12,6 +12,7 @@
                                 'moment', 
                                 'turno',
                                 'Turno',
+                                'SessionService',
                                 'TurnoSlot'];
 
     function turnoDetailCtrl ($uibModalInstance, 
@@ -20,6 +21,7 @@
                               moment,
                               turno,
                               Turno,
+                              SessionService,
                               TurnoSlot){
         var vm = this;
         vm.cancelTurn = cancelTurn;
@@ -32,6 +34,7 @@
         vm.showDelete = showDelete;
         vm.showMarkAsPresent = showMarkAsPresent;
         vm.newNotes = '';
+        vm.canSeeAudit = canSeeAudit;
 
         vm.cancelModal = {
             style : {},
@@ -126,6 +129,10 @@
                 return moment(vm.turnoSlot.day + ' ' + vm.turnoSlot.start).isSameOrAfter(moment(), 'minute') && vm.turnoSlot.state === TurnoSlot.state.ocuppied;
             }
             return true;
+        }
+
+        function canSeeAudit() {
+            SessionService.currentUserCan('seeAudit');
         }
 
         function displayComunicationError(loading){

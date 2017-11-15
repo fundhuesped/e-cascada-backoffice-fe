@@ -79,6 +79,16 @@
               <p>{{TurnoSlotDetailCtrl.turnoSlot.start}}</p>
             </div>
           </div>
+          <div class="row" ng-show="TurnoSlotDetailCtrl.canSeeAudit()">
+            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+              <span><label>Usuario que creó</label></span>
+              <p>{{TurnoSlotDetailCtrl.turnoSlot.currentTurno.createdBy.first_name}} {{TurnoSlotDetailCtrl.turnoSlot.currentTurno.createdBy.last_name}}</p>
+            </div>
+            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+              <span><label>Usuario que modificó</label></span>
+              <p>{{TurnoSlotDetailCtrl.turnoSlot.currentTurno.lastModifiedBy.first_name}} {{TurnoSlotDetailCtrl.turnoSlot.currentTurno.lastModifiedBy.last_name}}</p>
+            </div>
+          </div>
           <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-show="TurnoSlotDetailCtrl.turno.notes">
               <span><label>Notas</label></span>
