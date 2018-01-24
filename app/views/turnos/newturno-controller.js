@@ -240,8 +240,14 @@
         paciente.$save(function(createdPaciente){
                         vm.sobreturno.paciente = createdPaciente;
                         vm.reserveSobreturno();
-                      },function(){
-                        displayComunicationError('app');
+                      },function(error){
+                        // console.log(error);
+                        if(error.status==400 && error.data == 'Duplicate paciente exists'){
+                          toastr.warning('Por favor revise que ya existe un paciente con estos datos');
+                          $loading.finish('app');
+                        }else{
+                          displayComunicationError('app');
+                        }
                       }
         );
       }
