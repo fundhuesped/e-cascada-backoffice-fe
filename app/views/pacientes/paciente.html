@@ -101,7 +101,7 @@
                         <br>
                         <div class="col-xs-5">
                             <div class="form-group" ng-class="{'has-error':PacienteCtrl.pacienteForm.socialService.$error.required}">
-                                <span><label>Obra social*</label></span>
+                                <span><label>Cobertura*</label></span>
                                 <select class="form-control" name="socialService" ng-model="PacienteCtrl.paciente.socialService" ng-options="socialService as socialService.name for socialService in PacienteCtrl.socialServices track by socialService.id" required>
                                     <option value="" selected="selected">---Seleccione---</option>
                                 </select>
