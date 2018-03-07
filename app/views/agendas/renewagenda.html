@@ -47,7 +47,7 @@
               <div class="form-group">
                 <span><label>Desde*</label> <small><em>(dd/mm/aaaa o m/d/aaaa)</em></small></span>
                 <p class="input-group">
-                  <input type="text" class="form-control" value="{{RenewAgendaCtrl.agenda.validFrom.format('DD/MM/YYYY')}}" ng-disabled="true"/>
+                  <input type="text" class="form-control" value="{{RenewAgendaCtrl.agenda.validFrom.format('DD/MM/YYYY')}}"/>
                 </p>
               </div>
             </div>
@@ -58,7 +58,7 @@
               <div class="form-group">
                 <span><label>Hasta*</label> <small><em>(dd/mm/aaaa o m/d/aaaa)</em></small></span>
                 <p class="input-group">
-                  <input type="text" name="validTo" class="form-control" value="{{RenewAgendaCtrl.agenda.validTo.format('DD/MM/YYYY')}}" ng-disabled="true"/>
+                  <input type="text" name="validTo" class="form-control" value="{{RenewAgendaCtrl.agenda.validTo.format('DD/MM/YYYY')}}"/>
                 </p>
               </div>
             </div>
@@ -76,11 +76,11 @@
           <div class="row">
             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
               <input type="number" name="hoursFrom" class="form-control" ng-model="RenewAgendaCtrl.hoursFrom" value="0"
-                     min="0" max="24" ng-disabled="true">Horas
+                     min="0" max="24">Horas
             </div>
             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
               <input type="number" name="minutesFrom" class="form-control" ng-model="RenewAgendaCtrl.minutesFrom"
-                     value="0" min="0" max="59" ng-disabled="true" required>Minutos
+                     value="0" min="0" max="59" required>Minutos
             </div>
           </div>
           <div class="row">
@@ -91,11 +91,11 @@
           <div class="row">
             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
               <input type="number" name="hoursTo" class="form-control" ng-model="RenewAgendaCtrl.hoursTo" value="0"
-                     min="0" max="24" ng-disabled="true" required>Horas
+                     min="0" max="24" required>Horas
             </div>
             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
               <input type="number" name="minutesTo" class="form-control" ng-model="RenewAgendaCtrl.minutesTo" value="0"
-                     min="0" max="59" ng-disabled="true" required>Minutos
+                     min="0" max="59" required>Minutos
             </div>
           </div>
         </div>
