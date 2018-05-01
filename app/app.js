@@ -113,6 +113,21 @@ angular.module('turnos.app', [
                     },
                 }
             })
+            .state('turnoscanceledbypatient', {
+                url: '/turnoscanceledbypatient',
+                views: {
+                    'navbar': {
+                        templateUrl: 'views/navbar/navbar.html',
+                        controller: 'NavbarCtrl',
+                        controllerAs: 'NavbarCtrl'
+                    },
+                    'main': {
+                        templateUrl: 'views/turnos/turnosCanceledByPatient.html',
+                        controller: 'TurnosCanceledByPatientCtrl',
+                        controllerAs: 'Ctrl'
+                    },
+                }
+            })            
             .state('newespecialidad', {
                 url: '/newespecialidad',
                 views: {

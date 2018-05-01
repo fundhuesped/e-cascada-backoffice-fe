@@ -70,12 +70,16 @@
         absent:'ProfesionalAbsent',
         agendaChanged:'AgendaChanged',
         pacientRequest:'PacientRequest',
+        pacientRequestSMS:'PatientSMS',
+        pacientRequestEmail:'PatientEmail',
         other:'Other'
       };
       Turno.cancelationReasonDescription = {
         ProfesionalAbsent:'Ausencia del profesional',
         AgendaChanged:'Modificación de agenda',
         PacientRequest:'Pedido del paciente',
+        PatientSMS:'SMS del paciente',
+        PatientEmail:'Email del paciente',
         Other:'Otros'
       };
 

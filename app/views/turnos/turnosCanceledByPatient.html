@@ -1,0 +1,77 @@
+<div class="modal fade" ng-class="{'in':Ctrl.markModal.style}" ng-style="Ctrl.markModal.style">
+  <div class="modal-dialog modal-confirmation">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">¿Marcar como informado?</h4>
+      </div>
+      <div class="modal-body">
+        <p>¿Esta seguro que desea marcar como informado el turno seleccionado?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default btn-cancel" ng-click="Ctrl.markModal.dismiss()">Cerrar
+        </button>
+        <button type="button" class="btn btn-success btn-confirm" ng-click="Ctrl.markModal.confirm()"><span
+          class="glyphicon glyphicon-ok"></span> Marcar turno
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<div class="row">
+				<form class="form-inline" name="Ctrl.searchPreferencesForm">
+					<div class="col-md-5">
+						<h3 class="panel-title">Turnos cancelados por pacientes</h3>
+					</div>
+					<div class="col-md-7">
+						<select class="form-control pull-right" ng-model="Ctrl.statusFilter" ng-change="Ctrl.changeSearchParameter()">
+							<option value="1">A informar</option>
+							<option value="2">Ya informados</option>
+						</select>
+					</div>
+				</form>
+			</div>
+		</div>
+		<div class="panel-body">
+			<div class="col-md-12">
+				<div class="row">
+			    	<uib-pagination max-size="5" total-items="Ctrl.totalItems" ng-model="Ctrl.currentPage" items-per-page="Ctrl.pageSize" class="pagination-sm" boundary-link-numbers="true" ng-change="Ctrl.changeSearchParameter()"></uib-pagination>
+				</div>
+
+				<div class="row">
+					<table class="table table-hover">
+						<thead>
+						<tr>
+							<th>Fecha</th>
+							<th>Hora</th>
+                            <th>Paciente</th>
+                            <th>Teléfono</th>
+                            <th>Profesional</th>
+							<th>Especialidad</th>
+							<th>Prestación</th>
+                            <th>Motivo</th>
+                            <th></th>
+                            </tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="(key, turno) in Ctrl.turnos" ng-class="{'bg-success':turnoSlot.selected}"
+                              >
+                                <td>{{turno.turnoSlot.day | date : 'dd-MM-yyyy'}}</td>
+                                <td>{{turno.turnoSlot.start}}</td>
+                                <td>{{turno.paciente.fatherSurname}}, {{turno.paciente.firstName}}</td>
+                                <td>{{turno.paciente.primaryPhoneNumber}}</td>
+                                <td>{{turno.turnoSlot.profesional.fatherSurname}}, {{turno.turnoSlot.profesional.firstName}}</td>
+                                <td>{{turno.turnoSlot.prestacion.especialidad.name}}</td>
+                                <td>{{turno.turnoSlot.prestacion.name}}</td>
+                                <td>{{Ctrl.getReasonDecription(turno.cancelation_reason)}}</td>
+                                <td><button class="btn btn-success" type="button" ng-click="Ctrl.showInformTurno(turno)" ng-show="Ctrl.canShowInformTurno(turno)"><i class="glyphicon glyphicon-ok"></i> Informar</button></td>
+                            </tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
