@@ -3,7 +3,7 @@
     /* jshint validthis: true */
     /*jshint latedef: nofunc */
 
-    function pacienteCtrl ($loading, $uibModalInstance, $filter, $uibModal, moment, paciente, Document, Turno, Sex, Province, District, Location, SocialService, CivilStatus, Education, Paciente, toastr) {
+    function pacienteCtrl ($loading, $uibModalInstance, $filter, $uibModal, moment, paciente, Document, Turno, Sex, Province, District, Location, SocialService, CivilStatus, Education, Paciente, toastr, $location, $anchorScroll) {
         var vm = this;
 
         vm.paciente = {};
@@ -208,6 +208,8 @@
         }
         function changeStatus() {
             vm.showModal();
+            $location.hash('modal');
+            $anchorScroll();
         }
 
         function cancel (){
@@ -255,5 +257,5 @@
             }
         }
     }
-    angular.module('turnos.pacientes').controller('PacienteCtrl',['$loading','$uibModalInstance','$filter', '$uibModal', 'moment', 'paciente','Document','Turno','Sex', 'Province', 'District', 'Location', 'SocialService', 'CivilStatus', 'Education', 'Paciente', 'toastr', pacienteCtrl]);
+    angular.module('turnos.pacientes').controller('PacienteCtrl',['$loading','$uibModalInstance','$filter', '$uibModal', 'moment', 'paciente','Document','Turno','Sex', 'Province', 'District', 'Location', 'SocialService', 'CivilStatus', 'Education', 'Paciente', 'toastr', '$location', '$anchorScroll', pacienteCtrl]);
 })();

@@ -22,7 +22,9 @@
                                'Especialidad', 
                                'Profesional',     
                                'Agenda',     
-                               'toastr'];
+                               'toastr',
+                               '$location',
+                               '$anchorScroll'];
 
     function profesionalCtrl ($loading,
                               $uibModalInstance,
@@ -38,7 +40,9 @@
                               Especialidad, 
                               Profesional,
                               Agenda,
-                              toastr) {
+                              toastr,
+                              $location,
+                              $anchorScroll) {
         var vm = this;
         vm.profesional = {};
         vm.editing = true;
@@ -156,6 +160,8 @@
         //Confirm delete modal
         function showModal(){
             vm.modalStyle = {display:'block'};
+            $location.hash('modal');
+            $anchorScroll();
         }
 
         vm.confirmModal = function confirmModal(){
