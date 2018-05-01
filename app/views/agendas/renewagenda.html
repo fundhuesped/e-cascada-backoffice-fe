@@ -8,11 +8,6 @@
     </div>
     <div class="panel-body">
       <form name="RenewAgendaCtrl.agendaForm">
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg 12">
-          <div class="alert alert-danger">
-              <p><i class="glyphicon glyphicon-warning-sign"></i> Los cambios que usted ingrese pueden generar la cancelación de turnos ya tomados</p>
-          </div>
-        </div>
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
           <div class="row">
             <div class="alert alert-dismissable alert-warning" ng-show="RenewAgendaCtrl.errorMessage">
@@ -76,11 +71,11 @@
           <div class="row">
             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
               <input type="number" name="hoursFrom" class="form-control" ng-model="RenewAgendaCtrl.hoursFrom" value="0"
-                     min="0" max="24">Horas
+                     min="0" max="24" required ng-disabled="true">Horas
             </div>
             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
               <input type="number" name="minutesFrom" class="form-control" ng-model="RenewAgendaCtrl.minutesFrom"
-                     value="0" min="0" max="59" required>Minutos
+                     value="0" min="0" max="59" ng-disabled="true" required>Minutos
             </div>
           </div>
           <div class="row">
@@ -91,11 +86,11 @@
           <div class="row">
             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
               <input type="number" name="hoursTo" class="form-control" ng-model="RenewAgendaCtrl.hoursTo" value="0"
-                     min="0" max="24" required>Horas
+                     min="0" max="24" ng-disabled="true" required>Horas
             </div>
             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
               <input type="number" name="minutesTo" class="form-control" ng-model="RenewAgendaCtrl.minutesTo" value="0"
-                     min="0" max="59" required>Minutos
+                     min="0" max="59" ng-disabled="true" required>Minutos
             </div>
           </div>
         </div>

@@ -10,7 +10,7 @@
     vm.selectPrestacion = selectPrestacion;
     vm.openFromDateCalendar = openFromDateCalendar;
     vm.openToDateCalendar = openToDateCalendar;
-
+    vm.changeDates = changeDates;
     vm.fromDateCalendarPopup = {
       opened: false,
       options: {
@@ -249,6 +249,10 @@
         }
       }
     };
+
+    function changeDates() {
+      vm.showTable = false;
+    }
 
     function displayComunicationError(loading){
       if(!toastr.active()){

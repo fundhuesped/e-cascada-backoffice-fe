@@ -64,7 +64,7 @@
               <div class="form-group">
                 <span><label>Desde*</label> <small><em>(dd/mm/aaaa o m/d/aaaa)</em></small></span>
                 <p class="input-group">
-                  <input type="text" class="form-control" value="{{NewAgendaCtrl.agenda.validFrom.format('DD/MM/YYYY')}}" ng-disabled="true"/>
+                  <input type="text" class="form-control" value="{{NewAgendaCtrl.agenda.validFrom.format('DD/MM/YYYY')}}" ng-disabled="NewAgendaCtrl.showTable"/>
                 </p>
               </div>
             </div>
@@ -75,7 +75,7 @@
               <div class="form-group">
                 <span><label>Hasta*</label> <small><em>(dd/mm/aaaa o m/d/aaaa)</em></small></span>
                 <p class="input-group">
-                  <input type="text" name="validTo" class="form-control" value="{{NewAgendaCtrl.agenda.validTo.format('DD/MM/YYYY')}}" ng-disabled="true"/>
+                  <input type="text" name="validTo" class="form-control" value="{{NewAgendaCtrl.agenda.validTo.format('DD/MM/YYYY')}}" ng-disabled="NewAgendaCtrl.showTable"/>
                 </p>
               </div>
             </div>
@@ -92,13 +92,15 @@
           </div>
 
           <div class="row">
-            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" ng-class="{'has-error':NewAgendaCtrl.newAgendaForm.hoursFrom.$error.required}">
-              <input type="number" name="hoursFrom" class="form-control" ng-model="NewAgendaCtrl.hoursFrom" value="0"
-                     min="0" max="24" required>Horas
-            </div>
-            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" ng-class="{'has-error':NewAgendaCtrl.newAgendaForm.minutesFrom.$error.required}">
-              <input type="number" name="minutesFrom" class="form-control" ng-model="NewAgendaCtrl.minutesFrom"
-                     value="0" min="0" max="59" required>Minutos
+            <div class="form-group">
+              <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" ng-class="{'has-error':NewAgendaCtrl.newAgendaForm.hoursFrom.$error.required}">
+                <input type="number" name="hoursFrom" class="form-control" ng-model="NewAgendaCtrl.hoursFrom" value="0"
+                       min="0" max="24" required ng-disabled="NewAgendaCtrl.showTable">Horas
+              </div>
+              <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" ng-class="{'has-error':NewAgendaCtrl.newAgendaForm.minutesFrom.$error.required}">
+                <input type="number" name="minutesFrom" class="form-control" ng-model="NewAgendaCtrl.minutesFrom"
+                       value="0" min="0" max="59" required ng-disabled="NewAgendaCtrl.showTable">Minutos
+              </div>
             </div>
           </div>
           <div class="row">
@@ -107,35 +109,42 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" ng-class="{'has-error':NewAgendaCtrl.newAgendaForm.hoursTo.$error.required}">
-              <input type="number" name="hoursTo" class="form-control" ng-model="NewAgendaCtrl.hoursTo" value="0"
-                     min="0" max="24" required>Horas
-            </div>
-            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" ng-class="{'has-error':NewAgendaCtrl.newAgendaForm.minutesTo.$error.required}">
-              <input type="number" name="minutesTo" class="form-control" ng-model="NewAgendaCtrl.minutesTo" value="0"
-                     min="0" max="59" required>Minutos
+            <div class="form-group">
+              <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" ng-class="{'has-error':NewAgendaCtrl.newAgendaForm.hoursTo.$error.required}">
+                <input type="number" name="hoursTo" class="form-control" ng-model="NewAgendaCtrl.hoursTo" value="0"
+                       min="0" max="24" required ng-disabled="NewAgendaCtrl.showTable">Horas
+              </div>
+              <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" ng-class="{'has-error':NewAgendaCtrl.newAgendaForm.minutesTo.$error.required}">
+                <input type="number" name="minutesTo" class="form-control" ng-model="NewAgendaCtrl.minutesTo" value="0"
+                       min="0" max="59" required ng-disabled="NewAgendaCtrl.showTable">Minutos
+              </div>
             </div>
           </div>
-          <div class="row">
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-              <div class="form-group">
-                <div
-                  class="col-xs-2 col-sm-2 col-md-2 col-lg-2 ">
-                  <button id="btn-cancel" type="button" class="btn btn-default" ng-click="NewAgendaCtrl.close()">
-                    Cancelar
-                  </button>
-                </div>
-                <div class="col-xs-3 col-xs-offset-7 col-sm-3 col-sm-offset-7 col-md-3 col-md-offset-7 col-lg-3 col-lg-offset-7">
-                  <button id="btn-load" type="submit" class="btn btn-success pull-right" ng-show="!NewAgendaCtrl.showTable"
-                          ng-click="NewAgendaCtrl.loadAgenda()"><span class="glyphicon glyphicon-ok"></span>
-                    Cargar
-                  </button>
-                  <button id="btn-confirm" type="submit" class="btn btn-success pull-right" ng-show="NewAgendaCtrl.showTable"
-                          ng-click="NewAgendaCtrl.confirm()"><span class="glyphicon glyphicon-ok"></span>
-                    Confirmar
-                  </button>
-                </div>
-              </div>
+          <div class="row form-group">
+            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 ">
+              <button id="btn-confirm" type="submit" class="btn btn-warning" ng-show="NewAgendaCtrl.showTable"
+                      ng-click="NewAgendaCtrl.changeDates()"><span class="glyphicon glyphicon-pencil"></span>
+                Cambiar
+              </button>
+            </div>
+            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 ">
+              <button id="btn-confirm" type="submit" class="btn btn-success pull-right" ng-show="NewAgendaCtrl.showTable"
+                      ng-click="NewAgendaCtrl.confirm()"><span class="glyphicon glyphicon-ok"></span>
+                Confirmar
+              </button>
+            </div>
+          </div>
+          <div class="row form-group">
+            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 ">
+              <button id="btn-cancel" type="button" class="btn btn-default" ng-click="NewAgendaCtrl.close()">
+                Cancelar
+              </button>
+            </div>
+            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 ">
+              <button id="btn-load" type="submit" class="btn btn-success pull-right" ng-show="!NewAgendaCtrl.showTable"
+                      ng-click="NewAgendaCtrl.loadAgenda()"><span class="glyphicon glyphicon-ok"></span>
+                Cargar
+              </button>
             </div>
           </div>
         </div>
