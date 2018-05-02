@@ -49,7 +49,9 @@
                 vm.paciente = returnedObject;
                 vm.paciente.birthDate = (vm.paciente.birthDate?new Date(vm.paciente.birthDate + 'T03:00:00'):null);
                 vm.paciente.firstVisit = (vm.paciente.firstVisit?new Date(vm.paciente.firstVisit):null);
-
+                vm.paciente.primaryPhoneNumber = parseInt(vm.paciente.primaryPhoneNumber)
+                vm.paciente.secondPhoneNumber = parseInt(vm.paciente.secondPhoneNumber)
+                vm.paciente.thirdPhoneNumber = parseInt(vm.paciente.thirdPhoneNumber)
 
                 Document.getFullActiveList(function(documents){
                     vm.documents = documents;

@@ -64,7 +64,7 @@
                   <span><label>Cobertura(*)</label></span>
                   <select class="form-control" ng-model="NewTurnoCtrl.paciente.socialService"
                           ng-options="socialService.name for socialService in NewTurnoCtrl.socialServices track by socialService.id"
-                          required>
+                          required ng-disabled="NewTurnoCtrl.paciente.id">
                     <option value="">Seleccionar</option>
                   </select>
                 </div>
