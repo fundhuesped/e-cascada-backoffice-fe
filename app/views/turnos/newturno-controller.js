@@ -126,7 +126,7 @@
       height: 450,
       editable: false,
       lang: 'es',
-      weekends: false,
+      hiddenDays: [0],
       defaultView: 'agendaWeek',
       header: {
         left: 'agendaWeek agendaDay',
