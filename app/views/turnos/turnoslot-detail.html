@@ -58,7 +58,7 @@
               <span><label>Prestación</label></span>
               <p>{{TurnoSlotDetailCtrl.turnoSlot.prestacion.name}}</p>
             </div>
-          </div>          
+          </div>
           <div class="row" ng-show="TurnoSlotDetailCtrl.turno.paciente">
             <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
               <span><label>Paciente</label></span>
@@ -69,6 +69,13 @@
               <p>{{TurnoSlotDetailCtrl.turno.paciente.socialService.name}}</p>
             </div>
           </div>
+          <div class="row" ng-show="TurnoSlotDetailCtrl.turno.paciente">
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+              <span><label>Teléfono</label></span>
+              <p>{{TurnoSlotDetailCtrl.turno.paciente.primaryPhoneNumber}}</p>
+            </div>
+          </div>
+
           <div class="row">
             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
               <span><label>Fecha</label></span>
