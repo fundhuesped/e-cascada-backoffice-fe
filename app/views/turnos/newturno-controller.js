@@ -455,7 +455,7 @@
         }else{
           searchObject.day__gte = $filter('date')(new Date(), 'yyyy-MM-dd');
         }
-        if (vm.selectedProfesional) {
+        if (vm.selectedProfesional && vm.selectedProfesional.id != -99) {
           searchObject.profesional = vm.selectedProfesional.id;
         }
         getTurnoSlotsList(searchObject);
