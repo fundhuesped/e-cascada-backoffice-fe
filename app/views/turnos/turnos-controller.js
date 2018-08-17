@@ -78,9 +78,9 @@
 	        },displayComunicationError);
 	    }
 
-		function getProfesionales(firstname){
-			if(firstname.length>2){
-		        return Profesional.getActiveList({firstName: firstname}, angular.noop, displayComunicationError).$promise;
+		function getProfesionales(name){
+			if(name.length>2){
+		        return Profesional.getActiveList({anyName: name}, angular.noop, displayComunicationError).$promise;
 			}
 		}
 		
