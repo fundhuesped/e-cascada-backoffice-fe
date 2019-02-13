@@ -42,7 +42,10 @@
               <div class="form-group">
                 <span><label>Desde*</label> <small><em>(dd/mm/aaaa o m/d/aaaa)</em></small></span>
                 <p class="input-group">
-                  <input type="text" class="form-control" value="{{RenewAgendaCtrl.agenda.validFrom.format('DD/MM/YYYY')}}"/>
+                  <input type="text" class="form-control" uib-datepicker-popup="d!/M!/yyyy" name="to" ng-model="RenewAgendaCtrl.agenda.validFrom" is-open="RenewAgendaCtrl.fromDateCalendarPopup.opened" datepicker-options="RenewAgendaCtrl.fromDateCalendarPopup.options" close-text="Cerrar" alt-input-formats="RenewAgendaCtrl.fromDateCalendarPopup.altInputFormats" current-text="Hoy" clear-text="Limpiar"/>
+                  <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" ng-click="RenewAgendaCtrl.fromDateCalendarPopup.openCalendar()"><i class="glyphicon glyphicon-calendar"></i></button>
+                  </span>
                 </p>
               </div>
             </div>
@@ -53,7 +56,10 @@
               <div class="form-group">
                 <span><label>Hasta*</label> <small><em>(dd/mm/aaaa o m/d/aaaa)</em></small></span>
                 <p class="input-group">
-                  <input type="text" name="validTo" class="form-control" value="{{RenewAgendaCtrl.agenda.validTo.format('DD/MM/YYYY')}}"/>
+                  <input type="text" class="form-control" uib-datepicker-popup="d!/M!/yyyy" name="to" ng-model="RenewAgendaCtrl.agenda.validTo" is-open="RenewAgendaCtrl.toDateCalendarPopup.opened" datepicker-options="RenewAgendaCtrl.toDateCalendarPopup.options" close-text="Cerrar" alt-input-formats="RenewAgendaCtrl.toDateCalendarPopup.altInputFormats" current-text="Hoy" clear-text="Limpiar"/>
+                  <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" ng-click="RenewAgendaCtrl.toDateCalendarPopup.openCalendar()"><i class="glyphicon glyphicon-calendar"></i></button>
+                  </span>
                 </p>
               </div>
             </div>

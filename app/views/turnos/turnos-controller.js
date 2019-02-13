@@ -54,7 +54,7 @@
 	          center: 'title',
 	          right: 'today prev,next'
 	        },
-	        businessHours:{
+			businessHours:{
 						    start: '8:00',
 						    end: '16:00', 
 						    dow: [ 1, 2, 3, 4, 5 ]
@@ -103,10 +103,7 @@
 	    }
 
 	    function canLookForTurnos() {
-	    	if(vm.selectedEspecialidad&&!vm.selectedPrestacion){
-	    		return false;
-	    	}
-	    	return vm.selectedPrestacion || vm.selectedProfesional;
+	    	return vm.selectedEspecialidad || vm.selectedPrestacion || vm.selectedProfesional;
 	    }
 
 	    function lookForTurnos() {
@@ -145,14 +142,8 @@
 	      	TurnoSlot.getFullActiveList(searchObject)
 	      	   .$promise
 	      	   .then(function (results) {
-			        var turnosSource =[];
 			        vm.turnos = results;
-			        angular.forEach(results, function (turno) {
-			        	var event = createCalendarTurnoEvent(turno);
-			          	turnosSource.push(event);
-			          	turno.calendarRepresentation = event;
-		        	});
-			        vm.eventSources.push(turnosSource);
+					generateEvents();
 			        $loading.finish('app');
 	        	}, function(){displayComunicationError('app');});
       	    
@@ -160,6 +151,17 @@
       	    	searchAusencias();
       	    }
 	      }
+
+		function generateEvents(){
+			var turnosSource =[];
+			angular.forEach(vm.turnos, function (turno) {
+				var event = createCalendarTurnoEvent(turno);
+				turnosSource.push(event);
+				turno.calendarRepresentation = event;
+			});
+			vm.eventSources.push(turnosSource);
+		}
+
 
       	function searchAusencias(){
 		    Leave.getFullActiveList({profesional:vm.selectedProfesional.id}, function(results){
@@ -226,15 +228,17 @@
 	        var title = '';
 	        var color = '#B2EBF2';
   	      	var calendarView = uiCalendarConfig.calendars.turnsCalendar.fullCalendar( 'getView' );
-
-	        if(calendarView.name === 'agendaDay' && turnoSlot.state === TurnoSlot.state.ocuppied){
-	  	      	var turno = turnoSlot.currentTurno;
-	         	title = turno.paciente.fatherSurname + ',' + turno.paciente.firstName + ' - ' + turno.paciente.primaryPhoneNumber + ' - ' + turno.paciente.socialService.name + ' - ' + turnoSlot.prestacion.name;
-	        	if(turno.state === Turno.state.present){
-		         	color = '#d6e9c6';
-	        	}else{
-		         	color = '#00796B';
-	        	}
+			if(calendarView.name === 'agendaDay'){
+				title = turnoSlot.profesional.firstName + ',' + turnoSlot.profesional.fatherSurname;  
+				if(turnoSlot.state === TurnoSlot.state.ocuppied){
+					var turno = turnoSlot.currentTurno;
+					title += ' | ' + turno.paciente.fatherSurname + ',' + turno.paciente.firstName + ' - ' + turno.paciente.primaryPhoneNumber + ' - ' + turno.paciente.socialService.name + ' - ' + turnoSlot.prestacion.name;
+					if(turno.state === Turno.state.present){
+						color = '#d6e9c6';
+					}else{
+						color = '#00796B';
+					}
+				}
 	        }else{
 	        	if(turnoSlot.state === TurnoSlot.state.ocuppied){
 		  	      	var turno = turnoSlot.currentTurno;

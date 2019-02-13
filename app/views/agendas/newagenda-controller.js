@@ -8,19 +8,41 @@
     vm.close = close;
     vm.profesionales = [];
     vm.selectPrestacion = selectPrestacion;
-    vm.openFromDateCalendar = openFromDateCalendar;
-    vm.openToDateCalendar = openToDateCalendar;
     vm.changeDates = changeDates;
+    vm.hoursFrom = 8;
+    vm.minutesFrom = 0;
+    vm.hoursTo = 20;
+    vm.minutesTo = 0;
+
     vm.fromDateCalendarPopup = {
       opened: false,
       options: {
       }
     };
+    vm.fromCalendarPopup = {
+      opened: false,
+      openCalendar : function(){
+        this.opened = true;
+      }
+    };
     vm.toDateCalendarPopup = {
       opened: false,
       options: {
+      },
+      openCalendar : function(){
+        this.opened = true;
       }
     };
+    vm.daysStr = [
+      {'index': 0, 'name': 'Lu', 'selected': false},
+      {'index': 1, 'name': 'Ma', 'selected': false},
+      {'index': 2, 'name': 'Mie', 'selected': false},
+      {'index': 3, 'name': 'Jue', 'selected': false},
+      {'index': 4, 'name': 'Vi', 'selected': false},
+      {'index': 5, 'name': 'Sa', 'selected': false},
+      {'index': 6, 'name': 'Do', 'selected': false}
+    ];
+    vm.showTable = false;
     activate();
 
     function activate() {
@@ -28,49 +50,6 @@
         vm.profesionales = profesionales;
       },displayComunicationError);
     }
-
-    vm.daysStr = [{
-      'index': 0,
-      'name': 'Lu',
-      'selected': false
-      },
-      {
-        'index': 1,
-        'name': 'Ma',
-        'selected': false
-      },
-      {
-        'index': 2,
-        'name': 'Mie',
-        'selected': false
-      },
-      {
-        'index': 3,
-        'name': 'Jue',
-        'selected': false
-      },
-      {
-        'index': 4,
-        'name': 'Vi',
-        'selected': false
-      },
-      {
-        'index': 5,
-        'name': 'Sa',
-        'selected': false
-      },
-      {
-        'index': 6,
-        'name': 'Do',
-        'selected': false
-      }
-    ];
-    vm.showTable = false;
-
-    vm.hoursFrom = 8;
-    vm.minutesFrom = 0;
-    vm.hoursTo = 20;
-    vm.minutesTo = 0;
 
     vm.confirm = function confirm() {
       if (vm.newAgendaForm.$valid) {
@@ -81,8 +60,8 @@
         agenda.prestacion = vm.selectedPrestacion;
         agenda.start = vm.hoursFrom + ':' + vm.minutesFrom;
         agenda.end = vm.hoursTo + ':' + vm.minutesTo;
-        agenda.validFrom = vm.agenda.validFrom.format('YYYY-MM-DD');
-        agenda.validTo = vm.agenda.validTo.format('YYYY-MM-DD');
+        agenda.validFrom = moment(vm.agenda.validFrom).format('YYYY-MM-DD');
+        agenda.validTo = moment(vm.agenda.validTo).format('YYYY-MM-DD');
         agenda.start = vm.agenda.start;
         agenda.end = vm.agenda.end;
         agenda.periods = vm.agenda.periods;
@@ -170,15 +149,13 @@
     function selectPrestacion(){
       Agenda.getActiveList({page_size:1,ordering:'-validTo', profesional:vm.selectedProfesional.id, prestacion:vm.selectedPrestacion.id}, function(list){
         vm.agenda = {};
-
         if(list.length>0){
-              vm.agenda.validFrom = moment(list[0].validTo).add(1,'month').startOf('month');
-              vm.agenda.validTo = moment(vm.agenda.validFrom).endOf('month');
-          }else{
-            vm.agenda.validFrom = moment().add(1,'day');
-            vm.agenda.validTo = moment().add(1,'month').endOf("month");
-          }
-
+          vm.agenda.validFrom = moment(list[0].validTo).add(1,'month').startOf('month');
+          vm.agenda.validTo = moment(vm.agenda.validFrom).endOf('month');
+        }else{
+          vm.agenda.validFrom = moment().add(1,'day').toDate();
+          vm.agenda.validTo = moment().add(1,'month').endOf("month").toDate();;
+        }
       },displayComunicationError);
     }
 
@@ -229,14 +206,6 @@
         }
       }
     };
-
-    function openFromDateCalendar() {
-      vm.fromDateCalendarPopup.opened = true;
-    }
-
-    function openToDateCalendar() {
-      vm.toDateCalendarPopup.opened = true;
-    }
 
     vm.changeState = function changeState(day, period) {
       period.selected = false;
