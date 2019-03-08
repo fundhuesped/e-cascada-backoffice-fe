@@ -229,10 +229,10 @@
 	        var color = '#B2EBF2';
   	      	var calendarView = uiCalendarConfig.calendars.turnsCalendar.fullCalendar( 'getView' );
 			if(calendarView.name === 'agendaDay'){
-				title = turnoSlot.profesional.firstName + ',' + turnoSlot.profesional.fatherSurname;  
 				if(turnoSlot.state === TurnoSlot.state.ocuppied){
 					var turno = turnoSlot.currentTurno;
 					title += ' | ' + turno.paciente.fatherSurname + ',' + turno.paciente.firstName + ' - ' + turno.paciente.primaryPhoneNumber + ' - ' + turno.paciente.socialService.name + ' - ' + turnoSlot.prestacion.name;
+					title += turnoSlot.profesional.firstName + ',' + turnoSlot.profesional.fatherSurname;
 					if(turno.state === Turno.state.present){
 						color = '#d6e9c6';
 					}else{
