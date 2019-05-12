@@ -19,9 +19,8 @@
                             'Profesional',
                             'TurnoSlot',
                             'Turno',
-                            'Sobreturno'];
-
-
+                            'Sobreturno',
+                            'SocialService'];
   function newTurnoCtrl($uibModal,
                         uiCalendarConfig,
                         toastr,
@@ -34,7 +33,8 @@
                         Profesional,
                         TurnoSlot,
                         Turno,
-                        Sobreturno) {
+                        Sobreturno,
+                        SocialService) {
     var vm = this;
     vm.canConfirmSobreturno = canConfirmSobreturno;
     vm.canConfirmTurno = canConfirmTurno;
@@ -45,11 +45,15 @@
     vm.confirmTurno = confirmTurno;
     vm.confirmSobreturno = confirmSobreturno;
     vm.currentTab = 0;
+    vm.documents = [];
     vm.especialidades = null;
     vm.eventSources = [];
+    vm.sobreturnoEventSources = [];
     vm.cleanTurnosSearch = cleanTurnosSearch;
     vm.lookForPacientes = lookForPacientes;
     vm.lookForTurnos = lookForTurnos;
+    vm.lookForTurnosForDates = lookForTurnosForDates;
+    vm.sobreTurnosWarningMessage = vm.sobreTurnosWarningMessage;
     var lookedForTurnos = false;
     vm.newTurno = {};
     vm.notes = '';
@@ -66,6 +70,7 @@
     vm.prestaciones = [];
     vm.profesionalChanged = profesionalChanged;
     vm.sobreturnoProfesionalChanged = sobreturnoProfesionalChanged;
+    vm.sobreturnoSearchChanged = sobreturnoSearchChanged;
     vm.sobreturnoPrestaciones = [];
     vm.sobreturnoProfesionales = [];
     vm.recomendationsPanel = {};
@@ -76,6 +81,7 @@
     vm.selectPaciente = selectPaciente;
     vm.selectedPaciente = null;
     vm.shouldLookForPacient = shouldLookForPacient;
+    vm.socialServices = [];
     vm.sobreturno = {};
     vm.pageSize = 20;
     vm.totalItems = null;
@@ -110,6 +116,7 @@
 
     //Calendar
     var turnosSource = [];
+    var sobreturnosSource = [];
     var selectedRepresentation;
 
     activate();
@@ -119,7 +126,7 @@
       height: 450,
       editable: false,
       lang: 'es',
-      weekends: false,
+      hiddenDays: [0],
       defaultView: 'agendaWeek',
       header: {
         left: 'agendaWeek agendaDay',
@@ -128,6 +135,25 @@
       },
       eventClick: function selectTurnoOnEventClick(date, jsEvent, view) {
         vm.updateSelectionRow(date.id, vm.turnos, date);
+      },
+      viewRender: function(view, element){
+        if(canLookForTurnos() && lookedForTurnos){
+          vm.lookForTurnos();
+        }
+      }
+    };
+
+    vm.sobreturnoCalendarConfig =
+    {
+      height: 450,
+      editable: false,
+      lang: 'es',
+      weekends: true,
+      defaultView: 'agendaDay',
+      header: {
+        left: '',
+        center: 'title',
+        right: ''
       },
       viewRender: function(view, element){
         if(canLookForTurnos() && lookedForTurnos){
@@ -149,6 +175,10 @@
         vm.sobreturnoProfesionales = profesionales;
       }, displayComunicationError);
 
+      SocialService.getFullActiveList(function(socialServices){
+        vm.socialServices = socialServices;
+      }, displayComunicationError);
+
       vm.recomendationsPanel.message = 'Por favor comience a completar el formulario para buscar pacientes';
       vm.renderCalendar();
     }
@@ -158,7 +188,7 @@
         if(vm.selectedPaciente){
           return true;
         }else{
-          if(vm.paciente && vm.paciente.firstName && vm.paciente.fatherSurname && vm.paciente.primaryPhoneNumber) {
+          if(vm.paciente && vm.paciente.firstName && vm.paciente.fatherSurname && vm.paciente.primaryPhoneNumber && vm.paciente.socialService) {
             return true;
           }
         }
@@ -172,7 +202,7 @@
         if(vm.selectedPaciente){
           return true;
         }else{
-          if(vm.paciente && vm.paciente.firstName && vm.paciente.fatherSurname && vm.paciente.primaryPhoneNumber) {
+          if(vm.paciente && vm.paciente.firstName && vm.paciente.fatherSurname && vm.paciente.primaryPhoneNumber && vm.paciente.socialService) {
             return true;
           }
         }
@@ -202,14 +232,22 @@
         paciente.primaryPhoneNumber = vm.paciente.primaryPhoneNumber;
         paciente.documentType = vm.paciente.documentType;
         paciente.documentNumber = vm.paciente.documentNumber;
+        paciente.socialService = vm.paciente.socialService;
+        paciente.socialServiceNumber = vm.paciente.socialServiceNumber;
         paciente.prospect = true;
         paciente.birthDate = (vm.paciente.birthDate?$filter('date')(vm.paciente.birthDate, 'yyyy-MM-dd'):null);
         paciente.email = vm.paciente.email;
         paciente.$save(function(createdPaciente){
                         vm.sobreturno.paciente = createdPaciente;
                         vm.reserveSobreturno();
-                      },function(){
-                        displayComunicationError('app');
+                      },function(error){
+                        // console.log(error);
+                        if(error.status==400 && error.data == 'Duplicate paciente exists'){
+                          toastr.warning('Por favor revise que ya existe un paciente con estos datos');
+                          $loading.finish('app');
+                        }else{
+                          displayComunicationError('app');
+                        }
                       }
         );
       }
@@ -227,6 +265,8 @@
         paciente.primaryPhoneNumber = vm.paciente.primaryPhoneNumber;
         paciente.documentType = vm.paciente.documentType;
         paciente.documentNumber = vm.paciente.documentNumber;
+        paciente.socialService = vm.paciente.socialService;
+        paciente.socialServiceNumber = vm.paciente.socialServiceNumber;
         paciente.prospect = true;
         paciente.birthDate = (vm.paciente.birthDate?$filter('date')(vm.paciente.birthDate, 'yyyy-MM-dd'):null);
         paciente.email = vm.paciente.email;
@@ -258,6 +298,7 @@
     function cleanSobreturnosForm(){
       vm.sobreturno = {};
       vm.sobreturnoPrestaciones = [];
+      cleanSobreturnosResult();
     }
 
     function cleanTurnosResult() {
@@ -271,6 +312,16 @@
         vm.eventSources.length = 0;
       }
     }
+
+
+  function cleanSobreturnosResult() {
+      if(vm.sobreturnoEventSources){
+        vm.sobreturnoEventSources.length = 0;
+      }
+    }
+
+
+
 
     function cleanTurnosSearch() {
       vm.selectedPrestacion = null;
@@ -367,6 +418,29 @@
       }
     }
 
+
+    function lookForTurnosForDates() {
+      $loading.start('app');
+      cleanSobreturnosResult();
+
+      var searchObject = {
+        prestacion: vm.sobreturno.prestacion.id,
+        ordering:'day,start'
+      };
+      searchObject.day = $filter('date')(vm.sobreturno.day, 'yyyy-MM-dd');
+      searchObject.state = TurnoSlot.state.ocuppied + ',' +  TurnoSlot.state.available;
+
+
+      if (vm.sobreturno.profesional && vm.sobreturno.profesional.id !== -99) {
+        searchObject.profesional = vm.sobreturno.profesional.id;
+      }
+
+      getAllTurnoSlotsForSobreturnoDate(searchObject);
+
+    }
+
+
+
     function pageChanged() {
       if(vm.selectedPrestacion){
         $loading.start('app');
@@ -381,13 +455,61 @@
         }else{
           searchObject.day__gte = $filter('date')(new Date(), 'yyyy-MM-dd');
         }
-        if (vm.selectedProfesional) {
+        if (vm.selectedProfesional && vm.selectedProfesional.id != -99) {
           searchObject.profesional = vm.selectedProfesional.id;
         }
         getTurnoSlotsList(searchObject);
       }
     }
 
+    function getAllTurnoSlotsForSobreturnoDate(searchObject){
+      TurnoSlot.getFullActiveList(searchObject).$promise.then(function (results) {
+        sobreturnosSource =[];
+        if(results.length===0){
+          vm.sobreTurnosWarningMessage = 'El médico no tiene agenda cargada el día seleccionado';
+        }else{
+          vm.sobreTurnosWarningMessage = null;
+        }
+        angular.forEach(results, function (turno) {
+          var event = createCalendarTurnoEvent(turno);
+          sobreturnosSource.push(event);
+          turno.calendarRepresentation = event;
+        });
+        vm.sobreturnoEventSources.push(sobreturnosSource);
+        uiCalendarConfig.calendars.sobreturnoCalendar.fullCalendar( 'gotoDate',searchObject.day );
+        renderSobreturnosCalendar();
+        $loading.finish('app');
+      }, function(){
+        displayComunicationError('app');
+      });
+    }
+
+    function createCalendarTurnoEvent(turnoSlot){
+      var startTime = new Date(turnoSlot.day + 'T' + turnoSlot.start + '-03:00');
+      var endTime = new Date(turnoSlot.day + 'T' + turnoSlot.end+ '-03:00');
+      var title = '';
+      var color = '#B2EBF2';
+      if(turnoSlot.state === TurnoSlot.state.ocuppied){
+          var turno = turnoSlot.currentTurno;
+        if(turno.state === Turno.state.present){
+          color = '#d6e9c6';
+        }else{
+          color = '#00796B';
+        }
+        title = turno.paciente.fatherSurname + ',' + turno.paciente.firstName + '-' + turno.paciente.primaryPhoneNumber;
+      }
+      return {
+          id: turnoSlot.id,
+          title: title,
+          start: startTime,
+          end: endTime,
+          allDay: false,
+          color: color,
+          textColor: '#000000',
+          borderColor: '#000000',
+          timezone:'America/Argentina/Buenos_Aires'
+       };
+    }
 
     function getAllTurnoSlotsForDates(searchObject){
       var calendarView = uiCalendarConfig.calendars.newTurnosCalendar.fullCalendar( 'getView' );
@@ -413,8 +535,8 @@
           turnosSource.push(event);
           turno.calendarRepresentation = event;
         });
-        vm.eventSources.push(turnosSource);
-        vm.renderCalendar();
+          vm.eventSources.push(turnosSource);          
+          vm.renderCalendar();
         $loading.finish('app');
       }, function(){
         displayComunicationError('app');
@@ -502,6 +624,12 @@
       }, 1);
     }
 
+    function renderSobreturnosCalendar() {
+      if (uiCalendarConfig.calendars.sobreturnoCalendar) {
+        uiCalendarConfig.calendars.sobreturnoCalendar.fullCalendar('render');
+      }
+    }
+
 
     function reserveSobreturno(){
       var sobreturno = new Sobreturno();
@@ -529,8 +657,12 @@
       turno.$save(function(turnoResult){
         $loading.finish('app');
         vm.openTurnoModal(turnoResult);
-      },function(){
-        displayComunicationError('app');
+      },function(err){
+        if(err && err.status == 400){
+          toastr.warning(err.data.error);
+        }else{
+          displayComunicationError('app');
+        }
       });
     }
 
@@ -561,9 +693,18 @@
       vm.sobreturnoPrestaciones = Prestacion.getActiveList({profesional:vm.sobreturno.profesional.id}, angular.noop, displayComunicationError);
     }
 
+    function sobreturnoSearchChanged() {
+      if(vm.sobreturno.prestacion && vm.sobreturno.day){
+        lookForTurnosForDates();
+      }
+    }
+
     function selectPaciente(paciente) {
       paciente.birthDate =(paciente.birthDate?new Date(paciente.birthDate + 'T03:00:00'):null);
       vm.paciente = paciente;
+      vm.paciente.primaryPhoneNumber = parseInt(vm.paciente.primaryPhoneNumber)
+      vm.paciente.secondPhoneNumber = parseInt(vm.paciente.secondPhoneNumber)
+      vm.paciente.thirdPhoneNumber = parseInt(vm.paciente.thirdPhoneNumber)
       vm.selectedPaciente = paciente;
       vm.newTurno.paciente = paciente;
       vm.recomendationList = [paciente];

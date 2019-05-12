@@ -29,6 +29,7 @@
                              'list-ausencias',
                              'add-ausencia',
                              'change-ausencia',
+                             'seeAudit'
                             ],
             'secretaria'    : []                
         }

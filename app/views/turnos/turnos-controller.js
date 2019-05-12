@@ -47,14 +47,14 @@
 	        height: 550,
 	        editable: false,
 	        lang: 'es',
-	        weekends: false,
+      		hiddenDays: [0],
 	        defaultView: 'agendaWeek',
 	        header:{
 	          left: 'month , agendaWeek agendaDay',
 	          center: 'title',
 	          right: 'today prev,next'
 	        },
-	        businessHours:{
+			businessHours:{
 						    start: '8:00',
 						    end: '16:00', 
 						    dow: [ 1, 2, 3, 4, 5 ]
@@ -78,9 +78,9 @@
 	        },displayComunicationError);
 	    }
 
-		function getProfesionales(firstname){
-			if(firstname.length>2){
-		        return Profesional.getActiveList({firstName: firstname}, angular.noop, displayComunicationError).$promise;
+		function getProfesionales(name){
+			if(name.length>2){
+		        return Profesional.getActiveList({anyName: name}, angular.noop, displayComunicationError).$promise;
 			}
 		}
 		
@@ -103,10 +103,7 @@
 	    }
 
 	    function canLookForTurnos() {
-	    	if(vm.selectedEspecialidad&&!vm.selectedPrestacion){
-	    		return false;
-	    	}
-	    	return vm.selectedPrestacion || vm.selectedProfesional;
+	    	return vm.selectedEspecialidad || vm.selectedPrestacion || vm.selectedProfesional;
 	    }
 
 	    function lookForTurnos() {
@@ -145,14 +142,8 @@
 	      	TurnoSlot.getFullActiveList(searchObject)
 	      	   .$promise
 	      	   .then(function (results) {
-			        var turnosSource =[];
 			        vm.turnos = results;
-			        angular.forEach(results, function (turno) {
-			        	var event = createCalendarTurnoEvent(turno);
-			          	turnosSource.push(event);
-			          	turno.calendarRepresentation = event;
-		        	});
-			        vm.eventSources.push(turnosSource);
+					generateEvents();
 			        $loading.finish('app');
 	        	}, function(){displayComunicationError('app');});
       	    
@@ -160,6 +151,17 @@
       	    	searchAusencias();
       	    }
 	      }
+
+		function generateEvents(){
+			var turnosSource =[];
+			angular.forEach(vm.turnos, function (turno) {
+				var event = createCalendarTurnoEvent(turno);
+				turnosSource.push(event);
+				turno.calendarRepresentation = event;
+			});
+			vm.eventSources.push(turnosSource);
+		}
+
 
       	function searchAusencias(){
 		    Leave.getFullActiveList({profesional:vm.selectedProfesional.id}, function(results){
@@ -225,15 +227,30 @@
 	        var endTime = new Date(turnoSlot.day + 'T' + turnoSlot.end+ '-03:00');
 	        var title = '';
 	        var color = '#B2EBF2';
-	        if(turnoSlot.state === TurnoSlot.state.ocuppied){
-	  	      	var turno = turnoSlot.currentTurno;
-	        	if(turno.state === Turno.state.present){
-		         	color = '#d6e9c6';
-	        	}else{
-		         	color = '#00796B';
+  	      	var calendarView = uiCalendarConfig.calendars.turnsCalendar.fullCalendar( 'getView' );
+			if(calendarView.name === 'agendaDay'){
+				if(turnoSlot.state === TurnoSlot.state.ocuppied){
+					var turno = turnoSlot.currentTurno;
+					title += ' | ' + turno.paciente.fatherSurname + ',' + turno.paciente.firstName + ' - ' + turno.paciente.primaryPhoneNumber + ' - ' + turno.paciente.socialService.name + ' - ' + turnoSlot.prestacion.name;
+					title += ' - ' + turnoSlot.profesional.firstName + ',' + turnoSlot.profesional.fatherSurname;
+					if(turno.state === Turno.state.present){
+						color = '#d6e9c6';
+					}else{
+						color = '#00796B';
+					}
+				}
+	        }else{
+	        	if(turnoSlot.state === TurnoSlot.state.ocuppied){
+		  	      	var turno = turnoSlot.currentTurno;
+		        	if(turno.state === Turno.state.present){
+			         	color = '#d6e9c6';
+		        	}else{
+			         	color = '#00796B';
+		        	}
+		         	title = turno.paciente.fatherSurname + ',' + turno.paciente.firstName + ' - ' + turno.paciente.primaryPhoneNumber + ' - ';
 	        	}
-	         	title = turno.paciente.fatherSurname + ',' + turno.paciente.firstName + '-' + turno.paciente.primaryPhoneNumber;
 	        }
+
 	        return {
 	            id: turnoSlot.id,
 	            title: title,

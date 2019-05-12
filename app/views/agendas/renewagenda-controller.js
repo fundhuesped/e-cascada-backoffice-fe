@@ -9,18 +9,23 @@
     vm.cancel = cancel;
     vm.editing = true;
     vm.errorMessage = null;
-    vm.openFromDateCalendar = openFromDateCalendar;
-    vm.openToDateCalendar = openToDateCalendar;
     vm.disabledForm = false;
     vm.originalAgenda = {};
+
     vm.fromDateCalendarPopup = {
       opened: false,
       options: {
+      },
+      openCalendar : function(){
+        this.opened = true;
       }
     };
     vm.toDateCalendarPopup = {
       opened: false,
       options: {
+      },
+      openCalendar : function(){
+        this.opened = true;
       }
     };
 
@@ -72,12 +77,11 @@
         delete vm.agenda.id; 
         Agenda.getActiveList({page_size:1,ordering:'-validTo', profesional:vm.agenda.profesional.id, prestacion:vm.agenda.prestacion.id}, function(list){
           if(list.length>0){
-              vm.agenda.validFrom = moment(list[0].validTo).add(1,'month').startOf('month');
-              vm.agenda.validTo = moment(vm.agenda.validFrom).endOf('month');
-
+              vm.agenda.validFrom = moment(list[0].validTo).add(1,'month').startOf('month').toDate();
+              vm.agenda.validTo = moment(vm.agenda.validFrom).endOf('month').toDate();
           }else{
-            vm.agenda.validFrom = moment().add(1,'day');
-            vm.agenda.validTo = moment().add(1,'month').endOf("month");
+            vm.agenda.validFrom = moment().add(1,'day').toDate();
+            vm.agenda.validTo = moment().add(1,'month').endOf("month").toDate();
           }
           vm.selectedProfesionalName = vm.agenda.profesional.fatherSurname + ', ' + vm.agenda.profesional.firstName;
           vm.selectedEspecialidadName = vm.agenda.prestacion.especialidad.name;
@@ -96,8 +100,8 @@
         var agenda = new Agenda(vm.agenda);
         vm.hideErrorMessage();
         $loading.start('app');
-          agenda.validFrom = vm.agenda.validFrom.format('YYYY-MM-DD');
-          agenda.validTo = vm.agenda.validTo.format('YYYY-MM-DD');
+          agenda.validFrom = moment(vm.agenda.validFrom).format('YYYY-MM-DD');
+          agenda.validTo = moment(vm.agenda.validTo).format('YYYY-MM-DD');
           agenda.$save(function () {
           $loading.finish('app');
           $uibModalInstance.close('renewed');
@@ -188,14 +192,6 @@
         }
       }
     };
-
-    function openFromDateCalendar() {
-      vm.fromDateCalendarPopup.opened = true;
-    }
-
-    function openToDateCalendar() {
-      vm.toDateCalendarPopup.opened = true;
-    }
 
     vm.changeState = function changeState(day, period) {
       period.selected = false;
