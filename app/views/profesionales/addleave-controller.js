@@ -67,7 +67,7 @@
         function confirm() {
             if(vm.leaveForm.$valid){
                 var today = moment().startOf('day');
-                if(vm.newLeave.fromDate && vm.newLeave.toDate && (vm.newLeave.fromDate <= vm.newLeave.toDate) && vm.newLeave.fromDate >= today && vm.newLeave.toDate <=vm.lastAgendaFinishDate){
+                if(vm.newLeave.fromDate && vm.newLeave.toDate && (vm.newLeave.fromDate <= vm.newLeave.toDate) && vm.newLeave.fromDate >= today){
                     vm.hideErrorMessage();
                     $loading.start('app');
                     var leave = new Leave();
