@@ -3,6 +3,6 @@
 
  angular.module('turnos.resources', [])
 
-.constant('apiBase', '/api/')
+.constant('apiBase', 'http://localhost:8000/api/')
 
 ;})();
