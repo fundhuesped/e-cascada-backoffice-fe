@@ -14,6 +14,8 @@
         vm.hideErrorMessage = hideErrorMessage;
         vm.searchDistricts = searchDistricts;
         vm.confirm = confirm;
+        vm.showAllowDuplicate = false;
+        vm.allowDuplicate = false;
         vm.birthDateCalendarPopup = {
             opened: false,
             options: {
@@ -84,6 +86,8 @@
                 var paciente = new Paciente();
                 paciente.firstName = vm.newPaciente.firstName;
                 paciente.otherNames = vm.newPaciente.otherNames;
+                paciente.alias = vm.newPaciente.alias;
+                paciente.hceNumber = vm.newPaciente.hceNumber;
                 paciente.fatherSurname = vm.newPaciente.fatherSurname;
                 paciente.motherSurname = vm.newPaciente.motherSurname;
                 paciente.documentType = vm.newPaciente.documentType;
@@ -114,12 +118,22 @@
                 paciente.firstVisit = $filter('date')(vm.newPaciente.firstVisit, "yyyy-MM-dd");
                 paciente.notes = vm.newPaciente.notes;
                 paciente.consent = vm.newPaciente.consent;
+                if(vm.allowDuplicate){
 
-                paciente.$save(function () {
+                }
+                paciente.$save({allowDuplicate:vm.allowDuplicate},function () {
                         $loading.finish('app');
                         $state.go('newturno');
                     },
-                    function(){displayComunicationError('app');}
+                    function(error){
+                        if(error.status==400 && error.data == 'Duplicate paciente exists'){
+                          toastr.warning('Por favor revise que ya existe un paciente con estos datos');
+                          $loading.finish('app');
+                          vm.showAllowDuplicate = true;
+                        }else{
+                            displayComunicationError('app');
+                        }
+                    }
                 );
             } else {
                 vm.errorMessage = 'Por favor revise el formulario';

@@ -19,9 +19,8 @@
                             'Profesional',
                             'TurnoSlot',
                             'Turno',
-                            'Sobreturno'];
-
-
+                            'Sobreturno',
+                            'SocialService'];
   function newTurnoCtrl($uibModal,
                         uiCalendarConfig,
                         toastr,
@@ -34,7 +33,8 @@
                         Profesional,
                         TurnoSlot,
                         Turno,
-                        Sobreturno) {
+                        Sobreturno,
+                        SocialService) {
     var vm = this;
     vm.canConfirmSobreturno = canConfirmSobreturno;
     vm.canConfirmTurno = canConfirmTurno;
@@ -45,6 +45,7 @@
     vm.confirmTurno = confirmTurno;
     vm.confirmSobreturno = confirmSobreturno;
     vm.currentTab = 0;
+    vm.documents = [];
     vm.especialidades = null;
     vm.eventSources = [];
     vm.sobreturnoEventSources = [];
@@ -80,6 +81,7 @@
     vm.selectPaciente = selectPaciente;
     vm.selectedPaciente = null;
     vm.shouldLookForPacient = shouldLookForPacient;
+    vm.socialServices = [];
     vm.sobreturno = {};
     vm.pageSize = 20;
     vm.totalItems = null;
@@ -124,7 +126,7 @@
       height: 450,
       editable: false,
       lang: 'es',
-      weekends: false,
+      hiddenDays: [0],
       defaultView: 'agendaWeek',
       header: {
         left: 'agendaWeek agendaDay',
@@ -173,6 +175,10 @@
         vm.sobreturnoProfesionales = profesionales;
       }, displayComunicationError);
 
+      SocialService.getFullActiveList(function(socialServices){
+        vm.socialServices = socialServices;
+      }, displayComunicationError);
+
       vm.recomendationsPanel.message = 'Por favor comience a completar el formulario para buscar pacientes';
       vm.renderCalendar();
     }
@@ -182,7 +188,7 @@
         if(vm.selectedPaciente){
           return true;
         }else{
-          if(vm.paciente && vm.paciente.firstName && vm.paciente.fatherSurname && vm.paciente.primaryPhoneNumber) {
+          if(vm.paciente && vm.paciente.firstName && vm.paciente.fatherSurname && vm.paciente.primaryPhoneNumber && vm.paciente.socialService) {
             return true;
           }
         }
@@ -196,7 +202,7 @@
         if(vm.selectedPaciente){
           return true;
         }else{
-          if(vm.paciente && vm.paciente.firstName && vm.paciente.fatherSurname && vm.paciente.primaryPhoneNumber) {
+          if(vm.paciente && vm.paciente.firstName && vm.paciente.fatherSurname && vm.paciente.primaryPhoneNumber && vm.paciente.socialService) {
             return true;
           }
         }
@@ -226,14 +232,22 @@
         paciente.primaryPhoneNumber = vm.paciente.primaryPhoneNumber;
         paciente.documentType = vm.paciente.documentType;
         paciente.documentNumber = vm.paciente.documentNumber;
+        paciente.socialService = vm.paciente.socialService;
+        paciente.socialServiceNumber = vm.paciente.socialServiceNumber;
         paciente.prospect = true;
         paciente.birthDate = (vm.paciente.birthDate?$filter('date')(vm.paciente.birthDate, 'yyyy-MM-dd'):null);
         paciente.email = vm.paciente.email;
         paciente.$save(function(createdPaciente){
                         vm.sobreturno.paciente = createdPaciente;
                         vm.reserveSobreturno();
-                      },function(){
-                        displayComunicationError('app');
+                      },function(error){
+                        // console.log(error);
+                        if(error.status==400 && error.data == 'Duplicate paciente exists'){
+                          toastr.warning('Por favor revise que ya existe un paciente con estos datos');
+                          $loading.finish('app');
+                        }else{
+                          displayComunicationError('app');
+                        }
                       }
         );
       }
@@ -251,6 +265,8 @@
         paciente.primaryPhoneNumber = vm.paciente.primaryPhoneNumber;
         paciente.documentType = vm.paciente.documentType;
         paciente.documentNumber = vm.paciente.documentNumber;
+        paciente.socialService = vm.paciente.socialService;
+        paciente.socialServiceNumber = vm.paciente.socialServiceNumber;
         paciente.prospect = true;
         paciente.birthDate = (vm.paciente.birthDate?$filter('date')(vm.paciente.birthDate, 'yyyy-MM-dd'):null);
         paciente.email = vm.paciente.email;
@@ -439,7 +455,7 @@
         }else{
           searchObject.day__gte = $filter('date')(new Date(), 'yyyy-MM-dd');
         }
-        if (vm.selectedProfesional) {
+        if (vm.selectedProfesional && vm.selectedProfesional.id != -99) {
           searchObject.profesional = vm.selectedProfesional.id;
         }
         getTurnoSlotsList(searchObject);
@@ -686,6 +702,9 @@
     function selectPaciente(paciente) {
       paciente.birthDate =(paciente.birthDate?new Date(paciente.birthDate + 'T03:00:00'):null);
       vm.paciente = paciente;
+      vm.paciente.primaryPhoneNumber = parseInt(vm.paciente.primaryPhoneNumber)
+      vm.paciente.secondPhoneNumber = parseInt(vm.paciente.secondPhoneNumber)
+      vm.paciente.thirdPhoneNumber = parseInt(vm.paciente.thirdPhoneNumber)
       vm.selectedPaciente = paciente;
       vm.newTurno.paciente = paciente;
       vm.recomendationList = [paciente];

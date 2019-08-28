@@ -8,11 +8,6 @@
     </div>
     <div class="panel-body">
       <form name="RenewAgendaCtrl.agendaForm">
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg 12">
-          <div class="alert alert-danger">
-              <p><i class="glyphicon glyphicon-warning-sign"></i> Los cambios que usted ingrese pueden generar la cancelación de turnos ya tomados</p>
-          </div>
-        </div>
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
           <div class="row">
             <div class="alert alert-dismissable alert-warning" ng-show="RenewAgendaCtrl.errorMessage">
@@ -47,7 +42,10 @@
               <div class="form-group">
                 <span><label>Desde*</label> <small><em>(dd/mm/aaaa o m/d/aaaa)</em></small></span>
                 <p class="input-group">
-                  <input type="text" class="form-control" value="{{RenewAgendaCtrl.agenda.validFrom.format('DD/MM/YYYY')}}" ng-disabled="true"/>
+                  <input type="text" class="form-control" uib-datepicker-popup="d!/M!/yyyy" name="to" ng-model="RenewAgendaCtrl.agenda.validFrom" is-open="RenewAgendaCtrl.fromDateCalendarPopup.opened" datepicker-options="RenewAgendaCtrl.fromDateCalendarPopup.options" close-text="Cerrar" alt-input-formats="RenewAgendaCtrl.fromDateCalendarPopup.altInputFormats" current-text="Hoy" clear-text="Limpiar"/>
+                  <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" ng-click="RenewAgendaCtrl.fromDateCalendarPopup.openCalendar()"><i class="glyphicon glyphicon-calendar"></i></button>
+                  </span>
                 </p>
               </div>
             </div>
@@ -58,7 +56,10 @@
               <div class="form-group">
                 <span><label>Hasta*</label> <small><em>(dd/mm/aaaa o m/d/aaaa)</em></small></span>
                 <p class="input-group">
-                  <input type="text" name="validTo" class="form-control" value="{{RenewAgendaCtrl.agenda.validTo.format('DD/MM/YYYY')}}" ng-disabled="true"/>
+                  <input type="text" class="form-control" uib-datepicker-popup="d!/M!/yyyy" name="to" ng-model="RenewAgendaCtrl.agenda.validTo" is-open="RenewAgendaCtrl.toDateCalendarPopup.opened" datepicker-options="RenewAgendaCtrl.toDateCalendarPopup.options" close-text="Cerrar" alt-input-formats="RenewAgendaCtrl.toDateCalendarPopup.altInputFormats" current-text="Hoy" clear-text="Limpiar"/>
+                  <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" ng-click="RenewAgendaCtrl.toDateCalendarPopup.openCalendar()"><i class="glyphicon glyphicon-calendar"></i></button>
+                  </span>
                 </p>
               </div>
             </div>
@@ -76,7 +77,7 @@
           <div class="row">
             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
               <input type="number" name="hoursFrom" class="form-control" ng-model="RenewAgendaCtrl.hoursFrom" value="0"
-                     min="0" max="24" ng-disabled="true">Horas
+                     min="0" max="24" required ng-disabled="true">Horas
             </div>
             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
               <input type="number" name="minutesFrom" class="form-control" ng-model="RenewAgendaCtrl.minutesFrom"

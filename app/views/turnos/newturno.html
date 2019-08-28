@@ -60,11 +60,32 @@
             </div>
             <div class="row">
               <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <div class="form-group">
+                  <span><label>Cobertura(*)</label></span>
+                  <select class="form-control" ng-model="NewTurnoCtrl.paciente.socialService"
+                          ng-options="socialService.name for socialService in NewTurnoCtrl.socialServices track by socialService.id"
+                          required ng-disabled="NewTurnoCtrl.paciente.id">
+                    <option value="">Seleccionar</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <div class="form-group">
+                  <span><label>Numero de afiliado</label></span>
+                  <input type="text" class="form-control"
+                          name="socialServiceNumber" maxlength="20"
+                         ng-model="NewTurnoCtrl.paciente.socialServiceNumber" ng-disabled="NewTurnoCtrl.paciente.id"
+                    >
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                 <div class="row">
                   <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                     <div class="form-group">
                       <span><label>Teléfono(*)</label></span>
-                      <input type="text" name="contactPhone" class="form-control" ng-disabled="NewTurnoCtrl.paciente.id"
+                      <input type="number" name="contactPhone" class="form-control" ng-disabled="NewTurnoCtrl.paciente.id"
                              ng-model="NewTurnoCtrl.paciente.primaryPhoneNumber" required
                              ng-model-options="{ debounce: { 'default': 500 } }">
                     </div>

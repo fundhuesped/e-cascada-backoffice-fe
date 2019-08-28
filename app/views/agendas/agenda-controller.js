@@ -3,7 +3,7 @@
   /* jshint validthis: true */
   /*jshint latedef: nofunc */
 
-  function agendaCtrl($loading, $uibModalInstance, $filter, Agenda, agenda, toastr) {
+  function agendaCtrl($loading, $uibModalInstance, $filter, Agenda, agenda, toastr, $location, $anchoScroll) {
     var vm = this;
 
     vm.cancel = cancel;
@@ -148,6 +148,8 @@
 
     vm.changeStatus = function changeStatus() {
       vm.showModal();
+      $location.hash('modal');
+      $anchorScroll();
     };
 
     function cancel() {
@@ -208,5 +210,5 @@
     }
   }
 
-  angular.module('turnos.agendas').controller('AgendaCtrl', ['$loading', '$uibModalInstance', '$filter', 'Agenda',  'agenda', 'toastr', agendaCtrl]);
+  angular.module('turnos.agendas').controller('AgendaCtrl', ['$loading', '$uibModalInstance', '$filter', 'Agenda',  'agenda', 'toastr', '$location', '$anchorScroll', agendaCtrl]);
 })();
