@@ -34,7 +34,7 @@ El sistema se encuentra construido utilizando principalmente :
 Ejecutar el siguiente comando deja corriendo el sistema en el puerto 9000
 
 ```bash
-	grunt server
+	grunt server --force
 ```
 
 ## Buenas practicas para extender el sistema
@@ -76,11 +76,7 @@ Dentro de esta carpeta se situan los distintos modulos conteniendo tanto los con
 	* `turnos`
 		: Módulo que contiene las vistas referentes a la gestion de turnos
 
-## Comandos de Grunt
 
-* `grunt serve` 
-    : Ejecuta el sistema utilizando connect
-* `grunt build`
-	: Genera el release ofuscando, minimizando y empaquetando el código. El mismo queda en el directorio /dist. Se debe tener configurada la variable de entorno `API_BASE`
-* `grunt configure (ambiente)`
-	: Reemplaza el archivo resources-module.js agregandole la URL de la api. Soporta ingresar por parametro el ambiente para el cual configurar. En caso de pasar 'production' levanta la URL de la variable de entorno $API_BASE. En caso de no indicar ningún parámetro asume por default 'development' inyectando la url http://localhost:8000/api/
+## Despliegues e Instalación en ambientes
+Siendo root en el servidor a elección con el codigo del repositorio clonado ejecutar:
+
