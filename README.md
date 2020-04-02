@@ -78,5 +78,5 @@ Dentro de esta carpeta se situan los distintos modulos conteniendo tanto los con
 
 
 ## Despliegues e Instalación en ambientes
-Siendo root en el servidor a elección con el codigo del repositorio clonado ejecutar:
+Siendo root en el servidor a elección con el codigo del repositorio clonado debes apuntar tu nginx para que sirva el sitio apuntando dentro de la carpeta `app`
 
